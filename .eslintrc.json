@@ -12,6 +12,18 @@
   "plugins": ["@typescript-eslint", "react", "prettier", "jsx-a11y"],
   "root": true,
   "ignorePatterns": ["node_modules/", "dist", "package"],
+  "overrides": [
+    {
+      "files": [
+        "*.js"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unsafe-call": "warn",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-var-requires": "off" // Allow `require()`	
+      }
+    }
+  ],
   "rules": {
     "no-console": "warn",
     "no-unused-vars": "error",

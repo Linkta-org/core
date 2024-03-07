@@ -1,9 +1,11 @@
 # React Naming Conventions Guide
 
-This guide simplifies React naming conventions, making it easier for new developers to follow best practices. Credits to the community for establishing these standards.
+This guide highlights the importance of naming conventions in React, emphasizing their role in fostering clean, readable, and maintainable codebases. Adopting consistent naming conventions enhances code readability, simplifies maintenance, and facilitates effective communication within development teams.
 
-## PascalCase
-### Use For:
+## Key Naming Conventions:
+
+### PascalCase
+#### Use For:
 - **React Components:** Define components with the first letter of each word capitalized.
   ```
   const TodoList = () => {};
@@ -22,8 +24,8 @@ This guide simplifies React naming conventions, making it easier for new develop
   const RequestStatus = { NEW: 'new', IN_PROGRESS: 'inProgress' };
   ```
 
-## camelCase
-### Use For:
+### camelCase
+#### Use For:
 - **Variable Names:** Start variable names with a lowercase letter, followed by capitalized words.
   ```
   const userName = "janeDoe";
@@ -46,61 +48,112 @@ This guide simplifies React naming conventions, making it easier for new develop
 
 - **Custom Hooks & Higher-Order Components:** Prefix custom hooks with `use` and HOCs with `with`.
   ```
-  const useFetchData = () => {};
-  const withAuthorization = (Component) => {};
+  // custom hook
+  const useTodo = () => {
+  //...
+  }
+
+  // HOC
+  // "Filter" is add as Suffix which is original component
+  const withFilter = () => {
+  //...
+  }
+
+  // Usage of the HOC
+  const Filter = withFilter(/*Component Name*/);
   ```
 
-## kebab-case
-### Use For:
+### kebab-case
+#### Use For:
 - **CSS Class Names:** When defining class names directly in CSS.
   ```
-  .header-container { display: flex; }
+  .header-container {
+    display: flex;
+  }
+
+  <div className="header-container">
+  //...
+  </div>
   ```
 
 - **Folder Names:** Organize related files into folders named in kebab-case.
   ```
   src/
-  todo-list/
-  TodoList.
-  TodoList.module.scss
-  todo-item/
-  TodoItem.
+    todo-list/
+    todo-item/
   ```
 
-## SCREAMING_SNAKE_CASE
-### Use For:
+### SCREAMING_SNAKE_CASE
+#### Use For:
 - **Constants:** Define constants in all uppercase, with underscores between words.
   ```
-  const API_ENDPOINT = "https://example.com/api";
+  const BASE_PATH = 'https://example.com/api';
   ```
 
 - **Enumeration Properties:** Enum keys should follow the same convention.
   ```
-  const LogLevel = { ERROR: 'error', WARN: 'warn' };
+  const RequestType = {
+  // Name in Pascal Case
+  // Properties in Screaming Snake Case
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+  };
+  ```
+- **Global Variables:**
+  ```
+  const ENVIRONMENT = 'PRODUCTION';
+  const PI = 3.14159;
   ```
 
 ## Best Practices
 - **Descriptive Names:** Avoid generic names to improve clarity and maintainability.
   ```
-  // Instead of MyComponent, use a descriptive name
-  const UserProfile = () => {};
+  ✅ Best Practice
+
+  const ProductDetails = () => {
+
+  const productInfo = fetchProductInfo();
+  // Fetches detailed product information
+
+  const addProductToCart = () => {
+    // Add the product to the shopping cart
+  };
+  //...
+  }
   ```
 
 - **Singular vs. Plural Naming:** Choose based on the context—singular for individual items and plural for collections.
   ```
-  const fetchUser = () => {}; // For a single user
-  const fetchUsers = () => {}; // For multiple users
+  ✅ Best Practice
+
+  const fetchConversation = () => {
+    // Fetch single conversation.
+  }
+
+  const fetchConversations = () => {
+    // Fetch multiple conversations.
+  }
   ```
 
 - **Avoid Excessive Abbreviations:** Prefer full, descriptive names over abbreviated ones.
   ```
-  // Instead of selUsr, use
-  const selectedUser = { userId: 1, userName: 'John Doe' };
+  ✅ Best Practice
+
+  // Descriptive object and property names
+  const selectedUser = {
+    userId: 1,
+    userName: 'Jane Doe',
+    userEmail: 'jane-doe@domain.com',
+  }
+
+  // Usage
+  selectedUser.userId
   ```
 
 By adhering to these conventions, developers can create more readable, maintainable, and consistent codebases in React applications.
 
 ## Credits
 
-This summary is based on *React naming conventions and best practices for developing clean and understandable code* by Sathish Kumar N. [Read the full article here](https://dev.to/sathishskdev/part-1-naming-conventions-the-foundation-of-clean-code-51ng).
-
+This summary is based on [*React naming conventions and best practices for developing clean and understandable code*](https://dev.to/sathishskdev/part-1-naming-conventions-the-foundation-of-clean-code-51ng) by Sathish Kumar N.

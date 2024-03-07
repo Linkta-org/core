@@ -1,10 +1,10 @@
-# React Naming Conventions Guide
+# React Naming Conventions Guide 📚
 
-This guide highlights the importance of naming conventions in React, emphasizing their role in fostering clean, readable, and maintainable codebases. Adopting consistent naming conventions enhances code readability, simplifies maintenance, and facilitates effective communication within development teams.
+This guide highlights the importance of naming conventions in React, emphasizing their role in fostering clean, readable, and maintainable codebases 🌟. Adopting consistent naming conventions enhances code readability 📖, simplifies maintenance 🔧, and facilitates effective communication 🗣️ within development teams.
 
 ## Key Naming Conventions:
 
-### PascalCase
+### PascalCase 🆙
 #### Use For:
 - **React Components:** Define components with the first letter of each word capitalized.
   ```
@@ -13,22 +13,22 @@ This guide highlights the importance of naming conventions in React, emphasizing
 
 - **CSS Class Files:** Name your CSS, SCSS, or CSS module files using PascalCase.
   ```
-    // Example filenames
-    TodoList.css
-    TodoList.scss
-    TodoList.module.scss
-    ```
+  // Example filenames
+  TodoList.css
+  TodoList.scss
+  TodoList.module.scss
+  ```
 
 - **Enumerations:** Define enums with each word capitalized.
   ```
   const RequestStatus = { NEW: 'new', IN_PROGRESS: 'inProgress' };
   ```
 
-### camelCase
+### camelCase 🐫
 #### Use For:
 - **Variable Names:** Start variable names with a lowercase letter, followed by capitalized words.
   ```
-  const userName = "janeDoe";
+  const userName = 'Batman';
   ```
 
 - **Function Names:** Functions should follow the same pattern as variables.
@@ -38,7 +38,7 @@ This guide highlights the importance of naming conventions in React, emphasizing
 
 - **Object Properties:** Keep object keys in camelCase.
   ```
-  const user = { firstName: "Jane", lastName: "Doe" };
+  const user = { firstName: 'Bruce', lastName: 'Wayne' };
   ```
 
 - **CSS Module Class Names:** Define class names in camelCase within CSS Modules.
@@ -54,7 +54,7 @@ This guide highlights the importance of naming conventions in React, emphasizing
   }
 
   // HOC
-  // "Filter" is add as Suffix which is original component
+  // 'Filter' is added as a suffix to indicate the original component
   const withFilter = () => {
   //...
   }
@@ -63,7 +63,7 @@ This guide highlights the importance of naming conventions in React, emphasizing
   const Filter = withFilter(/*Component Name*/);
   ```
 
-### kebab-case
+### kebab-case 🍖
 #### Use For:
 - **CSS Class Names:** When defining class names directly in CSS.
   ```
@@ -71,7 +71,7 @@ This guide highlights the importance of naming conventions in React, emphasizing
     display: flex;
   }
 
-  <div className="header-container">
+  <div className='header-container'>
   //...
   </div>
   ```
@@ -83,7 +83,7 @@ This guide highlights the importance of naming conventions in React, emphasizing
     todo-item/
   ```
 
-### SCREAMING_SNAKE_CASE
+### SCREAMING_SNAKE_CASE 🐍
 #### Use For:
 - **Constants:** Define constants in all uppercase, with underscores between words.
   ```
@@ -107,7 +107,7 @@ This guide highlights the importance of naming conventions in React, emphasizing
   const PI = 3.14159;
   ```
 
-## Best Practices
+## Best Practices 🙌
 - **Descriptive Names:** Avoid generic names to improve clarity and maintainability.
   ```
   ✅ Best Practice
@@ -144,8 +144,8 @@ This guide highlights the importance of naming conventions in React, emphasizing
   // Descriptive object and property names
   const selectedUser = {
     userId: 1,
-    userName: 'Jane Doe',
-    userEmail: 'jane-doe@domain.com',
+    userName: 'Batman',
+    userEmail: 'notBruceWayne@domain.com',
   }
 
   // Usage
@@ -154,6 +154,6 @@ This guide highlights the importance of naming conventions in React, emphasizing
 
 By adhering to these conventions, developers can create more readable, maintainable, and consistent codebases in React applications.
 
-## Credits
+## Credits 🙏
 
 This summary is based on [*React naming conventions and best practices for developing clean and understandable code*](https://dev.to/sathishskdev/part-1-naming-conventions-the-foundation-of-clean-code-51ng) by Sathish Kumar N.

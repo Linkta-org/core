@@ -1,1 +1,33 @@
+#Linkta Accessibility Guidlines:
 
+##Understand Accessibility Requirements
+-Familiarize yourself and your team with accessibility guidelines such as the Web Content Accessibility Guidelines (WCAG) published by the W3C. These guidelines provide internationally recognized standards for web content accessibility.
+
+##Create an Accessibility Statement: 
+-Draft a clear accessibility statement for your project, explaining your commitment to accessibility and how you plan to achieve it. This statement should be prominently displayed in your project documentation.
+
+##Include Accessibility in Design and Development: 
+-Incorporate accessibility considerations into the design and development process from the beginning. Ensure that all UI elements are perceivable, operable, understandable, and robust (the principles of WCAG).
+
+##Choose Accessible Tools and Technologies: 
+-Use tools and technologies that support accessibility. For example, choose frameworks and libraries that prioritize accessibility features.
+
+##Provide Alternative Text for Images: 
+-Include descriptive alt text for all images in your project, allowing users with screen readers to understand the content.
+
+##Ensure Keyboard Accessibility: 
+-Ensure that all functionality in your project is accessible via keyboard navigation. Users who cannot use a mouse rely on keyboard navigation to access content.
+
+##Test with Accessibility Tools: 
+-Regularly test your project for accessibility using automated testing tools like Axe or WAVE. Additionally, conduct manual accessibility testing with assistive technologies such as screen readers.
+
+##Document Accessibility Guidelines for Contributors: 
+-Provide clear documentation on accessibility guidelines and best practices for contributors. This documentation should outline how contributors can ensure their contributions meet accessibility standards.
+
+##Encourage Accessibility Contributions: 
+-Actively encourage contributions that improve accessibility. Consider creating specific issues labeled as "accessibility" for contributors interested in helping improve accessibility.
+
+##Review and Iterate: 
+-Regularly review and iterate on your accessibility efforts. Solicit feedback from users with disabilities and incorporate their input into your project's accessibility improvements.
+
+###By following these guidelines, you can establish a strong accessibility standard for your open source project and ensure that it is inclusive and accessible to all contributors.

@@ -1,0 +1,27 @@
+# A basic yaml file to deploy to staging environment
+
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  #lint
+  #test
+  #build
+  #deploy to staging
+  staging:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Deploy to Staging
+        uses: ./.github/actions/deploy_to_staging
+        with:
+          node-version: ${{ matrix.node-version }}
+```

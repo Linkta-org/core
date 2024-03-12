@@ -1,4 +1,7 @@
-# A basic yaml file to deploy to staging environment
+#A basic yaml file to deploy to staging environment
+
+#NOTE: variables currently do not have support, so the strategy matrix
+#is reproduced for each job. Hopefully this can be generalized in the future.
 
 name: Deploy to Staging
 
@@ -9,14 +12,29 @@ on:
 
 jobs:
   #lint
+
   #test
+
   #build
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.11.1]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Build for Staging
+        uses: ./.github/actions/build_for_staging
+        with:
+          node-version: ${{ matrix.node-version }}
+
   #deploy to staging
   staging:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [20.11.1]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -24,4 +42,3 @@ jobs:
         uses: ./.github/actions/deploy_to_staging
         with:
           node-version: ${{ matrix.node-version }}
-```

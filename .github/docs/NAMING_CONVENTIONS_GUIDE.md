@@ -9,30 +9,11 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
 - **Consistency Across the Codebase**: Ensure all developers adhere to these guidelines.
 - **Limit Use of Abbreviations**: Prefer `userIdentifier` over `userId` if clarity is needed.
 
-## TypeScript Naming Conventions
+## Frontend Naming Conventions
 
-### Variables and Functions (camelCase)
-- **Example**: `let userProfile: UserProfile;`
+### React
 
-### Interfaces and Classes (PascalCase)
-- **Interface Example**: `UserProfile.ts`
-  ```typescript
-  interface UserProfile {
-    // Interface properties
-  }
-  ```
-
-### Enums and Constants (Enums in PascalCase, Values in UPPER_SNAKE_CASE)
-- **Example**: `Colors.ts`
-  ```typescript
-  enum Color {
-    RED = 'red',
-    BLUE = 'blue'
-  }
-  ```
-## React Naming Conventions
-
-### Components (PascalCase)
+#### Components (PascalCase)
 - **Example**: `UserProfile.tsx`
   ```tsx
   const UserProfile = () => {
@@ -40,7 +21,7 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   };
   ```
 
-### Hooks (camelCase with `use` Prefix)
+#### Hooks (camelCase with `use` Prefix)
 - **Example**: `useFetchUser.ts`
   ```tsx
   const useFetchUser = () => {
@@ -48,7 +29,7 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   };
   ```
 
-### Higher-Order Components (`with` Prefix)
+#### Higher-Order Components (`with` Prefix)
 - **Example**: `withUserAuthentication.tsx`
   ```tsx
   const withUserAuthentication = (Component) => {
@@ -56,7 +37,7 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   };
   ```
 
-### CSS Modules (PascalCase for File, camelCase for Classes)
+#### CSS Modules (PascalCase for File, camelCase for Classes)
 - **File**: `UserProfile.module.scss`
   ```scss
   .profileContainer {
@@ -64,26 +45,28 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   }
   ```
 
-## Next.ts Naming Conventions
+### Next.js
 
-### Pages and Routing (kebab-case for File Names)
+#### Pages and Routing (kebab-case for File Names)
 - Page components under the `pages` directory match URL paths directly.
   - **Example**: `pages/user-profile/index.tsx` maps to `/user-profile`.
 
-### Dynamic Routes ([square brackets])
+#### Dynamic Routes ([square brackets])
 - Dynamic parameters: `pages/posts/[postId].tsx` for dynamic post pages.
 
-### API Routes (kebab-case)
+#### API Routes (kebab-case)
 - API handlers within `pages/api`: `pages/api/user-profile/[userId].ts`.
 
-### Public Directory for Static Files
+#### Public Directory for Static Files
 - Static assets in `public`: images and fonts accessed directly from the root URL.
   - **Example**: `public/logo.svg` accessible at `/logo.svg`.
 
 
-## Node.ts Naming Conventions
+## Backend Naming Conventions
 
-### Variables and Functions (camelCase)
+### Node.js and Express.js
+
+#### Variables and Functions (camelCase)
 - **Example**: `getUserData.ts`
   ```javascript
   const getUserData = () => {
@@ -91,7 +74,7 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   };
   ```
 
-### Classes (PascalCase)
+#### Classes (PascalCase)
 - **Example**: `DatabaseService.ts`
   ```javascript
   class DatabaseService {
@@ -99,28 +82,53 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   }
   ```
 
-### Constants (UPPER_SNAKE_CASE)
+#### Constants (UPPER_SNAKE_CASE)
 - **Example**: `config.ts`
   ```javascript
   const MAX_CONNECTIONS = 50;
   ```
 
 
-## REST API and URL Structuring
+### REST API and URL Structuring
 
-### Resource Naming (Plural or Singular Nouns)
+#### Resource Naming (Plural or Singular Nouns)
 - **Collections**: `/users`
 - **Single Resource**: `/users/{userId}`
 
-### URL Case Style (lowercase with hyphens)
+#### URL Case Style (lowercase with hyphens)
 - **Example**: `/user-profiles`
 
-### No Verbs in URLs (Use HTTP Verbs Instead)
+#### No Verbs in URLs (Use HTTP Verbs Instead)
 - **POST**: `POST /users` to create a user
 
-### Query Parameters (camelCase)
+#### Query Parameters (camelCase)
 - **Example**: `/users?startDate=2021-01-01`
 
+## General Naming Conventions
+
+### TypeScript
+
+#### Variables and Functions (camelCase)
+- **Example**: `let userProfile: UserProfile;`
+
+#### Interfaces and Classes (PascalCase)
+- **Interface Example**: `UserProfile.ts`
+  ```typescript
+  interface UserProfile {
+    // Interface properties
+  }
+  ```
+
+#### Enums and Constants (Enums in PascalCase, Values in UPPER_SNAKE_CASE)
+- **Example**: `Colors.ts`
+  ```typescript
+  enum Color {
+    RED = 'red',
+    BLUE = 'blue'
+  }
+  ```
+##  Environment Variables (UPPER_SNAKE_CASE):
+- **Define environment variables in upper casee**: such as`API_URL` or `DATABASE_HOST`, to distinguish them from regular variables.
 
 ## File and Directory Naming
 
@@ -141,6 +149,8 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
     user-profile/
     fetch-user/
   ```
+## Version Control (Branch Naming)
+- **Use descriptive branch names (kebab-case)**: Feature branches `feature/add-user-login`, Bug fixes `bugfix/login-page-errors`.
 
 ## Conclusion
 By adhering to these naming conventions, Linkta's development teams can ensure their codebases are readable, maintainable, and SEO-friendly. These conventions facilitate easier collaboration among team members and contribute to the overall quality of Linkta’s software projects.

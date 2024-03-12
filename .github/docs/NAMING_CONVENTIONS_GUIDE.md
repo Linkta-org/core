@@ -1,15 +1,15 @@
-# Linkta Naming Conventions Guide
+# Linkta Naming Conventions Guide 📘
 
-## Introduction
+## Introduction 🌟
 Adopting a standardized set of naming conventions is crucial for enhancing the readability, maintainability, and overall quality of code in software development projects. Consistent naming practices streamline the development process, facilitate effective team collaboration, and make the codebase more accessible to new contributors. This guide outlines best practices for naming various elements within a project, from variables and functions to files and directories, aiming to promote clarity and cohesion across the codebase.
 
-## General Best Practices
+## General Best Practices 📏
 
 - **Descriptive Over Abbreviated**: `fetchUserProfile` over `fchUsrPrf`.
 - **Consistency Across the Codebase**: Ensure all developers adhere to these guidelines.
 - **Limit Use of Abbreviations**: Prefer `userIdentifier` over `userId` if clarity is needed.
 
-## Frontend Naming Conventions
+## Frontend Naming Conventions 🪟
 
 ### React
 
@@ -62,7 +62,7 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   - **Example**: `public/logo.svg` accessible at `/logo.svg`.
 
 
-## Backend Naming Conventions
+## Backend Naming Conventions 🧠
 
 ### Node.js and Express.js
 
@@ -104,7 +104,7 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
 #### Query Parameters (camelCase)
 - **Example**: `/users?startDate=2021-01-01`
 
-## General Naming Conventions
+## General Naming Conventions 🌎
 
 ### TypeScript
 
@@ -127,29 +127,29 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
     BLUE = 'blue'
   }
   ```
-##  Environment Variables (UPPER_SNAKE_CASE):
+###  Environment Variables (UPPER_SNAKE_CASE) 🔐
 - **Define environment variables in upper casee**: such as`API_URL` or `DATABASE_HOST`, to distinguish them from regular variables.
 
-## File and Directory Naming
+### File and Directory Naming 🗂️
 
-### React Components and TypeScript Files (PascalCase)
+#### React Components and TypeScript Files (PascalCase)
 - **React Component**: `UserProfile.tsx`
 - **TypeScript Interface**: `UserProfile.ts`
 
-### TypeScript and Utility Files (kebab-case)
+#### TypeScript and Utility Files (kebab-case)
 - **Example**: `fetch-user.ts`
 
-### Tests (Append `.test` or `.spec`)
+#### Tests (Append `.test` or `.spec`)
 - **Example**: `UserProfile.test.tsx`
 
-### Directories (kebab-case for Grouping)
+#### Directories (kebab-case for Grouping)
 - **Example Directory Structure**:
   ```
   src/
     user-profile/
     fetch-user/
   ```
-## Version Control (Branch Naming)
+### Version Control (Branch Naming) ⛓️
 - **Use descriptive branch names (kebab-case)**: Feature branches `feature/add-user-login`, Bug fixes `bugfix/login-page-errors`.
 
 ## Conclusion

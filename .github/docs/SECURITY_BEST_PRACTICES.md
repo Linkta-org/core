@@ -9,7 +9,8 @@ This document provides a structured outline of security best practices for the d
 
 - **Client-Side Validation**: Always validate user input on the client side for immediate feedback, but do not rely solely on client-side validation for security.
 - **XSS Protection**: Protect against Cross-Site Scripting (XSS) by avoiding the use of [`dangerouslySetInnerHTML`](https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html) unless absolutely necessary. If used, ensure that the content is sanitized with a library designed for this purpose.
-- **Cross-Site Request Forgery(CSRF) Protection**: Implement CSRF tokens in state-changing requests. Refer to Next.js documentation for built-in methods to handle CSRF. ([CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html))
+- **Cross-Site Request Forgery(CSRF) Protection**: Implement CSRF tokens in state-changing requests. ([CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html))
+- **API Interactions**: Ensure that API endpoints are not exposed to the client and that they are protected against unauthorized access. Use protected routes to control access to specific parts of the application based on the user's authentication status, redirecting unauthenticated users to a login page.
 
 #### Data Handling and Storage
 
@@ -43,7 +44,6 @@ This document provides a structured outline of security best practices for the d
 
 #### Security Headers and CORS
 
-- **API Interactions**: Ensure that API endpoints are not exposed to the client and that they are protected against unauthorized access.
 - **Security Headers**: Use security-related HTTP headers like [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options), [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection), and Strict-Transport-Security to protect the app from certain classes of attacks.
 - **CORS Policy**: Define a strict Cross-Origin Resource Sharing (CORS) policy to control the allowed sources for your resources.
 

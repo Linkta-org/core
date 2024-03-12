@@ -1,159 +1,131 @@
-# React Naming Conventions Guide 📚
+# Linkta Naming Conventions Guide
 
-This guide highlights the importance of naming conventions in React, emphasizing their role in fostering clean, readable, and maintainable codebases 🌟. Adopting consistent naming conventions enhances code readability 📖, simplifies maintenance 🔧, and facilitates effective communication 🗣️ within development teams.
+## Introduction
+Adopting a standardized set of naming conventions is crucial for enhancing the readability, maintainability, and overall quality of code in software development projects. Consistent naming practices streamline the development process, facilitate effective team collaboration, and make the codebase more accessible to new contributors. This guide outlines best practices for naming various elements within a project, from variables and functions to files and directories, aiming to promote clarity and cohesion across the codebase.
 
-## Key Naming Conventions:
+## React Naming Conventions
 
-### PascalCase 🆙
-#### Use For:
-- **React Components:** Define components with the first letter of each word capitalized.
-  ```
-  const TodoList = () => {};
-  ```
-
-- **CSS Class Files:** Name your CSS, SCSS, or CSS module files using PascalCase.
-  ```
-  // Example filenames
-  TodoList.css
-  TodoList.scss
-  TodoList.module.scss
+### Components (PascalCase)
+- **Example**: `UserProfile.jsx`
+  ```jsx
+  const UserProfile = () => {
+    return <div>User Profile Component</div>;
+  };
   ```
 
-- **Enumerations:** Define enums with each word capitalized.
-  ```
-  const RequestStatus = { NEW: 'new', IN_PROGRESS: 'inProgress' };
-  ```
-
-### camelCase 🐫
-#### Use For:
-- **Variable Names:** Start variable names with a lowercase letter, followed by capitalized words.
-  ```
-  const userName = 'Batman';
+### Hooks (camelCase with `use` Prefix)
+- **Example**: `useFetchUser.js`
+  ```jsx
+  const useFetchUser = () => {
+    // Hook logic here
+  };
   ```
 
-- **Function Names:** Functions should follow the same pattern as variables.
-  ```
-  const calculateAge = (birthYear) => {};
-  ```
-
-- **Object Properties:** Keep object keys in camelCase.
-  ```
-  const user = { firstName: 'Bruce', lastName: 'Wayne' };
+### Higher-Order Components (`with` Prefix)
+- **Example**: `withUserAuthentication.jsx`
+  ```jsx
+  const withUserAuthentication = (Component) => {
+    // HOC logic here
+  };
   ```
 
-- **CSS Module Class Names:** Define class names in camelCase within CSS Modules.
-  ```
-  .headerContainer { display: flex; }
-  ```
-
-- **Custom Hooks & Higher-Order Components:** Prefix custom hooks with `use` and HOCs with `with`.
-  ```
-  // custom hook
-  const useTodo = () => {
-  //...
+### CSS Modules (PascalCase for File, camelCase for Classes)
+- **File**: `UserProfile.module.scss`
+  ```scss
+  .profileContainer {
+    // CSS rules here
   }
+  ```
 
-  // HOC
-  // 'Filter' is added as a suffix to indicate the original component
-  const withFilter = () => {
-  //...
+## Node.js Naming Conventions
+
+### Variables and Functions (camelCase)
+- **Example**: `getUserData.js`
+  ```javascript
+  const getUserData = () => {
+    // Function logic
+  };
+  ```
+
+### Classes (PascalCase)
+- **Example**: `DatabaseService.js`
+  ```javascript
+  class DatabaseService {
+    // Class logic
   }
-
-  // Usage of the HOC
-  const Filter = withFilter(/*Component Name*/);
   ```
 
-### kebab-case 🍖
-#### Use For:
-- **CSS Class Names:** When defining class names directly in CSS.
+### Constants (UPPER_SNAKE_CASE)
+- **Example**: `config.js`
+  ```javascript
+  const MAX_CONNECTIONS = 50;
   ```
-  .header-container {
-    display: flex;
+
+### File Naming (kebab-case for Non-Class Files)
+- **Example**: `api-utils.js`
+
+## REST API and URL Structuring
+
+### Resource Naming (Plural or Singular Nouns)
+- **Collections**: `/users`
+- **Single Resource**: `/users/{userId}`
+
+### URL Case Style (lowercase with hyphens)
+- **Example**: `/user-profiles`
+
+### No Verbs in URLs (Use HTTP Verbs Instead)
+- **POST**: `POST /users` to create a user
+
+### Query Parameters (camelCase)
+- **Example**: `/users?startDate=2021-01-01`
+
+## TypeScript Naming Conventions
+
+### Variables and Functions (camelCase)
+- **Example**: `let userProfile: UserProfile;`
+
+### Interfaces and Classes (PascalCase, `I` Prefix for Interfaces)
+- **Interface Example**: `IUserProfile.ts`
+  ```typescript
+  interface IUserProfile {
+    // Interface properties
   }
-
-  <div className='header-container'>
-  //...
-  </div>
   ```
 
-- **Folder Names:** Organize related files into folders named in kebab-case.
+### Enums and Constants (Enums in PascalCase, Values in UPPER_SNAKE_CASE)
+- **Example**: `Colors.ts`
+  ```typescript
+  enum Color {
+    RED = 'red',
+    BLUE = 'blue'
+  }
+  ```
+
+## File Naming
+
+### React Components and TypeScript Files (PascalCase)
+- **React Component**: `UserProfile.tsx`
+- **TypeScript Interface**: `IUserProfile.ts`
+
+### JavaScript and Utility Files (kebab-case)
+- **Example**: `fetch-user.js`
+
+### Tests (Append `.test` or `.spec`)
+- **Example**: `UserProfile.test.tsx`
+
+### Directories (kebab-case for Grouping)
+- **Example Directory Structure**:
   ```
   src/
-    todo-list/
-    todo-item/
+    user-profile/
+    fetch-user/
   ```
 
-### SCREAMING_SNAKE_CASE 🐍
-#### Use For:
-- **Constants:** Define constants in all uppercase, with underscores between words.
-  ```
-  const BASE_PATH = 'https://example.com/api';
-  ```
+## General Best Practices
 
-- **Enumeration Properties:** Enum keys should follow the same convention.
-  ```
-  const RequestType = {
-  // Name in Pascal Case
-  // Properties in Screaming Snake Case
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  DELETE: 'DELETE',
-  };
-  ```
-- **Global Variables:**
-  ```
-  const ENVIRONMENT = 'PRODUCTION';
-  const PI = 3.14159;
-  ```
+- **Descriptive Over Abbreviated**: `fetchUserProfile` over `fchUsrPrf`.
+- **Consistency Across the Codebase**: Ensure all developers adhere to these guidelines.
+- **Limit Use of Abbreviations**: Prefer `userIdentifier` over `userId` if clarity is needed.
 
-## Best Practices 🙌
-- **Descriptive Names:** Avoid generic names to improve clarity and maintainability.
-  ```
-  ✅ Best Practice
-
-  const ProductDetails = () => {
-
-  const productInfo = fetchProductInfo();
-  // Fetches detailed product information
-
-  const addProductToCart = () => {
-    // Add the product to the shopping cart
-  };
-  //...
-  }
-  ```
-
-- **Singular vs. Plural Naming:** Choose based on the context—singular for individual items and plural for collections.
-  ```
-  ✅ Best Practice
-
-  const fetchConversation = () => {
-    // Fetch single conversation.
-  }
-
-  const fetchConversations = () => {
-    // Fetch multiple conversations.
-  }
-  ```
-
-- **Avoid Excessive Abbreviations:** Prefer full, descriptive names over abbreviated ones.
-  ```
-  ✅ Best Practice
-
-  // Descriptive object and property names
-  const selectedUser = {
-    userId: 1,
-    userName: 'Batman',
-    userEmail: 'notBruceWayne@domain.com',
-  }
-
-  // Usage
-  selectedUser.userId
-  ```
-
-By adhering to these conventions, developers can create more readable, maintainable, and consistent codebases in React applications.
-
-## Credits 🙏
-
-This summary is based on [*React naming conventions and best practices for developing clean and understandable code*](https://dev.to/sathishskdev/part-1-naming-conventions-the-foundation-of-clean-code-51ng) by Sathish Kumar N.
+## Conclusion
+By adhering to these naming conventions, Linkta's development teams can ensure their codebases are readable, maintainable, and SEO-friendly. These conventions facilitate easier collaboration among team members and contribute to the overall quality of Linkta’s software projects.

@@ -34,7 +34,7 @@ This document provides a structured outline of security best practices for the d
 - **Transport Layer Security [(TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security)**: Ensure all data transmitted over the network is encrypted using TLS. Avoid the use of deprecated versions of SSL/TLS for encryption.
 - **Encryption at Rest**: Encrypt sensitive data before storing it in the database. Use field-level encryption for particularly sensitive information.
 - **Keys Management**: Use a secure method of storing and accessing encryption keys. Avoid hardcoding keys in the source code.
-- **Data Backup**:Backup data regularly, ensuring that backups are encrypted and securely stored.
+- **Data Backup**: Backup data regularly, ensuring that backups are encrypted and securely stored.
 
 #### Error Handling and Logging
 
@@ -43,10 +43,9 @@ This document provides a structured outline of security best practices for the d
 
 #### Security Headers and CORS
 
-- **Security Headers**: Use security-related HTTP headers like Content-Security-Policy, [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options), [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection), and Strict-Transport-Security to protect the app from certain classes of attacks.
-- **CORS Policy**: Define a strict Cross-Origin Resource Sharing (CORS) policy to control the allowed sources for your resources.
-
 - **API Interactions**: Ensure that API endpoints are not exposed to the client and that they are protected against unauthorized access.
+- **Security Headers**: Use security-related HTTP headers like [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options), [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection), and Strict-Transport-Security to protect the app from certain classes of attacks.
+- **CORS Policy**: Define a strict Cross-Origin Resource Sharing (CORS) policy to control the allowed sources for your resources.
 
 #### Infrastructure
 

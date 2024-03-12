@@ -40,6 +40,62 @@ This section delves into security measures specific to application development, 
 
 - **Token Handling**: Securely manage session tokens using server-side stores or JWTs.
 
+#### Security Headers and CORS
+
+- **Security Headers**: Use security-related HTTP headers like [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options), [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection), and Strict-Transport-Security to protect the app from certain classes of attacks.
+- **CORS Policy**: Define a strict Cross-Origin Resource Sharing (CORS) policy to control the allowed sources for your resources.
+
+
+## II. Infrastructure and DevOps Security Practices
+This section focuses on the security practices related to infrastructure and DevOps, ensuring that the systems supporting the application are robustly secured against threats. It covers access control, infrastructure security measures, continuous security, and secrets management, among other areas.
+
+#### Access Control
+
+- **Principle of Least Privilege [(POLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege)**: Restrict permissions to only what's necessary across all systems and services.
+- **Role-Based Access Control [(RBAC)](https://en.wikipedia.org/wiki/Role-based_access_control):**: Define clear roles within the application and database, ensuring proper role-based access control.
+
+### Infrastructure Security
+- **Firewalls and Network Segmentation**: Deploy firewalls to monitor and control incoming and outgoing network traffic based on predetermined security rules. Use network segmentation to reduce the attack surface.
+- **Rate Limiting**: Implement rate limiting on APIs and services to prevent abuse and potential denial-of-service attacks.
+
+### Secure Configuration and Management
+- **Hardening and Configuration Management**: Apply security best practices to harden servers and apply consistent configuration management to maintain security baselines.
+- **Immutable Infrastructure**: Adopt immutable infrastructure principles where changes are made by replacing instances rather than modifying them, reducing the risk of configuration drift and unauthorized changes.
+
+### Continuous Security and Compliance
+- **Continuous Integration/Continuous Deployment (CI/CD) Security**: Incorporate automated security checks into CI/CD pipelines to detect vulnerabilities early in the development process.
+- **Compliance as Code**: Automate compliance policies within the deployment processes to ensure consistent application of security standards.
+
+### Secrets Management
+- **Secrets Storage**: Use dedicated secrets management tools to securely store, access, and manage secrets like API keys and database credentials, avoiding hardcoding them in the source code or configuration files.
+
+### Monitoring, Logging, and Alerting
+- **Monitoring and Alerting**: Implement comprehensive monitoring and alerting systems to detect and respond to security incidents in real time.
+- **Log Management**: Ensure that logs are securely stored and managed, without containing sensitive information, and use them for investigating security incidents.
+
+### Network Security and Encryption
+- **TLS/SSL for Data in Transit**: Use TLS/SSL to encrypt data in transit across all services to prevent eavesdropping and man-in-the-middle attacks.
+- **Encryption of Sensitive Data at Rest**: Encrypt sensitive data at rest in databases and storage solutions to protect it from unauthorized access.
+
+### Container and Orchestration Security
+- **Container Security**: Use trusted base images, scan images for vulnerabilities, and apply security best practices in container orchestration environments to protect against threats.
+
+### Disaster Recovery and Backup
+- **Backup Strategies**: Regularly backup critical data and system configurations, ensuring that backups are encrypted and stored securely.
+- **Disaster Recovery Planning**: Develop and regularly test disaster recovery plans to ensure quick recovery and minimal downtime in the event of a security incident.
+
+#### Code and Dependency Security
+- **Dependencies Audit**: Regularly use tools like `npm audit` or `yarn audit` to detect and resolve security issues in dependencies. Keep all packages up to date with the latest security patches.
+- **Minification**: Utilize Next.js’s built-in minification during the build process to minimize code and reduce the risk of reverse engineering.
+- **Deployment Reviews**: Review build and deployment scripts for potential security issues. Ensure secrets are not included in the deployment scripts or committed to source control.
+
+## III. General Security Practices
+
+#### Code Reviews and Training
+
+- **Code Reviews**: Perform security-focused code reviews, paying special attention to handling of user input and proper data sanitation.
+- **Developer Training**: Regularly train developers in secure coding practices and staying abreast of emerging threats, using resources like OWASP ([OWASP Top Ten](https://owasp.org/www-project-top-ten/)).
+
 #### Encryption and Data Protection
 
 - **Transport Layer Security [(TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security)**: Ensure all data transmitted over the network is encrypted using TLS. Avoid the use of deprecated versions of SSL/TLS for encryption.
@@ -51,46 +107,6 @@ This section delves into security measures specific to application development, 
 
 - **Error Handling**: Develop a global error handling mechanism that catches and logs errors without leaking any sensitive information to the client (only provide generic error messages).
 - **Logging Practices**: Ensure that logs do not contain sensitive information. Use log management tools to store, manage, and analyze log data.
-
-#### Security Headers and CORS
-
-- **Security Headers**: Use security-related HTTP headers like [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options), [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection), and Strict-Transport-Security to protect the app from certain classes of attacks.
-- **CORS Policy**: Define a strict Cross-Origin Resource Sharing (CORS) policy to control the allowed sources for your resources.
-
-
-## II. Infrastructure and DevOps Security Practices
-
-#### Access Control
-
-- **Principle of Least Privilege [(POLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege)**: Restrict permissions to only what's necessary across all systems and services.
-- **Role-Based Access Control [(RBAC)](https://en.wikipedia.org/wiki/Role-based_access_control):**: Define clear roles within the application and database, ensuring proper role-based access control.
-
-#### Infrastructure Security Measures
-
-- **Rate Limiting**: Include a rate limiter to prevent system abuse and denial-of-service attacks.
-- **Firewalls**: Set up firewalls to filter incoming and outgoing traffic. Cloud providers often offer solutions for this.
-- **Continuous Security Integration**: Incorporate security checks into the Continuous Integration/Continuous Deployment (CI/CD) pipelines. This includes static and dynamic analysis tools to catch vulnerabilities early in the development cycle.
-- **Secure Configuration Management**: Ensure that all infrastructure as code configurations (e.g., Terraform, Ansible) follow the principle of least privilege and are stored securely, avoiding hardcoding sensitive data.
-- **Container Security**: For teams using containerization, address security concerns by using trusted base images, scanning containers for vulnerabilities, and implementing container runtime security.
-- **Secrets Management**: Use dedicated secrets management tools (e.g., HashiCorp Vault, AWS Secrets Manager) to securely store and access API keys, database credentials, and other sensitive information, instead of embedding them in the source code or CI/CD pipelines.
-- **Network Security**: Implement strategies to secure the communication between services, such as mutual TLS, to ensure encrypted and authenticated connections within the infrastructure.
-- **Monitoring and Alerting**: Set up comprehensive monitoring and alerting systems to detect anomalies and potential security breaches in real-time. This includes logging access and changes to critical systems and configurations.
-- **Immutable Infrastructure**: Promote the use of immutable infrastructure where changes are made by replacing the entire instance rather than modifying existing instances, reducing the risk of persistent threats.
-- **Compliance as Code**: Apply compliance as code practices by encoding compliance and governance policies into the deployment pipelines, ensuring that deployed resources automatically adhere to organizational and regulatory standards.
-- **Disaster Recovery and Backup Strategies**: Develop robust disaster recovery and backup plans, including regular backups of critical data and configurations, to ensure quick recovery in the event of a security incident.
-
-#### Code and Dependency Security
-
-- **Dependencies Audit**: Regularly use tools like `npm audit` or `yarn audit` to detect and resolve security issues in dependencies. Keep all packages up to date with the latest security patches.
-- **Minification**: Utilize Next.js’s built-in minification during the build process to minimize code and reduce the risk of reverse engineering.
-- **Deployment Reviews**: Review build and deployment scripts for potential security issues. Ensure secrets are not included in the deployment scripts or committed to source control.
-
-## III. General Security Practices
-
-#### Code Reviews and Training
-
-- **Code Reviews**: Perform security-focused code reviews, paying special attention to handling of user input and proper data sanitation.
-- **Developer Training**: Regularly train developers in secure coding practices and staying abreast of emerging threats, using resources like OWASP ([OWASP Top Ten](https://owasp.org/www-project-top-ten/)).
 
 #### Compliance and Audits
 

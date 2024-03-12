@@ -55,39 +55,49 @@ Centers on securing the infrastructure that supports the application and the Dev
 - **Role-Based Access Control [(RBAC)](https://en.wikipedia.org/wiki/Role-based_access_control):**: Define clear roles within the application and database, ensuring proper role-based access control.
 
 #### Infrastructure Security
+
 - **Firewalls and Network Segmentation**: Deploy firewalls to monitor and control incoming and outgoing network traffic based on predetermined security rules. Use network segmentation to reduce the attack surface.
 - **Rate Limiting**: Implement rate limiting on APIs and services to prevent abuse and potential denial-of-service attacks.
 
 #### Secure Configuration and Management
+
 - **Hardening and Configuration Management**: Apply security best practices to harden servers and apply consistent configuration management to maintain security baselines.
 - **Immutable Infrastructure**: Adopt immutable infrastructure principles where changes are made by replacing instances rather than modifying them, reducing the risk of configuration drift and unauthorized changes.
 
 #### Continuous Security and Compliance
+
 - **Continuous Integration/Continuous Deployment (CI/CD) Security**: Incorporate automated security checks into CI/CD pipelines to detect vulnerabilities early in the development process.
 - **Compliance as Code**: Automate compliance policies within the deployment processes to ensure consistent application of security standards.
 
 #### Secrets Management
+
 - **Secrets Storage**: Use dedicated secrets management tools to securely store, access, and manage secrets like API keys and database credentials, avoiding hardcoding them in the source code or configuration files.
 
 #### Monitoring, Logging, and Alerting
+
 - **Monitoring and Alerting**: Implement comprehensive monitoring and alerting systems to detect and respond to security incidents in real time.
 - **Log Management**: Ensure that logs are securely stored and managed, without containing sensitive information, and use them for investigating security incidents.
 
 #### Network Security and Encryption
+
 - **TLS/SSL for Data in Transit**: Use TLS/SSL to encrypt data in transit across all services to prevent eavesdropping and man-in-the-middle attacks.
 - **Encryption of Sensitive Data at Rest**: Encrypt sensitive data at rest in databases and storage solutions to protect it from unauthorized access.
 
 #### Container and Orchestration Security
+
 - **Container Security**: Use trusted base images, scan images for vulnerabilities, and apply security best practices in container orchestration environments to protect against threats.
 
 #### Disaster Recovery and Backup
+
 - **Backup Strategies**: Regularly backup critical data and system configurations, ensuring that backups are encrypted and stored securely.
 - **Disaster Recovery Planning**: Develop and regularly test disaster recovery plans to ensure quick recovery and minimal downtime in the event of a security incident.
 
 #### Code and Dependency Security
+
 - **Dependencies Audit**: Regularly use tools like `npm audit` or `yarn audit` to detect and resolve security issues in dependencies. Keep all packages up to date with the latest security patches.
 - **Minification**: Utilize Next.js’s built-in minification during the build process to minimize code and reduce the risk of reverse engineering.
 - **Deployment Reviews**: Review build and deployment scripts for potential security issues. Ensure secrets are not included in the deployment scripts or committed to source control.
+
 
 ## III. General Security Practices
 Encompasses the foundational security measures that apply across all aspects of development and operations. It addresses the importance of continuous education and vigilance in code reviews, the necessity of encryption and protective measures for data in transit and at rest, the implementation of comprehensive error handling and logging strategies, and adherence to regulatory compliance and regular security audits to identify and mitigate vulnerabilities.
@@ -102,7 +112,6 @@ Encompasses the foundational security measures that apply across all aspects of 
 - **Transport Layer Security [(TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security)**: Ensure all data transmitted over the network is encrypted using TLS. Avoid the use of deprecated versions of SSL/TLS for encryption.
 - **Encryption at Rest**: Encrypt sensitive data before storing it in the database. Use field-level encryption for particularly sensitive information.
 - **Keys Management**: Use a secure method of storing and accessing encryption keys. Avoid hardcoding keys in the source code.
-- **Data Backup**: Backup data regularly, ensuring that backups are encrypted and securely stored.
 
 #### Error Handling and Logging
 

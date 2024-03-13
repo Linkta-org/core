@@ -5,8 +5,10 @@
     "target": "ES2021",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "NodeNext",                                /* Specify what module code is generated. */
     "rootDir": ".",                                      /* Specify the root folder within your source files. */
-    // "rootDirs": [],                                 
+    "rootDirs": ["client", "server"],                                 
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
     "outDir": "dist",                                   /* Specify an output folder for all emitted files. */
     "removeComments": true,                           /* Disable emitting comments. */
@@ -18,6 +20,7 @@
     "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
     // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+    "include": ["client/**/*", "server/**/*", "test/**/*"],
     "exclude": ["dist", "node_modules"]
   }
 }

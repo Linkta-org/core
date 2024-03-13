@@ -2,13 +2,18 @@
 
 ## Description
 
+<!--
+
 Please include a summary of the change and which issue is fixed. Include relevant motivation and context. List any dependencies that are required for this change.
+
+To link a pull request to an issue, use GitHub's keyword syntax "Fixes #LINKTA-1". To link an external issue, use the syntax [LINKTA-1](url-of-the-issue)
+-->
 
 Fixes # (issue)
 
 ## Type of change
 
-Please delete options that are not relevant.
+<!--Please delete options that are not relevant.-->
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
@@ -17,14 +22,14 @@ Please delete options that are not relevant.
 
 ## How Has This Been Tested?
 
-Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration.
+<!--Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration.-->
 
 - [ ] Test A
 - [ ] Test B
 
 ## Checklist:
 
-Before submitting your pull request, please review the following checklist:
+<!--Before submitting your pull request, please review the following checklist:-->
 
 - [ ] I have performed a self-review of my own code.
 - [ ] I have commented on my code, particularly in hard-to-understand areas.
@@ -34,4 +39,4 @@ Before submitting your pull request, please review the following checklist:
 
 ## Additional Information:
 
-Any additional information, configuration, or data that might be necessary to reproduce the issue or feature.
+<!--BAny additional information, configuration, or data that might be necessary to reproduce the issue or feature.-->

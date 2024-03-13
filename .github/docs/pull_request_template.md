@@ -18,14 +18,15 @@ Fixes # (issue)
 
 <!--Please delete options that are not relevant.-->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
+- [ ]  🐛 Bug fix (non-breaking change which fixes an issue)
+- [ ] ✨  New feature (non-breaking change which adds functionality)
+- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] 📝 Documentation update
+- [ ] Other 🗒️ ______________
 
 ## How Has This Been Tested?
 
-<!--Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration.-->
+<!--Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. Remove if not applicable. -->
 
 - [ ] Test A
 - [ ] Test B
@@ -40,7 +41,8 @@ Fixes # (issue)
 - [ ] My changes generate no new warnings.
 - [ ] Any dependent changes have been merged and published in downstream modules.
 - [ ] I have reviewed the [**Security Best Practices Document**](SECURITY_BEST_PRACTICES.md).
-- [ ] I have reviewed the [**Naming Conventions Guide**](NAMING_CONVENTIONS_GUIDE.md).
+- [ ] I have followed the [**Naming Conventions Guide**](NAMING_CONVENTIONS_GUIDE.md) for my changes.
+- [ ] I have ensured that my pull request title is descriptive.
 
 ## Additional Information:
 

@@ -36,6 +36,8 @@ Fixes # (issue)
 - [ ] I have made corresponding changes to the documentation.
 - [ ] My changes generate no new warnings.
 - [ ] Any dependent changes have been merged and published in downstream modules.
+- [ ] I have reviewed the [**Security Best Practices Document**](SECURITY_BEST_PRACTICES.md).
+- [ ] I have reviewed the [**Naming Conventions Guide**](NAMING_CONVENTIONS_GUIDE.md).
 
 ## Additional Information:
 

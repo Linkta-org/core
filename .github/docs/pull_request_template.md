@@ -3,10 +3,13 @@
 ## Description
 
 <!--
-
 Please include a summary of the change and which issue is fixed. Include relevant motivation and context. List any dependencies that are required for this change.
 
-To link a pull request to an issue, use GitHub's keyword syntax "Fixes #LINKTA-1". To link an external issue, use the syntax [LINKTA-1](url-of-the-issue)
+Linking Issues
+For guidance on linking issues or external sources, here's a brief overview:
+
+To associate this pull request with a GitHub issue within the same repository, use the "Fixes #IssueNumber" syntax.
+For external issues, use Markdown links: [Issue Name](Issue Link).
 -->
 
 Fixes # (issue)
@@ -41,4 +44,4 @@ Fixes # (issue)
 
 ## Additional Information:
 
-<!--BAny additional information, configuration, or data that might be necessary to reproduce the issue or feature.-->
+<!--Any additional information, configuration, or data that might be necessary to reproduce the issue or feature.-->

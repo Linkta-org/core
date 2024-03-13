@@ -5,9 +5,7 @@
 <!--
 Please include a summary of the change and which issue is fixed. Include relevant motivation and context. List any dependencies that are required for this change.
 
-Linking Issues
-For guidance on linking issues or external sources, here's a brief overview:
-
+Linking Issues: 
 To associate this pull request with a GitHub issue within the same repository, use the "Fixes #IssueNumber" syntax.
 For external issues, use Markdown links: [Issue Name](Issue Link).
 -->

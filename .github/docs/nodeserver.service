@@ -1,0 +1,23 @@
+[Unit]
+Description=Linkta Node.js Server
+# Requires=After=some.service    # Notated here in case we need a to run something first
+
+[Service]
+ExecStart=/usr/local/bin/node /home/linkta_gh/Linkta.org/server.js
+# Not sure if this will be needed
+# WorkingDirectory=/home/linkta_gh/Linkta.org
+
+Restart=always
+# Restart service after 10 seconds if node crashes
+RestartSec=10
+
+# Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=LintkaNode
+
+# If we want to use environment variables to change behavior
+# Environemnt=NODE_ENV=production PORT=3000
+
+[Install]
+WantedBy=multi-user.target 

@@ -5,7 +5,7 @@
     "target": "ES2021",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "NodeNext",                                /* Specify what module code is generated. */
     "rootDirs": ["client", "server"],                    /* Specify the root folder within your source files. */
-                                    
+    "jsx": "react",                              
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "noUnusedParameters": true,
     "noUnusedLocals": true,

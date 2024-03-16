@@ -45,23 +45,6 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   }
   ```
 
-### Next.js
-
-#### Pages and Routing (kebab-case for File Names)
-- Page components under the `pages` directory match URL paths directly.
-  - **Example**: `pages/user-profile/index.tsx` maps to `/user-profile`.
-
-#### Dynamic Routes ([square brackets])
-- Dynamic parameters: `pages/posts/[postId].tsx` for dynamic post pages.
-
-#### API Routes (kebab-case)
-- API handlers within `pages/api`: `pages/api/user-profile/[userId].ts`.
-
-#### Public Directory for Static Files
-- Static assets in `public`: images and fonts accessed directly from the root URL.
-  - **Example**: `public/logo.svg` accessible at `/logo.svg`.
-
-
 ## Backend Naming Conventions 🧠
 
 ### Node.js and Express.js

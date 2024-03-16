@@ -132,8 +132,14 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
     user-profile/
     fetch-user/
   ```
-### Version Control (Branch Naming) ⛓️
-- **Use descriptive branch names (kebab-case)**: Feature branches `feature/add-user-login`, Bug fixes `bugfix/login-page-errors`.
+
+### Branch Naming (Use descriptive branch names (kebab-case)):
+- **Feature branches:** `feature/linkta-30-user-authentication`
+- **Bug fixes:** `bugfix/linkta-20-fix-header-styling`
+- **Hot fixes:** `hotfix/linkta-13-security-patch`
+- **Documentation:** `docs/linkta-23-update-readme`
+- **Release:** `release/v2.0.0`
+
 
 ## Conclusion
 By adhering to these naming conventions, Linkta's development teams can ensure their codebases are readable, maintainable, and SEO-friendly. These conventions facilitate easier collaboration among team members and contribute to the overall quality of Linkta’s software projects.

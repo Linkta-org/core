@@ -140,6 +140,7 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
 - **Documentation:** `docs/linkta-23-update-readme`
 - **Release:** `release/v2.0.0`
 
+#### Commit messages see [**Commit Message Guide**](Commit_Message_Guidelines.md)
 
 ## Conclusion
 By adhering to these naming conventions, Linkta's development teams can ensure their codebases are readable, maintainable, and SEO-friendly. These conventions facilitate easier collaboration among team members and contribute to the overall quality of Linkta’s software projects.

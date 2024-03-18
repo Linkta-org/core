@@ -45,23 +45,6 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
   }
   ```
 
-### Next.js
-
-#### Pages and Routing (kebab-case for File Names)
-- Page components under the `pages` directory match URL paths directly.
-  - **Example**: `pages/user-profile/index.tsx` maps to `/user-profile`.
-
-#### Dynamic Routes ([square brackets])
-- Dynamic parameters: `pages/posts/[postId].tsx` for dynamic post pages.
-
-#### API Routes (kebab-case)
-- API handlers within `pages/api`: `pages/api/user-profile/[userId].ts`.
-
-#### Public Directory for Static Files
-- Static assets in `public`: images and fonts accessed directly from the root URL.
-  - **Example**: `public/logo.svg` accessible at `/logo.svg`.
-
-
 ## Backend Naming Conventions 🧠
 
 ### Node.js and Express.js
@@ -149,8 +132,15 @@ Adopting a standardized set of naming conventions is crucial for enhancing the r
     user-profile/
     fetch-user/
   ```
-### Version Control (Branch Naming) ⛓️
-- **Use descriptive branch names (kebab-case)**: Feature branches `feature/add-user-login`, Bug fixes `bugfix/login-page-errors`.
+
+### Branch Naming (Use descriptive branch names (kebab-case)):
+- **Feature branches:** `feature/linkta-30-user-authentication`
+- **Bug fixes:** `bugfix/linkta-20-fix-header-styling`
+- **Hot fixes:** `hotfix/linkta-13-security-patch`
+- **Documentation:** `docs/linkta-23-update-readme`
+- **Release:** `release/v2.0.0`
+
+#### Commit messages see [**Commit Message Guide**](Commit_Message_Guidelines.md)
 
 ## Conclusion
 By adhering to these naming conventions, Linkta's development teams can ensure their codebases are readable, maintainable, and SEO-friendly. These conventions facilitate easier collaboration among team members and contribute to the overall quality of Linkta’s software projects.

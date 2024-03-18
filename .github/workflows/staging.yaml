@@ -12,6 +12,22 @@ on:
 
 jobs:
   #lint
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.11.1]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Lint
+        uses: ./.github/actions/lint
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Linter
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
   #test
 

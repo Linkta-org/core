@@ -8,7 +8,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx"
+    "lint": "eslint . --quiet && prettier --write ."
   },
   "keywords": [
     "education"

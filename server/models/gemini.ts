@@ -1,17 +1,17 @@
-import { Schema, model, Types, InferSchemaType } from "mongoose";
+import { Schema, model, Types} from "mongoose";
 
 interface Node {
-    _id: Types.ObjectId;
-    content: String;
-    children?:<Node>;
+  _id: Types.ObjectId;
+  content: string;
+  childNodes: [string];
+  level: number;
 }
 
 const treeNode = new Schema<Node>({
-  _id: { type: Types.ObjectId, required: true, unique: true },
+  _id: { required: true, unique: true },
   content: { type: String, required: true },
-  children: new Schema
+  childNodes: { type: [String], default: [] },
+  level: { type: Number, required: true, default: 0 },
 });
 
-type TreeNode = InferSchemaType<typeof treeNode>;
-
-module.exports = model<treeNode, TreeNode>("Node", treeNode);
+module.exports = model("Node", treeNode);

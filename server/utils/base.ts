@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { resolve } from "path";
+import type { MiddlewareError } from "../types";
 
 /**
  * Get environment variables from .env file in the config directory.

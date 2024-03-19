@@ -1,6 +1,7 @@
 import express from "express";
 import type { Express, Request, Response } from "express";
 import { getEnv } from "./utils/base";
+import genAi from "./routes/genAi";
 
 getEnv();
 
@@ -17,6 +18,7 @@ app.get("/", (_: Request, res: Response) => {
 /**
  * Routes.
  */
+app.use("/genAi", genAi);
 
 /**
  * Default route for unknown routes. This should be the last route.

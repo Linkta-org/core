@@ -21,6 +21,6 @@
     // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["client/**/*","server/**/*", "test/**/*"],
+  "include": ["client/**/*", "server/**/*", "test/**/*"],
   "exclude": ["dist", "node_modules"]
 }

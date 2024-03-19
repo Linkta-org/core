@@ -1,27 +1,46 @@
 import { getEnv } from "../utils/base";
-import { GoogleGenerativeAI, GenerativeModel, InputContent } from "@google/generative-ai";
-
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { GenerativeModel, InputContent } from "@google/generative-ai";
 
 /**
- * Class representing the Gemini API connection and it's methods
+ * Class representing the Gemini API connection and it's methods.
+ * This is an implementation of the AiInterface.
  */
 class Gemini implements AiInterface {
   apiKey: string = this.setApiKey();
   ai: GoogleGenerativeAI = this.connect();
   model: GenerativeModel | undefined;
 
+  /**
+   * Create a Gemini API connection.
+   */
   constructor() {
     getEnv();
   }
 
+  /**
+   * Set the Gemini API key using the environment variable.
+   *
+   * @return the Gemini API key
+   */
   setApiKey(): string {
-    const apiKey = process.env.GEMINI_API_KEY;
-    console.log('Gemini API Key:', this.apiKey); 
-    return apiKey;
+    try {
+      const apiKey = process.env.GEMINI_API_KEY;
+      console.log("Gemini API Key:", this.apiKey);
+      return apiKey || "";
+    } catch (error) {
+      console.error("Gemini API Key not found");
+      throw new Error("Gemini API Key not found");
+    }
   }
 
-  setModel(model: GenerativeModel): void {
-    this.model = this.ai.getGenerativeModel(model);
+  /**
+   * The GenerativeModel to use during prompt generation.
+   *
+   * @param model The GenerativeModel to set. See the model documentation for the correct model name.
+   */
+  setModel(model: string = "gemini-pro"): void {
+    this.model = this.ai.getGenerativeModel({ model: model });
   }
 
   connect(): GoogleGenerativeAI {
@@ -33,15 +52,21 @@ class Gemini implements AiInterface {
 
     // The model name may change. Check the documentation for the latest model name.
     // https://ai.google.dev/models/gemini
-    this.model = this.ai.getGenerativeModel({ model: 'gemini-pro' })
+    this.setModel("gemini-pro");
 
-    console.log('Connecting to Gemini');
+    console.log("Connecting to Gemini");
     return this.ai;
   }
 
+  /**
+   * Generate a one off response to a prompt.
+   *
+   * @param prompt The prompt to use in generating the response.
+   * @return The text of the generated response.
+   */
   async generateResponse(prompt: string): Promise<string> {
     if (!this.model) {
-      throw new Error('Model not found');
+      throw new Error("Model not found");
     }
 
     const result = await this.model.generateContent(prompt);
@@ -50,9 +75,21 @@ class Gemini implements AiInterface {
     return response.text();
   }
 
-  async generateConversation(history: InputContent[], prompt: string, generationConfig: object): Promise<string> {
+  /**
+   * Generate a response to a prompt in the context of a conversation.
+   *
+   * @param history The conversation history.
+   * @param prompt The prompt to use in generating the response.
+   * @param generationConfig The generation configuration.
+   * @return The text of the generated response.
+   */
+  async generateConversation(
+    history: InputContent[],
+    prompt: string,
+    generationConfig: object
+  ): Promise<string> {
     if (!this.model) {
-      throw new Error('Model not found');
+      throw new Error("Model not found");
     }
 
     const chat = this.model.startChat({ history, generationConfig });

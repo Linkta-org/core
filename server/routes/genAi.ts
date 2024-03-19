@@ -1,12 +1,23 @@
-import express, {Request, Response} from 'express';
-import genAiController from '../controllers/genAiController';
+import express from "express";
+import type { Request, Response } from "express";
+import genAiController from "../controllers/genAiController";
 
 const router = express.Router();
 
-router.get('/', (req: Request, res: Response) => {
-  res.send({ message: 'Hello from the AI!' });
+// default route for testing. This route should be removed in production.
+router.get("/", (_: Request, res: Response) => {
+  res.send({ message: "Hello from the AI!" });
 });
 
-router.post('/ask', (req: Request, res: Response) => {
-  res.send({ message: 'AI response' });
-});
+/**
+ * Ask a single question of the AI.
+ */
+router.post(
+  "/ask",
+  genAiController.generateResponse,
+  (_: Request, res: Response) => {
+    res.send({ message: "AI response", response: res.locals.response });
+  }
+);
+
+export default router;

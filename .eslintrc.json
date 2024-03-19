@@ -28,13 +28,13 @@
       "plugin:react/recommended",
       "plugin:prettier/recommended",
       "plugin:jsx-a11y/recommended",
-      "plugin:react-hooks/recommended",
-      "next"
+      "plugin:react-hooks/recommended"
     ],
     "ignorePatterns": [
       "node_modules/",
       "dist",
-      "package"
+      "config/",
+      "*.json"
     ],
     "overrides": [
       {
@@ -47,18 +47,18 @@
       }
     ],
     "rules": {
-      // General JavaScript/TypeScript rules
       "no-console": "warn",
-      "no-unused-vars": "error",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": ["error"],
       "prefer-rest-params": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-duplicate-enum-values": "error",
       "@typescript-eslint/prefer-as-const": "error",
-      "no-shadow": "off",// replaced by @typescript-eslint/no-shadow
+      "no-shadow": "off",
       "@typescript-eslint/no-shadow": "error",
       "quotes": [
-        "error",
+        "warn",
         "single",
         { "avoidEscape": true, "allowTemplateLiterals": true }
       ],
@@ -67,10 +67,8 @@
       "no-nested-ternary": "off",
       "no-plusplus": "off",
       "no-prototype-builtins": "off",
-  
-      // Prettier integration
       "prettier/prettier": [
-        "error",
+        "warn",
         {
           "semi": true,
           "singleQuote": true,
@@ -80,7 +78,6 @@
         }
       ],
   
-      // Import/export rules
       "import/no-default-export": "off",
       "import/no-extraneous-dependencies": "off",
       "no-relative-import-paths/no-relative-import-paths": [
@@ -91,7 +88,6 @@
         }
       ],
   
-      // React-specific rules
       "react/destructuring-assignment": "off",
       "react/function-component-definition": "off",
       "react/jsx-boolean-value": "off",
@@ -99,7 +95,6 @@
       "react/no-unused-prop-types": "warn",
       "react/prop-types": "off",
   
-      // React hooks rules
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn"
     }

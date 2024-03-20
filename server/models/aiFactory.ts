@@ -1,8 +1,6 @@
 import Gemini from "./gemini";
-import type { AiInterface } from "../types";
 
-// The enum AI types
-export type AiTypes = "gemini";
+import type { AiInterface, AiTypes } from "../types/ai";
 
 /**
  * AI Factory interface.

@@ -1,8 +1,9 @@
 import express from "express";
-import type { Express, Request, Response } from "express";
 import { getEnv } from "./utils/environment";
-import { MiddlewareError } from "./types/middleware";
 import genAi from "./routes/genAi";
+
+import type { Express, Request, Response } from "express";
+import type { MiddlewareError } from "./types/middleware";
 
 getEnv();
 

@@ -1,7 +1,8 @@
-import createAi, { type AiTypes } from "../models/aiFactory";
+import createAi from "../models/aiFactory";
+import { createError } from "../utils/middleware";
+
 import type { Request, Response, NextFunction } from "express";
-import { createError } from "../utils/base";
-import { AiInterface } from "../types";
+import type { AiInterface, AiTypes } from "../types/ai";
 
 const genAiController = {
   /**

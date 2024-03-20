@@ -1,4 +1,4 @@
-import createAi from "../models/aiFactory";
+import createAi from "../utils/aiFactory";
 import { createError } from "../middleware/errorHandling";
 
 import type { Request, Response, NextFunction } from "express";
@@ -14,6 +14,7 @@ const genAiController = {
     next: NextFunction
   ): Promise<void> {
     const AI = "gemini";
+
     const prompt = req.body.prompt;
 
     try {
@@ -40,7 +41,6 @@ const genAiController = {
    */
   createConnection(ai: AiTypes): AiInterface {
     const aiConnection = createAi(ai);
-    aiConnection.connect();
 
     return aiConnection;
   },

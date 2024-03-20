@@ -1,4 +1,4 @@
-import Gemini from "./gemini";
+import Gemini from "../models/GeminiModel";
 
 import type { AiInterface, AiTypes } from "../types/ai";
 

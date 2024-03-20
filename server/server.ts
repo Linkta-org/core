@@ -5,6 +5,7 @@ import { globalErrorHandler } from "./middleware/errorHandling";
 
 import type { Express, Request, Response } from "express";
 import type { Server } from "http";
+import bodyParser from "body-parser";
 
 getEnv();
 
@@ -16,6 +17,8 @@ async function startServer() {
   const PORT = process.env.PORT || 3000;
 
   connectToDatabase();
+
+  app.use(bodyParser.json());
 
   /**
    * Test route for the server. This should direct to the frontend.

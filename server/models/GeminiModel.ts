@@ -1,5 +1,6 @@
 import { getEnv } from "../utils/environment";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import type { GenerativeModel, InputContent } from "@google/generative-ai";
 import type { AiInterface } from "../types/index";
 
@@ -27,7 +28,7 @@ class Gemini implements AiInterface {
   setApiKey(): string {
     try {
       const apiKey = process.env.GEMINI_API_KEY;
-      console.log("Gemini API Key:", this.apiKey);
+      // console.log("Gemini API Key:", apiKey);
       return apiKey || "";
     } catch (error) {
       console.error("Gemini API Key not found");
@@ -55,7 +56,7 @@ class Gemini implements AiInterface {
     // https://ai.google.dev/models/gemini
     this.setModel("gemini-pro");
 
-    console.log("Connecting to Gemini");
+    // console.log("Connecting to Gemini");
     return this.ai;
   }
 

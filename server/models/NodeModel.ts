@@ -1,17 +1,10 @@
-import { Schema, model, Types} from "mongoose";
+import { Schema, model, Types } from "mongoose";
+import { TreeNode } from "../types/datamodels";
 
-interface Node {
-  _id: Types.ObjectId;
-  content: string;
-  childNodes: [string];
-  level: number;
-}
-
-const treeNode = new Schema<Node>({
-  _id: { required: true, unique: true },
+const treeNode = new Schema<TreeNode>({
   content: { type: String, required: true },
-  childNodes: { type: [String], default: [] },
-  level: { type: Number, required: true, default: 0 },
+  childNodes: { type: [Types.ObjectId], default: [] },
+  depth: { type: Number, required: true, default: 0 },
 });
 
 module.exports = model("Node", treeNode);

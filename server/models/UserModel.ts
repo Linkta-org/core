@@ -1,14 +1,9 @@
 import { Schema, model, Types } from "mongoose";
+import { User } from "../types/datamodels";
 
-interface User {
-  _id: Types.ObjectId;
-  firebaseId: string;
-  treeIds: [string];
-}
 const userSchema = new Schema<User>({
-  _id: { required: true, unique: true },
   firebaseId: { type: String, required: true, unique: true },
-  treeIds: { type: [String], default: [] },
+  treeIds: { type: [Types.ObjectId], default: [] },
 });
 
 module.exports = model("User", userSchema);

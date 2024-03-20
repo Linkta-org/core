@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const CallToActionField = () => {
-  return (
-    <div>CallToActionField Placeholder</div>
-  )
-}
+  return <div>CallToActionField Placeholder</div>;
+};
 
-export default CallToActionField
+export default CallToActionField;

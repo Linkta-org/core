@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const WaitingListSubmissionForm = () => {
-  return (
-    <div>WaitingListSubmissionForm Placeholder</div>
-  )
-}
+  return <div>WaitingListSubmissionForm Placeholder</div>;
+};
 
-export default WaitingListSubmissionForm
+export default WaitingListSubmissionForm;

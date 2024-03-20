@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const PromptInputInstructions = () => {
-  return (
-    <div>PromptInputInstructions Placeholder</div>
-  )
-}
+  return <div>PromptInputInstructions Placeholder</div>;
+};
 
-export default PromptInputInstructions
+export default PromptInputInstructions;

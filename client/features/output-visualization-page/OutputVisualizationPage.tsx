@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const OutputVisualizationPage = () => {
-  return (
-    <div>OutputVisualizationPage Placeholder</div>
-  )
-}
+  return <div>OutputVisualizationPage Placeholder</div>;
+};
 
-export default OutputVisualizationPage
+export default OutputVisualizationPage;

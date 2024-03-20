@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const MarketingContent = () => {
-  return (
-    <div>MarketingContent Placeholder</div>
-  )
-}
+  return <div>MarketingContent Placeholder</div>;
+};
 
-export default MarketingContent
+export default MarketingContent;

@@ -20,13 +20,6 @@
     "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
     // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
-    "baseUrl": "./",                                      /* Specify the base directory to resolve non-absolute module names. */
-    "paths": {
-      "@client/*": ["client/*"],
-      "@server/*": ["server/*"],
-      "@test/*": ["test/*"],
-      "@config/*": ["config/*"]
-    }
   },
   "include": ["client/**/*", "server/**/*", "test/**/*"],
   "exclude": ["dist", "node_modules"]

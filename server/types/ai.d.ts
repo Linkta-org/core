@@ -1,5 +1,9 @@
 import type { GoogleGenerativeAI, InputContent } from "@google/generative-ai";
 
+/**
+ * The interface for the AI.
+ * This will need to modified if we add more AI models.
+ */
 export interface AiInterface {
   apiKey: string;
 
@@ -16,4 +20,7 @@ export interface AiInterface {
   ): Promise<string>;
 }
 
+/**
+ * The enumerated types of AI that can be used.
+ */
 export type AiTypes = "gemini";

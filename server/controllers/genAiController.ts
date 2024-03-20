@@ -6,7 +6,13 @@ import type { AiInterface, AiTypes } from "../types/ai";
 
 const genAiController = {
   /**
-   * Generate a response from the AI
+   * Generate a response from the AI.
+   * The response is stored in res.locals.response
+   *
+   * @param req The request object
+   * @param res The response object
+   * @param next The next function
+   * @return void
    */
   async generateResponse(
     req: Request,
@@ -38,6 +44,8 @@ const genAiController = {
 
   /**
    * Create a connection to an AI API
+   *
+   * @param ai The type of AI to connect to
    */
   createConnection(ai: AiTypes): AiInterface {
     const aiConnection = createAi(ai);

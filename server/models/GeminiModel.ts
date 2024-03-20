@@ -45,6 +45,11 @@ class Gemini implements AiInterface {
     this.model = this.ai.getGenerativeModel({ model: model });
   }
 
+  /**
+   * Connect to the API.
+   *
+   * @return The GoogleGenerativeAI connection.
+   */
   connect(): GoogleGenerativeAI {
     if (!this.apiKey) {
       this.setApiKey();

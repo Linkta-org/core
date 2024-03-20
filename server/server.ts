@@ -12,7 +12,7 @@ getEnv();
 /**
  * Start the server.
  */
-async function startServer() {
+function startServer() {
   const app: Express = express();
   const PORT = process.env.PORT || 3000;
 

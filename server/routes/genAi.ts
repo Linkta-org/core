@@ -13,7 +13,7 @@ router.get("/", (_: Request, res: Response) => {
  * Ask a single question of the AI.
  */
 router.post(
-  "/ask",
+  "/query",
   genAiController.generateResponse,
   (_: Request, res: Response) => {
     res.send({ message: "AI response", response: res.locals.response });

@@ -30,7 +30,7 @@ async function startServer() {
   /**
    * Routes.
    */
-  app.use("/genAi", genAi);
+  app.use("/gen-ai", genAi);
 
   /**
    * Default route for unknown routes. This should be the last route.

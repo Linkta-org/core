@@ -1,4 +1,5 @@
 import type { MiddlewareError } from "../types/middleware";
+import { Request, Response } from "express";
 
 /**
  * Create an error object to be used in the error handling middleware.
@@ -38,4 +39,21 @@ export function createError(
       err: `Error occured in ${controller}.${method}: ${errorString}`,
     },
   };
+}
+
+export function globalErrorHandler(
+  err: Error,
+  _: Request,
+  res: Response
+): Response {
+  const defaultError: MiddlewareError = {
+    log: "Express error handler caught unknown middleware error",
+    status: 500,
+    message: { err: "An error occurred" },
+  };
+
+  const errObj = Object.assign(defaultError, err);
+  console.error(errObj.log);
+
+  return res.status(errObj.status).json(errObj.message);
 }

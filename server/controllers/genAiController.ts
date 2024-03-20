@@ -1,5 +1,5 @@
 import createAi from "../models/aiFactory";
-import { createError } from "../utils/middleware";
+import { createError } from "../middleware/errorHandling";
 
 import type { Request, Response, NextFunction } from "express";
 import type { AiInterface, AiTypes } from "../types/ai";

@@ -1,18 +1,4 @@
-import dotenv from "dotenv";
-import { resolve } from "path";
-import type { MiddlewareError } from "../types";
-
-/**
- * Get environment variables from .env file in the config directory.
- */
-export function getEnv(): void {
-  const envPath = resolve(__dirname, "../../config/.env");
-  const envConfig = {
-    path: envPath,
-  };
-
-  dotenv.config(envConfig);
-}
+import type { MiddlewareError } from "../types/middleware";
 
 /**
  * Create an error object to be used in the error handling middleware.

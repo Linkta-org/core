@@ -1,6 +1,7 @@
 import express from "express";
 import type { Express, Request, Response } from "express";
-import { getEnv } from "./utils/base";
+import { getEnv } from "./utils/environment";
+import { MiddlewareError } from "./types/middleware";
 import genAi from "./routes/genAi";
 
 getEnv();
@@ -32,7 +33,7 @@ app.use((_: Request, res: Response) => {
  * Default error handling middleware.
  */
 app.use((err: Error, _: Request, res: Response) => {
-  const defaultError = {
+  const defaultError: MiddlewareError = {
     log: "Express error handler caught unknown middleware error",
     status: 500,
     message: { err: "An error occurred" },

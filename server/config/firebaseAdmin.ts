@@ -17,6 +17,6 @@ const params: any = {
     universe_domain: serviceAccount.universe_domain
 }
 
-admin.initializeApp({
+export default admin.initializeApp({
   credential: admin.credential.cert(params)
 });

@@ -1,0 +1,20 @@
+# Lint files on pull request to dev branch
+
+name: Linting Workflow
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Lint
+        uses: ./.github/actions/lint
+        with:
+          node-version: '20.x'
+```

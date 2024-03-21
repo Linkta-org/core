@@ -1,1 +1,1 @@
-export * from "./middleware.d";
+export * from './middleware.d';

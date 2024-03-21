@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const MainLayout = () => {
-  return (
-    <div>MainLayout Placeholder</div>
-  )
-}
+  return <div>MainLayout Placeholder</div>;
+};
 
-export default MainLayout
+export default MainLayout;

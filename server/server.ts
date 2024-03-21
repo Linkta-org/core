@@ -3,7 +3,7 @@ import { getEnv } from './utils/environment';
 import { globalErrorHandler } from './middleware/errorHandling';
 
 import type { Express, Request, Response } from 'express';
-import { Server } from 'http';
+import type { Server } from 'http';
 
 getEnv();
 

@@ -1,0 +1,25 @@
+name: Lint
+
+description: This action will lint the application code.
+
+inputs:
+  node-version:
+    description: 'The version of node to use'
+    required: true
+    default: '20.11.1'
+
+runs:
+  using: 'ubuntu-latest'
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+    - name: Install Dependencies
+      run: npm ci
+    - name: Lint
+      shell: bash
+      run: npm run lint

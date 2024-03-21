@@ -8,12 +8,20 @@ on:
       - dev
 
 jobs:
-  lint:
+  format:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # This is required to push changes back to the repository
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Lint
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Format
         uses: ./.github/actions/format
         with:
           node-version: '20.11.1' # The original node version of the project
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: format files from GitHub Action'

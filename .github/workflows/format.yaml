@@ -10,6 +10,9 @@ on:
 jobs:
   format-code:
     runs-on: ubuntu-latest
+    permissions:
+      # Give the GITHUB_TOKEN permission to push changes to the repository
+      contents: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

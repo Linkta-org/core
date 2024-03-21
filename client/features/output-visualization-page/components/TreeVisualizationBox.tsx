@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const TreeVisualizationBox = () => {
-  return (
-    <div>TreeVisualizationBox Placeholder</div>
-  )
-}
+  return <div>TreeVisualizationBox Placeholder</div>;
+};
 
-export default TreeVisualizationBox
+export default TreeVisualizationBox;

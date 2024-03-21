@@ -28,13 +28,13 @@
       "plugin:react/recommended",
       "plugin:prettier/recommended",
       "plugin:jsx-a11y/recommended",
-      "plugin:react-hooks/recommended",
-      "next"
+      "plugin:react-hooks/recommended"
     ],
     "ignorePatterns": [
       "node_modules/",
       "dist",
-      "package"
+      "package*.json",
+      "*.config.js"
     ],
     "overrides": [
       {
@@ -49,8 +49,9 @@
     "rules": {
       // General JavaScript/TypeScript rules
       "no-console": "warn",
-      "no-unused-vars": "error",
+      "no-unused-vars": "off", // replaced by @typescript-eslint/no-unused-vars
       "prefer-rest-params": "error",
+      "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-duplicate-enum-values": "error",
@@ -93,6 +94,11 @@
       // React hooks rules
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
     }
   }
   

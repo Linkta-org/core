@@ -16,5 +16,4 @@ jobs:
       - name: Lint
         uses: ./.github/actions/lint
         with:
-          node-version: '20.x'
-```
+          node-version: '20.11.1'

@@ -8,10 +8,8 @@ on:
       - dev
 
 jobs:
-  format:
+  format-code:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # This is required to push changes back to the repository
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

@@ -3,20 +3,26 @@ import { Outlet } from 'react-router-dom';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 
-const MainLayout: React.FC = () => {
+interface MainLayoutProps {
+  showFooter?: boolean;
+}
+
+const MainLayout: React.FC<MainLayoutProps> = ({ showFooter = false }) => {
   return (
-    <div >
+    <div>
       <header>
-      <Header/>
+        <Header />
       </header>
-        <main>
+      <main>
         <Outlet />
-        </main>
-      <footer>
-      <Footer />
-      </footer>
+      </main>
+      {showFooter && (
+        <footer>
+          <Footer />
+        </footer>
+      )}
     </div>
-  )
+  );
 }
 
 export default MainLayout;

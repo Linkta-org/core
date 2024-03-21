@@ -12,18 +12,31 @@ on:
 
 jobs:
   #lint
-
-  #test
-
-  #build
-  build:
+  lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20.11.1]
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+      - name: Lint
+        uses: ./.github/actions/lint
+        with:
+          node-version: ${{ matrix.node-version }}
+
+  #test
+
+  #build
+  build:
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      matrix:
+        node-version: [20.11.1]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
       - name: Build for Staging
         uses: ./.github/actions/build_for_staging
         with:
@@ -32,12 +45,13 @@ jobs:
   #deploy to staging
   staging:
     runs-on: ubuntu-latest
+    needs: build
     strategy:
       matrix:
         node-version: [20.11.1]
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Deploy to Staging
         uses: ./.github/actions/deploy_to_staging
         with:

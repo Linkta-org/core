@@ -70,16 +70,7 @@
       "no-prototype-builtins": "off",
   
       // Prettier integration
-      "prettier/prettier": [
-        "warn",
-        {
-          "semi": true,
-          "singleQuote": true,
-          "printWidth": 80,
-          "tabWidth": 2,
-          "useTabs": false
-        }
-      ],
+      "prettier/prettier": "warn",
   
       // Import/export rules
       "import/no-default-export": "off",

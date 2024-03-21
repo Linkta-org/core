@@ -9,7 +9,6 @@ inputs:
     default: '20.11.1'
 
 runs:
-  using: 'node20'
   steps:
     - name: Checkout Repository
       uses: actions/checkout@v4

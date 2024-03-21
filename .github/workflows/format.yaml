@@ -1,6 +1,6 @@
-# Lint files on pull request to dev branch
+# Lint and format files on pull request to dev branch
 
-name: Linting Workflow
+name: Formatting Workflow
 
 on:
   pull_request:
@@ -14,6 +14,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Lint
-        uses: ./.github/actions/lint
+        uses: ./.github/actions/format
         with:
-          node-version: '20.11.1'
+          node-version: '20.11.1' # The original node version of the project

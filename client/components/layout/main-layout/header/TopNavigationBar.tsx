@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const TopNavigationBar = () => {
-  return (
-    <div>TopNavigationBar Placeholder</div>
-  )
-}
+  return <div>TopNavigationBar Placeholder</div>;
+};
 
-export default TopNavigationBar
+export default TopNavigationBar;

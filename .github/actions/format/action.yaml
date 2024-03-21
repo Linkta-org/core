@@ -1,0 +1,30 @@
+name: Lint and Format
+
+description: |
+  This action will lint the application code. If linting passes, it will format the code.
+  The linting and formatting is accomplished through the package.json script "lint"
+
+inputs:
+  node-version:
+    description: 'The version of node to use'
+    required: true
+    default: '20.11.1'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+    - name: Install Dependencies
+      shell: bash
+      run: npm ci
+    - name: Lint
+      shell: bash
+      run: npm run lint

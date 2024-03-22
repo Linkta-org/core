@@ -11,12 +11,12 @@
     "jsx": "react",
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
-      "@/*": ["./*"],
+      "@/*": ["*"],
       "@client/*": ["client/*"],
-      "@test/*": ["test/*"],
       "@server/*": ["server/*"],
-      "@config/*":["config/*"],
-    },
+      "@test/*": ["test/*"],
+      "@config/*": ["config/*"]
+    } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,

@@ -9,11 +9,11 @@ const TopNavigationBar = () => {
     topNavigationTabs[location.pathname] || topNavigationTabs['/'];
 
   return (
-    <NavigationMenu.Root>
-      <NavigationMenu.List>
+    <NavigationMenu.Root className="NavigationMenuRoot">
+      <NavigationMenu.List className="NavigationMenuList">
         {currentTabs &&
           currentTabs.map((tab) => (
-            <NavigationMenu.Item key={tab.tabname}>
+            <NavigationMenu.Item key={`${location.pathname}-${tab.tabname}`}>
               <Link to={tab.path}>{tab.tabname}</Link>
             </NavigationMenu.Item>
           ))}

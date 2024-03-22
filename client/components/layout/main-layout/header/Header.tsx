@@ -7,7 +7,7 @@ const Header = () => {
     <>
       <LinktaMainLogo />
       <nav>
-      <TopNavigationBar />
+        <TopNavigationBar />
       </nav>
     </>
   );

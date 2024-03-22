@@ -1,8 +1,16 @@
-//todo: add more paths & corresponding tabs
+//todo: add more tabs
+const signInTab = { tabname: 'Sign In', path: '/sign-in' };
+const signUpTab = { tabname: 'Start Growing', path: '/sign-up' };
+const exploreTab = { tabname: 'Explore', path: '/generate' }; // tbd
+
 export const topNavigationTabs = {
   '/': [
-    { tabname: 'Sign In', path: '/sign-in' },
-    { tabname: 'Start Growing', path: '/sign-up' },
-    { tabname: 'Explore', path: '/generate' },
+    signInTab,
+    signUpTab,
+    exploreTab,
+  ],
+  '/generate': [
+    signInTab,
+    signUpTab,
   ],
 };

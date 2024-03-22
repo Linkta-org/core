@@ -1,7 +1,16 @@
 import React from 'react';
+import TopNavigationBar from './TopNavigationBar';
+import LinktaMainLogo from './LinktaMainLogo';
 
 const Header = () => {
-  return <div>Header Placeholder</div>;
+  return (
+    <>
+      <LinktaMainLogo />
+      <nav>
+      <TopNavigationBar />
+      </nav>
+    </>
+  );
 };
 
 export default Header;

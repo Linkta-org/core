@@ -1,4 +1,4 @@
-import { Tab } from "../../../types";
+import type { Tab } from '../../../types';
 
 //todo: add more tabs
 const signInTab = { tabname: 'Sign In', path: '/sign-in' };

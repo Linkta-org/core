@@ -1,11 +1,11 @@
-import express from "express";
-import { getEnv } from "./utils/environment";
-import genAi from "./routes/genAi";
-import { globalErrorHandler } from "./middleware/errorHandling";
+import express from 'express';
+import { getEnv } from './utils/environment';
+import genAi from './routes/genAi';
+import { globalErrorHandler } from './middleware/errorHandling';
+import bodyParser from 'body-parser';
 
-import type { Express, Request, Response } from "express";
-import type { Server } from "http";
-import bodyParser from "body-parser";
+import type { Express, Request, Response } from 'express';
+import type { Server } from 'http';
 
 getEnv();
 
@@ -23,21 +23,21 @@ function startServer() {
   /**
    * Test route for the server. This should direct to the frontend.
    */
-  app.get("/", (_: Request, res: Response) => {
-    res.send({ message: "Hello from the Backend!" });
+  app.get('/', (_: Request, res: Response) => {
+    res.send({ message: 'Hello from the Backend!' });
   });
 
   /**
    * Routes.
    */
-  app.use("/gen-ai", genAi);
+  app.use('/gen-ai', genAi);
 
   /**
    * Default route for unknown routes. This should be the last route.
    * There should be handling for this in the frontend.
    */
   app.use((_: Request, res: Response) => {
-    res.status(404).send({ message: "Route not found" });
+    res.status(404).send({ message: 'Route not found' });
   });
 
   /**
@@ -58,8 +58,8 @@ function startServer() {
    * Handle shutdown gracefully.
    */
   const shutdown = () => stopServer(server);
-  process.on("SIGTERM", shutdown);
-  process.on("SIGINT", shutdown);
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 }
 
 /**
@@ -71,7 +71,7 @@ function startServer() {
  */
 function stopServer(server: Server) {
   server.close(() => {
-    console.log("Server stopped.");
+    console.log('Server stopped.');
 
     // disconnect from the database
 

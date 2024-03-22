@@ -1,5 +1,5 @@
-import type { MiddlewareError } from "../types/middleware";
-import { Request, Response } from "express";
+import type { MiddlewareError } from '@/server/types/middleware';
+import type { Request, Response } from 'express';
 
 /**
  * Create an error object to be used in the error handling middleware.
@@ -19,17 +19,17 @@ export function createError(
   error: unknown,
   status: number = 500
 ): MiddlewareError {
-  let errorString = "An unknown error occurred";
+  let errorString = 'An unknown error occurred';
   switch (typeof error) {
-    case "string":
+    case 'string':
       errorString = error;
       break;
-    case "object":
+    case 'object':
       errorString = JSON.stringify(error);
       break;
     default:
-      console.error("Error type not handled in createError.");
-      console.error("Error type:", typeof error);
+      console.error('Error type not handled in createError.');
+      console.error('Error type:', typeof error);
   }
 
   return {
@@ -55,9 +55,9 @@ export function globalErrorHandler(
   res: Response
 ): Response {
   const defaultError: MiddlewareError = {
-    log: "Express error handler caught unknown middleware error",
+    log: 'Express error handler caught unknown middleware error',
     status: 500,
-    message: { err: "An error occurred" },
+    message: { err: 'An error occurred' },
   };
 
   const errObj = Object.assign(defaultError, err);

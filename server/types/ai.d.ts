@@ -1,4 +1,4 @@
-import type { GoogleGenerativeAI, InputContent } from "@google/generative-ai";
+import type { GoogleGenerativeAI, InputContent } from '@google/generative-ai';
 
 /**
  * The interface for the AI.
@@ -23,4 +23,4 @@ export interface AiInterface {
 /**
  * The enumerated types of AI that can be used.
  */
-export type AiTypes = "gemini";
+export type AiTypes = 'gemini';

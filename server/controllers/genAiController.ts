@@ -1,8 +1,8 @@
-import createAi from "../utils/aiFactory";
-import { createError } from "../middleware/errorHandling";
+import createAi from '@/server/utils/aiFactory';
+import { createError } from '@/server/middleware/errorHandling';
 
-import type { Request, Response, NextFunction } from "express";
-import type { AiInterface, AiTypes } from "../types/ai";
+import type { Request, Response, NextFunction } from 'express';
+import type { AiInterface, AiTypes } from '@/server/types/ai';
 
 const genAiController = {
   /**
@@ -19,7 +19,7 @@ const genAiController = {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const AI = "gemini";
+    const AI = 'gemini';
 
     const prompt = req.body.prompt;
 
@@ -33,9 +33,9 @@ const genAiController = {
       return next();
     } catch (err: unknown) {
       const methodError = createError(
-        "generateResponse",
-        "genAiController",
-        "Error generating response from AI.",
+        'generateResponse',
+        'genAiController',
+        'Error generating response from AI.',
         err
       );
       return next(methodError);

@@ -1,6 +1,6 @@
-import Gemini from "../models/GeminiModel";
+import Gemini from '@/server/models/GeminiModel';
 
-import type { AiInterface, AiTypes } from "../types/ai";
+import type { AiInterface, AiTypes } from '@/server/types/ai';
 
 /**
  * AI Factory interface.
@@ -10,9 +10,9 @@ import type { AiInterface, AiTypes } from "../types/ai";
  */
 export default function createAi(ai: AiTypes): AiInterface {
   switch (ai) {
-    case "gemini":
+    case 'gemini':
       return new Gemini();
     default:
-      throw new Error("Invalid AI type");
+      throw new Error('Invalid AI type');
   }
 }

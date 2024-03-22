@@ -1,5 +1,5 @@
 import { Schema, model, Types } from 'mongoose';
-import { User } from '../types/datamodels';
+import type { User } from '@/server/types/datamodels';
 
 const userSchema = new Schema<User>({
   firebaseId: { type: String, required: true, unique: true },

@@ -5,7 +5,7 @@ import type { GenerativeModel, InputContent } from '@google/generative-ai';
 import type { AiInterface } from '@/server/types/index';
 
 /**
- * Class representing the Gemini API connection and it's methods.
+ * Class representing the Gemini API connection and its methods.
  * This is an implementation of the AiInterface.
  */
 class Gemini implements AiInterface {

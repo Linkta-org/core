@@ -25,5 +25,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["client/**/*", "server/**/*", "test/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const PromptInputField = () => {
-  return (
-    <div>PromptInputField Placeholder</div>
-  )
-}
+  return <div>PromptInputField Placeholder</div>;
+};
 
-export default PromptInputField
+export default PromptInputField;

@@ -1,7 +1,6 @@
 import Gemini from '@/server/models/GeminiModel';
 
 import type { AiInterface, AiTypes } from '@/server/types/ai';
-import { func } from 'prop-types';
 
 /**
  * AI Factory interface.

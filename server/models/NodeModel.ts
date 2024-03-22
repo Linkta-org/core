@@ -1,5 +1,5 @@
 import { Schema, model, Types } from 'mongoose';
-import type { TreeNode } from '@/server/types/datamodels';
+import { TreeNode } from '../types/datamodels';
 
 const treeNode = new Schema<TreeNode>({
   content: { type: String, required: true },

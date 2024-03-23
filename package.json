@@ -7,12 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:frontend": "vite --config client/vite.config.js",
     "dev:backend": "nodemon server/server.ts",
-    "lint": "eslint . --fix && prettier --write .",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "vite build --config client/vite.config.js",
     "build:backend": "tsc -p tsconfig.json",
     "start:frontend": "vite preview --config client/vite.config.js",
-    "start:backend": "node dist/server/server.js"
+    "start:backend": "node dist/server/server.js",
+    "lint": "eslint . --fix && prettier --write ."
   },
   "keywords": [
     "education"
@@ -31,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",

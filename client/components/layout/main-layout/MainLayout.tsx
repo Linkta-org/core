@@ -1,7 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './header/Header';
 import Footer from './footer/Footer';
+import LinktaLogo from './header/LinktaMainLogo';
+import TopNavigationBar from './header/TopNavigationBar';
 /**
  * MainLayout component wraps the children components with a common structure
  * It is used to provide a consistent layout across different pages.
@@ -17,7 +18,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ showFooter = false }) => {
   return (
     <div>
       <header>
-        <Header />
+        <LinktaLogo />
+        <nav>
+          <TopNavigationBar />
+        </nav>
       </header>
       <main>
         <Outlet />

@@ -4,7 +4,6 @@
   "description": "A learning tool for people to learn fast and easy",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev:frontend": "vite --config client/vite.config.js",
     "dev:backend": "nodemon server/server.ts",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",

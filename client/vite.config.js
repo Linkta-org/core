@@ -5,4 +5,9 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   root: path.resolve(__dirname),
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000'
+    }
+  },
 });

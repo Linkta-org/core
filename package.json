@@ -46,7 +46,8 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.2",
     "typescript-eslint": "^7.1.1",
-    "vite": "^5.1.6"
+    "vite": "^5.1.6",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "dependencies": {
     "@google/generative-ai": "^0.2.1",

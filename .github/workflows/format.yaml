@@ -1,0 +1,28 @@
+# Lint and format files on pull request to dev branch
+
+name: Formatting Workflow
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  format-code:
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the GITHUB_TOKEN permission to push changes to the repository
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Format
+        uses: ./.github/actions/format
+        with:
+          node-version: '20.11.1' # The original node version of the project
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: format files from GitHub Action'

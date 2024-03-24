@@ -1,8 +1,12 @@
 import React from 'react';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes/index';
 
 const App: React.FC = () => {
   return (
-    <h1>Helllooo</h1>
+    <RouterProvider 
+      router={router}
+    />
   )
 }
 

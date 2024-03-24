@@ -16,6 +16,6 @@ const ErrorPage: React.FC = () => {
   } else {
     return <div>Oops</div>;
   }
-}
+};
 
 export default ErrorPage;

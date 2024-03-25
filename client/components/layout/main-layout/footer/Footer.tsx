@@ -1,34 +1,22 @@
-<<<<<<< HEAD
 import React from 'react'
-import { Flex, Text, Link } from '@radix-ui/themes';
+import { Link } from 'react-router-dom';
 
 
 const Footer = () => {
   return (
-    <>
-      <Flex display='flex' direction="row" justify='between' gap='9' mb='6' ml='9' position='fixed' bottom='0'>
+    <footer>
+      <div className="left-content">
+        &copy; 2024 - LinkTa, LLC. All rights reserved.
+      </div>
 
-        <Text>&copy; 2024 - LinkTa, LLC. All rights reserved.</Text>
-
-        <Flex gap='5'>
-          <Link>Cookie Preferences  </Link>
-          <Link>Security </Link>
-          <Link>Legal </Link>
-          <Link>Privacy </Link>
-        </Flex>
-      </Flex>
-
-    </>
-  )
-}
-
-export default Footer
-=======
-import React from 'react';
-
-const Footer = () => {
-  return <div>Footer Placeholder</div>;
+      <div className="right-content">
+        <Link to="/cookies">Cookies Preferences</Link>
+        <Link to="/security">Security</Link>
+        <Link to="/legal">Legal</Link>
+        <Link to="/privacy">Privacy</Link>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;
->>>>>>> dev

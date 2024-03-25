@@ -12,10 +12,10 @@ const useDynamicNavigation = () => {
 
   const showTopNavBar = pathname in topNavigationTabsByRoute;
 
-  const currentTabs: Tab[] =
+  const currentNavTabs: Tab[] =
     topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
 
-  return { showTopNavBar, currentTabs };
+  return { showTopNavBar, currentNavTabs };
 };
 
 export default useDynamicNavigation;

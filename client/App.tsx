@@ -1,5 +1,9 @@
 import React from 'react';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes/index';
 
-export default function App() {
-  return <h1>Linktaaaaaaaa</h1>;
-}
+const App: React.FC = () => {
+  return <RouterProvider router={router} />;
+};
+
+export default App;

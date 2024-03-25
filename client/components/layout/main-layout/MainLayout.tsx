@@ -19,12 +19,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ showFooter = false }) => {
     <div>
       <header>
         <LinktaLogo />
-        {showTopNavBar && (
-          <nav>
-            <TopNavigationBar />
-          </nav>
-        )}
       </header>
+      {showTopNavBar && (
+        <nav>
+          <TopNavigationBar />
+        </nav>
+      )}
       <main>
         <Outlet />
       </main>

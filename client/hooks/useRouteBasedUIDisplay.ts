@@ -10,7 +10,7 @@ const useRouteBasedUIDisplay = () => {
   const currentTabs: Tab[] =
     topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
 
-  return { showNavigation, currentTabs, pathname };
+  return { showNavigation, currentTabs };
 };
 
 export default useRouteBasedUIDisplay;

@@ -10,14 +10,14 @@ import useRouteBasedUIDisplay from '@/client/hooks/useRouteBasedUIDisplay';
  * The `topNavigationTabsByRoute[pathname]` gets the tabs for the current route, fallback to '/' if not found.
  */
 const TopNavigationBar: React.FC = () => {
-  const { currentTabs, pathname } = useRouteBasedUIDisplay();
+  const { currentTabs } = useRouteBasedUIDisplay();
 
   return (
     <NavigationMenu.Root className="NavigationMenuRoot">
       <NavigationMenu.List className="NavigationMenuList">
         {currentTabs &&
           currentTabs.map((tab) => (
-            <NavigationMenu.Item key={`${pathname}-${tab.tabname}`}>
+            <NavigationMenu.Item key={`${tab.path}-${tab.tabname}`}>
               <Link to={tab.path}>{tab.tabname}</Link>
             </NavigationMenu.Item>
           ))}

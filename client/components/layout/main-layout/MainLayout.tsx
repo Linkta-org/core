@@ -5,11 +5,8 @@ import LinktaLogo from './header/LinktaLogoWithText';
 import TopNavigationBar from './header/TopNavigationBar';
 import { topNavigationTabsByRoute } from './layoutConfig';
 /**
- * MainLayout component wraps the children components with a common structure
- * It is used to provide a consistent layout across different pages.
- * @param props - The component props.
- * @param props.showFooter - Determines if the footer should be rendered. Defaults to false.
- * @returns The MainLayout component with Header, Outlet for nested routes, and optional Footer.
+ * Provides a consistent layout structure across the app with conditional
+ * rendering of the top navigation bar and footer based on the current route.
  */
 interface MainLayoutProps {
   showFooter?: boolean;

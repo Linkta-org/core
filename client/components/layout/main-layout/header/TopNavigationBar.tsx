@@ -1,8 +1,7 @@
 import React from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import { Link, useLocation } from 'react-router-dom';
-import { topNavigationTabsByRoute } from '@/client/components/layout/main-layout/layoutConfig';
-import type { Tab } from '@/client/types/layout';
+import { Link } from 'react-router-dom';
+import useRouteBasedUIDisplay from '@/client/hooks/useRouteBasedUIDisplay';
 /**
  * Renders a navigation menu with tabs based on the current route.
  *
@@ -11,10 +10,7 @@ import type { Tab } from '@/client/types/layout';
  * The `topNavigationTabsByRoute[pathname]` gets the tabs for the current route, fallback to '/' if not found.
  */
 const TopNavigationBar: React.FC = () => {
-  const { pathname } = useLocation();
-
-  const currentTabs: Tab[] =
-    topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
+  const { currentTabs, pathname } = useRouteBasedUIDisplay();
 
   return (
     <NavigationMenu.Root className="NavigationMenuRoot">

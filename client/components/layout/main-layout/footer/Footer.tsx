@@ -5,14 +5,24 @@ const Footer = () => {
   return (
     <>
       <div className="left-content">
-        &copy; 2024 - LinkTa, LLC. All rights reserved.
+        @2024 Linkta L.L.C. All rights reserved.
       </div>
 
       <div className="right-content">
-        <Link to="/cookies">Cookies Preferences</Link>
-        <Link to="/security">Security</Link>
-        <Link to="/legal">Legal</Link>
-        <Link to="/privacy">Privacy</Link>
+        <ul>
+          <li>
+            <Link to="/cookies">Cookies Preferences</Link>
+          </li>
+          <li>
+            <Link to="/security">Security</Link>
+          </li>
+          <li>
+            <Link to="/legal">Legal</Link>
+          </li>
+          <li>
+            <Link to="/privacy">Privacy</Link>
+          </li>
+        </ul>
       </div>
     </>
   );

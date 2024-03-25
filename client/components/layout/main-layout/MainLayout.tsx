@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Footer from './footer/Footer';
-import LinktaLogo from './header/LinktaMainLogo';
+import LinktaLogo from './header/LinktaLogoWithText';
 import TopNavigationBar from './header/TopNavigationBar';
 /**
  * MainLayout component wraps the children components with a common structure

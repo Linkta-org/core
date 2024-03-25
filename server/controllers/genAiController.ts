@@ -1,10 +1,11 @@
-import createAi from '@/server/utils/aiFactory';
+import createAI from '@/server/utils/AIFactory';
 import { createError } from '@/server/middleware/errorHandling';
 
 import type { Request, Response, NextFunction } from 'express';
-import type { AiInterface, AiTypes } from '@/server/types/ai';
+import { type GenerativeAIModel } from '@server/types/index';
+import { AIProvider } from '@server/types/index';
 
-const genAiController = {
+const genAIController = {
   /**
    * Generate a response from the AI.
    * The response is stored in res.locals.response
@@ -19,25 +20,28 @@ const genAiController = {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const AI = 'gemini';
+    const AI: AIProvider = AIProvider.Gemini;
 
     const prompt = req.body.prompt;
 
     try {
-      const aiConnection = genAiController.createConnection(AI);
+      const AIConnection = genAIController.createConnection(AI);
 
-      const response = await aiConnection.generateResponse(prompt);
+      const response = await AIConnection.generateResponse(prompt);
 
       res.locals.response = response;
 
       return next();
     } catch (err: unknown) {
+      console.log('here');
       const methodError = createError(
         'generateResponse',
-        'genAiController',
+        'genAIController',
         'Error generating response from AI.',
         err
       );
+      console.log(methodError);
+      console.log(typeof methodError);
       return next(methodError);
     }
   },
@@ -45,13 +49,13 @@ const genAiController = {
   /**
    * Create a connection to an AI API
    *
-   * @param ai The type of AI to connect to
+   * @param AI The type of AI to connect to
    */
-  createConnection(ai: AiTypes): AiInterface {
-    const aiConnection = createAi(ai);
+  createConnection(AI: AIProvider): GenerativeAIModel {
+    const AIConnection = createAI(AI);
 
-    return aiConnection;
+    return AIConnection;
   },
 };
 
-export default genAiController;
+export default genAIController;

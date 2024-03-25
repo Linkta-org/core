@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import genAiController from '@/server/controllers/genAiController';
+import genAIController from '@/server/controllers/genAIController';
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get('/', (_: Request, res: Response) => {
  */
 router.post(
   '/query',
-  genAiController.generateResponse,
+  genAIController.generateResponse,
   (_: Request, res: Response) => {
     res.send({ message: 'AI response', response: res.locals.response });
   }

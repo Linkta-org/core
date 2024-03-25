@@ -4,11 +4,11 @@ import type { GoogleGenerativeAI, InputContent } from '@google/generative-ai';
  * The interface for the AI.
  * This will need to modified if we add more AI models.
  */
-export interface AiInterface {
+export interface GenerativeAIModel {
   apiKey: string;
 
   // ai will need more types if we expand the factory to include other AI models
-  ai: GoogleGenerativeAI;
+  AI: GoogleGenerativeAI;
   connect(): void;
 
   // these methods are based upon the Gemini model, they will need to be updated if we add more models
@@ -23,4 +23,6 @@ export interface AiInterface {
 /**
  * The enumerated types of AI that can be used.
  */
-export type AiTypes = 'gemini';
+export const enum AIProvider {
+  Gemini = 'Gemini',
+}

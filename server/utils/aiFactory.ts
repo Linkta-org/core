@@ -1,16 +1,17 @@
 import Gemini from '@/server/models/GeminiModel';
 
-import type { AiInterface, AiTypes } from '@/server/types/ai';
+import type { GenerativeAIModel } from '@server/types/index';
+import { AIProvider } from '@server/types/index';
 
 /**
  * AI Factory interface.
  *
- * @param ai The type of AI to connect to
+ * @param AIName The type of AI to connect to
  * @return an AI connection
  */
-export default function createAi(ai: AiTypes): AiInterface {
-  switch (ai) {
-    case 'gemini':
+export default function createAI(AIName: AIProvider): GenerativeAIModel {
+  switch (AIName) {
+    case AIProvider.Gemini:
       return setupGemini();
     default:
       throw new Error('Invalid AI type');
@@ -24,6 +25,6 @@ export default function createAi(ai: AiTypes): AiInterface {
  *
  * @return Gemini AI
  */
-function setupGemini(): AiInterface {
+function setupGemini(): GenerativeAIModel {
   return new Gemini();
 }

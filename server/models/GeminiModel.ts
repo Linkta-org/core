@@ -2,15 +2,15 @@ import { getEnv } from '@/server/utils/environment';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 import type { GenerativeModel, InputContent } from '@google/generative-ai';
-import type { AiInterface } from '@/server/types/index';
+import type { GenerativeAIModel } from '@/server/types/index';
 
 /**
  * Class representing the Gemini API connection and its methods.
- * This is an implementation of the AiInterface.
+ * This is an implementation of the AIInterface.
  */
-class Gemini implements AiInterface {
+class Gemini implements GenerativeAIModel {
   apiKey: string = this.setApiKey();
-  ai: GoogleGenerativeAI = this.connect();
+  AI: GoogleGenerativeAI = this.connect();
   model: GenerativeModel | undefined;
 
   /**
@@ -26,14 +26,14 @@ class Gemini implements AiInterface {
    * @return the Gemini API key
    */
   setApiKey(): string {
-    try {
-      const apiKey = process.env.GEMINI_API_KEY;
-      // console.log("Gemini API Key:", apiKey);
-      return apiKey || '';
-    } catch (error) {
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
       console.error('Gemini API Key not found');
       throw new Error('Gemini API Key not found');
     }
+
+    return apiKey || '';
   }
 
   /**
@@ -42,7 +42,7 @@ class Gemini implements AiInterface {
    * @param model The GenerativeModel to set. See the model documentation for the correct model name.
    */
   setModel(model: string = 'gemini-pro'): void {
-    this.model = this.ai.getGenerativeModel({ model: model });
+    this.model = this.AI.getGenerativeModel({ model: model });
   }
 
   /**
@@ -55,14 +55,14 @@ class Gemini implements AiInterface {
       this.setApiKey();
     }
 
-    this.ai = new GoogleGenerativeAI(this.apiKey);
+    this.AI = new GoogleGenerativeAI(this.apiKey);
 
     // The model name may change. Check the documentation for the latest model name.
     // https://ai.google.dev/models/gemini
     this.setModel('gemini-pro');
 
     // console.log("Connecting to Gemini");
-    return this.ai;
+    return this.AI;
   }
 
   /**

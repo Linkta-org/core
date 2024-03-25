@@ -1,7 +1,7 @@
 import express from 'express';
-import { getEnv } from './utils/environment';
-import genAi from './routes/genAi';
-import { globalErrorHandler } from './middleware/errorHandling';
+import { getEnv } from '@server/utils/environment';
+import genAI from '@server/routes/genAI';
+import { globalErrorHandler } from '@server/middleware/errorHandling';
 import bodyParser from 'body-parser';
 
 import type { Express, Request, Response } from 'express';
@@ -30,7 +30,7 @@ function startServer() {
   /**
    * Routes.
    */
-  app.use('/gen-ai', genAi);
+  app.use('/gen-ai', genAI);
 
   /**
    * Default route for unknown routes. This should be the last route.

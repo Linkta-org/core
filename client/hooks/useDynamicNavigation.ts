@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import {
-  footerVisibilityByRoute,
+  routeToFooterVisibilityMapping,
   topNavigationTabsByRoute,
 } from '@/client/components/layout/main-layout/layoutConfig';
 import type { Tab } from '@/client/types/layout';
@@ -23,7 +23,7 @@ const useDynamicNavigation = () => {
   const currentNavTabs: Tab[] =
     topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
 
-  const showFooter = pathname in footerVisibilityByRoute;
+  const showFooter = pathname in routeToFooterVisibilityMapping;
 
   return { showTopNavBar, currentNavTabs, showFooter };
 };

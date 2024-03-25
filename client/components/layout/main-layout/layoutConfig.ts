@@ -16,7 +16,9 @@ export const topNavigationTabsByRoute: Record<string, Tab[]> = {
   '/generate': [homeTab, visualizeTab],
   '/output': [homeTab, buildTreeTab],
 };
-
-export const footerVisibilityByRoute = {
+/**
+ * Maps application routes to footer visibility flags, indicating whether the footer should be displayed on a given route.
+ */
+export const routeToFooterVisibilityMapping = {
   '/': true,
 };

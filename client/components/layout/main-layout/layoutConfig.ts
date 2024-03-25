@@ -17,6 +17,6 @@ export const topNavigationTabsByRoute: Record<string, Tab[]> = {
   '/output': [homeTab, buildTreeTab],
 };
 
-export const footerByRoute = {
+export const footerVisibilityByRoute = {
   '/': true,
 };

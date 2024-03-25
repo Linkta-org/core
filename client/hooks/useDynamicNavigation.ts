@@ -18,7 +18,7 @@ const useDynamicNavigation = () => {
   const currentNavTabs: Tab[] =
     topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
 
-  const showFooter = pathname in footerByRoute;
+  const showFooter = pathname in footerVisibilityByRoute;
 
   return { showTopNavBar, currentNavTabs, showFooter };
 };

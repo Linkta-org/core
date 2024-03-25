@@ -2,7 +2,8 @@ import React from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { Link, useLocation } from 'react-router-dom';
 import { topNavigationTabs } from '@/client/components/layout/main-layout/layoutConfig';
-import type { Tab } from '@/client/types';
+import type { Tab } from '@/client/types/layout';
+
 /**
  * Displays navigation links dynamically based on the current route.
  *
@@ -10,6 +11,7 @@ import type { Tab } from '@/client/types';
  */
 const TopNavigationBar: React.FC = () => {
   const { pathname } = useLocation();
+
   const currentTabs: Tab[] =
     topNavigationTabs[pathname] ?? topNavigationTabs['/'];
 

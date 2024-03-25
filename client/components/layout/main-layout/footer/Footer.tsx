@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react'
 import { Flex, Text, Link } from '@radix-ui/themes';
 
@@ -22,3 +23,12 @@ const Footer = () => {
 }
 
 export default Footer
+=======
+import React from 'react';
+
+const Footer = () => {
+  return <div>Footer Placeholder</div>;
+};
+
+export default Footer;
+>>>>>>> dev

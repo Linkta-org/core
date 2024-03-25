@@ -12,8 +12,8 @@ interface MainLayoutProps {
   showFooter?: boolean;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ showFooter = false }) => {
-  const { showTopNavBar } = useDynamicNavigation();
+const MainLayout: React.FC<MainLayoutProps> = () => {
+  const { showTopNavBar, showFooter } = useDynamicNavigation();
 
   return (
     <div>

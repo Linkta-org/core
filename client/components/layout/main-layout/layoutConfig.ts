@@ -16,3 +16,7 @@ export const topNavigationTabsByRoute: Record<string, Tab[]> = {
   '/generate': [homeTab, visualizeTab],
   '/output': [homeTab, buildTreeTab],
 };
+
+export const footerByRoute = {
+  '/': true,
+};

@@ -1,5 +1,8 @@
 import { useLocation } from 'react-router-dom';
-import { topNavigationTabsByRoute } from '@/client/components/layout/main-layout/layoutConfig';
+import {
+  footerByRoute,
+  topNavigationTabsByRoute,
+} from '@/client/components/layout/main-layout/layoutConfig';
 import type { Tab } from '@/client/types/layout';
 /**
  * Custom hook for determining navigation bar visibility and fetching relevant tabs based on the current route.
@@ -15,7 +18,9 @@ const useDynamicNavigation = () => {
   const currentNavTabs: Tab[] =
     topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
 
-  return { showTopNavBar, currentNavTabs };
+  const showFooter = pathname in footerByRoute;
+
+  return { showTopNavBar, currentNavTabs, showFooter };
 };
 
 export default useDynamicNavigation;

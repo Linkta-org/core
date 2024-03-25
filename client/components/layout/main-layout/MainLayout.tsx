@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from './footer/Footer';
 import LinktaLogo from './header/LinktaLogoWithText';
 import TopNavigationBar from './header/TopNavigationBar';
-import useRouteBasedUIDisplay from '@/client/hooks/useRouteBasedUIDisplay';
+import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
 /**
  * Provides a consistent layout structure across the app with conditional
  * rendering of the top navigation bar and footer based on the current route.
@@ -13,7 +13,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ showFooter = false }) => {
-  const showTopNavBar = useRouteBasedUIDisplay();
+  const { showTopNavBar } = useDynamicNavigation();
 
   return (
     <div>

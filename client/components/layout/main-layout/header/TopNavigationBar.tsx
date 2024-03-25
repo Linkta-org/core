@@ -1,7 +1,7 @@
 import React from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { Link } from 'react-router-dom';
-import useRouteBasedUIDisplay from '@/client/hooks/useRouteBasedUIDisplay';
+import useRouteBasedUIDisplay from '@/client/hooks/useDynamicNavigation';
 /**
  * Renders a navigation menu with tabs based on the current route.
  *

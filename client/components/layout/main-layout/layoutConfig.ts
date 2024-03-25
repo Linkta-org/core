@@ -1,11 +1,11 @@
-import type { Tab } from '@/client/types';
+import type { Tab } from '@/client/types/layout';
 
-//todo: add more tabs
 const signInTab = { tabname: 'Sign In', path: '/sign-in' };
 const signUpTab = { tabname: 'Start Growing', path: '/sign-up' };
 const exploreTab = { tabname: 'Explore', path: '/generate' }; // tbd
+const visualizeTab = { tabname: 'Visualize', path: '/output' }; // tbd
 
 export const topNavigationTabs: Record<string, Tab[]> = {
-  '/': [signInTab, signUpTab, exploreTab],
-  '/generate': [signInTab, signUpTab],
+  '/': [signInTab, signUpTab, exploreTab, visualizeTab],
+  // add more tabs here
 };

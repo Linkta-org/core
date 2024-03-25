@@ -3,7 +3,7 @@ import * as serviceAccount from './serviceAccount.json';
 
 
 
-const params: any = {
+const params: object = {
     type: serviceAccount.type,
     project_id: serviceAccount.project_id,
     private_key_id: serviceAccount.private_key_id,

@@ -1,8 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import {
-  routeToFooterVisibilityMapping,
-  topNavigationTabsByRoute,
-} from '@/client/components/layout/main-layout/layoutConfig';
+import { routeToNavTabsMapping, routeToFooterVisibilityMapping } from '@/client/components/layout/main-layout/layoutConfig';
 import type { Tab } from '@/client/types/layout';
 /**
  * Custom hook that provides UI visibility controls and navigation configuration based on the current route.
@@ -18,10 +15,10 @@ import type { Tab } from '@/client/types/layout';
 const useDynamicNavigation = () => {
   const { pathname } = useLocation();
 
-  const showTopNavBar = pathname in topNavigationTabsByRoute;
+  const showTopNavBar = pathname in routeToNavTabsMapping;
 
   const currentNavTabs: Tab[] =
-    topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
+    routeToNavTabsMapping[pathname] ?? routeToNavTabsMapping['/'];
 
   const showFooter = pathname in routeToFooterVisibilityMapping;
 

@@ -6,7 +6,7 @@ const signUpTab = { tabname: 'Start Growing', path: '/sign-up' };
 const exploreTab = { tabname: 'Explore', path: '/generate' };
 const visualizeTab = { tabname: 'Visualize', path: '/output' };
 
-export const topNavigationTabs: Record<string, Tab[]> = {
+export const topNavigationTabsByRoute: Record<string, Tab[]> = {
   '/': [signInTab, signUpTab, exploreTab, visualizeTab],
   '/generate': [homeTab, visualizeTab],
   '/output': [homeTab, exploreTab],

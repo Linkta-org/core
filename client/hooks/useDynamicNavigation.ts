@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { topNavigationTabsByRoute } from '@/client/components/layout/main-layout/layoutConfig';
+import { routeToNavTabsMapping } from '@/client/components/layout/main-layout/layoutConfig';
 import type { Tab } from '@/client/types/layout';
 /**
  * Custom hook for determining navigation bar visibility and fetching relevant tabs based on the current route.
@@ -10,10 +10,10 @@ import type { Tab } from '@/client/types/layout';
 const useDynamicNavigation = () => {
   const { pathname } = useLocation();
 
-  const showTopNavBar = pathname in topNavigationTabsByRoute;
+  const showTopNavBar = pathname in routeToNavTabsMapping;
 
   const currentNavTabs: Tab[] =
-    topNavigationTabsByRoute[pathname] ?? topNavigationTabsByRoute['/'];
+    routeToNavTabsMapping[pathname] ?? routeToNavTabsMapping['/'];
 
   return { showTopNavBar, currentNavTabs };
 };

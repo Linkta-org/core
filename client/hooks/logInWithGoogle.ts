@@ -2,7 +2,6 @@
 // import { auth } from '../config/firebaseSetup';
 // import useState from 'react';
 
-
 // //email & password should be pass from sign in page
 // const loginWithGoogle = (email: string, password: string) => {
 //   signInWithEmailAndPassword(auth, email, password)
@@ -20,4 +19,3 @@
 
 // };
 // export default loginWithGoogle;
-

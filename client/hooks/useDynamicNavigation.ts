@@ -1,14 +1,19 @@
 import { useLocation } from 'react-router-dom';
 import {
-  footerByRoute,
+  footerVisibilityByRoute,
   topNavigationTabsByRoute,
 } from '@/client/components/layout/main-layout/layoutConfig';
 import type { Tab } from '@/client/types/layout';
 /**
- * Custom hook for determining navigation bar visibility and fetching relevant tabs based on the current route.
+ * Custom hook that provides UI visibility controls and navigation configuration based on the current route.
  *
- * @returns { showTopNavBar, currentTabs } An object containing the visibility state of the top navigation bar
- * and the tabs to display.
+ * Uses `useLocation` from `react-router-dom` to access the current pathname and evaluates this against predefined
+ * configuration objects (`topNavigationTabsByRoute` and `footerVisibilityByRoute`) to ascertain UI elements' visibility and content.
+ *
+ * @returns An object containing:
+ * - `showTopNavBar`: Boolean indicating if the top navigation bar should be displayed.
+ * - `currentNavTabs`: Array of Tab objects representing the tabs to be displayed in the top navigation bar.
+ * - `showFooter`: Boolean indicating if the footer should be displayed.
  */
 const useDynamicNavigation = () => {
   const { pathname } = useLocation();

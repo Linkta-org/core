@@ -1,10 +1,9 @@
-import React from 'react'
+import React from 'react';
 import { Link } from 'react-router-dom';
-
-
+//TODO: Add Links
 const Footer = () => {
   return (
-    <footer>
+    <>
       <div className="left-content">
         &copy; 2024 - LinkTa, LLC. All rights reserved.
       </div>
@@ -15,7 +14,7 @@ const Footer = () => {
         <Link to="/legal">Legal</Link>
         <Link to="/privacy">Privacy</Link>
       </div>
-    </footer>
+    </>
   );
 };
 

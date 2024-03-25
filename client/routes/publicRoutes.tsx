@@ -1,9 +1,9 @@
 import React from 'react';
-import MainLayout from '@/client/components/layout/main-layout/MainLayout';
-import PromptInputPage from '@/client/features/prompt-input-page/PromptInputPage';
-import OutputVisualizationPage from '@/client/features/output-visualization-page/OutputVisualizationPage';
+import MainLayout from '../components/layout/main-layout/MainLayout';
+import PromptInputPage from '../features/prompt-input-page/PromptInputPage';
+import OutputVisualizationPage from '../features/output-visualization-page/OutputVisualizationPage';
 import type { RouteObject } from 'react-router-dom';
-import NotFoundPage from '@/client/features/not-found-page/NotFoundPage';
+import NotFoundPage from '../features/not-found-page/NotFoundPage';
 
 /**
  * The publicRoutes variable is an array which contains objects that each represent a route.

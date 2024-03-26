@@ -3,12 +3,12 @@ import { getAuth } from 'firebase/auth';
 
 // Linkta web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyC8E8SFfC-coXYSjFiqoDdtFf_0imHvMrY',
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: 'linkta-prod.firebaseapp.com',
   projectId: 'linkta-prod',
   storageBucket: 'linkta-prod.appspot.com',
-  messagingSenderId: '53706722050',
-  appId: '1:53706722050:web:0838b30c53273791a1501b',
+  messagingSenderId: process.env.FIREBASE_MSG_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

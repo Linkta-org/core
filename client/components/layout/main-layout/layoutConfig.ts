@@ -5,7 +5,10 @@ import type { Tab } from '@/client/types/layout';
 const homePageRouteTab: Tab = { tabname: 'Home', path: '/' };
 const signInPageRouteTab: Tab = { tabname: 'Sign In', path: '/sign-in' };
 const signUpPageRouteTab: Tab = { tabname: 'Sign Up', path: '/sign-up' };
-const buildTreePageRouteTab: Tab = { tabname: 'Build Your Tree', path: '/generate' };
+const buildTreePageRouteTab: Tab = {
+  tabname: 'Build Your Tree',
+  path: '/generate',
+};
 const visualizePageRouteTab: Tab = { tabname: 'Visualize', path: '/output' };
 /**
  * Object mapping routes to their corresponding navigation tabs.

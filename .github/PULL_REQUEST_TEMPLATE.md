@@ -37,8 +37,8 @@ Fixes # (issue)
 - [ ] I have made corresponding changes to the documentation.
 - [ ] My changes generate no new warnings.
 - [ ] Any dependent changes have been merged and published in downstream modules.
-- [ ] I have reviewed the [**Security Best Practices Document**](SECURITY_BEST_PRACTICES.md).
-- [ ] I have followed the [**Naming Conventions Guide**](NAMING_CONVENTIONS_GUIDE.md) for my changes.
+- [ ] I have reviewed the [**Security Best Practices Document**](./docs/SECURITY_BEST_PRACTICES.md).
+- [ ] I have followed the [**Naming Conventions Guide**](./docs/NAMING_CONVENTIONS_GUIDE.md) for my changes.
 - [ ] I have ensured that my pull request title is descriptive.
 
 ## Additional Information:

@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.2.1",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
     "@tanstack/react-query": "^5.25.0",
     "axios": "^1.6.7",
     "cookie-parser": "^1.4.6",

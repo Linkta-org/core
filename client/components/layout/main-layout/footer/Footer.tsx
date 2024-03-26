@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <>
-      <div className="left-content">
-        @2024 Linkta L.L.C. All rights reserved.
-      </div>
+      <div>©2024 Linkta L.L.C. All rights reserved.</div>
 
-      <div className="right-content">
+      <div>
         <ul>
           <li>
             <Link to="/cookies">Cookies Preferences</Link>

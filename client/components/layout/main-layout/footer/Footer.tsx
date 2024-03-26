@@ -9,7 +9,7 @@ const Footer = () => {
       <div>
         <ul>
           <li>
-            <Link to="/cookies">Cookies Preferences</Link>
+            <Link to="/cookies">Cookie Preferences</Link>
           </li>
           <li>
             <Link to="/security">Security</Link>

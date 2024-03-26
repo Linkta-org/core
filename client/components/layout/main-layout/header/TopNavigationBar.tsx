@@ -6,8 +6,6 @@ import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
  * Renders a navigation menu with tabs based on the current route.
  *
  * The `useDynamicNavigation` hook is used to retrieve the current navigation tabs. It determines the tabs to display based on the current route.
- *
- * @returns {JSX.Element} The rendered TopNavigationBar component.
  */
 const TopNavigationBar: React.FC = () => {
   const { currentNavTabs } = useDynamicNavigation();

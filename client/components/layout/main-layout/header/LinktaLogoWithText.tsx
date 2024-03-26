@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LinktaLogoWithText = () => {
+const LinktaLogoWithText: React.FC = () => {
   return (
     <div>
       <img

@@ -1,3 +1,3 @@
-export * from './middleware.d';
+export * from './errorHandling.d';
 
 export * from './AI.d';

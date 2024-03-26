@@ -61,7 +61,6 @@ class Gemini implements GenerativeAIModel {
     // https://ai.google.dev/models/gemini
     this.setModel('gemini-pro');
 
-    // console.log("Connecting to Gemini");
     return this.AI;
   }
 

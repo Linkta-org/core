@@ -33,15 +33,13 @@ const genAIController = {
 
       return next();
     } catch (err: unknown) {
-      console.log('here');
       const methodError = createError(
         'generateResponse',
         'genAIController',
         'Error generating response from AI.',
         err
       );
-      console.log(methodError);
-      console.log(typeof methodError);
+
       return next(methodError);
     }
   },

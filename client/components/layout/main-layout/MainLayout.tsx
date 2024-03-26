@@ -10,11 +10,7 @@ import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
  * - `showTopNavBar` and `showFooter`: Boolean values from `useDynamicNavigation` determine the visibility of the TopNavigationBar and Footer, respectively.
  * - The `Outlet` component handles rendering of route-specific content in the main section.
  */
-interface MainLayoutProps {
-  showFooter?: boolean;
-}
-
-const MainLayout: React.FC<MainLayoutProps> = () => {
+const MainLayout: React.FC = () => {
   const { showTopNavBar, showFooter } = useDynamicNavigation();
 
   return (

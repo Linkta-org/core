@@ -1,24 +1,28 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './header/Header';
 import Footer from './footer/Footer';
+import LinktaLogo from './header/LinktaLogoWithText';
+import TopNavigationBar from './header/TopNavigationBar';
+import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
 /**
- * MainLayout component wraps the children components with a common structure
- * It is used to provide a consistent layout across different pages.
- * @param props - The component props.
- * @param props.showFooter - Determines if the footer should be rendered. Defaults to false.
- * @returns The MainLayout component with Header, Outlet for nested routes, and optional Footer.
+ * MainLayout manages the app's global layout, using `useDynamicNavigation` for route-based UI adjustments. It presents a consistent header featuring the LinktaLogo, with the top navigation bar and footer rendered conditionally as dictated by the current route's needs.
+ *
+ * - `showTopNavBar` and `showFooter`: Boolean values from `useDynamicNavigation` determine the visibility of the TopNavigationBar and Footer, respectively.
+ * - The `Outlet` component handles rendering of route-specific content in the main section.
  */
-interface MainLayoutProps {
-  showFooter?: boolean;
-}
+const MainLayout: React.FC = () => {
+  const { showTopNavBar, showFooter } = useDynamicNavigation();
 
-const MainLayout: React.FC<MainLayoutProps> = ({ showFooter = false }) => {
   return (
     <div>
       <header>
-        <Header />
+        <LinktaLogo />
       </header>
+      {showTopNavBar && (
+        <nav>
+          <TopNavigationBar />
+        </nav>
+      )}
       <main>
         <Outlet />
       </main>

@@ -14,9 +14,12 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
-    children: [...publicRoutes, ...privateRoutes] as RouteObject[],
+    children: [
+      ...publicRoutes,
+      ...privateRoutes,
+      { path: '*', element: <NotFoundPage /> },
+    ] as RouteObject[],
   },
-  { path: '*', element: <NotFoundPage /> },
 ] as RouteObject[]);
 
 export default router;

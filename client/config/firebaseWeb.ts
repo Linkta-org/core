@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { type Auth, getAuth } from 'firebase/auth';
 
 interface FirebaseConfig {
   apiKey: string | undefined;
@@ -9,7 +9,7 @@ interface FirebaseConfig {
   messagingSenderId: string | undefined;
   appId: string | undefined;
 }
-// Linkta web app's Firebase configuration
+
 const firebaseConfig: FirebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -19,7 +19,11 @@ const firebaseConfig: FirebaseConfig = {
   appId: process.env.FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-// Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(firebaseApp);
+let auth: Auth;
+if (firebaseConfig.apiKey) {
+  const firebaseApp = initializeApp(firebaseConfig);
+  auth = getAuth(firebaseApp);
+} else {
+  throw new Error('Missing Firebase API key');
+}
+export { auth };

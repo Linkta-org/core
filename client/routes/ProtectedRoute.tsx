@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC = () => {
   // TODO: update erroPage when ready
   return (
     <div>
-      {error && <div>errorPage placeholder</div>}
+      {error && <div>error modal placeholder</div>}
       {isAuthenticated ? (
         <Outlet />
       ) : (

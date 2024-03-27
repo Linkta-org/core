@@ -8,8 +8,8 @@ const privateRoutes: RouteObject[] = [
   {
     element: <ProtectedRoute />,
     children: [
-      { path: '/generate', element: <PromptInputPage /> },
-      { path: '/output', element: <OutputVisualizationPage /> },
+      { path: 'generate', element: <PromptInputPage /> },
+      { path: 'output', element: <OutputVisualizationPage /> },
     ],
   },
 ];

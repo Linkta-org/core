@@ -1,10 +1,9 @@
-import createAi from '@server/utils/aiFactory';
-import { isType } from '@server/utils/typeChecker';
-import { createError } from '@server/middleware/errorHandling';
-import Prompts from '@server/models/TreePromptsModel';
+import createAI from '@/server/utils/AIFactory';
+import { createError } from '@/server/middleware/errorHandling';
 
 import type { Request, Response, NextFunction } from 'express';
-import { AiInterface, AiTypes, ChainOfThought } from '@server/types';
+import { type GenerativeAIModel } from '@server/types/index';
+import { AIProvider } from '@server/types/index';
 
 const genAiController = {
   AI: AiTypes.Gemini,
@@ -29,7 +28,7 @@ const genAiController = {
     try {
       const aiConnection = genAiController.createConnection(this.AI);
 
-      const response = await aiConnection.generateResponse(prompt);
+      const response = await AIConnection.generateResponse(prompt);
 
       res.locals.response = response;
 
@@ -77,6 +76,7 @@ const genAiController = {
         'Error generating response from AI.',
         err
       );
+
       return next(methodError);
     }
   },
@@ -84,11 +84,46 @@ const genAiController = {
   /**
    * Create a connection to an AI API
    *
-   * @param ai The type of AI to connect to
+   * @param AI The type of AI to connect to
    */
-  createConnection(ai: AiTypes): AiInterface {
-    const aiConnection = createAi(ai);
-    return aiConnection;
+  createConnection(AI: AIProvider): GenerativeAIModel {
+    const AIConnection = createAI(AI);
+
+    return AIConnection;
+  },
+
+  /**
+   * Query the AI to build a tree
+   *
+   * @param userPrompt The prompt from the user
+   * @param promptMethod (optional) The method to use to generate the prompt
+   * @return The response from the AI
+   */
+  async queryTree(
+    userPrompt: string,
+    promptMethod?: Function
+  ): Promise<string> {
+    const AI = this.createConnection(this.AI);
+
+    if (!promptMethod) {
+      promptMethod = this.defaultPromptMethod;
+    }
+
+    const prompt = promptMethod(userPrompt);
+
+    let response;
+    switch (typeof prompt) {
+      case 'object':
+        const chainOfThought: ChainOfThought = { history: [], prompt: '' };
+        if (isType(prompt, chainOfThought)) {
+          response = AI.generateConversation(prompt.history, prompt.prompt);
+        }
+      default:
+        response = AI.generateResponse(prompt);
+        break;
+    }
+
+    return response;
   },
 
   /**
@@ -126,4 +161,4 @@ const genAiController = {
   },
 };
 
-export default genAiController;
+export default genAIController;

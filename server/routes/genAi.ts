@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import genAiController from '../controllers/genAiController';
+import genAIController from '@/server/controllers/genAIController';
 
 const router = express.Router();
 

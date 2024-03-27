@@ -2,10 +2,10 @@ import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import Loader from '@/client/components/common/Loader';
 
-const ProtectedRoute = () => {
+const ProtectedRoute: React.FC = () => {
   const isAuthenticated = true; //TODO: replace with authentication logic
   const isLoading = true; // TODO: replace with loading logic
-  const error = ''; // TODO: implement error handling logic
+  const error = ''; // TODO: replace with error handling logic
 
   if (isLoading) {
     return <Loader />;
@@ -13,12 +13,12 @@ const ProtectedRoute = () => {
 
   return (
     <div>
-      {error && <p>error message placeholder</p>}
+      {error && <div>errorPage placeholder</div>}
       {isAuthenticated ? (
         <Outlet />
       ) : (
         <Navigate
-          to="/"
+          to="/sign-in"
           replace={true}
         />
       )}

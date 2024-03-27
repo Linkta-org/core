@@ -13,7 +13,7 @@ const ProtectedRoute: React.FC = () => {
   if (isLoading) {
     return <Loader />;
   }
-  // TODO: update erroPage when ready
+  // TODO: update error modal when ready
   return (
     <div>
       {error && <div>error modal placeholder</div>}

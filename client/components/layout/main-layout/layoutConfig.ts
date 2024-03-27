@@ -37,7 +37,7 @@ export const routeToFooterVisibilityMapping: Record<string, boolean> = {
  * Maps footer labels to link, links to be added.
  */
 
-export const routeToFooterLinks: Tab[] = [
+export const footerLinks: Tab[] = [
   cookiePreferencesPageRouteTab,
   securityPageRouteTab,
   legalPageRouteTab,

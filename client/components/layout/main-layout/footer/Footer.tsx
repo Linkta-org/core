@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { routeToFooterLinks } from '@/client/components/layout/main-layout/layoutConfig';
+import { footerLinks } from '@/client/components/layout/main-layout/layoutConfig';
 
 const Footer: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
       <div>©2024 Linkta L.L.C. All rights reserved.</div>
 
       <ul>
-        {routeToFooterLinks.map((tab) => (
+        {footerLinks.map((tab) => (
           <li key={`${tab.path}-${tab.tabname}`}>
             <Link to={tab.path}>{tab.tabname}</Link>
           </li>

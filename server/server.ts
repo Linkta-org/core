@@ -1,6 +1,8 @@
 import express from 'express';
-import { getEnv } from './utils/environment';
-import { globalErrorHandler } from './middleware/errorHandling';
+import { getEnv } from '@server/utils/environment';
+import genAI from '@server/routes/genAI';
+import { globalErrorHandler } from '@server/middleware/errorHandling';
+import bodyParser from 'body-parser';
 
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
@@ -16,6 +18,8 @@ function startServer() {
 
   connectToDatabase();
 
+  app.use(bodyParser.json());
+
   /**
    * Test route for the server. This should direct to the frontend.
    */
@@ -26,6 +30,7 @@ function startServer() {
   /**
    * Routes.
    */
+  app.use('/gen-ai', genAI);
 
   /**
    * Default route for unknown routes. This should be the last route.

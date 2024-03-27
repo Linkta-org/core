@@ -8,12 +8,13 @@ import { useState } from 'react';
  *   - `isLoading`: Boolean indicating if the authentication status check is in progress.
  *   - `error`: String for any authentication error messages or `null` if there are no errors.
  */
+  // TODO: implement auth logic
 const useAuth = () => {
-  const [isAuthenticated, setIsAUthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAuthenticated, setIsAUthenticated] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // TODO: implement auth logic here
+  // add auth logic here
 
   return { isAuthenticated, isLoading, error };
 };

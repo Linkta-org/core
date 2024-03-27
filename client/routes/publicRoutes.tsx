@@ -1,10 +1,7 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
 /**
- * The publicRoutes variable is an array which contains objects that each represent a route.
- * Our path property is set to the default route. Setting the element property to the MainLayout
- * component at the top level will allow its children to render MainLayout.
- *
+ * Array of RouteObject for public access within the application.
  */
 const publicRoutes: RouteObject[] = [
   { index: true, element: <>HomePage placeholder</> },

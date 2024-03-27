@@ -1,6 +1,7 @@
 import React from 'react';
 import publicRoutes from './publicRoutes';
 import privateRoutes from './privateRoutes';
+import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from '@/client/features/not-found-page/NotFoundPage';
 import MainLayout from '@/client/components/layout/main-layout/MainLayout';
@@ -13,9 +14,9 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
-    children: [...publicRoutes, ...privateRoutes],
+    children: [...publicRoutes, ...privateRoutes] as RouteObject[],
   },
   { path: '*', element: <NotFoundPage /> },
-]);
+] as RouteObject[]);
 
 export default router;

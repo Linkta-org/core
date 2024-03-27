@@ -1,12 +1,10 @@
-import React from 'react'
+import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-  const auth = true;
+  const isAuthenticated = true; //TODO: implement authentication logic here
 
-  return (
-    auth ? <Outlet /> : <Navigate to='/sign-in' />
-  )
-}
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+};
 
 export default ProtectedRoute;

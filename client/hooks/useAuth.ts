@@ -7,13 +7,11 @@
  *   - `isLoading`: Boolean indicating if the authentication status check is in progress.
  *   - `error`: String for any authentication error messages or `null` if there are no errors.
  */
-// TODO: implement auth logic
 const useAuth = () => {
+  // TODO: implement auth logic, currenly only using placeholders
   const isAuthenticated = true;
   const isLoading = false;
   const error = null;
-
-  // add auth logic here
 
   return { isAuthenticated, isLoading, error };
 };

@@ -16,14 +16,16 @@ export interface AiInterface {
   generateConversation(
     history: InputContent[],
     prompt: string,
-    generationConfig: object
+    generationConfig?: object
   ): Promise<string>;
 }
 
 /**
  * The enumerated types of AI that can be used.
  */
-export type AiTypes = 'gemini';
+export enum AiTypes {
+  Gemini = 'gemini',
+}
 
 export interface ChainOfThought {
   history: InputContent[];

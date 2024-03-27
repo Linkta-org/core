@@ -1,11 +1,10 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import Loader from '@/client/components/common/Loader';
+import useAuth from '../hooks/useAuth';
 
 const ProtectedRoute: React.FC = () => {
-  const isAuthenticated = true; //TODO: replace with authentication logic
-  const isLoading = true; // TODO: replace with loading logic
-  const error = ''; // TODO: replace with error handling logic
+  const { isAuthenticated, isLoading, error } = useAuth();
 
   if (isLoading) {
     return <Loader />;

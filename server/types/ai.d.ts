@@ -9,10 +9,29 @@ export interface GenerativeAIModel {
 
   // ai will need more types if we expand the factory to include other AI models
   AI: GoogleGenerativeAI;
+
+  /**
+   * Connect to the AI API.
+   */
   connect(): void;
 
   // these methods are based upon the Gemini model, they will need to be updated if we add more models
+  /**
+   * Generate a response to a prompt.
+   *
+   * @param prompt The prompt to generate a response to.
+   * @returns The response from the AI.
+   */
   generateResponse(prompt: string): Promise<string>;
+
+  /**
+   * Generate a response to a conversation.
+   *
+   * @param history The conversation history.
+   * @param prompt The prompt to generate a response to.
+   * @param generationConfig Any configuration for the generation.
+   * @returns The response from the AI.
+   */
   generateConversation(
     history: InputContent[],
     prompt: string,
@@ -23,10 +42,13 @@ export interface GenerativeAIModel {
 /**
  * The enumerated types of AI that can be used.
  */
-export const enum AiTypes {
+export const enum AIProvider {
   Gemini = 'gemini',
 }
 
+/**
+ * The chain of thought for a conversation.
+ */
 export interface ChainOfThought {
   history: InputContent[];
   prompt: string;

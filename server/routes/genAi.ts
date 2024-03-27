@@ -14,7 +14,7 @@ router.get('/', (_: Request, res: Response) => {
  */
 router.post(
   '/query',
-  genAiController.generateTree,
+  genAIController.generateTree,
   (_: Request, res: Response) => {
     res.send({ message: 'tree', response: res.locals.tree });
   }

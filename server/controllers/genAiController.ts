@@ -1,13 +1,25 @@
-import createAI from '@/server/utils/AIFactory';
+import createAI from '@server/utils/AIFactory';
 import { createError } from '@/server/middleware/errorHandling';
-
-import type { Request, Response, NextFunction } from 'express';
-import { type GenerativeAIModel } from '@server/types/index';
+import TreePrompts from '@/server/models/TreePromptsModel';
+import { isType } from '@server/utils/typeChecker';
 import { AIProvider } from '@server/types/index';
 
-const genAiController = {
-  AI: AiTypes.Gemini,
-  defaultPromptMethod: Prompts.costar,
+import type { Request, Response, NextFunction } from 'express';
+import type { GenerativeAIModel, ChainOfThought } from '@server/types/index';
+
+class GenAIController {
+  AI: AIProvider;
+  defaultPromptMethod: Function;
+
+  constructor() {
+    this.AI = AIProvider.Gemini;
+    this.defaultPromptMethod = TreePrompts.costar;
+
+    this.generateResponse = this.generateResponse.bind(this);
+    this.generateTree = this.generateTree.bind(this);
+    this.createConnection = this.createConnection.bind(this);
+    this.queryTree = this.queryTree.bind(this);
+  }
 
   /**
    * Generate a response from the AI.
@@ -26,7 +38,7 @@ const genAiController = {
     const prompt = req.body.prompt;
 
     try {
-      const aiConnection = genAiController.createConnection(this.AI);
+      const AIConnection = this.createConnection(this.AI);
 
       const response = await AIConnection.generateResponse(prompt);
 
@@ -42,7 +54,7 @@ const genAiController = {
       );
       return next(methodError);
     }
-  },
+  }
 
   /**
    * Generate a tree from the AI.
@@ -79,7 +91,7 @@ const genAiController = {
 
       return next(methodError);
     }
-  },
+  }
 
   /**
    * Create a connection to an AI API
@@ -90,7 +102,7 @@ const genAiController = {
     const AIConnection = createAI(AI);
 
     return AIConnection;
-  },
+  }
 
   /**
    * Query the AI to build a tree
@@ -111,54 +123,16 @@ const genAiController = {
 
     const prompt = promptMethod(userPrompt);
 
-    let response;
-    switch (typeof prompt) {
-      case 'object':
-        const chainOfThought: ChainOfThought = { history: [], prompt: '' };
-        if (isType(prompt, chainOfThought)) {
-          response = AI.generateConversation(prompt.history, prompt.prompt);
-        }
-      default:
-        response = AI.generateResponse(prompt);
-        break;
+    if (typeof prompt === 'object') {
+      const chainOfThought: ChainOfThought = { history: [], prompt: '' };
+      if (isType(prompt, chainOfThought)) {
+        return AI.generateConversation(prompt.history, prompt.prompt);
+      }
     }
 
-    return response;
-  },
+    return AI.generateResponse(prompt);
+  }
+}
 
-  /**
-   * Query the AI to build a tree
-   *
-   * @param userPrompt The prompt from the user
-   * @param promptMethod (optional) The method to use to generate the prompt
-   * @return The response from the AI
-   */
-  async queryTree(
-    userPrompt: string,
-    promptMethod?: Function
-  ): Promise<string> {
-    const AI = this.createConnection(this.AI);
-
-    if (!promptMethod) {
-      promptMethod = this.defaultPromptMethod;
-    }
-
-    const prompt = promptMethod(userPrompt);
-
-    let response;
-    switch (typeof prompt) {
-      case 'object':
-        const chainOfThought: ChainOfThought = { history: [], prompt: '' };
-        if (isType(prompt, chainOfThought)) {
-          response = AI.generateConversation(prompt.history, prompt.prompt);
-        }
-      default:
-        response = AI.generateResponse(prompt);
-        break;
-    }
-
-    return response;
-  },
-};
-
+const genAIController = new GenAIController();
 export default genAIController;

@@ -7,7 +7,7 @@ import { ChainOfThought } from '../types';
  * The use of multiple methods allows for testing as LLMs develop, and for automation
  * of testing to determine which method generates the most usable result.
  */
-const Prompts = {
+const TreePrompts = {
   /**
    * Generate a prompt using the one-shot method.
    * Note, I have struggled to engineer a good prompt for this one.
@@ -129,4 +129,4 @@ const Prompts = {
   },
 };
 
-export default Prompts;
+export default TreePrompts;

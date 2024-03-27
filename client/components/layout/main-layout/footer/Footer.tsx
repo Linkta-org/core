@@ -8,8 +8,8 @@ const Footer: React.FC = () => {
       <div>©2024 Linkta L.L.C. All rights reserved.</div>
 
       <ul>
-        {routeToFooterLinks.map((tab, index) => (
-          <li key={index}>
+        {routeToFooterLinks.map((tab) => (
+          <li key={`${tab.path}-${tab.tabname}`}>
             <Link to={tab.path}>{tab.tabname}</Link>
           </li>
         ))}

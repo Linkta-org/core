@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { footerLinks } from '@/client/components/layout/main-layout/layoutConfig';
-//TODO: Add Links
+
 const Footer: React.FC = () => {
   return (
     <>

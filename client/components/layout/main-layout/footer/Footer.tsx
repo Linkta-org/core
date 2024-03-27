@@ -1,27 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { footerLinks } from '@/client/components/layout/main-layout/layoutConfig';
 //TODO: Add Links
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <>
       <div>©2024 Linkta L.L.C. All rights reserved.</div>
 
-      <div>
-        <ul>
-          <li>
-            <Link to="/cookies">Cookie Preferences</Link>
+      <ul>
+        {footerLinks.map((tab, index) => (
+          <li key={index}>
+            <Link to={tab.path}>{tab.tabname}</Link>
           </li>
-          <li>
-            <Link to="/security">Security</Link>
-          </li>
-          <li>
-            <Link to="/legal">Legal</Link>
-          </li>
-          <li>
-            <Link to="/privacy">Privacy</Link>
-          </li>
-        </ul>
-      </div>
+        ))}
+      </ul>
     </>
   );
 };

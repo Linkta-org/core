@@ -1,4 +1,3 @@
-import { useState } from 'react';
 /**
  * Custom hook to manage authentication state. It initializes with an unauthenticated state,
  * loading status, and no errors.
@@ -10,9 +9,9 @@ import { useState } from 'react';
  */
 // TODO: implement auth logic
 const useAuth = () => {
-  const [isAuthenticated, setIsAUthenticated] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const isAuthenticated = true;
+  const isLoading = false;
+  const error = null;
 
   // add auth logic here
 

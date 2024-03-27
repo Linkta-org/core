@@ -6,7 +6,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from '@/client/features/not-found-page/NotFoundPage';
 import MainLayout from '@/client/components/layout/main-layout/MainLayout';
 /**
- * Configures the application's router with createBrowserRouter, combining various routes under MainLayout for a unified layout. It includes:
+ * Initializes the application's router using createBrowserRouter, combining various routes under MainLayout for a unified layout. It includes:
  * - Root path '/' for MainLayout with nested public and private routes.
  * - Catch-all '*' path directing to NotFoundPage for undefined routes.
  */

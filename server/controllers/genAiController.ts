@@ -5,11 +5,15 @@ import { isType } from '@server/utils/typeChecker';
 import { AIProvider } from '@server/types/index';
 
 import type { Request, Response, NextFunction } from 'express';
-import type { GenerativeAIModel, ChainOfThought } from '@server/types/index';
+import type {
+  GenerativeAIModel,
+  ChainOfThought,
+  TreePromptsFunction,
+} from '@server/types/index';
 
 class GenAIController {
   AI: AIProvider;
-  defaultPromptMethod: Function;
+  defaultPromptMethod: TreePromptsFunction;
 
   constructor() {
     this.AI = AIProvider.Gemini;
@@ -113,7 +117,7 @@ class GenAIController {
    */
   async queryTree(
     userPrompt: string,
-    promptMethod?: Function
+    promptMethod?: TreePromptsFunction
   ): Promise<string> {
     const AI = this.createConnection(this.AI);
 
@@ -124,13 +128,20 @@ class GenAIController {
     const prompt = promptMethod(userPrompt);
 
     if (typeof prompt === 'object') {
+      /**
+       *  Types cannot be arguments because they are not available at runtime
+       * We create a dummy object of the appropriate type to check the type
+       * While we only use this once, I have created this so that we can
+       * expand the types in the future if the AI API changes.
+       */
       const chainOfThought: ChainOfThought = { history: [], prompt: '' };
       if (isType(prompt, chainOfThought)) {
         return AI.generateConversation(prompt.history, prompt.prompt);
       }
     }
 
-    return AI.generateResponse(prompt);
+    // We cast as string as this is our default return.
+    return AI.generateResponse(prompt as string);
   }
 }
 

@@ -53,3 +53,10 @@ export interface ChainOfThought {
   history: InputContent[];
   prompt: string;
 }
+
+/**
+ * The type of function that generates prompts for the AI.
+ * This can be inspected from the functions within the TreePromptsModel.
+ * As methods are added that return different types, we will need to update this type.
+ */
+export type TreePromptsFunction = (prompt: string) => string | ChainOfThought;

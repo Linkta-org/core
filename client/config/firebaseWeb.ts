@@ -10,7 +10,7 @@ interface FirebaseConfig {
   appId: string | undefined;
 }
 
-let auth: Auth;
+let auth: Auth | undefined;
 
 if (process.env.FIREBASE_API_KEY) {
   const firebaseConfig: FirebaseConfig = {
@@ -27,4 +27,5 @@ if (process.env.FIREBASE_API_KEY) {
 } else {
   throw new Error('Missing Firebase API key');
 }
+
 export { auth };

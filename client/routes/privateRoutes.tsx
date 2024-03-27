@@ -6,7 +6,6 @@ import OutputVisualizationPage from '@/client/features/output-visualization-page
 
 const privateRoutes: RouteObject[] = [
   {
-    path: '/',
     element: <ProtectedRoute />,
     children: [
       { path: '/generate', element: <PromptInputPage /> },

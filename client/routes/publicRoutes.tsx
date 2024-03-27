@@ -7,7 +7,7 @@ import type { RouteObject } from 'react-router-dom';
 const publicRoutes: RouteObject[] = [
   { index: true, element: <>HomePage placeholder</> },
   { path: 'sign-in', element: <>SignInPage placeholder</> },
-  { path: 'sign-in', element: <>SignUpPage placeholder</> },
+  { path: 'sign-up', element: <>SignUpPage placeholder</> },
 ];
 
 export default publicRoutes;

@@ -10,7 +10,7 @@ import { useState } from 'react';
  */
   // TODO: implement auth logic
 const useAuth = () => {
-  const [isAuthenticated, setIsAUthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAUthenticated] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

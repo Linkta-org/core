@@ -1,5 +1,5 @@
 import React from 'react';
-import publicRoutes from './publicRoutes';
+import publicRoutes from './public-routes/publicRoutes';
 import privateRoutes from './privateRoutes';
 import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';

@@ -1,14 +1,13 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
 import HomePage from '@/client/features/home-page/HomePage';
+import authRoutes from './authRoutes';
 /**
  * Array of RouteObject for public access within the application.
  */
-//TODO: replace palceholders with components when ready
 const publicRoutes: RouteObject[] = [
   { index: true, element: <HomePage /> },
-  { path: 'sign-in', element: <>SignInPage placeholder</> },
-  { path: 'sign-up', element: <>SignUpPage placeholder</> },
+  ...authRoutes,
 ];
 
 export default publicRoutes;

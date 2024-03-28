@@ -1,6 +1,6 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
-import HomePage from '../features/home-page/HomePage';
+import HomePage from '@/client/features/home-page/HomePage';
 /**
  * Array of RouteObject for public access within the application.
  */

@@ -1,7 +1,5 @@
 /**
- * Custom hook to manage authentication state. It initializes with an unauthenticated state,
- * loading status, and no errors.
- *
+ * Custom hook to manage authentication state.
  * @returns {object} - An object containing:
  *   - `isAuthenticated`: Boolean indicating whether the user is currently authenticated.
  *   - `isLoading`: Boolean indicating if the authentication status check is in progress.

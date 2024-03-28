@@ -1,7 +1,13 @@
 import React from 'react';
+import PromptInputBox from './components/PromptInputBox';
 
 const PromptInputPage = () => {
-  return <div>PromptInputPage Placeholder</div>;
+  return (
+    <>
+      <h1>PromptInputPage Placeholder</h1>
+      <PromptInputBox />
+    </>
+  );
 };
 
 export default PromptInputPage;

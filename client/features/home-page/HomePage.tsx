@@ -1,12 +1,12 @@
 import React from 'react';
-import TreeVisualizationPanel from './components/TreeVisualizationPanel';
-import MainHero from './components/MainHero';
+import HomePageMainHero from './components/HomePageMainHero';
+import HomePageTreeVisualizationPanel from './components/HomePageTreeVisualizationPanel';
 
 const HomePage = () => {
   return (
     <>
-      <MainHero />
-      <TreeVisualizationPanel />
+      <HomePageMainHero />
+      <HomePageTreeVisualizationPanel />
     </>
   );
 };

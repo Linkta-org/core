@@ -9,6 +9,12 @@
  * @return True if the object is of the type, false otherwise
  */
 export function isType<T extends object>(object: T, type: Partial<T>): boolean {
+  // make sure that each object has the same number of keys
+  if (Object.keys(object).length === Object.keys(type).length) {
+    return false;
+  }
+
+  // check that each key is in the object and has the right type.
   return (Object.keys(type) as (keyof T)[]).every((key: keyof T) => {
     const objectType = typeof object[key];
     const expectedType = typeof type[key];

@@ -1,5 +1,5 @@
-import { InputContent } from '@google/generative-ai';
-import { ChainOfThought } from '../types';
+import type { InputContent } from '@google/generative-ai';
+import type { ChainOfThought } from '@/server/types';
 
 /**
  * Class for generating prompts for the LLM.

@@ -12,7 +12,7 @@ const ProtectedRoute: React.FC = () => {
   if (isLoading) {
     return <Loader />;
   }
-// TODO: add error handling
+  // TODO: add error handling
   return (
     <div>
       {isAuthenticated ? (

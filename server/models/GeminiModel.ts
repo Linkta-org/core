@@ -92,7 +92,7 @@ class Gemini implements GenerativeAIModel {
   async generateConversation(
     history: InputContent[],
     prompt: string,
-    generationConfig: object
+    generationConfig?: object
   ): Promise<string> {
     if (!this.model) {
       throw new Error('Model not found');

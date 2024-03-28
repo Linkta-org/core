@@ -8,8 +8,8 @@ import MainLayout from '@/client/components/layout/main-layout/MainLayout';
 import ErrorPage from '@/client/features/error-pages/ErrorPage';
 /**
  * Initializes the application's router using createBrowserRouter, combining various routes under MainLayout for a unified layout. It includes:
- * - Root path '/' for MainLayout with nested public and private routes.
- * - Catch-all '*' path directing to NotFoundPage for undefined routes.
+ * - Root path '/' for MainLayout with nested public, private routes, and catch-all '*' path directing to NotFoundPage for undefined routes.
+ * - errorElement is defined to render the ErrorPage component in the event of routing errors
  */
 const router = createBrowserRouter([
   {

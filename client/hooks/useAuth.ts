@@ -5,7 +5,6 @@
  * @returns {object} - An object containing:
  *   - `isAuthenticated`: Boolean indicating whether the user is currently authenticated.
  *   - `isLoading`: Boolean indicating if the authentication status check is in progress.
- *   - `error`: String for any authentication error messages or `null` if there are no errors.
  */
 const useAuth = () => {
   // TODO: implement auth logic, currenly only using placeholders
@@ -13,7 +12,7 @@ const useAuth = () => {
   const isLoading = false;
   const error = null;
 
-  return { isAuthenticated, isLoading, error };
+  return { isAuthenticated, isLoading };
 };
 
 export default useAuth;

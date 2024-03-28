@@ -5,6 +5,7 @@ import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 import NotFoundPage from '@/client/features/not-found-page/NotFoundPage';
 import MainLayout from '@/client/components/layout/main-layout/MainLayout';
+import ErrorPage from '@/client/features/error-pages/ErrorPage';
 /**
  * Initializes the application's router using createBrowserRouter, combining various routes under MainLayout for a unified layout. It includes:
  * - Root path '/' for MainLayout with nested public and private routes.
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       ...privateRoutes,
       { path: '*', element: <NotFoundPage /> },
     ] as RouteObject[],
+    errorElement: <ErrorPage />,
   },
 ] as RouteObject[]);
 

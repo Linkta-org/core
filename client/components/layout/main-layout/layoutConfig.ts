@@ -10,6 +10,13 @@ const buildTreePageRouteTab: Tab = {
   path: '/generate',
 };
 const visualizePageRouteTab: Tab = { tabname: 'Visualize', path: '/output' };
+const cookiePreferencesPageRouteTab: Tab = {
+  tabname: 'Cookie Preferences',
+  path: '/cookie_preferences',
+};
+const securityPageRouteTab: Tab = { tabname: 'Security', path: '/security' };
+const legalPageRouteTab: Tab = { tabname: 'Legal', path: '/legal' };
+const privacyPageRouteTab: Tab = { tabname: 'Privacy', path: '/privacy' };
 /**
  * Object mapping routes to their corresponding navigation tabs.
  * Each key represents a route, and the value is an array of Tab objects.
@@ -25,3 +32,14 @@ export const routeToNavTabsMapping: Record<string, Tab[]> = {
 export const routeToFooterVisibilityMapping: Record<string, boolean> = {
   '/': true,
 };
+
+/**
+ * Maps footer labels to link, links to be added.
+ */
+
+export const footerLinks: Tab[] = [
+  cookiePreferencesPageRouteTab,
+  securityPageRouteTab,
+  legalPageRouteTab,
+  privacyPageRouteTab,
+];

@@ -1,14 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { type Auth, getAuth } from 'firebase/auth';
-
-interface FirebaseConfig {
-  apiKey: string | undefined;
-  authDomain: string | undefined;
-  projectId: string | undefined;
-  storageBucket: string | undefined;
-  messagingSenderId: string | undefined;
-  appId: string | undefined;
-}
+import type { FirebaseConfig } from '@/client/types/index';
 
 let auth: Auth | undefined;
 

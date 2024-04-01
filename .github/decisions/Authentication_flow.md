@@ -2,27 +2,29 @@
 
 Period: 2024-03-06 to 2024-03-31
 
-Status: proposed | rejected | accepted | deprecated | … | superseded by [Link](put down the link here)
+Status: Draft (This document is currently under review. Status will be updated upon final decision.)
 
 ***
 
 ## Goal
-To develop a custom secure authentication system to grant verified users access without storing ID token on client side
+To develop a custom, secure authentication system that grants verified users access, specifically designed to enhance security by avoiding the storage of ID tokens on the client side. This approach aims to mitigate risks associated with client-side token theft and XSS (Cross-Site Scripting) attacks.
 
 ## Limitations
+1. The need for more frequent server-side checks, potentially impacting performance.
+2. Possible challenges in user experience due to the absence of persistent client-side state, requiring users to re-authenticate more often.
 
 ## Options Explored
 1. Using backend session cookie approach
 
 ## Challenges
-1. Maintence and scalability complexity in the future
+1. Maintenance and scalability complexity in the future
 
 
 ## Decision
 
 ### Overview
 
-The authentication flow involves several key steps, beginning with the user creating an account or signing in from the client-side (typically a web browser or mobile app), and ending with the backend server managing session state through httpOnly cookies. This approach offers enhanced security by keeping sensitive authentication tokens server-side and minimizing the risk of XSS (Cross-Site Scripting) attacks.
+The chosen authentication flow begins with client-side user sign-in, progresses through backend token validation, and ends with session management via httpOnly cookies. This method prioritizes security by minimizing client-side exposure of sensitive tokens.
 
 ### Client-Side Authentication
 

@@ -40,10 +40,11 @@ Upon signing in, users provide credentials, which Firebase Authentication verifi
 
 #### Creating a Session Cookie
 
-The backend, upon receiving the ID token, validates it and then uses the Firebase Admin SDK to exchange it for a session cookie. This cookie is configured with several security measures in mind, including settings like session expiration (maxAge), the httpOnly, and secure flags, thereby enhancing its security against various attacks.
+The backend, upon receiving the ID token, validates it and then uses the Firebase Admin SDK to exchange it for a session cookie. This cookie is configured with several security measures in mind, including settings like session expiration (`maxAge`), the `httpOnly`, and `secure` flags, thereby enhancing its security against various attacks.
 
-- `maxAge`: To balance user experience with security measures, a duration between 30 minutes and 2 hours is typically considered optimal. This range is suitable for most applications, aiming to reduce the risk without significantly impacting user convenience. [For high-security applications, common idle timeouts range from 2 to 5 minutes, while lower-risk applications might opt for 15 to 30 minutes.](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration)
-- The `httpOnly` flag is used to prevent client-side scripts from accessing the cookie, mitigating the risk of XSS (Cross-Site Scripting) attacks. The secure flag ensures the cookie is transmitted only over secure HTTPS connections, enhancing data protection. Optionally, setting the SameSite attribute can further secure the cookie from cross-site request forgery (CSRF) attacks by controlling cross-origin requests.
+- `maxAge`: To balance user experience with security measures, a duration between 30 minutes and 2 hours is typically considered optimal. This range is suitable for most applications, aiming to reduce the risk without significantly impacting user convenience. ["For high-security applications, common idle timeouts range from 2 to 5 minutes, while lower-risk applications might opt for 15 to 30 minutes."](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration)
+- `httpOnly`: To prevent client-side scripts from accessing the cookie, mitigating the risk of XSS (Cross-Site Scripting) attacks. 
+- `secure`: To Ensure the cookie is transmitted only over secure HTTPS connections, enhancing data protection. Optionally, setting the `SameSite` attribute can further secure the cookie from cross-site request forgery (CSRF) attacks by controlling cross-origin requests.
 
 #### Verifying Session Cookies
 

@@ -26,7 +26,7 @@ To develop a custom, secure authentication system that grants verified users acc
 
 The chosen authentication flow begins with client-side user sign-in, progresses through backend token validation, and ends with session management via httpOnly cookies. This method prioritizes security by minimizing client-side exposure of sensitive tokens.
 
-### Client-Side Authentication
+### Frontend: Client-Side Authentication
 
 #### Initialization and Persistence Setting
 

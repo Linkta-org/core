@@ -1,5 +1,5 @@
 import React from 'react';
-import PromptInputForm from '../../components/common/PromptInputForm';
+import PromptInputForm from '@/client/components/common/PromptInputForm';
 
 const PromptInputPage = () => {
   return (

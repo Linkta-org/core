@@ -1,6 +1,6 @@
 # Authentication Flow with Firebase
 
-Period: 2024-03-06 to 2024-03-31
+Period: 2024-03-06 to 2024-04-03
 
 Status: Draft (This document is currently under review. Status will be updated upon final decision.)
 

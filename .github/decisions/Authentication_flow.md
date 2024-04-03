@@ -62,7 +62,7 @@ To sign out, the client sends a request to the `/sessionLogout` endpoint. The se
 - `maxAge`: To balance user experience with security measures, a duration between 30 minutes and 2 hours is typically considered optimal. This range is suitable for most applications, aiming to reduce the risk without significantly impacting user convenience. ["For high-security applications, common idle timeouts range from 2 to 5 minutes, while lower-risk applications might opt for 15 to 30 minutes."](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration)
 - `httpOnly`: To prevent client-side scripts from accessing the cookie, mitigating the risk of XSS (Cross-Site Scripting) attacks. 
 - `secure`: To Ensure the cookie is transmitted only over secure HTTPS connections, enhancing data protection. Optionally, setting the `SameSite` attribute can further secure the cookie from cross-site request forgery (CSRF) attacks by controlling cross-origin requests.
-- `VerifySessionCookie` and `VerifyIdToken` returns a Promise <DecodedIdToken/DecodedClaim> contain below properties:
+- `VerifySessionCookie` and `VerifyIdToken` returns a Promise [<DecodedIdToken/DecodedClaim>](https://firebase.google.com/docs/reference/admin/node/firebase-admin.auth.baseauth.md#baseauthverifysessioncookie) contain below properties:
     - aud: string 
     - auth_time: number
     - email_verified: boolean

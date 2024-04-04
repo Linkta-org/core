@@ -14,7 +14,8 @@ To develop a custom, secure authentication system that grants verified users acc
 2. Possible challenges in user experience due to the absence of persistent client-side state, requiring users to re-authenticate more often.
 
 ## Options Explored
-1. Using backend session cookie management approach
+1. Client-Side ID Token Verification and Storage
+  - Considered having the client directly verify the Firebase ID token and then store it for subsequent use in either the request headers or the browser's localStorage. While this approach could streamline certain aspects of client-server communication by leveraging the client's capabilities for initial token validation, it raises significant security concerns. Storing sensitive tokens client-side, especially in localStorage, substantially increases the risk of Cross-Site Scripting (XSS) attacks. Attackers exploiting XSS vulnerabilities could potentially access these stored tokens, leading to unauthorized access to user sessions. This method was ultimately deemed less secure, emphasizing the importance of minimizing sensitive data exposure on the client side to enhance overall application security.
 
 ## Challenges
 1. Maintenance and scalability complexity in the future

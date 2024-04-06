@@ -5,10 +5,10 @@ Period: 2024-04-05
 Status: Proposed
 
 ## Goal:
-To select an optimal UI library that best meets the requirements for a tree visualization feature. This includes user-friendly drag-and-drop capabilities, efficient re-rendering for performance optimization, and comprehensive editing functionalities to enhance user experience and interaction with the tree structure.
+To select an optimal UI library that best meets the requirements for a tree visualization feature. This includes user-friendly drag-and-drop capabilities, efficient re-rendering for performance optimization, and comprehensive editing functionalities to enhance user experience and interaction with the tree structure, and consideration of library bundle sizes and documentation clarity.
 
 ## Limitations:
-- **Technical Constraints**: Must integrate well with current tech stack (React, TypeScript, Zustand, and React Query), ensuring low latency, scalability, security, and compatibility.
+- **Technical Constraints**: Must seamlessly integrate with the current tech stack, including React, TypeScript, Zustand, and React Query, while ensuring low latency, scalability, and security. Additionally, the library should offer broad compatibility across platforms, aligning with future stretch goals to support both web and mobile applications effectively.
 - **User Experience (UX)**: Requires intuitive navigation and manipulation capabilities, with support for responsive design and interactive elements like drag-and-drop.
 - **Resources**: Should facilitate rapid development within a constrained budget and timeline, suitable for a team primarily experienced with MERN stack.
 - **Market Factors**: Should offer competitive advantages in a tight market, with the potential for future enhancements.

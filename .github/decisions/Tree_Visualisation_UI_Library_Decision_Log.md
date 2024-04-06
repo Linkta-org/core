@@ -1,8 +1,8 @@
 # Tree Visualization UI Library Decision Log
 
-Period: 2024-04-05
+Period: 2024-04-06
 
-Status: Proposed
+Status: Approved
 
 ## Goal:
 To select an optimal UI library that best meets the requirements for a tree visualization feature. This includes user-friendly drag-and-drop capabilities, efficient re-rendering for performance optimization, and comprehensive editing functionalities to enhance user experience and interaction with the tree structure, and consideration of library bundle sizes and documentation clarity.

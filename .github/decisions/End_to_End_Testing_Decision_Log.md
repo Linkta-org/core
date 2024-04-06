@@ -1,8 +1,8 @@
 # End to End Testing Framework Decision Log
 
-Period: 2024-04-04
+Period: 2024-04-04 - 2024-04-06
 
-Status: Proposed
+Status: Accepted
 
 ***
 

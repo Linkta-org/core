@@ -2,7 +2,7 @@
 ## Description
 
 <!--
-Please include a summary of the feature and the core functionality of your PR. Please nclude relevant motivation and context. List any dependencies that are required for this change.
+Please include a summary of the feature and the core functionality of your PR. Please include relevant motivation and context. List any dependencies that are required for this change.
 
 Linking Issues:
  - To associate this pull request with a GitHub issue within the same repository, use the "Fixes #IssueNumber" syntax.

@@ -10,13 +10,13 @@ router.get('/', (_: Request, res: Response) => {
 });
 
 /**
- * Ask a single question of the AI.
+ * Ask the AI to generate a tree.
  */
 router.post(
   '/query',
-  genAIController.generateResponse,
+  genAIController.generateTree,
   (_: Request, res: Response) => {
-    res.send({ message: 'AI response', response: res.locals.response });
+    res.send({ message: 'tree', response: res.locals.tree });
   }
 );
 

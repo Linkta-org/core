@@ -1,4 +1,4 @@
-import type { MiddlewareError } from '@/server/types/middleware';
+import type { MiddlewareError } from '@/server/types/';
 import type { Request, Response } from 'express';
 
 /**

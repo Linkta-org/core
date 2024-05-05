@@ -1,4 +1,4 @@
-import createAI from '@server/utils/AIFactory';
+import createAI from '@server/utils/aiFactory';
 import { createError } from '@/server/middleware/errorHandling';
 import TreePrompts from '@/server/models/TreePromptsModel';
 import { isType } from '@server/utils/typeChecker';

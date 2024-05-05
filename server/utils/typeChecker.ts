@@ -10,7 +10,7 @@
  */
 export function isType<T extends object>(object: T, type: Partial<T>): boolean {
   // make sure that each object has the same number of keys
-  if (Object.keys(object).length === Object.keys(type).length) {
+  if (Object.keys(object).length !== Object.keys(type).length) {
     return false;
   }
 

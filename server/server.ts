@@ -1,6 +1,6 @@
 import express from 'express';
 import { getEnv } from '@server/utils/environment';
-import genAI from '@server/routes/genAI';
+import genAI from '@server/routes/genAi';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
 import bodyParser from 'body-parser';
 

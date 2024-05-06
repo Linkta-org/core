@@ -3,11 +3,12 @@ import { getEnv } from '@server/utils/environment';
 import genAI from '@server/routes/genAi';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
 import bodyParser from 'body-parser';
-
+import { MongoClient, ServerApiVersion } from 'mongodb';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
 
 getEnv();
+const uri = process.env.MONGO_DB_URI;
 
 /**
  * Start the server.
@@ -16,7 +17,11 @@ function startServer() {
   const app: Express = express();
   const PORT = process.env.PORT || 3000;
 
-  connectToDatabase();
+  if (!uri) {
+    throw new Error('Missing DB connection string!');
+  }
+
+  connectToDatabase(uri).catch(console.dir);
 
   app.use(bodyParser.json());
 
@@ -84,8 +89,29 @@ function stopServer(server: Server) {
  *
  * This should return the connection so that stopServer can use it to disconnect.
  */
-function connectToDatabase() {
+
+async function connectToDatabase(link: string) {
   // connect to the database
+  const client = new MongoClient(link, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db('admin').command({ ping: 1 });
+    console.log(
+      'Pinged your deployment. You successfully connected to MongoDB!'
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
 }
 
 /**

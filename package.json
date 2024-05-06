@@ -51,9 +51,9 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.2.1",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
     "@tanstack/react-query": "^5.28.8",
     "@tanstack/react-query-devtools": "^5.28.8",
-    "@radix-ui/react-navigation-menu": "^1.1.4",
     "axios": "^1.6.7",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -67,6 +67,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
+    "reactflow": "^11.11.3",
     "ts-node": "^10.9.2",
     "zustand": "^4.5.2"
   }

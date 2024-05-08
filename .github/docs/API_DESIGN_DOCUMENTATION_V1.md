@@ -110,7 +110,7 @@ The base URL for the Linkta API is: `https://api.linkta.io/v1`
     - `500 Internal Server Error` : `{ "message": "Error in deleting user account" }`
 
 ## Data Models
-ER Diagram -> [﻿Linkta Data Models](https://app.eraser.io/workspace/EJ7k7P8yiDQCqBUsEdoI)
+![Data Design ER Diagram](./assets/data-design-erdiagram.svg "data design erdiagram")
 
 **Current Data models:**
 

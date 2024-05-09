@@ -1,13 +1,13 @@
 import React from 'react';
-import SandboxReactFlow from './components/sandboxReactFlow';
+import TreeVisualizationBox from './components/TreeVisualizationBox';
 
 const OutputVisualizationPage = () => {
   return (
-    <>
-      <div>OutputVisualizationPage Placeholder</div>
-      <SandboxReactFlow></SandboxReactFlow>
-    </>
-  )
+    <div>
+      <h1>Hello World</h1>
+      <TreeVisualizationBox />
+    </div>
+  );
 };
 
 export default OutputVisualizationPage;

@@ -1,7 +1,11 @@
 import React from 'react';
 
 const HomePageTreeVisualizationPanel = () => {
-  return <div>HomePageTreeVisualizationPanel</div>;
+  return (
+    <div>
+      <h1>HomePageTreeVisualizationPanel</h1>
+    </div>
+  );
 };
 
 export default HomePageTreeVisualizationPanel;

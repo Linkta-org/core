@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
+import { LinktaFlowRouter } from './routes/linktaFlowRoutes';
 
 getEnv();
 const uri = process.env.MONGO_DB_URI;
@@ -36,6 +37,8 @@ function startServer() {
    * Routes.
    */
   app.use('/gen-ai', genAI);
+
+  app.use('/api/trees', LinktaFlowRouter);
 
   /**
    * Default route for unknown routes. This should be the last route.

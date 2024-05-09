@@ -20,10 +20,19 @@
 17. [Future Enhancements and Roadmap](#future-enhancements-and-roadmap)
 
 ## Introduction
-Linkta is an innovative learning platform designed to empower users by connecting ideas and concepts, enabling efficient organization and understanding of complex topics. It allows users to create personalized learning paths, establish hierarchies, and visualize relationships between concepts, facilitating a deeper understanding and efficient learning process. This document outlines the system design for the Minimum Viable Product (MVP) of Linkta.
+### Overview
+Linkta is an innovative e-learning platform that aims to address the challenges learners face in comprehending complex topics and grasping the interconnections within vast bodies of knowledge. In an era of information overload, Linkta empowers users by providing a visual interface to create personalized knowledge graphs that establish hierarchies to uncover the hidden relationships between concepts.
+
+### Purpose
+The core functionality of Linkta revolves around transforming intricate subjects into interactive visual representations through the integration of natural language processing and intuitive user interactions. By leveraging these technologies, Linkta enables learners to navigate complex domains efficiently, filter out extraneous content, and focus on the most salient concepts and their relationships, facilitating a deeper understanding of the subject matter.
+
+### Scope
+This document outlines the system design for the Minimum Viable Product (MVP) of Linkta, detailing the architectural decisions, technical implementations, and design considerations required to bring this innovative learning solution to fruition.
+
+### Objectives
+By introducing visual metaphors and personalized knowledge graphs, Linkta aims to revolutionize the way individuals acquire, organize, and retain knowledge, empowering them to unlock their full learning potential and achieve a deeper comprehension of complex topics.
 
 ## Requirements
-
 ### Functional Requirements:
 - **User Authentication and Authorization**
     - Support OAuth and other single sign-on methods
@@ -49,7 +58,6 @@ Linkta is an innovative learning platform designed to empower users by connectin
 - **User Management:**
     - Allow users to customize their preferences and settings, such as profile information, password reset, and dark/light mode
     - Provide an option for users to delete their account
-
 ### Non-Functional Requirements:
 - **Performance:** Fast response times for API endpoints and optimized tree retrieval and rendering to reduce bounce rates.
 - **Scalability:** Capable of handling an increasing number of users and data without performance degradation.
@@ -61,42 +69,36 @@ Linkta is an innovative learning platform designed to empower users by connectin
 - **Compatibility:** Functionality across various browsers and devices, particularly mobile.
 - **Data Management:** Ensures data consistency and integrity, particularly for user-generated content.
 - **Legal and Ethical Compliance:** Adherence to legal and ethical standards applicable to the software and its use.
-
 ## Constraints and Limitations
-
 ### Technical Constraints:
 - **Tech Stack Integration:** Selected technologies must integrate seamlessly for low latency, high scalability, and robust security.
 - **Cross-Platform Compatibility:** The system should be designed to support both web and potential future mobile applications, ensuring a consistent user experience across platforms.
-
 ### Resource Constraints:
 - **Development Efficiency:** The development process must be efficient, leveraging the team's existing expertise with the MERN (MongoDB, Express, React, Node.js) stack within the constraints of a limited budget and timeline.
 - **Budget Limitations:** Due to financial constraints, strategic feature prioritization and efficient resource allocation are necessary to deliver a high-quality product within the allocated budget.
-
 ### Market Constraints:
 - **Competitive Advantage:** To stand out in a competitive market, the Linkta system should offer unique features or superior performance compared to existing solutions.
 - **Future Enhancements:** The system should be designed to accommodate future enhancements, including the integration of Retrieval-Augmented Generation (RAG) post-MVP, to enhance data processing and user interaction capabilities.
-
 ## System Architecture
-Linkta follows a client-server model with a frontend built on TypeScript, React, and various libraries, and a backend built using Node.js, Express, Redis, and MongoDB. The frontend communicates with the backend through a RESTful API. Firebase Authentication is used for user authentication and authorization. The system is deployed on Google Cloud Platform (GCP) with Firebase Hosting.
+Linkta employs a client-server architecture, facilitating interaction between the user-facing frontend and the server-side backend through a RESTful API. The frontend is developed using TypeScript and React, incorporating various libraries to enhance interactivity and user experience. The backend is built on Node.js and Express, with Redis for caching and MongoDB for data persistence.
+
+User authentication and authorization are managed through Firebase Authentication. The entire system is hosted on Google Cloud Platform (GCP) with Firebase Hosting.
 
 ## Technology Stack
 - **Frontend:** TypeScript, React, React Flow, Zustand, React Query, Firebase Authentication
 - **Backend:** Node.js, Express, Redis, MongoDB
-- **AI Provider:** Gemini (version TBD)
+- **AI Provider**: Gemini (version TBD)
 - **DevOps/Infrastructure:** GCP, Firebase Hosting, GitHub Actions, Git
 - **Testing:** Jest, Cypress
 - **Other:** Zod
 - **Pending decisions:** Choice of notification library (React Toastify/React Hot Toast), logging library (Winston/Sentry), and monitoring and alerting tools
-
 ## Data Models and Database Design
-The main entities include:
 - **User:** Represents a user of the system, storing information such as ID, email, name, settings, and creation timestamp.
 - **Prompt Meta:** Stores metadata related to a user's submitted prompt, including ID, user ID, original prompt, associated tree ID, and creation timestamp.
 - **Prompt Data:** Stores the processed and optimized prompt data, including ID, associated prompt meta ID, engineered prompt, and LLM response.
 - **Tree:** Represents a learning tree, storing information such as ID, user ID, name, root node ID, creation timestamp, and last update timestamp.
 - **Node:** Represents a node within a learning tree, storing information such as ID, associated tree ID, parent ID, content, creation timestamp, and last update timestamp.
-
-The detailed field-level information for each entity can be found in the "Data Models" section of the [Linkta API Design" documentation](https://app.eraser.io/workspace/TCClWhuYjciANvj4k9Ab) and the [data models ER diagrams](https://app.eraser.io/workspace/EJ7k7P8yiDQCqBUsEdoI).
+The detailed field-level information for each entity can be found in the "Data Design" section of the [﻿API Design documentation](https://app.eraser.io/workspace/TCClWhuYjciANvj4k9Ab) and the [﻿data design ER diagram](https://app.eraser.io/workspace/EJ7k7P8yiDQCqBUsEdoI).
 
 ## API Design
 The Linkta API follows a REST architecture and uses JSON format for requests and responses. The API endpoints are categorized into the following main groups:
@@ -105,10 +107,9 @@ The Linkta API follows a REST architecture and uses JSON format for requests and
 - **Prompt Submission and Augmentation:** Allows users to submit prompts, processes them, and generates tree structures.
 - **Tree Management:** Provides endpoints for retrieving, updating, and deleting trees and their associated nodes.
 - **User Management:** Handles user-related operations such as updating user settings and deleting user accounts.
-The detailed API endpoints, request/response formats, and authentication requirements can be found in the [Linkta API Design documentation](https://app.eraser.io/workspace/TCClWhuYjciANvj4k9Ab).
-
+The detailed API endpoints, request/response formats, and authentication requirements can be found in the [﻿API Design documentation](https://app.eraser.io/workspace/TCClWhuYjciANvj4k9Ab).
 ## Module or Component Design
-### UI Design:  [Figma](https://www.figma.com/file/9QKsvDQ9jivgA9XfS0oqPd/Design-System---Linkta?type=design&node-id=691-3754&mode=design&t=kUnZmiidrbvSyFQ0-0)
+### UI Design: [﻿Figma](https://www.figma.com/file/9QKsvDQ9jivgA9XfS0oqPd/Design-System---Linkta?type=design&node-id=691-3754&mode=design&t=kUnZmiidrbvSyFQ0-0)
 ### Modules:
 1. **User Authentication and Authorization**
     - Authentication Service: Handles user authentication using Firebase Authentication, generates session tokens, and validates tokens for subsequent requests.
@@ -120,14 +121,13 @@ The detailed API endpoints, request/response formats, and authentication require
 3. **Tree Management**
     - Tree Retrieval Service: Fetches and returns the list of trees associated with an authenticated user, as well as fetches individual trees and their nodes.
     - Tree Modification Service: Handles operations such as creating, updating, and deleting trees and nodes.
-    - Tree Caching Service: Implements caching mechanisms to improve the performance of tree retrieval and modification operations.
 4. **Tree Visualization**
     - Tree Rendering Service: Responsible for rendering the tree structure and nodes in the user interface, including handling node interactions (CRUD, drag-and-drop, highlighting).
     - Undo/Redo Service: Manages the undo and redo functionality for tree and node modifications.
 5. **User Management**
     - User Settings Service: Handles updating user settings, such as theme preferences, and potentially deleting user accounts.
 6. **Bug Reporting and Support**
-    - Bug Reporting Service: Users can click and email [﻿info@linkta.io](mailto:info@linkta.io) to submit a bug report.
+    - Bug Reporting Service: Users can click and email [﻿info@linkta.io](mailto:info@linkta.io)  to submit a bug report.
 7. **Infrastructure and DevOps**
     - Cloud Infrastructure Services: Provisions and manages the necessary cloud resources (e.g., virtual machines, load balancers, databases) on Google Cloud Platform (GCP).
     - Continuous Integration and Deployment (CI/CD) Pipeline: Automates the build, testing, and deployment processes using GitHub Actions and Firebase Hosting.
@@ -136,10 +136,35 @@ The detailed API endpoints, request/response formats, and authentication require
     - Logging and Error Handling: Implements a centralized logging system and robust error-handling mechanisms.
     - Performance Optimization: Employs techniques like caching, load balancing, and database indexing to ensure optimal performance.
     - Security and Compliance: Implements security best practices, such as input validation, rate limiting, and adherence to data privacy regulations (GDPR, CCPA).
-9. **Integration with Third-Party Services** - Work in progress
+9. **Integration with Third-Party Services**
+_(Work in progress)_
 
 ## Business Logic and Algorithms
-_Work in progress_
+1. **Prompt Processing and Engineering**:
+    - Validation rules and logic for sanitizing user-submitted prompts.
+    - Algorithms for transforming prompts into an optimized format for LLM processing.
+    - Context extraction and enrichment logic for adding relevant information to prompts.
+2. **Tree Generation from LLM Responses**:
+    - Algorithms for parsing and interpreting the LLM's responses to construct tree structures.
+    - Logic for identifying hierarchical relationships and organizing nodes within the tree.
+3. **Node Interaction and Tree Manipulation**:
+    - Algorithms for efficient tree traversal and node manipulation operations.
+    - Algorithms for maintaining tree integrity and minimizing edge overlaps during node movements.
+    - Algorithms for automatic edge adjustment and layout optimization.
+4. **Undo/Redo**:
+    - State management logic for tracking and storing tree and node modifications.
+    - Algorithms for efficiently reverting and reapplying changes to the tree structure and node data.
+5. **Asynchronous LLM Integration**:
+    - Task queuing and job scheduling algorithms for background prompt processing.
+    - Retry strategies and timeout handling algorithms for LLM requests.
+6. **Search and Filtering**:
+    - Indexing and search algorithms for efficient tree, node, and prompt data retrieval.
+7. **Error Handling and Logging**:
+    - Error classification and handling logic based on error types and severity levels.
+    - Log aggregation and analysis rules for effective troubleshooting and monitoring.
+8. **Performance Optimization**:
+    - Logic for optimizing tree rendering and visualization performance.
+_(Work in progress)_
 
 ## Caching and Performance Optimization
 _Work in progress_
@@ -148,22 +173,17 @@ _Work in progress_
 _Work in progress_
 
 ## Security Considerations
-The system incorporates various security measures, including:
 - **Authentication and Authorization:** Firebase Authentication is used for user authentication and authorization. API endpoints are protected and require valid session tokens for access.
 - **Data Privacy:** The system will be designed to comply with relevant data privacy laws such as GDPR and CCPA.
 - **Rate Limiting:** Rate limiting mechanisms will be implemented to prevent abuse and protect against excessive requests.
 - **Secure Communication:** HTTPS will be used for all client-server communications to ensure data confidentiality and integrity.
-
 ## Testing Strategy
-The testing strategy for Linkta includes:
-- **Unit Testing:** Individual components and modules will be tested using Jest to ensure they function as expected in isolation.
+- **Unit Testing:** Individual components and modules will be tested using Jest, React Testing Library to ensure they function as expected in isolation.
 - **Integration Testing:** Integration tests will be performed to verify the proper functioning of component interactions and workflows.
 - **End-to-End Testing:** Cypress will be used for end-to-end testing to simulate user interactions and validate the system's behavior from the user's perspective.
-- **Continuous Integration and Continuous Deployment (CI/CD):** GitHub Actions will be utilized to automate the build, testing, and deployment processes.
-
 ## Deployment and DevOps
-Linkta will be deployed on Google Cloud Platform (GCP) using Firebase Hosting for the frontend and GCP services for the backend. The deployment process will be automated using GitHub Actions, enabling continuous integration and continuous deployment (CI/CD).
-
+- **Deployment:** Linkta will be deployed on Google Cloud Platform (GCP) using Firebase Hosting.
+- **Continuous Integration and Continuous Deployment (CI/CD):** GitHub Actions will be utilized to automate the build, testing, and deployment processes.
 ## Scalability and Performance
 _Work in progress_
 
@@ -172,4 +192,3 @@ _Work in progress_
 
 ## Future Enhancements and Roadmap
 _Work in progress_
-

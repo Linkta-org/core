@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCallback, useRef } from 'react';
-import type { NodeOrigin, OnConnectStart, OnConnectEnd } from 'reactflow';
+import type { Node, NodeOrigin, OnConnectStart, OnConnectEnd } from 'reactflow';
 import ReactFlow, {
   Controls,
   Panel,

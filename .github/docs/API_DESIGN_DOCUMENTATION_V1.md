@@ -28,6 +28,7 @@ The base URL for the Linkta API is: `https://api.linkta.io/v1`
 - **Responses:**
     - `200 OK`  : `{ "message": "Logout successful." }`
     - `400 Bad Request`  : `{ "message": "Your session has expired. Please log in again to continue." } `
+
 ### UserInput Submission and Processing
 
 Design 1:
@@ -259,7 +260,7 @@ _Header Example: _`_Authorization: Bearer <session_token> _`_ _
 **_Token Validation and User ID Extraction: _**_When a request is received, the API validates the session token and extracts the user ID embedded within it. This ID is then used to perform user-specific actions, such as accessing or modifying user data._
 
 ### UserInput Submission and Processing
->_Work in progress_
+**UserInput Sanitization:** To cleanse the data entered by users, removing any potentially malicious code, erroneous or unwanted characters, and ensuring that the input adheres to the expected format and type
 
 ### LinktaFlow Interaction
 > _Work in progress_

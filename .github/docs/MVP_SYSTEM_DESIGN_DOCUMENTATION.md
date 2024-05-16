@@ -105,10 +105,12 @@ User authentication and authorization are managed through Firebase Authenticatio
 - **Pending decisions:** Choice of notification library (React Toastify/React Hot Toast), logging library (Winston/Sentry), rate limiter, and monitoring and alerting tools
 
 ## Data Design
-The detailed field-level information for each entity can be found in the "Data Design" section of the [API Design documentation](https://app.eraser.io/workspace/TCClWhuYjciANvj4k9Ab) and the [data design ER diagram](https://app.eraser.io/workspace/EJ7k7P8yiDQCqBUsEdoI).
+> _link to be updated_
+The detailed field-level information for each entity can be found in the "Data Design" section of the [API Design documentation]() and the [data design ER diagram]().
 
 ## API Design
-The detailed API endpoints, request/response formats, and authentication requirements can be found in the [API Design documentation](https://app.eraser.io/workspace/TCClWhuYjciANvj4k9Ab).
+> _link to be updated_
+The detailed API endpoints, request/response formats, and authentication requirements can be found in the [API Design documentation]().
 
 ## Module Design
 ### User Interface Design:
@@ -179,28 +181,12 @@ Backend:
    - Estimated Effort: 2 hours.
    - Acceptance Criteria:
         - UserInput is sanitized on the server-side.
-
-3. Improve pre-processing (add context, reformat) mechanism of UserInput.
-   - Estimated Effort: 8 hours.
-   - Acceptance Criteria:
-        - Pre-processing mechanisms are improved.
-        - User input is enriched with relevant context.
-        - Input is reformatted to ensure compatibility with LLM.
-
-4. Improve LLM interaction mechanism to process UserInput and generate a LinktaFlow.
-   - Implement a mechanism to ensure the generated LinktaFlow adheres to the desired format.
-   - Estimated Effort: 4 hours.
-   - Acceptance Criteria:
-        - Generated LinktaFlow is validated against the desired format.
-        - Validation errors are handled gracefully.
-        - LinktaFlow is formatted correctly before storage.
-
-5. Handle sanitized UserInput and generated LinktaFlow storage in the database.
-   - Estimated Effort: 2 hours.
-   - Acceptance Criteria:
-        - UserInput and LinktaFlow are stored securely in the database.
-        - Data integrity is maintained.
-        - Retrieval and querying of stored data are efficient.
+3. Handle sanitized UserInput storage in the database
+    - Estimated Effort: 2 hours
+    - Acceptance Criteria:
+        - UserInput is stored securely in the database
+        - Data integrity is maintained
+        - Retrieval and querying of stored data are efficient
 
 #### LinktaFlow Visualization and Interaction - Sprint 1
 >_Work in progress_
@@ -217,9 +203,21 @@ Frontend:
 7. Implement undo/redo functionality to allow users to revert or re-apply changes made to LinktaFlow
 
 Backend:
-1. Implement API endpoints for retrieving, updating, and deleting a specific LinktaFlow
-2. Handle LinktaFlow data manipulation and storage in the database
-3. (TBD) Implement LinktaFlow versioning and history tracking
+1. Improve pre-processing (add context, reformat) mechanism of UserInput
+    - Estimated Effort: 8 hours
+    - Acceptance Criteria:
+        - Pre-processing mechanisms are improved
+        - User input is enriched with relevant context
+        - Input is reformatted to ensure compatibility with LLM
+2. Improve LLM interaction mechanism to process UserInput and generate a LinktaFLow
+    - Implement a mechanism to ensure the generated LinktaFlow adheres to the desired format
+        - Estimated Effort: 4 hours
+        - Acceptance Criteria:
+            - Generated LinktaFlow is validated against the desired format
+            - Validation errors are handled gracefully
+            - LinktaFlow is formatted correctly before storage
+3. Handle LinktaFlow data manipulation and storage in the database
+4. (TBD) Implement LinktaFlow versioning and history tracking
 
 #### User Authentication and Authorization - Sprint 2
 >_Work in progress_

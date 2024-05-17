@@ -7,7 +7,7 @@ This document provides an overview of the Linkta API, which follows a RESTful ar
 The base URL for the Linkta API is: `https://api.linkta.io`
 
 ## Diagram
-![API Design Flowchart](./assets/api-design-flowchart.svg "api design flowchart")
+![API Design Flowchart](./assets/api-design-flowchart.png "api design flowchart")
 
 ## Endpoints
 ### User Authentication and Authorization

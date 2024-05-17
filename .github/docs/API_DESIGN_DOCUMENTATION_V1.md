@@ -37,7 +37,7 @@ Design 1:
 - **Payload:** `{ "input": "User's Initial Input" }`
 - **Headers:**
     - `Authorization: Bearer <session_token>`
-    - `X-Request-ID: <Unique Request ID>`
+    - `requestId: <Unique Request ID>`
 - **Responses:**
 - `200 OK: { "linktaFlow": <LinktaFlow Object>} `
 - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
@@ -104,7 +104,6 @@ Design 2 (async):
 - **Payload:** `{ "updatedLinktaFlow": <Updated LinktaFlow Object> }  `
 - **Headers:**
     - `Authorization: Bearer <session_token>`
-    - `requestId: <Unique Request ID>`
 - **Responses:**
     - `200 OK`  : `{ "message": "Linkta Flow updated successfully on [timestamp]." } `
     - `400 Bad Request`  :` { "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." } `

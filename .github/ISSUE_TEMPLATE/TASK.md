@@ -1,6 +1,6 @@
 ---
-name: Ticket
-about: Create a ticket for a user story
+name: Task
+about: Create a task for a user story
 title: ''
 labels: ''
 assignees: ''

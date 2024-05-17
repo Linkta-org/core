@@ -31,6 +31,8 @@ The base URL for the Linkta API is: `https://api.linkta.io/v1`
 
 ### UserInput Submission and Processing
 
+#### Submit UserInput
+
 Design 1:
 - **Endpoint:** `POST /api/v1/inputs`
 - **Description:** Receives a UserInput and begins processing it to generate a LinktaFlow.
@@ -73,6 +75,21 @@ Design 2 (async):
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
     - `404 Not Found` : `{ "message": "The requested task could not be found. The task ID might be incorrect or the task might have been completed." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+
+#### Fetch UserInput
+
+- **Endpoint:** `GET /api/v1/inputs/:userInputId`
+- **Description:** Retrieves a specific UserInput by its unique identifier.
+- **Parameters:**
+  - `userInputId` (string, required): The unique identifier of the UserInput to retrieve.
+- **Headers:**
+  - `Authorization: Bearer <session_token>`
+- **Responses:**
+  - `200 OK`: `{ "userInput": <UserInput Object> }`
+  - `400 Bad Request`: `{ "message": "The provided input ID is invalid. Please check the ID and try again." }`
+  - `401 Unauthorized`: `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+  - `404 Not Found`: `{ "message": "The requested UserInput could not be found. It may have been deleted or the ID might be incorrect." }`
+  - `500 Internal Server Error`: `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
 ### LinktaFlow Management
 >_Work in progress_

@@ -4,7 +4,7 @@
 This document provides an overview of the Linkta API, which follows a RESTful architecture and uses JSON for request and response payloads.
 
 ## Base URL
-The base URL for the Linkta API is: `https://api.linkta.io/v1`
+The base URL for the Linkta API is: `https://api.linkta.io`
 
 ## Diagram
 ![API Design Flowchart](./assets/api-design-flowchart.svg "api design flowchart")
@@ -14,7 +14,7 @@ The base URL for the Linkta API is: `https://api.linkta.io/v1`
 >_Work in progress_
 
 #### Session Login
-- **Endpoint:** `POST /api/v1/auth/login`
+- **Endpoint:** `POST /v1/auth/login`
 - **Description:** Authenticates a user using Firebase Authentication and generates a session token.
 - **Payload:** `{ "idToken": "<Firebase ID Token>" }`
 - **Responses:**
@@ -22,7 +22,7 @@ The base URL for the Linkta API is: `https://api.linkta.io/v1`
     - `400 Bad Request`  : `{ "message": "The login token provided is incorrect or expired. Please log in again to obtain a valid token." } `
 
 #### Session Logout
-- **Endpoint:** `POST /api/v1/auth/logout`
+- **Endpoint:** `POST /v1/auth/logout`
 - **Description:** Invalidates the session token, effectively logging out the user.
 - **Payload:** `{ "sessionToken": "<Session Token to Invalidate>" }`
 - **Responses:**
@@ -34,7 +34,7 @@ The base URL for the Linkta API is: `https://api.linkta.io/v1`
 #### Submit UserInput
 
 Design 1:
-- **Endpoint:** `POST /api/v1/inputs`
+- **Endpoint:** `POST /v1/inputs`
 - **Description:** Receives a UserInput and begins processing it to generate a LinktaFlow.
 - **Payload:** `{ "input": "User's Initial Input" }`
 - **Headers:**
@@ -52,7 +52,7 @@ Design 2 (async):
 
 **Step 1: Immediate Acknowledgement**
 
-- **Endpoint:** `POST /api/v1/inputs `
+- **Endpoint:** `POST /v1/inputs `
 - **Description:** Receives a UserInput and begins processing it to generate a LinktaFlow.
 - **Payload:** `{ "input": "User's Initial Input" }`
 - **Headers:**
@@ -65,7 +65,7 @@ Design 2 (async):
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
 
 **Step 2: Status Endpoint**
-- **Endpoint:** `GET /api/v1/inputs/status/:task_id `
+- **Endpoint:** `GET /v1/inputs/status/:task_id `
 - **Description:** Checks the status of a UserInput processing task.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
@@ -78,7 +78,7 @@ Design 2 (async):
 
 #### Fetch UserInput
 
-- **Endpoint:** `GET /api/v1/inputs/:userInputId`
+- **Endpoint:** `GET /v1/inputs/:userInputId`
 - **Description:** Retrieves a specific UserInput by its unique identifier.
 - **Parameters:**
   - `userInputId` (string, required): The unique identifier of the UserInput to retrieve.
@@ -95,7 +95,7 @@ Design 2 (async):
 >_Work in progress_
 
 #### Fetch LinktaFlow List
-- **Endpoint:** `GET /api/v1/flows`
+- **Endpoint:** `GET /v1/flows`
 - **Description:** Retrieves all LinktaFlows associated with the authenticated user.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
@@ -105,7 +105,7 @@ Design 2 (async):
     - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
 
 #### Fetch Specific LinktaFlow
-- **Endpoint:** `GET /api/v1/flows/:linktaFlowId `
+- **Endpoint:** `GET /v1/flows/:linktaFlowId `
 - **Description:** Retrieves a specific LinktaFlow object based on the tree's unique identifier.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
@@ -116,7 +116,7 @@ Design 2 (async):
     - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
 
 #### Update LinktaFlow
-- **Endpoint:** `PUT /api/v1/flows/:linktaFlowId`
+- **Endpoint:** `PUT /v1/flows/:linktaFlowId`
 - **Description:** Updates a specific LinktaFlow.
 - **Payload:** `{ "updatedLinktaFlow": <Updated LinktaFlow Object> }  `
 - **Headers:**
@@ -129,7 +129,7 @@ Design 2 (async):
     - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
 #### Delete LinktaFlow
-- **Endpoint:** `DELETE /api/v1/flows/:linktaFlowId `
+- **Endpoint:** `DELETE /v1/flows/:linktaFlowId `
 - **Description:** Deletes a specific LinktaFlow Object and all its associated data.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
@@ -144,7 +144,7 @@ Design 2 (async):
 >_Work in progress_
 
 #### Update User Settings
-- **Endpoint:** `PUT /api/v1/users/settings`
+- **Endpoint:** `PUT /v1/users/settings`
 - **Description:** Updates user settings.
 - **Payload:** `{ "theme": "dark" }`
 - **Headers:**
@@ -156,7 +156,7 @@ Design 2 (async):
     - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
 
 #### Delete User Account
-- **Endpoint:** `DELETE /api/v1/users `
+- **Endpoint:** `DELETE /v1/users `
 - **Description:** Deletes the user account.
 - **Headers:**
     - `Authorization: Bearer <session_token>`

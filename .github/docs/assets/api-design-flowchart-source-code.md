@@ -1,5 +1,13 @@
 
-### Instruction: to visualize the following code,  visit https://app.eraser.io.  Create a new diagram and paste the following code inside the code editor.
+### How to update the flowchart in the API design document:
+1. Create a free account at https://app.eraser.io.
+2. Create a new diagram, double-click the diagram.
+3. Copy the code inside the code block below, and paste it in the code editer on eraser.io.
+4. Make edits.
+5. Export the flowchart (as area: canvas, image type: SVG, image size: large, image background: transparent).
+6. Replace api-design-flowchart.svg in .github/docs/assets/ with the new SVG document.
+7. Preview the markdown to ensure the correct diagram is added.
+8. Submit a PR for the changes.
 
 ```
 Frontend [color: white,shape: oval, icon: monitor]

@@ -1,4 +1,4 @@
-# Linkta System Design Documentation
+# System Design Documentation
 
 ## Table of Contents
 1. [Introduction](#introduction)

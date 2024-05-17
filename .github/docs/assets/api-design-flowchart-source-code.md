@@ -23,9 +23,9 @@ Login > Authentication: POST /api/v1/auth/login
 Authentication > Firebase Token Validation: Initial request
 Firebase Token Validation <> Firebase Auth: validate token through Firebase Admin SDK
 Firebase Token Validation > Session Token Generation
-Session Token Generation > Authenticated User[icon: user-check, shape: oval]
+Session Token Generation > Authenticated [icon: check-circle]
 Authentication > Session Token Validation: Subsequent requests
-Session Token Validation > Authenticated User
+Session Token Validation > Authenticated
 
 Frontend > Logout
 Logout > Session Termination: POST /api/v1/auth/logout
@@ -33,24 +33,30 @@ Session Termination > Session Ended [shape: oval, icon: user-x]
 
 // UserInput Submission and Processing Flow
 UserInput Submission and Processing [color: green, icon: lock] {
-  Submit UserInput [icon: file-text, shape: oval]
-  UserInput Sanitization [icon: worker]
-  LLM Promp Pre-processing [icon: worker]
-  LLM Interaction [icon: worker]
+  Auth User_ [icon: user-check, shape: oval]
+  Submit UserInput [icon: file-text]
+  Fetch UserInput [icon: file-text]
+  Sanitize UserInput [icon: worker]
+  Store UserInput in Database [icon: worker]
 }
 
-Submit UserInput > UserInput Sanitization: POST /api/v1/inputs
-UserInput Sanitization > Database: Store sanitized prompt in DB
-UserInput Sanitization > LLM Promp Pre-processing:  Add context and structure format
-LLM Promp Pre-processing > LLM Interaction
-LLM Interaction <> LLM [icon: ai, color: yellow, shape: circle]: Send engineered UserInput
-LLM Interaction > Create LinktaFlow
+Auth User_ > Submit UserInput: POST /api/v1/inputs
+Auth User_ > Fetch UserInput: POST /api/v1/inputs/:userInputId
+Submit UserInput > Sanitize UserInput
+Sanitize UserInput > Store UserInput in Database
+Store UserInput in Database > Database: Store sanitized prompt in DB
+Sanitize UserInput > GenAIController [icon: worker]
+GenAIController <> LLM [icon: ai, color: yellow, shape: circle]: Send engineered UserInput
+GenAIController > Create LinktaFlow
 Create LinktaFlow > Database [icon: database, color: blue, shape: circle]: Store generated LinktaFlow in DB
-Create LinktaFlow > Send LinktaFlow to User [icon: user, shape: oval] : if successful
+Create LinktaFlow > Send LinktaFlow to User [icon: check-square, shape: oval] : if successful
+Fetch UserInput <> Database: Retrieve UserInput from DB
+Fetch UserInput > Send UserInpt to User [icon: check-square, shape: oval]
 
 
 // LinktaFlow Management Flow
 LinktaFlow Management [color: yellow, icon: lock] {
+  Auth_User [icon: user-check, shape: oval]
   Fetch LinktaFlow List [icon: git-branch]
   Fetch Specific LinktaFlow [icon: tree]
   Update LinktaFlow [icon: edit-3]
@@ -58,27 +64,32 @@ LinktaFlow Management [color: yellow, icon: lock] {
   Create LinktaFlow [icon: magic]
 }
 
-Fetch LinktaFlow List > Send LinktaFlow List to User [shape: oval, icon: check-square]: GET /api/v1/flows
-Fetch Specific LinktaFlow > Send Specific LinktaFlow to User [shape: oval, icon: check-square]: GET /api/v1/flows/:linkaFlowId
-Delete LinktaFlow > Notify User LinktaFlow Deleted [shape: oval, icon: check-square]: DELETE /api/v1/flows/:linkaFlowId
-Update LinktaFlow > Send Updated LinktaFlow to User[shape: oval, icon: check-square]: PUT /api/v1/flows/:linkaFlowId
+Auth_User > Fetch LinktaFlow List: GET /api/v1/flows
+Auth_User > Fetch Specific LinktaFlow: GET /api/v1/flows/:linkaFlowId
+Auth_User > Delete LinktaFlow: DELETE /api/v1/flows/:linkaFlowId
+Auth_User > Update LinktaFlow: PUT /api/v1/flows/:linkaFlowId
+Auth_User > Create LinktaFlow
+Fetch LinktaFlow List > Send LinktaFlow List to User [shape: oval, icon: check-square]
+Fetch Specific LinktaFlow > Send Specific LinktaFlow to User [shape: oval, icon: check-square]
+Delete LinktaFlow > Notify User LinktaFlow Deleted [shape: oval, icon: check-square]
+Update LinktaFlow > Send Updated LinktaFlow to User[shape: oval, icon: check-square]
 
 // User Management and Settings Flow
 User Management and Settings [color: red, icon: lock] {
-  Update Settings [icon: settings, shape: oval]
+  Auth User__ [icon: user-check, shape: oval]
   Update User Settings [icon: worker]
   Delete User Account [icon: worker]
 }
 
-Update Settings > Update User Settings: PUT /api/v1/users/settings
+Auth User__ > Update User Settings: PUT /api/v1/users/settings
 Update User Settings > Database: Update user doc
 Update User Settings >  Notify User Settings Updated [shape: oval, icon: check-square]
-Update Settings > Delete User Account: DELETE /api/v1/users
+Auth User__ > Delete User Account: DELETE /api/v1/users
 Delete User Account > Database: Delete user doc & related data
 Delete User Account > Notify User Account Deleted [shape: oval, icon: check-square]
 
 // Connections from Authenticated User to other processes
-Authenticated User > UserInput Submission and Processing
-Authenticated User  > LinktaFlow Management
-Authenticated User  > User Management and Settings
+Authenticated > UserInput Submission and Processing
+Authenticated  > LinktaFlow Management
+Authenticated  > User Management and Settings
 ```

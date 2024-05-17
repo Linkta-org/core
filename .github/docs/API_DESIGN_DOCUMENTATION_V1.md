@@ -281,7 +281,7 @@ Class: UserInputController
 Methods:
 - submitUserInput: Validates and processes the user input through sanitization and AI services, then stores and returns the generated LinktaFlow.
 - fetchUserInput: Retrieves and returns details of a specific user input by ID, ensuring the request is authorized and the input exists.
-- fetchUserInputStatus (design 2): Checks and returns the processing status of a user input, suitable for asynchronous processing models.
+- fetchUserInputStatus (design 2): Checks and returns the processing status of a user input.
 - sanitizeUserInput: Utility method for cleansing user input to ensure safety and conformity to expected formats.
 - storeUserInputInDatabase: Utility method for storing sanitized user input into the database.
 

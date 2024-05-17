@@ -276,7 +276,14 @@ _Header Example: _`_Authorization: Bearer <session_token> _`_ _
 **_Token Validation and User ID Extraction: _**_When a request is received, the API validates the session token and extracts the user ID embedded within it. This ID is then used to perform user-specific actions, such as accessing or modifying user data._
 
 ### UserInput Submission and Processing
-**UserInput Sanitization:** To cleanse the data entered by users, removing any potentially malicious code, erroneous or unwanted characters, and ensuring that the input adheres to the expected format and type
+
+Class: UserInputController
+Methods:
+- submitUserInput: Validates and processes the user input through sanitization and AI services, then stores and returns the generated LinktaFlow.
+- fetchUserInput: Retrieves and returns details of a specific user input by ID, ensuring the request is authorized and the input exists.
+- fetchUserInputStatus (design 2): Checks and returns the processing status of a user input, suitable for asynchronous processing models.
+- sanitizeUserInput: Utility method for cleansing user input to ensure safety and conformity to expected formats.
+- storeUserInputInDatabase: Utility method for storing sanitized user input into the database.
 
 ### LinktaFlow Interaction
 > _Work in progress_

@@ -1,4 +1,4 @@
-import createAI from '@/server/utils/AIFactory';
+import createAI from '@/server/utils/aiFactory';
 import { createError } from '@/server/middleware/errorHandling';
 
 import type { Request, Response, NextFunction } from 'express';

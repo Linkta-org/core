@@ -9,7 +9,6 @@ import genAI from '@server/routes/genAiRouter';
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
 
-
 getEnv();
 
 log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';

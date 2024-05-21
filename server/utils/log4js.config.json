@@ -10,7 +10,7 @@
   },
   "categories": {
     "default": {
-      "appenders": [ "out" ],
+      "appenders": ["out"],
       "level": "",
       "enableCallStack": true
     }

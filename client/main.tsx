@@ -26,12 +26,12 @@ const theme = createTheme({
     },
     text: {
       primary: '#3d8590',
-      secondary: '#fb8800'
+      secondary: '#fb8800',
     },
     background: {
       paper: '#eeeeee',
-      default: '#01383f'
-    }
+      default: '#01383f',
+    },
   },
 });
 

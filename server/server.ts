@@ -1,13 +1,21 @@
 import express from 'express';
-import { getEnv } from '@server/utils/environment';
-import genAI from '@/server/routes/genAiRouter';
-import { globalErrorHandler } from '@server/middleware/errorHandling';
 import bodyParser from 'body-parser';
-
+import { getEnv } from '@server/utils/environment';
+import { getLogger, configure, isConfigured } from 'log4js';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
 
+import genAI from '@server/routes/genAiRouter';
+import log4jsConfig from '@server/utils/log4js.config.json';
+import { globalErrorHandler } from '@server/middleware/errorHandling';
+
 getEnv();
+
+log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
+configure(log4jsConfig);
+
+const logger = getLogger('[Linkta Server]');
+isConfigured() && logger.info('Log4JS is configured!');
 
 /**
  * Start the server.

@@ -1,14 +1,3 @@
-/*
-what are the inputs users are creating?
-1. signup account
-   a. first_name
-   b. last_name
-   c. email
-   d. password
-2. user input
-  a. string of topic(mvp) 
-*/
-
 import validator from 'validator';
 
 interface SanitizeOptions {

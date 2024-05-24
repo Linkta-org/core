@@ -32,6 +32,9 @@ const theme = createTheme({
       paper: '#eeeeee',
       default: '#01383f',
     },
+    error: {
+      main: '#FF1B1B',
+    },
   },
 });
 

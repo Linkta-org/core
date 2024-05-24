@@ -19,6 +19,7 @@ const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
 const PromptInputForm = () => {
   return (
     <div>
+      <h2>Start your learning journey here:</h2>
       <UserInputBar />
     </div>
   );

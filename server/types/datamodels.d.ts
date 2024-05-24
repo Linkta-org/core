@@ -87,11 +87,9 @@ export type Edge = {
   };
 };
 
-
 export type TreeNode = {
   _id: Types.ObjectId;
   content: string;
   childNodes: [{ type: Types.ObjectId; ref: TreeNode }];
   depth: number;
 };
-

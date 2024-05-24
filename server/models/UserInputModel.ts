@@ -7,5 +7,5 @@ const userInputSchema = new Schema<UserInput>({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
-  
+
 module.exports = model('UserInput', userInputSchema);

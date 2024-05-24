@@ -67,7 +67,11 @@ const edgeSchema = new Schema<Edge>({
 const linktaFlowSchema = new Schema<LinktaFlow>({
   nodes: { type: [nodeSchema], required: true },
   edges: { type: [edgeSchema], required: true },
-  userInputId: { type: Schema.Types.ObjectId, ref: 'UserInput', required: true },
+  userInputId: {
+    type: Schema.Types.ObjectId,
+    ref: 'UserInput',
+    required: true,
+  },
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 });
 

@@ -4,7 +4,7 @@ export type User = {
   _id: Types.ObjectId;
   firstName: string;
   lastName: string;
-  treeIds: [{ type: Types.ObjectId; ref: TreeNode }];
+  userInputs: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -12,6 +12,7 @@ export type User = {
 export type UserInput = {
   _id: Types.ObjectId;
   input: string;
+  linktaFlows: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 };

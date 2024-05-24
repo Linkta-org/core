@@ -32,7 +32,7 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "resolveJsonModule": true
   },
-  "include": ["client/**/*", "server/**/*", "test/**/*", "util/sanitizeInput.ts"],
+  "include": ["client/**/*", "server/**/*", "test/**/*", "util/**/*"],
   "exclude": ["dist", "node_modules"],
   "ts-node": {
     "require": ["tsconfig-paths/register"]

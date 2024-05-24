@@ -42,7 +42,11 @@ const PromptInputForm = () => {
   };
 
   return (
-    <div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
       <h2>Start your learning journey here:</h2>
       <Box
         width="700px"
@@ -76,7 +80,7 @@ const PromptInputForm = () => {
       >
         <h2>Popular Topics:</h2>
       </Box>
-    </div>
+    </Box>
   );
 };
 

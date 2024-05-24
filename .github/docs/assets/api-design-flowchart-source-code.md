@@ -4,8 +4,8 @@
 2. Create a new diagram, double-click the diagram.
 3. Copy the code inside the code block below, and paste it in the code editer on eraser.io.
 4. Make edits.
-5. Export the flowchart (as area: canvas, image type: SVG, image size: large, image background: transparent).
-6. Replace api-design-flowchart.svg in .github/docs/assets/ with the new SVG document.
+5. Export the flowchart (area: canvas, image type: PNG, image size: large, image background: transparent).
+6. Replace api-design-flowchart.png in .github/docs/assets/ with the new PNG document.
 7. Preview the markdown to ensure the correct diagram is added.
 8. Submit a PR for the changes.
 
@@ -28,7 +28,7 @@ Authentication Controller [color: blue] {
 }
 
 // session login flow
-User > Login: POST /api/v1/auth/login
+User > Login: POST /v1/auth/login
 Login > Firebase Token Validation: Initial request
 Firebase Token Validation <> Firebase Auth: validate token through Firebase Admin SDK
 Firebase Token Validation > Session Token Generation
@@ -37,7 +37,7 @@ Login > Session Token Validation: Subsequent requests
 Session Token Validation > Authenticated
 
 // session logout flow
-User > Logout: POST /api/v1/auth/logout
+User > Logout: POST /v1/auth/logout
 Logout > Session Termination
 Session Termination > Session Ended [shape: oval, icon: user-x]
 
@@ -51,7 +51,7 @@ UserInput Controller [color: green, icon: lock] {
 }
 
 // Submit UserInput Flow
-Auth User__ > Submit UserInput: POST /api/v1/inputs
+Auth User__ > Submit UserInput: POST /v1/inputs
 Submit UserInput > Sanitize UserInput
 Sanitize UserInput > Store UserInput in Database
 Store UserInput in Database > Database: Store sanitized prompt in DB
@@ -62,7 +62,7 @@ Create LinktaFlow > Database [icon: database, color: blue, shape: circle]: Store
 Create LinktaFlow > Send LinktaFlow to User [icon: check-square, shape: oval] : if successful
 
 // Fetch UserInput Flow
-Auth User__ > Fetch UserInput: GET /api/v1/inputs/:userInputId
+Auth User__ > Fetch UserInput: GET /v1/inputs/:userInputId
 Fetch UserInput <> Database: Retrieve UserInput from DB
 Fetch UserInput > Send UserInpt to User [icon: check-square, shape: oval]
 
@@ -77,19 +77,19 @@ LinktaFlow Controller [color: yellow, icon: lock] {
 }
 
 // Fetch LinktaFlow List flow
-Auth User > Fetch LinktaFlow List: GET /api/v1/flows
+Auth User > Fetch LinktaFlow List: GET /v1/flows
 Fetch LinktaFlow List > Send LinktaFlow List to User [shape: oval, icon: check-square]
 
 // Fetch Specific LinktaFlow Flow
-Auth User > Fetch Specific LinktaFlow: GET /api/v1/flows/:linkaFlowId
+Auth User > Fetch Specific LinktaFlow: GET /v1/flows/:linkaFlowId
 Fetch Specific LinktaFlow > Send Specific LinktaFlow to User [shape: oval, icon: check-square]
 
 // Update LinktaFlow Flow
-Auth User > Update LinktaFlow: PUT /api/v1/flows/:linkaFlowId
+Auth User > Update LinktaFlow: PUT /v1/flows/:linkaFlowId
 Update LinktaFlow > Send Updated LinktaFlow to User[shape: oval, icon: check-square]
 
 // Delete LinktaFlow Flow
-Auth User > Delete LinktaFlow: DELETE /api/v1/flows/:linkaFlowId
+Auth User > Delete LinktaFlow: DELETE /v1/flows/:linkaFlowId
 Delete LinktaFlow > Notify User LinktaFlow Deleted [shape: oval, icon: check-square]
 
 // Create LinktaFlow Flow
@@ -103,12 +103,12 @@ User Controller [color: red, icon: lock] {
 }
 
 // Update User Settings Flow
-Auth_User_ > Update User Settings: PUT /api/v1/users/settings
+Auth_User_ > Update User Settings: PUT /v1/users/settings
 Update User Settings > Database: Update user doc
 Update User Settings >  Notify User Settings Updated [shape: oval, icon: check-square]
 
 // Delete User Account Flow
-Auth_User_ > Delete User Account: DELETE /api/v1/users
+Auth_User_ > Delete User Account: DELETE /v1/users
 Delete User Account > Database: Delete user doc & related data
 Delete User Account > Notify User Account Deleted [shape: oval, icon: check-square]
 

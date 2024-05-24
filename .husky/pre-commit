@@ -1,5 +1,13 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# npm test 
-npx lint-staged
+# Run TypeScript compiler in noEmit mode to check for errors
+npx tsc --noEmit
+
+# If tsc passes, then run lint-staged
+if [ $? -eq 0 ]; then
+  npx lint-staged
+else
+  echo "TypeScript errors detected. Commit aborted."
+  exit 1
+fi

@@ -11,8 +11,8 @@ const TopNavigationBar: React.FC = () => {
   const { currentNavTabs } = useDynamicNavigation();
 
   return (
-    <NavigationMenu.Root className="NavigationMenuRoot">
-      <NavigationMenu.List className="NavigationMenuList">
+    <NavigationMenu.Root className='NavigationMenuRoot'>
+      <NavigationMenu.List className='NavigationMenuList'>
         {currentNavTabs &&
           currentNavTabs.map((tab) => (
             <NavigationMenu.Item key={`${tab.path}-${tab.tabname}`}>

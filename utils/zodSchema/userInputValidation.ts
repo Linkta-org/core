@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-
 //function to check for special HTML chars
 const hasHtmlChars = (val: string) => {
   const specialCharsRegex = /[<>]/;

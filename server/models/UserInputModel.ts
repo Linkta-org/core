@@ -16,10 +16,9 @@ const userInputSchema = new Schema<UserInput>({
 });
 
 // Pre-save hook to sanitize the 'input' field with Zod
-userInputSchema.pre('save', (next) => {
-  const userInput = this as unknown as Document & UserInput;
+userInputSchema.pre<UserInput>('save', async function (next) {
   const result = userInputSanitizationSchema.safeParse({
-    input: userInput.input,
+    input: this.input,
   });
 
   if (!result.success) {
@@ -27,7 +26,7 @@ userInputSchema.pre('save', (next) => {
     return next(new Error(`Sanitization failed: ${errors}`));
   }
 
-  userInput.input = result.data.input;
+  this.input = result.data.input;
   next();
 });
 

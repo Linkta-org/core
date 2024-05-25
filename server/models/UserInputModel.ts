@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
-import type { UserInput } from '@/server/types/datamodels';
+import type { UserInputType } from '@/server/types/datamodels';
 import userInputSanitizationSchema from '@/utils/sanitizeInput';
 
-const userInputSchema = new Schema<UserInput>({
+const userInputSchema = new Schema<UserInputType>({
   input: {
     type: String,
     required: true,
@@ -16,7 +16,7 @@ const userInputSchema = new Schema<UserInput>({
 });
 
 // Pre-save hook to sanitize the 'input' field with Zod
-userInputSchema.pre<UserInput>('save', async function (next) {
+userInputSchema.pre<UserInputType>('save', async function (next) {
   const result = userInputSanitizationSchema.safeParse({
     input: this.input,
   });
@@ -30,4 +30,4 @@ userInputSchema.pre<UserInput>('save', async function (next) {
   next();
 });
 
-module.exports = model('UserInput', userInputSchema);
+export default model<UserInputType>('UserInput', userInputSchema);

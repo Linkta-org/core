@@ -29,7 +29,6 @@
     "@types/react": "^18.2.62",
     "@types/react-dom": "^18.2.22",
     "@types/react-router-dom": "^5.3.3",
-    "@types/validator": "^13.11.10",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",

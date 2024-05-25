@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { TextFieldProps, ButtonProps } from '@mui/material';
 import {
   TextField,
@@ -37,8 +37,17 @@ const GenerateButton = styled(Button)<ButtonProps>(({ theme }) => ({
 const PromptInputForm = () => {
   const [isChecked, setIsChecked] = useState(false);
 
+  useEffect(() => {
+    const savedCheckedState = localStorage.getItem('isChecked');
+    if (savedCheckedState === 'true') {
+      setIsChecked(true);
+    }
+  }, []);
+
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
+    const newCheckedState = event.target.checked;
+    setIsChecked(newCheckedState);
+    localStorage.setItem('isChecked', newCheckedState.toString());
   };
 
   return (

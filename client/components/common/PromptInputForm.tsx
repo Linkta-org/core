@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+// Todo: Need to add button submit functionality for the user input to be sent to the backend
+
 const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
   width: 700,
   color: theme.palette.secondary.main,
@@ -55,8 +57,11 @@ const PromptInputForm = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
+      width="100%"
     >
-      <h2>Start your learning journey here:</h2>
+      <Box width="700px">
+        <h2 style={{ textAlign: 'left' }}>Start your learning journey here:</h2>
+      </Box>
       <Box
         width="700px"
         display="flex"

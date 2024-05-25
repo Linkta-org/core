@@ -86,14 +86,6 @@ const PromptInputForm = () => {
           Generate
         </GenerateButton>
       </Box>
-      <Box
-        width="650px"
-        display="flex"
-        flexDirection="column"
-        marginTop="96px"
-      >
-        <h2>Popular Topics:</h2>
-      </Box>
     </Box>
   );
 };

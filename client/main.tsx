@@ -16,16 +16,16 @@ const theme = createTheme({
       light: '#3d8590',
       main: '#23616a',
       dark: '#01383f',
-      contrastText: '#ffca7c',
+      contrastText: '#f5f5f5',
     },
     secondary: {
       light: '#ffca7c',
-      main: '#ffa41b',
+      main: '#ffa51b',
       dark: '#fb8800',
       contrastText: '#01383f',
     },
     text: {
-      primary: '#3d8590',
+      primary: '#F5F5F5',
       secondary: '#fb8800',
     },
     background: {
@@ -33,6 +33,11 @@ const theme = createTheme({
       default: '#01383f',
     },
   },
+  typography: {
+    button: {
+      textTransform: 'none'
+    }
+  }
 });
 
 const rootElement = document.getElementById('root');

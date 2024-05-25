@@ -1,0 +1,75 @@
+:root {
+  --secondary-main: #ffa51b;
+}
+
+.background-image,
+.background-color,
+.static-layout {
+  position: fixed;
+  inset: 0px;
+}
+
+.background-image {
+  background-image: url(../assets/white-tree.png);
+  background-size: cover;
+  opacity: 0.1;
+}
+
+.background-color {
+  background-color: #01383f;
+}
+
+.static-layout {
+  display: grid;
+  grid-template-columns: 186px 1fr;
+  grid-template-rows: 50px 1fr auto;
+}
+
+.linkta-logo-container,
+.top-nav-bar {
+  border-bottom: 1px solid #4F5D66;
+}
+
+.linkta-logo-container,
+.side-nav-bar {
+  border-right: 1px solid #4F5D66;
+}
+
+.linkta-logo-container {
+  display: flex;
+  padding: 5px 0px 5px 13px;
+}
+
+.linkta-logo-image {
+  border-radius: 3px;
+}
+
+.top-nav-bar {
+  display: flex;
+  align-items: center;
+  padding-right: 25px;
+}
+
+.save-button-group-item {
+  color: red;
+}
+
+.side-nav-bar {
+  display: flex;
+  flex-direction: column;
+  padding: 13px;
+}
+
+.side-nav-button > span, .drawer-close-button > span {
+  color: #F5F5F5;
+}
+
+.side-nav-button > .MuiTypography-root {
+  margin-right: auto;
+  font-size: 11px;
+}
+
+.drawer-close-button > span {
+  margin-left: auto;
+}
+

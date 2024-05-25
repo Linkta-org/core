@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import {
   routeToNavTabsMapping,
   routeToFooterVisibilityMapping,
-} from '@/client/components/layout/main-layout/layoutConfig';
+} from '@/client/components/layout/layoutConfig';
 import type { Tab } from '@/client/types/layout';
 /**
  * Custom hook that provides UI visibility controls and navigation configuration based on the current route.

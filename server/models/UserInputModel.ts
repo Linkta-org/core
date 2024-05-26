@@ -8,7 +8,7 @@ const userInputSchema = new Schema<UserInputType>({
     required: true,
     trim: true,
     minlength: 3,
-    maxlength: 30,
+    maxlength: 100,
   },
   linktaFlows: [{ type: Schema.Types.ObjectId, ref: 'LinktaFlow' }],
   createdAt: { type: Date, default: Date.now },

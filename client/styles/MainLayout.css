@@ -123,6 +123,5 @@ div.MuiDrawer-paper {
 }
 
 .router-outlet {
-  background-color: rgba(255, 192, 203, 0.204);
   padding: 50px;
 }

@@ -7,6 +7,7 @@ import type {
 
 // Define the Node schema
 const nodeSchema = new Schema<NodeType>({
+  id: { type: String, requie: true },
   type: { type: String, required: true },
   position: {
     x: { type: Number, required: true },
@@ -40,6 +41,7 @@ const nodeSchema = new Schema<NodeType>({
 
 // Define the Edge schema
 const edgeSchema = new Schema<EdgeType>({
+  id: { type: String, requie: true },
   source: { type: String, required: true },
   target: { type: String, required: true },
   type: { type: String },

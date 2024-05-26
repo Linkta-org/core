@@ -72,10 +72,7 @@ const MainLayout: React.FC = () => {
       </Box>
 
       {/* this Box contains the Linkta main layout components - top bar, side nav, router outlet */}
-      <Box
-        className="static-layout"
-        component='main'
-      >
+      <Box className={`static-layout ${open ? 'layout-open' : 'layout-closed'}`} component='main'>
 
         {
           !open ? (
@@ -147,15 +144,14 @@ const MainLayout: React.FC = () => {
             <Box></Box>
           )
         }
-        <Drawer open={open} onClose={toggleDrawer(false)} >
-          {DrawerList}
-        </Drawer>
 
         <Box className='router-outlet' sx={{ display: 'flex' }} >
-          <Box >
-            {/* <Typography variant='h3' color={'text.primary'} >Content</Typography> */}
-          </Box>
+          <Typography variant='h3' color={'text.primary'} >Content</Typography>
         </Box>
+
+        <Drawer open={open} onClose={toggleDrawer(false)} variant='persistent' >
+          {DrawerList}
+        </Drawer>
 
       </Box>
     </>

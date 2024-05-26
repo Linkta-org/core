@@ -5,7 +5,7 @@ import LinktaLogo from './LinktaLogoWithText';
 import TopNavigationBar from './TopNavigationBar';
 import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
 import { Box, Button, ButtonGroup, Container, Divider, Drawer, Link, Typography } from '@mui/material';
-import { ArrowDropDown, ChevronLeftOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, WidthFull } from '@mui/icons-material';
+import { ArrowDropDown, ChevronLeftOutlined, ChevronRightOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, WidthFull } from '@mui/icons-material';
 import '@client/styles/MainLayout.css';
 
 /**
@@ -16,14 +16,17 @@ import '@client/styles/MainLayout.css';
  */
 const MainLayout: React.FC = () => {
   // const { showTopNavBar, showFooter } = useDynamicNavigation();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   }
 
   const DrawerList = (
     <Box className='side-nav-bar'>
-      <Box height={100}></Box>
+      <Box className='linkta-logo-drawer'>
+        <img className='linkta-drawer-image' src='../assets/linkta-logo-transparent.svg' />
+      </Box>
+
       <Button className='side-nav-button' variant='text' startIcon={<AccountCircleOutlined />}>
         <Typography variant='caption'>
           test.user@linkta.org
@@ -52,9 +55,7 @@ const MainLayout: React.FC = () => {
         </Typography>
       </Button>
 
-      <Button className='drawer-close-button' endIcon={<ChevronLeftOutlined />}>
-
-      </Button>
+      <Button className='drawer-close-button' onClick={toggleDrawer(false)} startIcon={<ChevronLeftOutlined />}></Button>
     </Box>
   )
 
@@ -76,11 +77,15 @@ const MainLayout: React.FC = () => {
         component='main'
       >
 
-        <Box
-          className='linkta-logo-container'
-        >
-          <img className='linkta-logo-image' src='../assets/linkta-logo-gray.svg' />
-        </Box>
+        {
+          !open ? (
+            <Box className='linkta-logo-container'>
+              <img className='linkta-logo-image' src='../assets/linkta-logo-transparent.svg' />
+            </Box>
+          ) : (
+            <Box className='drawer-open-logo-ph'></Box>
+          )
+        }
 
         <Box className='top-nav-bar' >
           <ButtonGroup
@@ -110,52 +115,47 @@ const MainLayout: React.FC = () => {
           </ButtonGroup>
         </Box>
 
-        <div>
-          <Button onClick={toggleDrawer(true)}>Open drawer</Button>
-          <Drawer open={open} onClose={toggleDrawer(false)} >
-            {DrawerList}
-          </Drawer>
-        </div>
+        {
+          !open ? (
+            <Box className='side-nav-mini' pt={3} pb={2}>
+              <Button className='side-mini-button' variant='text' >
+                <AccountCircleOutlined />
+              </Button>
 
-        <Box className='side-nav-bar'>
-          <Button className='side-nav-button' variant='text' startIcon={<AccountCircleOutlined />}>
-            <Typography variant='caption'>
-              test.user@linkta.org
-            </Typography>
-          </Button>
+              <Button className='side-mini-button' variant='text'>
+                <AddCircleOutline />
+              </Button>
 
-          <Button className='side-nav-button' variant='text' startIcon={<AddCircleOutline />}>
-            <Typography variant='caption'>
-              Explore a New Topic
-            </Typography>
-          </Button>
+              <Button className='side-mini-button' sx={{ marginTop: 'auto' }}>
+                <HelpOutlineOutlined />
+              </Button>
 
-          <Box className='recent-user-inputs' mt={5}>
-            <Typography variant='body2' color={'primary.contrastText'}>Recent</Typography>
-          </Box>
+              <Button className='side-mini-button'>
+                <SettingsOutlined />
+              </Button>
 
-          <Button className='side-nav-button' startIcon={<HelpOutlineOutlined />} sx={{ marginTop: 'auto' }}>
-            <Typography variant='caption'>
-              Help and Feedback
-            </Typography>
-          </Button>
+              <Box >
+                <Button className='drawer-open-button, side-mini-button' fullWidth onClick={toggleDrawer(true)}>
+                  <ChevronRightOutlined />
+                </Button>
+                {/* <Drawer open={open} onClose={toggleDrawer(false)} >
+                  {DrawerList}
+                </Drawer> */}
+              </Box>
+            </Box>
+          ) : (
+            <Box></Box>
+          )
+        }
+        <Drawer open={open} onClose={toggleDrawer(false)} >
+          {DrawerList}
+        </Drawer>
 
-          <Button className='side-nav-button' startIcon={<SettingsOutlined />}>
-            <Typography variant='caption'>
-              Settings
-            </Typography>
-          </Button>
-
-          <Box className='drawer-close-button'>
-            <Button onClick={toggleDrawer(true)} endIcon={<ChevronLeftOutlined />}/>
-            <Drawer open={open} onClose={toggleDrawer(false)} >
-              {DrawerList}
-            </Drawer>
+        <Box className='router-outlet' sx={{ display: 'flex' }} >
+          <Box >
+            {/* <Typography variant='h3' color={'text.primary'} >Content</Typography> */}
           </Box>
         </Box>
-
-        <Container className='router-outlet' >
-        </Container>
 
       </Box>
     </>

@@ -1,8 +1,13 @@
 import { Schema, model } from 'mongoose';
-import type { LinktaFlow, Node, Edge } from '@/server/types/datamodels';
+import type {
+  LinktaFlowType,
+  NodeType,
+  EdgeType,
+} from '@/server/types/datamodels';
 
 // Define the Node schema
-const nodeSchema = new Schema<Node>({
+const nodeSchema = new Schema<NodeType>({
+  id: { type: String, required: true },
   type: { type: String, required: true },
   position: {
     x: { type: Number, required: true },
@@ -35,7 +40,8 @@ const nodeSchema = new Schema<Node>({
 });
 
 // Define the Edge schema
-const edgeSchema = new Schema<Edge>({
+const edgeSchema = new Schema<EdgeType>({
+  id: { type: String, required: true },
   source: { type: String, required: true },
   target: { type: String, required: true },
   type: { type: String },
@@ -64,7 +70,7 @@ const edgeSchema = new Schema<Edge>({
 });
 
 // Define the LinktaFlow schema
-const linktaFlowSchema = new Schema<LinktaFlow>({
+const linktaFlowSchema = new Schema<LinktaFlowType>({
   nodes: { type: [nodeSchema], required: true },
   edges: { type: [edgeSchema], required: true },
   userInputId: {
@@ -75,4 +81,4 @@ const linktaFlowSchema = new Schema<LinktaFlow>({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
-export default model<LinktaFlow>('LinktaFlow', linktaFlowSchema);
+export default model<LinktaFlowType>('LinktaFlow', linktaFlowSchema);

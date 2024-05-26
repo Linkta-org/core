@@ -26,7 +26,7 @@ export type LinktaFlowType = {
 };
 
 export type NodeType = {
-  _id: Types.ObjectId;
+  id: string;
   type: string;
   position: {
     x: number;
@@ -59,7 +59,7 @@ export type NodeType = {
 };
 
 export type EdgeType = {
-  _id: Types.ObjectId;
+  id: string;
   source: string;
   target: string;
   type?: string;

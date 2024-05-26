@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
 import LinktaLogo from './LinktaLogoWithText';
 import TopNavigationBar from './TopNavigationBar';
 import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
-import { Box, Button, ButtonGroup, Container, Link, Typography } from '@mui/material';
-import { ArrowDropDown, ChevronLeftOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined } from '@mui/icons-material';
+import { Box, Button, ButtonGroup, Container, Divider, Drawer, Link, Typography } from '@mui/material';
+import { ArrowDropDown, ChevronLeftOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, WidthFull } from '@mui/icons-material';
 import '@client/styles/MainLayout.css';
 
 /**
@@ -16,6 +16,47 @@ import '@client/styles/MainLayout.css';
  */
 const MainLayout: React.FC = () => {
   // const { showTopNavBar, showFooter } = useDynamicNavigation();
+  const [open, setOpen] = useState(false);
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  }
+
+  const DrawerList = (
+    <Box className='side-nav-bar'>
+      <Box height={100}></Box>
+      <Button className='side-nav-button' variant='text' startIcon={<AccountCircleOutlined />}>
+        <Typography variant='caption'>
+          test.user@linkta.org
+        </Typography>
+      </Button>
+
+      <Button className='side-nav-button' variant='text' startIcon={<AddCircleOutline />}>
+        <Typography variant='caption'>
+          Explore a New Topic
+        </Typography>
+      </Button>
+
+      <Box className='recent-user-inputs' mt={5}>
+        <Typography variant='body2' color={'primary.contrastText'}>Recent</Typography>
+      </Box>
+
+      <Button className='side-nav-button' startIcon={<HelpOutlineOutlined />} sx={{ marginTop: 'auto' }}>
+        <Typography variant='caption'>
+          Help and Feedback
+        </Typography>
+      </Button>
+
+      <Button className='side-nav-button' startIcon={<SettingsOutlined />}>
+        <Typography variant='caption'>
+          Settings
+        </Typography>
+      </Button>
+
+      <Button className='drawer-close-button' endIcon={<ChevronLeftOutlined />}>
+
+      </Button>
+    </Box>
+  )
 
   return (
     <>
@@ -69,6 +110,13 @@ const MainLayout: React.FC = () => {
           </ButtonGroup>
         </Box>
 
+        <div>
+          <Button onClick={toggleDrawer(true)}>Open drawer</Button>
+          <Drawer open={open} onClose={toggleDrawer(false)} >
+            {DrawerList}
+          </Drawer>
+        </div>
+
         <Box className='side-nav-bar'>
           <Button className='side-nav-button' variant='text' startIcon={<AccountCircleOutlined />}>
             <Typography variant='caption'>
@@ -98,9 +146,12 @@ const MainLayout: React.FC = () => {
             </Typography>
           </Button>
 
-          <Button className='drawer-close-button' endIcon={<ChevronLeftOutlined />}>
-
-          </Button>
+          <Box className='drawer-close-button'>
+            <Button onClick={toggleDrawer(true)} endIcon={<ChevronLeftOutlined />}/>
+            <Drawer open={open} onClose={toggleDrawer(false)} >
+              {DrawerList}
+            </Drawer>
+          </Box>
         </Box>
 
         <Container className='router-outlet' >

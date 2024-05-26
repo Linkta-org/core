@@ -58,10 +58,17 @@
   display: flex;
   flex-direction: column;
   padding: 13px;
+  width: 186px;
 }
 
-.side-nav-button > span, .drawer-close-button > span {
+button.first-button {
+  margin-top: 80px;
+}
+
+.side-nav-button > span,
+.drawer-close-button > span {
   color: #F5F5F5;
+  transition: 350ms;
 }
 
 .side-nav-button > .MuiTypography-root {
@@ -73,3 +80,8 @@
   margin-left: auto;
 }
 
+div.MuiDrawer-paper {
+  background-color: transparent;
+  flex-direction: row;
+  width: 186px;
+}

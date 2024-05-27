@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Footer from './Footer';
-import LinktaLogo from './LinktaLogoWithText';
-import TopNavigationBar from './TopNavigationBar';
-import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
+// import { Outlet } from 'react-router-dom';
+// import Footer from './Footer';
+// import LinktaLogo from './LinktaLogoWithText';
+// import TopNavigationBar from './TopNavigationBar';
+// import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
 import { Box, Button, ButtonGroup, Drawer, Link, Typography } from '@mui/material';
 import { ArrowDropDown, ChevronLeftOutlined, ChevronRightOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined } from '@mui/icons-material';
 import '@client/styles/MainLayout.css';
@@ -21,6 +21,8 @@ const MainLayout: React.FC = () => {
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   }
+  const mountedStyle = { animation: 'opacity-in 300ms ease-in'};
+  const unmountedStyle = { animation: 'opacity-out 200ms ease-in', animationFillMode: 'forwards' };
 
   const DrawerList = (
     <Box className='side-nav-bar'>
@@ -60,7 +62,13 @@ const MainLayout: React.FC = () => {
         </Typography>
       </Link>
 
-      <Button className='drawer-close-button' onClick={toggleDrawer(false)} startIcon={<ChevronLeftOutlined />} sx={{ marginBottom: '20px', paddingInline: '20px' }}></Button>
+      <Button
+        className='drawer-close-button'
+        onClick={toggleDrawer(false)}
+        startIcon={<ChevronLeftOutlined />}
+        sx={{ marginBottom: '20px', paddingInline: '20px' }}
+      >
+      </Button>
     </Box>
   )
 
@@ -77,12 +85,16 @@ const MainLayout: React.FC = () => {
       </Box>
 
       {/* this Box contains the Linkta main layout components - top bar, side nav, router outlet */}
-      <Box className={`static-layout ${open ? 'layout-open' : 'layout-closed'}`} component='main'>
+      <Box className={ `static-layout ${ open ? 'layout-open' : 'layout-closed' }` } component='main'>
 
         {
           !open ? (
             <Box className='linkta-logo-container'>
-              <img className='linkta-logo-image' src='../assets/linkta-logo-transparent.svg' />
+              <img
+                className='linkta-logo-image'
+                src='../assets/linkta-logo-transparent.svg'
+                style={ open ? unmountedStyle : mountedStyle }
+                />
             </Box>
           ) : (
             <Box className='drawer-open-logo-ph'></Box>
@@ -119,24 +131,42 @@ const MainLayout: React.FC = () => {
 
         {
           !open ? (
-            <Box className='side-nav-mini' pt={3} pb={2}>
-              <Button className='side-mini-button' variant='text' >
+            <Box className='side-nav-mini' pb={2}>
+
+              <Link
+                className='side-mini-button'
+                mt={3}
+                style={ open ? unmountedStyle : mountedStyle }
+              >
                 <AccountCircleOutlined />
-              </Button>
+              </Link>
 
-              <Button className='side-mini-button' variant='text'>
+              <Link
+                className='side-mini-button'
+                style={ open ? unmountedStyle : mountedStyle }
+              >
                 <AddCircleOutline />
-              </Button>
+              </Link>
 
-              <Button className='side-mini-button' sx={{ marginTop: 'auto' }}>
+              <Link
+                className='side-mini-button'
+                sx={{ marginTop: 'auto' }}
+                style={ open ? unmountedStyle : mountedStyle }
+              >
                 <HelpOutlineOutlined />
-              </Button>
+              </Link>
 
-              <Button className='side-mini-button'>
+              <Link
+                className='side-mini-button'
+                style={ open ? unmountedStyle : mountedStyle }
+              >
                 <SettingsOutlined />
-              </Button>
+              </Link>
 
-              <Button className='drawer-open-button, side-mini-button' fullWidth onClick={toggleDrawer(true)}>
+              <Button
+                className='drawer-open-button'
+                onClick={toggleDrawer(true)}
+              >
                 <ChevronRightOutlined />
               </Button>
 
@@ -147,10 +177,14 @@ const MainLayout: React.FC = () => {
         }
 
         <Box className='router-outlet' sx={{ display: 'flex' }} >
-          <Typography variant='h3' color={'text.primary'} >Content</Typography>
+          <Typography variant='h3' color={'text.primary'}>Content</Typography>
         </Box>
 
-        <Drawer open={open} onClose={toggleDrawer(false)} variant='persistent'>
+        <Drawer
+          open={open}
+          onClose={toggleDrawer(false)}
+          variant='persistent'
+        >
           {DrawerList}
         </Drawer>
 

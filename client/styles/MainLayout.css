@@ -23,7 +23,6 @@
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 50px 1fr auto;
-  transition: 200ms ease-in;
 }
 
 .layout-open {
@@ -48,15 +47,12 @@
 
 .linkta-logo-drawer {
   display: flex;
-  /* justify-content: end; */
   height: 50px;
-  /* margin-bottom: 25px; */
 }
 
 .linkta-logo-container {
   display: flex;
   justify-content: center;
-  transition: 200ms ease-in;
 }
 
 .linkta-logo-image,
@@ -80,11 +76,12 @@
 }
 
 .side-nav-mini {
+  opacity: 1;
   display: flex;
   flex-direction: column;
+  gap: 5px;
   width: 60px;
   align-items: center;
-  transition: 200ms ease-in;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -102,36 +99,45 @@ button.first-button {
 }
 
 .side-nav-link > *,
-.drawer-open-button > span,
-.drawer-close-button > span,
-button.side-mini-button {
+.side-mini-button > *,
+.drawer-open-button > svg,
+.drawer-close-button > span {
   color: #F5F5F5;
 }
 
-.side-nav-link {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.side-nav-link,
+.side-mini-button {
   cursor: pointer;
   transition: 200ms ease-in;
   border: 1px solid rgba(255, 255, 255, 0);
 }
 
 .side-nav-link:hover,
-.side-nav-link:active {
-  border: 1px solid rgba(159, 134, 18, 0.5);
+.side-mini-button:hover {
+  box-shadow: inset 0px 0px 4px rgba(159, 134, 18, 0.8);
   background-color: rgba(255, 255, 255, 0.15);
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
 
-.side-nav-link:active > * {
+.side-nav-link:active > *,
+.side-mini-button:active > * {
   color: var(--secondary-main);
 }
 
 .side-nav-link {
-  padding: 5px 0px 5px 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 0px 7px 14px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.side-mini-button {
+  padding: 5px 14px;
 }
 
 .side-nav-button > .MuiTypography-root {
@@ -151,4 +157,30 @@ div.MuiDrawer-paper {
 
 .router-outlet {
   padding: 50px;
+}
+
+@keyframes opacity-in {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  50% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes opacity-out {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

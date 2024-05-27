@@ -27,7 +27,10 @@ const MainLayout: React.FC = () => {
   const DrawerList = (
     <Box className='side-nav-bar'>
       <Box className='linkta-logo-drawer'>
-        <img className='linkta-drawer-image' src='../assets/linkta-logo-transparent.svg' />
+        <img
+          className='linkta-drawer-image'
+          src='../assets/linkta-logo-transparent.svg'
+          alt='The Linkta.io logo at approximately 50 pixels square, located in the upper-left corner of the page.' />
       </Box>
 
       <Link className='side-nav-link' underline='none' mt={3}>
@@ -93,6 +96,7 @@ const MainLayout: React.FC = () => {
               <img
                 className='linkta-logo-image'
                 src='../assets/linkta-logo-transparent.svg'
+                alt='The Linkta.io logo at approximately 50 pixels square, located in the upper-left corner of the page.'
                 style={ open ? unmountedStyle : mountedStyle }
                 />
             </Box>

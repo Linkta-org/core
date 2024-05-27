@@ -4,9 +4,10 @@ import Footer from './Footer';
 import LinktaLogo from './LinktaLogoWithText';
 import TopNavigationBar from './TopNavigationBar';
 import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
-import { Box, Button, ButtonGroup, Container, Divider, Drawer, Link, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Container, Divider, Drawer, Link, Typography, easing } from '@mui/material';
 import { ArrowDropDown, ChevronLeftOutlined, ChevronRightOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, WidthFull } from '@mui/icons-material';
 import '@client/styles/MainLayout.css';
+
 
 /**
  * MainLayout manages the app's global layout, using `useDynamicNavigation` for route-based UI adjustments. It presents a consistent header featuring the LinktaLogo, with the top navigation bar and footer rendered conditionally as dictated by the current route's needs.
@@ -27,35 +28,39 @@ const MainLayout: React.FC = () => {
         <img className='linkta-drawer-image' src='../assets/linkta-logo-transparent.svg' />
       </Box>
 
-      <Button className='side-nav-button' variant='text' startIcon={<AccountCircleOutlined />}>
+      <Link className='side-nav-link' underline='none' mt={3}>
+        <AccountCircleOutlined />
         <Typography variant='caption'>
           test.user@linkta.org
         </Typography>
-      </Button>
+      </Link>
 
-      <Button className='side-nav-button' variant='text' startIcon={<AddCircleOutline />}>
+      <Link className='side-nav-link' underline='none'>
+        <AddCircleOutline />
         <Typography variant='caption'>
           Explore a New Topic
         </Typography>
-      </Button>
+      </Link>
 
-      <Box className='recent-user-inputs' mt={5}>
+      <Box className='recent-user-inputs' mt={5} pl={2}>
         <Typography variant='body2' color={'primary.contrastText'}>Recent</Typography>
       </Box>
 
-      <Button className='side-nav-button' startIcon={<HelpOutlineOutlined />} sx={{ marginTop: 'auto' }}>
+      <Link className='side-nav-link' underline='none' mt={'auto'}>
+        <HelpOutlineOutlined />
         <Typography variant='caption'>
           Help and Feedback
         </Typography>
-      </Button>
+      </Link>
 
-      <Button className='side-nav-button' startIcon={<SettingsOutlined />}>
+      <Link className='side-nav-link' underline='none'>
+        <SettingsOutlined />
         <Typography variant='caption'>
           Settings
         </Typography>
-      </Button>
+      </Link>
 
-      <Button className='drawer-close-button' onClick={toggleDrawer(false)} startIcon={<ChevronLeftOutlined />}></Button>
+      <Button className='drawer-close-button' onClick={toggleDrawer(false)} startIcon={<ChevronLeftOutlined />} sx={{ marginBottom: '20px', paddingInline: '20px' }}></Button>
     </Box>
   )
 
@@ -131,14 +136,10 @@ const MainLayout: React.FC = () => {
                 <SettingsOutlined />
               </Button>
 
-              <Box >
-                <Button className='drawer-open-button, side-mini-button' fullWidth onClick={toggleDrawer(true)}>
-                  <ChevronRightOutlined />
-                </Button>
-                {/* <Drawer open={open} onClose={toggleDrawer(false)} >
-                  {DrawerList}
-                </Drawer> */}
-              </Box>
+              <Button className='drawer-open-button, side-mini-button' fullWidth onClick={toggleDrawer(true)}>
+                <ChevronRightOutlined />
+              </Button>
+
             </Box>
           ) : (
             <Box></Box>
@@ -149,7 +150,7 @@ const MainLayout: React.FC = () => {
           <Typography variant='h3' color={'text.primary'} >Content</Typography>
         </Box>
 
-        <Drawer open={open} onClose={toggleDrawer(false)} variant='persistent' >
+        <Drawer open={open} onClose={toggleDrawer(false)} variant='persistent'>
           {DrawerList}
         </Drawer>
 

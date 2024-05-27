@@ -50,7 +50,7 @@
   display: flex;
   /* justify-content: end; */
   height: 50px;
-  margin-bottom: 25px;
+  /* margin-bottom: 25px; */
 }
 
 .linkta-logo-container {
@@ -66,6 +66,7 @@
 
 .linkta-drawer-image {
   height: 50px;
+  padding-left: 13px;
 }
 
 .top-nav-bar {
@@ -92,19 +93,45 @@
 .side-nav-bar {
   display: flex;
   flex-direction: column;
-  padding: 0px 13px 20px;
   width: 186px;
+  gap: 5px;
 }
 
 button.first-button {
   margin-top: 80px;
 }
 
-.side-nav-button > span,
+.side-nav-link > *,
 .drawer-open-button > span,
 .drawer-close-button > span,
 button.side-mini-button {
   color: #F5F5F5;
+}
+
+.side-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: 200ms ease-in;
+  border: 1px solid rgba(255, 255, 255, 0);
+}
+
+.side-nav-link:hover,
+.side-nav-link:active {
+  border: 1px solid rgba(159, 134, 18, 0.5);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.side-nav-link:active > * {
+  color: var(--secondary-main);
+}
+
+.side-nav-link {
+  padding: 5px 0px 5px 14px;
 }
 
 .side-nav-button > .MuiTypography-root {

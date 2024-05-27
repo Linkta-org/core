@@ -4,8 +4,8 @@ import Footer from './Footer';
 import LinktaLogo from './LinktaLogoWithText';
 import TopNavigationBar from './TopNavigationBar';
 import useDynamicNavigation from '@/client/hooks/useDynamicNavigation';
-import { Box, Button, ButtonGroup, Container, Divider, Drawer, Link, Typography, easing } from '@mui/material';
-import { ArrowDropDown, ChevronLeftOutlined, ChevronRightOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, WidthFull } from '@mui/icons-material';
+import { Box, Button, ButtonGroup, Drawer, Link, Typography } from '@mui/material';
+import { ArrowDropDown, ChevronLeftOutlined, ChevronRightOutlined, AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined } from '@mui/icons-material';
 import '@client/styles/MainLayout.css';
 
 

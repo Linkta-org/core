@@ -37,13 +37,13 @@
 .linkta-logo-container,
 .drawer-open-logo-ph,
 .top-nav-bar {
-  border-bottom: 1px solid #4F5D66;
+  border-bottom: 1px solid #4f5d66;
 }
 
 .linkta-logo-container,
 .side-nav-mini,
 .side-nav-bar {
-  border-right: 1px solid #4F5D66;
+  border-right: 1px solid #4f5d66;
 }
 
 .linkta-logo-drawer {
@@ -103,7 +103,7 @@ button.first-button {
 .side-mini-button > *,
 .drawer-open-button > svg,
 .drawer-close-button > span {
-  color: #F5F5F5;
+  color: #f5f5f5;
 }
 
 .side-nav-link,

@@ -8,4 +8,4 @@ const userInputSchema = new Schema<UserInput>({
   updatedAt: { type: Date, default: Date.now },
 });
 
-module.exports = model('UserInput', userInputSchema);
+export default model('UserInput', userInputSchema);

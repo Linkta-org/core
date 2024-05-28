@@ -1,6 +1,6 @@
 import type { Types } from 'mongoose';
 
-export type UserType = {
+export type User = {
   _id: Types.ObjectId;
   firstName: string;
   lastName: string;
@@ -9,7 +9,7 @@ export type UserType = {
   updatedAt: Date;
 };
 
-export type UserInputType = {
+export type UserInput = {
   _id: Types.ObjectId;
   input: string;
   linktaFlows: Types.ObjectId[];
@@ -17,16 +17,16 @@ export type UserInputType = {
   updatedAt: Date;
 };
 
-export type LinktaFlowType = {
+export type LinktaFlow = {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
-  nodes: NodeType[];
-  edges: EdgeType[];
+  nodes: Node[];
+  edges: Edge[];
   userInputId: Types.ObjectId;
 };
 
-export type NodeType = {
-  id: string;
+export type Node = {
+  _id: Types.ObjectId;
   type: string;
   position: {
     x: number;
@@ -58,8 +58,8 @@ export type NodeType = {
   resizing?: boolean;
 };
 
-export type EdgeType = {
-  id: string;
+export type Edge = {
+  _id: Types.ObjectId;
   source: string;
   target: string;
   type?: string;
@@ -85,4 +85,11 @@ export type EdgeType = {
     borderRadius?: number;
     curvature?: number;
   };
+};
+
+export type TreeNode = {
+  _id: Types.ObjectId;
+  content: string;
+  childNodes: [{ type: Types.ObjectId; ref: TreeNode }];
+  depth: number;
 };

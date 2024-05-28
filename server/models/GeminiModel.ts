@@ -41,7 +41,7 @@ class Gemini implements GenerativeAIModel {
    *
    * @param model The GenerativeModel to set. See the model documentation for the correct model name.
    */
-  setModel(model = 'gemini-pro'): void {
+  setModel(model: string = 'gemini-pro'): void {
     this.model = this.AI.getGenerativeModel({ model: model });
   }
 

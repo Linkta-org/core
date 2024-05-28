@@ -1,7 +1,7 @@
 import { Schema, model, Types } from 'mongoose';
-import type { UserType } from '@/server/types/datamodels';
+import type { User } from '@/server/types/datamodels';
 
-const userSchema = new Schema<UserType>({
+const userSchema = new Schema<User>({
   firstName: {
     type: String,
     required: true,
@@ -15,4 +15,4 @@ const userSchema = new Schema<UserType>({
   updatedAt: { type: Date, default: Date.now },
 });
 
-export default model<UserType>('User', userSchema);
+export default model<User>('User', userSchema);

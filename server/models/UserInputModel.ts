@@ -31,4 +31,3 @@ userInputSchema.pre<UserInputType>('save', async function (next) {
 });
 
 export default model<UserInputType>('UserInput', userInputSchema);
-

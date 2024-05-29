@@ -22,6 +22,7 @@ import {
   SettingsOutlined,
 } from '@mui/icons-material';
 import '@client/styles/MainLayout.css';
+import SnackBar from '../common/SnackBarNotification';
 
 /**
  * MainLayout manages the app's global layout, using `useDynamicNavigation` for route-based UI adjustments. It presents a consistent header featuring the LinktaLogo, with the top navigation bar and footer rendered conditionally as dictated by the current route's needs.
@@ -32,6 +33,12 @@ import '@client/styles/MainLayout.css';
 const MainLayout: React.FC = () => {
   // const { showTopNavBar, showFooter } = useDynamicNavigation();
   const [open, setOpen] = useState(true);
+  const [alertState, setAlertState] = useState(false);
+
+  const updateAlertState = () => {
+    setAlertState(false);
+  }
+
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -100,6 +107,13 @@ const MainLayout: React.FC = () => {
 
       <Button
         className="drawer-close-button"
+        onClick={() => setAlertState(true)}
+        startIcon={<ChevronLeftOutlined />}
+        sx={{ marginBottom: '20px', paddingInline: '20px' }}
+      ><Typography color='white'>TEST SNACK BAR</Typography></Button>
+
+      <Button
+        className="drawer-close-button"
         onClick={toggleDrawer(false)}
         startIcon={<ChevronLeftOutlined />}
         sx={{ marginBottom: '20px', paddingInline: '20px' }}
@@ -109,6 +123,14 @@ const MainLayout: React.FC = () => {
 
   return (
     <>
+      <SnackBar
+        open={alertState}
+        message='TEST ALERT MESSAGE!!!'
+        severity='info'
+        duration={2000}
+        callerUpdater={updateAlertState}
+        />
+
       {/* this Box creates the Linkta background color layer */}
       <Box className="background-color"></Box>
 

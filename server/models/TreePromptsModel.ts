@@ -9,41 +9,6 @@ import type { ChainOfThought } from '@/server/types';
  */
 const TreePrompts = {
   /**
-   * Generate a prompt using the one-shot method.
-   * Note, I have struggled to engineer a good prompt for this one.
-   *
-   * @param prompt The user's prompt
-   * @return The one-shot prompt for the LLM
-   */
-  oneShot(prompt: string): string {
-    return `
-    Skill: {
-      "Skill Name": {
-        "subtopic1": ["area1", "area2", "area3"],
-        "subtopic2": ["area1", "area2", "area3"]
-      }
-    }
-    
-    ${prompt}
-    `;
-  },
-
-  /**
-   * Generate a prompt using the zero-shot method.
-   *
-   * @param prompt The user's prompt
-   * @return The zero-shot prompt for the LLM
-   */
-  zeroShot(prompt: string): string {
-    return `
-    You are a computer outputting only JSON. You build a JSON file with the first
-    key the name of the subject, it's value an object of subtopic keys, and each
-    each subtopic key having an array of areas to study. Build this JSON file with the
-    following prompt: ${prompt}
-    `;
-  },
-
-  /**
    * Generate a history and final prompt for use in simulating a conversation.
    *
    * @param prompt The user's prompt

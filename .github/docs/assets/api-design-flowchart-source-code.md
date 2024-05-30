@@ -45,7 +45,7 @@ Session Termination > Session Ended [shape: oval, icon: user-x]
 UserInput Controller [color: green, icon: lock] {
   Auth User__ [icon: user-check, shape: oval]
   Submit UserInput [icon: file-text]
-  Fetch UserInput [icon: file-text]
+  Fetch UserInput List [icon: file-text]
   Sanitize UserInput [icon: worker]
   Store UserInput in Database [icon: worker]
 }
@@ -62,9 +62,9 @@ Create LinktaFlow > Database [icon: database, color: blue, shape: circle]: Store
 Create LinktaFlow > Send LinktaFlow to User [icon: check-square, shape: oval] : if successful
 
 // Fetch UserInput Flow
-Auth User__ > Fetch UserInput: GET /v1/inputs/:userInputId
-Fetch UserInput <> Database: Retrieve UserInput from DB
-Fetch UserInput > Send UserInpt to User [icon: check-square, shape: oval]
+Auth User__ > Fetch UserInput List: GET /v1/inputs
+Fetch UserInput List <> Database: Retrieve List of UserInputs from DB
+Fetch UserInput List > Send UserInpt List to User [icon: check-square, shape: oval]
 
 // LinktaFlow Management Flow
 LinktaFlow Controller [color: yellow, icon: lock] {

@@ -19,28 +19,30 @@ import Alert from '@mui/material/Alert';
  */
 
 type SnackBarNotificationProps = {
-  open: boolean,
-  message: string,
-  severity: 'error' | 'warning' | 'info' | 'success',
-  duration?: number,
-  callerUpdater: () => void
-}
+  open: boolean;
+  message: string;
+  severity: 'error' | 'warning' | 'info' | 'success';
+  duration?: number;
+  callerUpdater: () => void;
+};
 
 export default function SnackBarNotification({
   open,
   message,
   severity,
   duration,
-  callerUpdater
+  callerUpdater,
 }: SnackBarNotificationProps) {
-
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     event?.preventDefault();
     if (reason === 'clickaway') {
       return;
     }
     callerUpdater();
-  }
+  };
 
   return (
     <Snackbar

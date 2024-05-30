@@ -26,8 +26,9 @@ const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
       borderRadius: '20px',
     },
     '& input': {
-      backgroundColor: theme.palette.grey[200],
+      backgroundColor: theme.palette.grey[400],
       borderRadius: '20px',
+      color: 'black',
     },
   },
 }));

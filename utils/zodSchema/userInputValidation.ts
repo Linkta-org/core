@@ -5,7 +5,7 @@ const hasHtmlChars = (val: string) => {
   const specialCharsRegex = /[<>]/;
   return !specialCharsRegex.test(val);
 };
-const userInputValidationSchema = z.object({
+export const userInputValidationSchema = z.object({
   input: z
     .string()
     .trim()
@@ -17,4 +17,4 @@ const userInputValidationSchema = z.object({
 });
 
 export type UserInputValidation = z.infer<typeof userInputValidationSchema>;
-export default UserInputValidation;
+export default userInputValidationSchema;

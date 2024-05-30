@@ -13,7 +13,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 interface UserInputPayload {
-  prompt: string;
+  userInput: string;
 }
 
 const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
@@ -54,9 +54,9 @@ const PromptInputForm = () => {
   }, []);
 
   const newUserInputMutation = useMutation({
-    mutationFn: async (userInput: UserInputPayload) => {
-      const response = await axios.post('localhost:3000/v1/inputs', {
-        userInput: userInput.prompt,
+    mutationFn: async (input: UserInputPayload) => {
+      const response = await axios.post('http://localhost:3000/v1/inputs', {
+        userInput: input.userInput,
       });
       return response.data;
     },
@@ -74,7 +74,7 @@ const PromptInputForm = () => {
   };
 
   const handleSubmit = () => {
-    newUserInputMutation.mutate({ prompt: inputValue });
+    newUserInputMutation.mutate({ userInput: inputValue });
   };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>) => {

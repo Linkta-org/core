@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { Outlet } from 'react-router-dom';
+import { Outlet, Link as RouterLink } from 'react-router-dom';
 // import Footer from './Footer';
 // import LinktaLogo from './LinktaLogoWithText';
 // import TopNavigationBar from './TopNavigationBar';
@@ -63,6 +63,8 @@ const MainLayout: React.FC = () => {
       <Link
         className="side-nav-link"
         underline="none"
+        component={RouterLink}
+        to="/generate"
       >
         <AddCircleOutline />
         <Typography variant="caption">Explore a New Topic</Typography>
@@ -219,7 +221,7 @@ const MainLayout: React.FC = () => {
             variant="h3"
             color={'text.primary'}
           >
-            Content
+            <Outlet />
           </Typography>
         </Box>
 

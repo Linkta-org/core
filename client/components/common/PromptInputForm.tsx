@@ -37,6 +37,7 @@ const GenerateButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const PromptInputForm = () => {
+  const [inputValue, setInputValue] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
@@ -45,6 +46,10 @@ const PromptInputForm = () => {
       setIsChecked(true);
     }
   }, []);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newCheckedState = event.target.checked;
@@ -68,7 +73,11 @@ const PromptInputForm = () => {
         flexDirection="column"
         gap={2}
       >
-        <UserInputBar />
+        <UserInputBar
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+        />
         <FormControlLabel
           control={
             <Checkbox

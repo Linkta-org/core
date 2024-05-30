@@ -15,6 +15,31 @@ const Loader = () => {
     >
       <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '100px', top: '60px', backgroundColor: '#FFA51B' }} />
       <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '100px', top: '174px', backgroundColor: '#FFA51B' }} />
+      <Box
+        sx={{
+          position: 'absolute',
+          left: '106px', // Half the width of the dot to center the line
+          top: '66px', // Half the height of the dot to center the line
+          width: '0px',
+          height: '108px', // Distance between the two dots
+          backgroundColor: '#FFA51B',
+          animation: 'drawLine 0.5s forwards',
+        }}
+      />
+      <style>
+        {`
+          @keyframes drawLine {
+            from {
+              width: 0;
+              height: 0;
+            }
+            to {
+              width: 2px;
+              height: 108px;
+            }
+          }
+        `}
+      </style>
       <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '173px', top: '174px', backgroundColor: '#FFA51B', boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)' }} />
       <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '200px', top: '60px', backgroundColor: '#FFA51B' }} />
       <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '200px', top: '174px', backgroundColor: '#FFA51B' }} />

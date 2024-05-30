@@ -281,6 +281,8 @@ Backend:
 ## Error Handling and Logging
 >_Work in progress_
 
+Linkta utilizes the `log4js` library for centralized logging. The logging configuration is defined in `log4js.config.json`, specifying log categories, appenders, and levels. The `log4js` library is used throughout the application to log errors, warnings, and informational messages.
+
 ## Security Considerations
 - **Authentication and Authorization:** Firebase Authentication is used for user authentication and authorization. API endpoints are protected and require valid session tokens for access.
 - **Data Privacy:** The system will be designed to comply with relevant data privacy laws such as GDPR and CCPA.

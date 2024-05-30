@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import type { TextFieldProps, ButtonProps } from '@mui/material';
 import {
   TextField,
@@ -8,8 +9,12 @@ import {
   Box,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
-// Todo: Need to add button submit functionality for the user input to be sent to the backend
+interface UserInputPayload {
+  prompt: string;
+}
 
 const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
   width: 700,
@@ -39,6 +44,7 @@ const GenerateButton = styled(Button)<ButtonProps>(({ theme }) => ({
 const PromptInputForm = () => {
   const [inputValue, setInputValue] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedCheckedState = localStorage.getItem('isChecked');
@@ -47,8 +53,28 @@ const PromptInputForm = () => {
     }
   }, []);
 
+  const newUserInputMutation = useMutation({
+    mutationFn: async (userInput: UserInputPayload) => {
+      const response = await axios.post('localhost:3000/v1/inputs', {
+        userInput: userInput.prompt,
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      console.log('UserInput sent successfully', data);
+      navigate('/output');
+    },
+    onError: (error) => {
+      console.error('Error sending prompt: ', error);
+    },
+  });
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    newUserInputMutation.mutate({ prompt: inputValue });
   };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +117,7 @@ const PromptInputForm = () => {
         <GenerateButton
           disabled={!isChecked}
           sx={{ alignSelf: 'center' }}
+          onClick={handleSubmit}
         >
           Generate
         </GenerateButton>

@@ -178,6 +178,8 @@ const MainLayout: React.FC = () => {
               className="side-mini-button"
               mt={3}
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/sign-in"
             >
               <AccountCircleOutlined />
             </Link>
@@ -185,6 +187,8 @@ const MainLayout: React.FC = () => {
             <Link
               className="side-mini-button"
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/generate"
             >
               <AddCircleOutline />
             </Link>

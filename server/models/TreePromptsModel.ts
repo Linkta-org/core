@@ -1,6 +1,3 @@
-import type { InputContent } from '@google/generative-ai';
-import type { ChainOfThought } from '@/server/types';
-
 /**
  * Class for generating prompts for the LLM.
  * Each method uses a different style of prompting and encorporates the user's prompt.
@@ -8,45 +5,6 @@ import type { ChainOfThought } from '@/server/types';
  * of testing to determine which method generates the most usable result.
  */
 const TreePrompts = {
-  /**
-   * Generate a history and final prompt for use in simulating a conversation.
-   *
-   * @param prompt The user's prompt
-   * @return The history and final prompt for the LLM
-   */
-  chainOfThought(prompt: string): ChainOfThought {
-    const thoughtLine: InputContent[] = [
-      {
-        role: 'user',
-        parts: [
-          { text: 'I am a student looking to learn about a new skill.' },
-          {
-            text: 'I am building a tree to organize the information I need to learn.',
-          },
-          {
-            text: 'That looks good. I just want the JSON object, no extra text.',
-          },
-        ],
-      },
-      {
-        role: 'model',
-        parts: [
-          { text: 'I can help you with that.' },
-          {
-            text: `Does a structure like this work for you? {
-             "skill" : { "subtopic1" : ["area1", "area2"], "subtopic2": ["area3", "area4"]`,
-          },
-          { text: 'Great to hear. What skill are you looking to learn about?' },
-        ],
-      },
-    ];
-
-    return {
-      history: thoughtLine,
-      prompt: prompt,
-    };
-  },
-
   /**
    * Generate a prompt using the COSTAR method.
    *

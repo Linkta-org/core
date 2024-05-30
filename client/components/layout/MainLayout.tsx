@@ -89,6 +89,8 @@ const MainLayout: React.FC = () => {
         className="side-nav-link"
         underline="none"
         mt={'auto'}
+        component={RouterLink}
+        to="/help-and-feedback"
       >
         <HelpOutlineOutlined />
         <Typography variant="caption">Help and Feedback</Typography>
@@ -97,6 +99,8 @@ const MainLayout: React.FC = () => {
       <Link
         className="side-nav-link"
         underline="none"
+        component={RouterLink}
+        to="/settings"
       >
         <SettingsOutlined />
         <Typography variant="caption">Settings</Typography>
@@ -197,6 +201,8 @@ const MainLayout: React.FC = () => {
               className="side-mini-button"
               sx={{ marginTop: 'auto' }}
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/help-and-feedback"
             >
               <HelpOutlineOutlined />
             </Link>
@@ -204,6 +210,8 @@ const MainLayout: React.FC = () => {
             <Link
               className="side-mini-button"
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/settings"
             >
               <SettingsOutlined />
             </Link>

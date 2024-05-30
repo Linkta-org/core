@@ -55,6 +55,8 @@ const MainLayout: React.FC = () => {
         className="side-nav-link"
         underline="none"
         mt={3}
+        component={RouterLink}
+        to="/sign-in"
       >
         <AccountCircleOutlined />
         <Typography variant="caption">test.user@linkta.org</Typography>

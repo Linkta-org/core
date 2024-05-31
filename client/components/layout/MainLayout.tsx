@@ -213,10 +213,7 @@ const MainLayout: React.FC = () => {
           <Box></Box>
         )}
 
-        <Box
-          className="router-outlet"
-          sx={{ display: 'flex' }}
-        >
+        <Box className="router-outlet">
           <Typography
             variant="h3"
             color={'text.primary'}

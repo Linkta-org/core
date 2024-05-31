@@ -15,9 +15,6 @@ const userInputSchema = new Schema<UserInput>({
   updatedAt: { type: Date, default: Date.now },
 });
 
-<<<<<<< HEAD
-export default model('UserInput', userInputSchema);
-=======
 // Pre-save hook to sanitize the 'input' field with Zod
 userInputSchema.pre<UserInput>('save', async function (next) {
   const result = userInputSanitizationSchema.safeParse({
@@ -34,4 +31,3 @@ userInputSchema.pre<UserInput>('save', async function (next) {
 });
 
 export default model<UserInput>('UserInput', userInputSchema);
->>>>>>> dev

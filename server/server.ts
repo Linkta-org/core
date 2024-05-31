@@ -1,5 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 import { getEnv } from '@server/utils/environment';
 import { getLogger, configure, isConfigured } from 'log4js';
 import type { Express, Request, Response } from 'express';
@@ -10,6 +12,8 @@ import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
 
 getEnv();
+const uri = process.env.MONGO_DB_URI;
+mongoose.set('strictQuery', false);
 
 log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
 configure(log4jsConfig);
@@ -24,7 +28,11 @@ function startServer() {
   const app: Express = express();
   const PORT = process.env.PORT || 3000;
 
-  connectToDatabase();
+  if (!uri) {
+    throw new Error('Missing DB connection string!');
+  }
+
+  connectToDatabase(uri).catch(console.dir);
 
   app.use(bodyParser.json());
 
@@ -92,8 +100,30 @@ function stopServer(server: Server) {
  *
  * This should return the connection so that stopServer can use it to disconnect.
  */
-function connectToDatabase() {
-  // connect to the database
+async function connectToDatabase(link: string) {
+  const client = new MongoClient(link, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db('admin').command({ ping: 1 });
+    console.log(
+      'Pinged your deployment. You successfully connected to MongoDB!'
+    );
+    await mongoose
+      .connect(uri ?? '')
+      .then(() => console.log('MONGOOSE connected!'));
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
 }
 
 /**

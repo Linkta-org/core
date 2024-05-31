@@ -9,6 +9,7 @@ import cors from 'cors';
 import genAI from '@server/routes/genAiRouter';
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
+import router from './routes/userInput';
 
 getEnv();
 
@@ -47,6 +48,9 @@ function startServer() {
   /**
    * Routes.
    */
+
+  app.use('/user-input', router);
+
   app.use('/gen-ai', genAI);
 
   /**

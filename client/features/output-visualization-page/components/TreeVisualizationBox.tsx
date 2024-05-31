@@ -1,37 +1,58 @@
 import React, { useState, useCallback } from 'react';
-import type { EdgeChange, NodeChange, Edge, Node } from 'reactflow';
+import type { EdgeChange, NodeChange, Edge, Node, Connection } from 'reactflow';
 import ReactFlow, {
+  addEdge,
   Controls,
   Background,
   applyNodeChanges,
   applyEdgeChanges,
+  MarkerType,
+  ConnectionMode,
+  updateEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from './LinktaFlowEdge';
+import LinktaFlowNode from './LinktaFlowNode';
+import ConnectionLine from './ConnectionLine';
 
-const initialNodes: Node[] = [
+const initialNodes = [
   {
     id: '1',
-    data: { label: 'Hello' },
+    label: '1',
     position: { x: 0, y: 0 },
-    type: 'input',
+    data: { label: 'drag me around 😎' },
+    type: 'custom',
   },
   {
     id: '2',
-    data: { label: 'World' },
-    position: { x: 100, y: 100 },
+    label: '2',
+    position: { x: 0, y: 150 },
+    data: { label: '...or me' },
+    type: 'custom',
   },
 ];
 
-const initialEdges: Edge[] = [
-  { id: '1-2', source: '1', target: '2', type: 'step' },
+const initialEdges = [
+  {
+    id: '1-2',
+    source: '1',
+    target: '2',
+    sourceHandle: 'c',
+    targetHandle: 'a',
+    type: 'floating',
+    markerEnd: { type: MarkerType.Arrow },
+  },
 ];
+
+const nodeTypes = {
+  linktaNode: LinktaFlowNode,
+};
 
 const edgeTypes = {
   linktaEdge: LinktaFlowEdge,
 };
 
-function Flow() {
+function LinktaFlowVisualizationBox() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
 
@@ -46,15 +67,41 @@ function Flow() {
     []
   );
 
+  const onEdgeUpdate = useCallback(
+    (oldEdge: Edge, newConnection: Connection) =>
+      setEdges((els) => updateEdge(oldEdge, newConnection, els)),
+    []
+  );
+
+  const onConnect = useCallback(
+    (params: Connection) =>
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...params,
+            type: 'floating',
+            markerEnd: { type: MarkerType.Arrow },
+          },
+          eds
+        )
+      ),
+    []
+  );
+
   return (
     <div style={{ height: '100%' }}>
       <ReactFlow
         nodes={nodes}
         onNodesChange={onNodesChange}
+        nodeTypes={nodeTypes}
         edges={edges}
         onEdgesChange={onEdgesChange}
         edgeTypes={edgeTypes}
+        onEdgeUpdate={onEdgeUpdate}
+        onConnect={onConnect}
         fitView
+        connectionMode={ConnectionMode.Loose}
+        connectionLineComponent={ConnectionLine}
       >
         <Background />
         <Controls />
@@ -63,4 +110,4 @@ function Flow() {
   );
 }
 
-export default Flow;
+export default LinktaFlowVisualizationBox;

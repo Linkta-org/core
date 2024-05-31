@@ -95,7 +95,9 @@ const PromptInputForm = () => {
       width="100%"
     >
       <Box width="700px">
-        <h2 style={{ textAlign: 'left' }}>Start your learning journey here:</h2>
+        <h2 style={{ textAlign: 'left', fontSize: 18 }}>
+          Start your learning journey here:
+        </h2>
       </Box>
       <Box
         width="700px"

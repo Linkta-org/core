@@ -56,9 +56,12 @@ const PromptInputForm = () => {
 
   const newUserInputMutation = useMutation({
     mutationFn: async (input: UserInputPayload) => {
-      const response = await axios.post('http://localhost:3000/v1/inputs', {
-        userInput: input.userInput,
-      });
+      const response = await axios.post(
+        'http://localhost:3000/user-input/v1/inputs',
+        {
+          userInput: input.userInput,
+        }
+      );
       return response.data;
     },
     onSuccess: (data) => {

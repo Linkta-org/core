@@ -4,6 +4,7 @@ import { getEnv } from '@server/utils/environment';
 import { getLogger, configure, isConfigured } from 'log4js';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
+import cors from 'cors';
 
 import genAI from '@server/routes/genAiRouter';
 import log4jsConfig from '@server/utils/log4js.config.json';
@@ -17,6 +18,12 @@ configure(log4jsConfig);
 const logger = getLogger('[Linkta Server]');
 isConfigured() && logger.info('Log4JS is configured!');
 
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
 /**
  * Start the server.
  */
@@ -27,6 +34,8 @@ function startServer() {
   connectToDatabase();
 
   app.use(bodyParser.json());
+
+  app.use(cors(corsOptions));
 
   /**
    * Test route for the server. This should direct to the frontend.

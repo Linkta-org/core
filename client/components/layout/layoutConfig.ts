@@ -9,6 +9,14 @@ const buildTreePageRouteTab: Tab = {
   tabname: 'Build Your Tree',
   path: '/generate',
 };
+const helpAndFeedbackPageRouteTab: Tab = {
+  tabname: 'Help and Feedback',
+  path: '/help-and-feedback',
+};
+const settingsPageRouteTab: Tab = {
+  tabname: 'Settings',
+  path: '/settings',
+};
 const visualizePageRouteTab: Tab = { tabname: 'Visualize', path: '/output' };
 const cookiePreferencesPageRouteTab: Tab = {
   tabname: 'Cookie Preferences',
@@ -25,6 +33,8 @@ export const routeToNavTabsMapping: Record<string, Tab[]> = {
   '/': [signInPageRouteTab, signUpPageRouteTab, buildTreePageRouteTab],
   '/generate': [homePageRouteTab, visualizePageRouteTab],
   '/output': [homePageRouteTab, buildTreePageRouteTab],
+  '/help-and-feedback': [helpAndFeedbackPageRouteTab],
+  '/settings': [settingsPageRouteTab],
 };
 /**
  * Maps application routes to footer visibility flags, indicating whether the footer should be displayed on a given route.

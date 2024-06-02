@@ -70,32 +70,7 @@
 
 .router-outlet {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@keyframes opacity-in {
-  0% {
-    opacity: 0;
-    visibility: hidden;
-  }
-  50% {
-    opacity: 0;
-    visibility: hidden;
-  }
-  100% {
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
-@keyframes opacity-out {
-  0% {
-    opacity: 1;
-    visibility: visible;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
+  grid-column-start: 2;
+  grid-row-start: 2;
+  padding: 20px;
 }

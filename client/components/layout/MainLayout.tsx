@@ -13,7 +13,6 @@ import '@client/styles/MainLayout.css';
  * - The `Outlet` component handles rendering of route-specific content in the main section.
  */
 const MainLayout: React.FC = () => {
-
   const { width } = useMyViewport();
   const breakpoint = 768;
 
@@ -24,7 +23,7 @@ const MainLayout: React.FC = () => {
 
   useEffect(() => {
     width < breakpoint && setDrawerOpen(false);
-  }, [ (width < breakpoint && width) ])
+  }, [width < breakpoint && width]);
 
   return (
     <>
@@ -39,8 +38,9 @@ const MainLayout: React.FC = () => {
         className={`static-layout ${drawerOpen ? 'layout-open' : 'layout-closed'}`}
         component="main"
       >
-
-        <Box className={`linkta-logo-container ${drawerOpen ? 'layout-open' : 'layout-closed'}`}>
+        <Box
+          className={`linkta-logo-container ${drawerOpen ? 'layout-open' : 'layout-closed'}`}
+        >
           <img
             className={`linkta-logo-image ${drawerOpen ? 'layout-open' : 'layout-closed'}`}
             src="../assets/linkta-logo-web.png"
@@ -80,12 +80,15 @@ const MainLayout: React.FC = () => {
           </ButtonGroup>
         </Box>
 
-        <SideNavDrawer drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} breakpoint={breakpoint} />
+        <SideNavDrawer
+          drawerOpen={drawerOpen}
+          toggleDrawer={toggleDrawer}
+          breakpoint={breakpoint}
+        />
 
-        <Box className='router-outlet'>
+        <Box className="router-outlet">
           <Outlet />
         </Box>
-
       </Box>
     </>
   );

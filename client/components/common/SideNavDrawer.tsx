@@ -1,19 +1,28 @@
-import React from "react";
-import { AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
-import { Box, Typography, Button, Drawer, Link } from "@mui/material";
-import { NavLink as RouterLink } from "react-router-dom";
-import useMyViewport from "@/client/hooks/useMyViewport";
+import React from 'react';
+import {
+  AccountCircleOutlined,
+  AddCircleOutline,
+  HelpOutlineOutlined,
+  SettingsOutlined,
+  ChevronLeftOutlined,
+  ChevronRightOutlined,
+} from '@mui/icons-material';
+import { Box, Typography, Button, Drawer, Link } from '@mui/material';
+import { NavLink as RouterLink } from 'react-router-dom';
+import useMyViewport from '@/client/hooks/useMyViewport';
 import '@client/styles/SideNavDrawer.css';
 
 type sideNavProps = {
-  drawerOpen: boolean,
-  toggleDrawer: () => void,
-  breakpoint: number
+  drawerOpen: boolean;
+  toggleDrawer: () => void;
+  breakpoint: number;
 };
 
-
-export default function SideNavDrawer({ drawerOpen, toggleDrawer, breakpoint }: sideNavProps) {
-
+export default function SideNavDrawer({
+  drawerOpen,
+  toggleDrawer,
+  breakpoint,
+}: sideNavProps) {
   const { width } = useMyViewport();
   const mountedStyle = { animation: 'opacity-in 300ms ease-in' };
   const unmountedStyle = {
@@ -23,7 +32,6 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer, breakpoint }: 
 
   const DrawerListExpanded = (
     <Box className="side-nav-bar">
-
       <Link
         className="side-nav-link"
         underline="none"
@@ -92,9 +100,7 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer, breakpoint }: 
   return (
     <>
       {!drawerOpen ? (
-        <Box
-          className="side-nav-compact"
-        >
+        <Box className="side-nav-compact">
           <Link
             className="side-mini-button"
             mt={3}
@@ -142,19 +148,17 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer, breakpoint }: 
           </Button>
         </Box>
       ) : (
-        <Box className='side-nav'></Box>
+        <Box className="side-nav"></Box>
       )}
 
       <Drawer
-        className='drawer'
+        className="drawer"
         open={drawerOpen}
         onClose={toggleDrawer}
         variant="persistent"
       >
         {DrawerListExpanded}
       </Drawer>
-
     </>
-  )
+  );
 }
-

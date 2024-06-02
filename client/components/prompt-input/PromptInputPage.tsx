@@ -5,10 +5,10 @@ import PromptInputInstructions from './PromptInputInstructions';
 
 const PromptInputPage = () => {
   return (
-      <Box className='prompt-input-view'>
-        <PromptInputForm />
-        <PromptInputInstructions />
-      </Box>
+    <Box className="prompt-input-view">
+      <PromptInputForm />
+      <PromptInputInstructions />
+    </Box>
   );
 };
 

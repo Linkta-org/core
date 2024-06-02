@@ -81,7 +81,6 @@ button.drawer-close-button {
   justify-content: start;
 }
 
-
 div.MuiDrawer-paper {
   background-color: transparent;
   flex-direction: row;
@@ -113,4 +112,3 @@ div.MuiDrawer-paper {
     visibility: hidden;
   }
 }
-

@@ -1,6 +1,6 @@
 import React from "react";
 import { AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
-import { Box, Typography, Button, Drawer, Link } from "@mui/material";
+import { Box, Typography, Button, Drawer, Link, Tooltip } from "@mui/material";
 import { NavLink as RouterLink } from "react-router-dom";
 import useMyViewport from "@/client/hooks/useMyViewport";
 import '@client/styles/SideNavDrawer.css';

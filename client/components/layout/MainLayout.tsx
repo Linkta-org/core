@@ -14,13 +14,13 @@ import '@client/styles/MainLayout.css';
  */
 const MainLayout: React.FC = () => {
 
-  const [drawerOpen, setDrawerOpen] = useState(true);
+  const { width } = useMyViewport();
+  const breakpoint = 768;
+
+  const [drawerOpen, setDrawerOpen] = useState(width > breakpoint);
   const toggleDrawer = () => {
     width > breakpoint && setDrawerOpen(!drawerOpen);
   };
-
-  const { width } = useMyViewport();
-  const breakpoint = 768;
 
   useEffect(() => {
     width < breakpoint && setDrawerOpen(false);
@@ -80,7 +80,7 @@ const MainLayout: React.FC = () => {
           </ButtonGroup>
         </Box>
 
-        <SideNavDrawer drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
+        <SideNavDrawer drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} breakpoint={breakpoint} />
 
         <Box className='router-outlet'>
           <Outlet />

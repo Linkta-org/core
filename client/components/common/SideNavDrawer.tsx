@@ -2,11 +2,19 @@ import React from "react";
 import { AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
 import { Box, Typography, Button, Drawer, Link } from "@mui/material";
 import { NavLink as RouterLink } from "react-router-dom";
+import useMyViewport from "@/client/hooks/useMyViewport";
 import '@client/styles/SideNavDrawer.css';
 
+type sideNavProps = {
+  drawerOpen: boolean,
+  toggleDrawer: () => void,
+  breakpoint: number
+};
 
-export default function SideNavDrawer({ drawerOpen, toggleDrawer }: { drawerOpen: boolean, toggleDrawer: () => void }) {
 
+export default function SideNavDrawer({ drawerOpen, toggleDrawer, breakpoint }: sideNavProps) {
+
+  const { width } = useMyViewport();
   const mountedStyle = { animation: 'opacity-in 300ms ease-in' };
   const unmountedStyle = {
     animation: 'opacity-out 200ms ease-in',
@@ -75,7 +83,7 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer }: { drawerOpen
         className="drawer-close-button"
         onClick={toggleDrawer}
         sx={{ paddingInline: '14px' }}
-        >
+      >
         <ChevronLeftOutlined />
       </Button>
     </Box>
@@ -86,7 +94,6 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer }: { drawerOpen
       {!drawerOpen ? (
         <Box
           className="side-nav-compact"
-          pb={2}
         >
           <Link
             className="side-mini-button"
@@ -127,8 +134,9 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer }: { drawerOpen
           </Link>
 
           <Button
-            className="drawer-open-button"
+            className={`drawer-open-button ${width < breakpoint ? 'disabled' : ''}`}
             onClick={toggleDrawer}
+            disabled={width < breakpoint}
           >
             <ChevronRightOutlined />
           </Button>

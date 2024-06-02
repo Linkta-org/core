@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 5px;
   width: 60px;
+  padding-bottom: 20px;
   align-items: center;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -31,6 +32,10 @@ button.first-button {
 .drawer-open-button > svg,
 .drawer-close-button > svg {
   color: #f5f5f5;
+}
+
+.drawer-open-button.disabled > svg {
+  color: rgba(245, 245, 245, 0.4);
 }
 
 .side-nav-link,

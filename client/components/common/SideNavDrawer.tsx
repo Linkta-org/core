@@ -1,6 +1,6 @@
+import React from "react";
 import { AccountCircleOutlined, AddCircleOutline, HelpOutlineOutlined, SettingsOutlined, ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
 import { Box, Typography, Button, Drawer, Link } from "@mui/material";
-import React, { useState } from "react";
 import { NavLink as RouterLink } from "react-router-dom";
 import '@client/styles/SideNavDrawer.css';
 
@@ -74,7 +74,7 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer }: { drawerOpen
       <Button
         className="drawer-close-button"
         onClick={toggleDrawer}
-        sx={{ marginBottom: '20px', paddingInline: '14px' }}
+        sx={{ paddingInline: '14px' }}
         >
         <ChevronLeftOutlined />
       </Button>
@@ -85,7 +85,7 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer }: { drawerOpen
     <>
       {!drawerOpen ? (
         <Box
-          className="side-nav-mini"
+          className="side-nav-compact"
           pb={2}
         >
           <Link

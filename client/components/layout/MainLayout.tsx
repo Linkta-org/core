@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
-import SideNavDrawer from '../common/SideNavDrawer';
+import SideNavDrawer from '@client/components/common/SideNavDrawer';
+import useMyViewport from '@/client/hooks/useMyViewport';
 import '@client/styles/MainLayout.css';
 
 /**
@@ -12,11 +13,18 @@ import '@client/styles/MainLayout.css';
  * - The `Outlet` component handles rendering of route-specific content in the main section.
  */
 const MainLayout: React.FC = () => {
+
   const [drawerOpen, setDrawerOpen] = useState(true);
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
+    width > breakpoint && setDrawerOpen(!drawerOpen);
   };
 
+  const { width } = useMyViewport();
+  const breakpoint = 768;
+
+  useEffect(() => {
+    width < breakpoint && setDrawerOpen(false);
+  }, [ (width < breakpoint && width) ])
 
   return (
     <>

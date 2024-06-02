@@ -2,7 +2,7 @@
   --secondary-main: #ffa51b;
 }
 
-.side-nav-mini {
+.side-nav-compact {
   opacity: 1;
   display: flex;
   flex-direction: column;
@@ -19,6 +19,7 @@
   flex-direction: column;
   width: 186px;
   gap: 5px;
+  padding-bottom: 20px;
 }
 
 button.first-button {

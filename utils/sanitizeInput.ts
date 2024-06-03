@@ -5,6 +5,7 @@ import { z } from 'zod';
  * @param {string} input - The string to process.
  * @returns {string} The processed string.
  */
+
 const removeExtraWhiteSpaces = (input: string): string => {
   return input.trim().replace(/\s+/g, ' ');
 };
@@ -30,5 +31,4 @@ const userInputSanitizationSchema = z.object({
 });
 
 export type UserInputSanitization = z.infer<typeof userInputSanitizationSchema>;
-
 export default userInputSanitizationSchema;

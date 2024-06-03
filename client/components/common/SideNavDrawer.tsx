@@ -82,7 +82,7 @@ export default function SideNavDrawer({ drawerOpen, toggleDrawer, breakpoint }: 
       <Button
         className="drawer-close-button"
         onClick={toggleDrawer}
-        sx={{ paddingInline: '14px' }}
+        sx={{ paddingInline: '13.5px' }}
       >
         <ChevronLeftOutlined />
       </Button>

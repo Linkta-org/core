@@ -6,6 +6,6 @@ import {
 
 const router = Router();
 
-router.post('/v1/inputs', storeUserInputDatabase, submitUserInput);
+router.post('/', storeUserInputDatabase, submitUserInput);
 
 export default router;

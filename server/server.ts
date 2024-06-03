@@ -6,10 +6,12 @@ import { getEnv } from '@server/utils/environment';
 import { getLogger, configure, isConfigured } from 'log4js';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
+import cors from 'cors';
 
 import genAI from '@server/routes/genAiRouter';
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
+import userInput from './routes/userInput';
 
 getEnv();
 const uri = process.env.MONGO_DB_URI;
@@ -20,6 +22,12 @@ configure(log4jsConfig);
 
 const logger = getLogger('[Linkta Server]');
 isConfigured() && logger.info('Log4JS is configured!');
+
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
 /**
  * Start the server.
@@ -36,6 +44,8 @@ function startServer() {
 
   app.use(bodyParser.json());
 
+  app.use(cors(corsOptions));
+
   /**
    * Test route for the server. This should direct to the frontend.
    */
@@ -46,6 +56,9 @@ function startServer() {
   /**
    * Routes.
    */
+
+  app.use('/v1/inputs', userInput);
+
   app.use('/gen-ai', genAI);
 
   /**

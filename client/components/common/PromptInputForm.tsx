@@ -7,6 +7,7 @@ import {
   Checkbox,
   FormControlLabel,
   Box,
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useMutation } from '@tanstack/react-query';
@@ -56,12 +57,9 @@ const PromptInputForm = () => {
 
   const newUserInputMutation = useMutation({
     mutationFn: async (input: UserInputPayload) => {
-      const response = await axios.post(
-        'http://localhost:3000/user-input/v1/inputs',
-        {
-          userInput: input.userInput,
-        }
-      );
+      const response = await axios.post('http://localhost:3000/v1/inputs', {
+        userInput: input.userInput,
+      });
       return response.data;
     },
     onSuccess: (data) => {
@@ -94,11 +92,12 @@ const PromptInputForm = () => {
       alignItems="center"
       width="100%"
     >
-      <Box width="700px">
-        <h2 style={{ textAlign: 'left', fontSize: 18, color: 'text.primary' }}>
-          Start your learning journey here:
-        </h2>
-      </Box>
+      <Typography
+        variant="h6"
+        sx={{ width: '700px', textAlign: 'left', color: 'text.primary', mb: 2 }}
+      >
+        Start your learning journey here:
+      </Typography>
       <Box
         width="700px"
         display="flex"

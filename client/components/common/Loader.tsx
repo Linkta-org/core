@@ -13,8 +13,26 @@ const Loader = () => {
         height: '300px',
       }}
     >
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '100px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '100px', top: '174px', backgroundColor: '#FFA51B' }} />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '100px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '100px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
       <Box
         sx={{
           position: 'absolute',
@@ -40,27 +58,217 @@ const Loader = () => {
           }
         `}
       </style>
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '173px', top: '174px', backgroundColor: '#FFA51B', boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '200px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '200px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '236px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '236px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '296px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '296px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '332px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '332px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '332px', top: '115px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '395px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '395px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '431px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '515px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '473px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '470px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '578px', top: '60px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '545px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '621px', top: '174px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '557px', top: '115px', backgroundColor: '#FFA51B' }} />
-      <Box sx={{ position: 'absolute', width: '12px', height: '12px', left: '608px', top: '115px', backgroundColor: '#FFA51B' }} />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '173px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+          boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '200px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '200px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '236px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '236px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '296px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '296px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '332px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '332px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '332px',
+          top: '115px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '395px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '395px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '431px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '515px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '473px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '470px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '578px',
+          top: '60px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '545px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '621px',
+          top: '174px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '557px',
+          top: '115px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '12px',
+          height: '12px',
+          left: '608px',
+          top: '115px',
+          backgroundColor: '#FFA51B',
+        }}
+      />
     </Box>
   );
 };

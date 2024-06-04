@@ -17,4 +17,4 @@ const userInputValidationSchema = z.object({
 });
 
 export type UserInputValidation = z.infer<typeof userInputValidationSchema>;
-export default UserInputValidation;
+export default userInputValidationSchema;

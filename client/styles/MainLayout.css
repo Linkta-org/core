@@ -157,7 +157,9 @@ div.MuiDrawer-paper {
 }
 
 .router-outlet {
-  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes opacity-in {

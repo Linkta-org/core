@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { Outlet } from 'react-router-dom';
+import { Outlet, Link as RouterLink } from 'react-router-dom';
 // import Footer from './Footer';
 // import LinktaLogo from './LinktaLogoWithText';
 // import TopNavigationBar from './TopNavigationBar';
@@ -55,6 +55,8 @@ const MainLayout: React.FC = () => {
         className="side-nav-link"
         underline="none"
         mt={3}
+        component={RouterLink}
+        to="/sign-in"
       >
         <AccountCircleOutlined />
         <Typography variant="caption">test.user@linkta.org</Typography>
@@ -63,6 +65,8 @@ const MainLayout: React.FC = () => {
       <Link
         className="side-nav-link"
         underline="none"
+        component={RouterLink}
+        to="/generate"
       >
         <AddCircleOutline />
         <Typography variant="caption">Explore a New Topic</Typography>
@@ -85,6 +89,8 @@ const MainLayout: React.FC = () => {
         className="side-nav-link"
         underline="none"
         mt={'auto'}
+        component={RouterLink}
+        to="/help-and-feedback"
       >
         <HelpOutlineOutlined />
         <Typography variant="caption">Help and Feedback</Typography>
@@ -93,6 +99,8 @@ const MainLayout: React.FC = () => {
       <Link
         className="side-nav-link"
         underline="none"
+        component={RouterLink}
+        to="/settings"
       >
         <SettingsOutlined />
         <Typography variant="caption">Settings</Typography>
@@ -174,6 +182,8 @@ const MainLayout: React.FC = () => {
               className="side-mini-button"
               mt={3}
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/sign-in"
             >
               <AccountCircleOutlined />
             </Link>
@@ -181,6 +191,8 @@ const MainLayout: React.FC = () => {
             <Link
               className="side-mini-button"
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/generate"
             >
               <AddCircleOutline />
             </Link>
@@ -189,6 +201,8 @@ const MainLayout: React.FC = () => {
               className="side-mini-button"
               sx={{ marginTop: 'auto' }}
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/help-and-feedback"
             >
               <HelpOutlineOutlined />
             </Link>
@@ -196,6 +210,8 @@ const MainLayout: React.FC = () => {
             <Link
               className="side-mini-button"
               style={open ? unmountedStyle : mountedStyle}
+              component={RouterLink}
+              to="/settings"
             >
               <SettingsOutlined />
             </Link>
@@ -211,16 +227,8 @@ const MainLayout: React.FC = () => {
           <Box></Box>
         )}
 
-        <Box
-          className="router-outlet"
-          sx={{ display: 'flex' }}
-        >
-          <Typography
-            variant="h3"
-            color={'text.primary'}
-          >
-            Content
-          </Typography>
+        <Box className="router-outlet">
+          <Outlet />
         </Box>
 
         <Drawer

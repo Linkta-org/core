@@ -3,27 +3,26 @@ import { Outlet } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@client/components/common/SideNavDrawer';
-import useMyViewport from '@/client/hooks/useMyViewport';
+import useMatchMedia from '@client/hooks/useMediaMatch';
 import '@client/styles/MainLayout.css';
 
 /**
- * MainLayout manages the app's global layout, using `useDynamicNavigation` for route-based UI adjustments. It presents a consistent header featuring the LinktaLogo, with the top navigation bar and footer rendered conditionally as dictated by the current route's needs.
- *
- * - `showTopNavBar` and `showFooter`: Boolean values from `useDynamicNavigation` determine the visibility of the TopNavigationBar and Footer, respectively.
- * - The `Outlet` component handles rendering of route-specific content in the main section.
+ * MainLayout provides the app's global UI layout and the Router Outlet.
+ * It presents a consistent header featuring the LinktaLogo, with the side navigation bar rendered as open or compact conditionally based on screen width.
+ * The `Outlet` component handles rendering of route-specific content in the main section.
  */
 const MainLayout: React.FC = () => {
-  const { width } = useMyViewport();
   const breakpoint = 768;
+  const matching = useMatchMedia(breakpoint);
 
-  const [drawerOpen, setDrawerOpen] = useState(width > breakpoint);
+  const [drawerOpen, setDrawerOpen] = useState(!matching);
   const toggleDrawer = () => {
-    width > breakpoint && setDrawerOpen(!drawerOpen);
+    !matching && setDrawerOpen(!drawerOpen);
   };
 
   useEffect(() => {
-    width < breakpoint && setDrawerOpen(false);
-  }, [width < breakpoint && width]);
+    matching && setDrawerOpen(false);
+  }, [ matching ]);
 
   return (
     <>
@@ -82,8 +81,8 @@ const MainLayout: React.FC = () => {
 
         <SideNavDrawer
           drawerOpen={drawerOpen}
+          matching={matching}
           toggleDrawer={toggleDrawer}
-          breakpoint={breakpoint}
         />
 
         <Box className="router-outlet">

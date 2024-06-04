@@ -9,21 +9,19 @@ import {
 } from '@mui/icons-material';
 import { Box, Typography, Button, Drawer, Link } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
-import useMyViewport from '@/client/hooks/useMyViewport';
 import '@client/styles/SideNavDrawer.css';
 
 type sideNavProps = {
   drawerOpen: boolean;
+  matching: boolean,
   toggleDrawer: () => void;
-  breakpoint: number;
 };
 
 export default function SideNavDrawer({
   drawerOpen,
+  matching,
   toggleDrawer,
-  breakpoint,
 }: sideNavProps) {
-  const { width } = useMyViewport();
   const mountedStyle = { animation: 'opacity-in 300ms ease-in' };
   const unmountedStyle = {
     animation: 'opacity-out 200ms ease-in',
@@ -140,9 +138,9 @@ export default function SideNavDrawer({
           </Link>
 
           <Button
-            className={`drawer-open-button ${width < breakpoint ? 'disabled' : ''}`}
+            className={`drawer-open-button ${matching ? 'disabled' : ''}`}
             onClick={toggleDrawer}
-            disabled={width < breakpoint}
+            disabled={matching}
           >
             <ChevronRightOutlined />
           </Button>

@@ -1,3 +1,8 @@
+:root {
+  --secondary-main: #ffa51b;
+  color: #fff;
+}
+
 .background-image,
 .background-color,
 .static-layout {

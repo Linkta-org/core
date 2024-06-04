@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import UserInput from '@server/models/UserInputModel';
-import genAiController from './genAiController';
+import { generateResponse } from './genAiController';
 import { getLogger } from 'log4js';
 
 const logger = getLogger('[Input Controller]');
@@ -35,15 +35,15 @@ export const submitUserInput = async (
   next: NextFunction
 ) => {
   try {
-    const { userInput } = req.body;
+    const { userInput, history } = req.body; //now we need both user input and history to be passed to server from client
 
     if (!userInput || typeof userInput !== 'string') {
       return res.status(400).json({ error: 'Invalid user input' });
     }
 
     // Forward the user input to genAiController's generateResponse method
-    req.body.prompt = userInput; // setting the prompt in request body
-    await genAiController.generateResponse(req, res, next);
+    req.body.prompt = { history: history, prompt: userInput }; // setting the prompt in request body
+    await generateResponse(req, res, next); //this could possibly replaced with calling next() once api route is fixed
   } catch (error) {
     logger.error('Error submitting user input:', error);
     res.status(500).json({ error: 'Internal Server Error' });

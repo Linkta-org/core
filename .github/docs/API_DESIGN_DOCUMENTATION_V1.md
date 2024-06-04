@@ -76,20 +76,15 @@ Design 2 (async):
     - `404 Not Found` : `{ "message": "The requested task could not be found. The task ID might be incorrect or the task might have been completed." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
-#### Fetch UserInput
-
-- **Endpoint:** `GET /v1/inputs/:userInputId`
-- **Description:** Retrieves a specific UserInput by its unique identifier.
-- **Parameters:**
-  - `userInputId` (string, required): The unique identifier of the UserInput to retrieve.
+#### Fetch UserInput List
+- **Endpoint:** `GET /v1/inputs`
+- **Description:** Retrieves a list of UserInputs associated with a user.
 - **Headers:**
-  - `Authorization: Bearer <session_token>`
+    - `Authorization: Bearer <session_token>`
 - **Responses:**
-  - `200 OK`: `{ "userInput": <UserInput Object> }`
-  - `400 Bad Request`: `{ "message": "The provided input ID is invalid. Please check the ID and try again." }`
-  - `401 Unauthorized`: `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
-  - `404 Not Found`: `{ "message": "The requested UserInput could not be found. It may have been deleted or the ID might be incorrect." }`
-  - `500 Internal Server Error`: `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `200 OK` : `{ "userInputs": [/*Array of userInputs Objects*/] }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
 ### LinktaFlow Management
 >_Work in progress_
@@ -175,17 +170,19 @@ Design 2 (async):
 
 ### Data Entities
 >_Work in progress_
+
 #### User
 - id (string)
 - firstName (string, required, minLength: 3, maxLength: 30, trimmed)
-- lastName (string)
-- linktaFlows (array of LinktaFlow references)
+- lastName (string, required)
+- userInputs (array of userInput references)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 
 #### UserInput
 - id (string)
 - input (string, required)
+- linktaFlows (array of LinktaFlow references)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 
@@ -381,10 +378,5 @@ See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
 See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
 
 ## API Versioning and Lifecycle
-> _Work in progress_
-
 **Versioning Strategy**
 Linkta API adheres to semantic versioning (SemVer). Major versions (`**v1**`, `**v2**`, etc.) indicate potential backward-incompatible changes, while minor and patch updates (`**v1.1**`, `**v1.2**`, `**v1.2.1**`, etc.) introduce backward-compatible improvements and bug fixes.
-
-**Current Version**
-The current base URL `**https://api.linkta.io/v1**`  represents the first major version of the API. Clients should include the version number in the base URL to ensure compatibility.

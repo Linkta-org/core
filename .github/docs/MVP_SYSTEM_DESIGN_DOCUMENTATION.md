@@ -95,22 +95,20 @@ User authentication and authorization are managed through Firebase Authenticatio
 
 ## Technology Stack
 - **Programming Language:** TypeScript
-- **Frontend:** React, Zustand, React Query, React Flow,  Radix UI
+- **Frontend:** React, Zustand, React Query, React Flow,  Material UI, React Hook Form
 - **Backend:** Node.js, Express, Redis, MongoDB
 - **LLM Provider**: Gemini (version TBD)
 - **Auth Provider:** Firebase Authentication
 - **DevOps/Infrastructure:** GCP, Firebase Hosting, GitHub Actions, Git
 - **Testing:** Jest, React Testing Library, Cypress
-- **Other:** Zod
-- **Pending decisions:** Choice of notification library (React Toastify/React Hot Toast), logging library (Winston/Sentry), rate limiter, and monitoring and alerting tools
+- **Other:** Zod, log4js
+- **Pending decisions:** Choice of rate limiter, and monitoring and alerting tools
 
 ## Data Design
-> _link to be updated_
-The detailed field-level information for each entity can be found in the "Data Design" section of the [API Design documentation]() and the [data design ER diagram]().
+The detailed field-level information for each entity can be found in the "Data Design" section of the [API Design documentation](./API_DESIGN_DOCUMENTATION_V1.md).
 
 ## API Design
-> _link to be updated_
-The detailed API endpoints, request/response formats, and authentication requirements can be found in the [API Design documentation]().
+The detailed API endpoints, request/response formats, and authentication requirements can be found in the [API Design documentation](./API_DESIGN_DOCUMENTATION_V1.md).
 
 ## Module Design
 ### User Interface Design:
@@ -282,6 +280,8 @@ Backend:
 
 ## Error Handling and Logging
 >_Work in progress_
+
+Linkta utilizes the `log4js` library for centralized logging. The logging configuration is defined in `log4js.config.json`, specifying log categories, appenders, and levels. The `log4js` library is used throughout the application to log errors, warnings, and informational messages.
 
 ## Security Considerations
 - **Authentication and Authorization:** Firebase Authentication is used for user authentication and authorization. API endpoints are protected and require valid session tokens for access.

@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import UserInput from '@server/models/UserInputModel';
 import genAiController from './genAiController';
 import { getLogger } from 'log4js';
+import { mockUserId } from '@/mocks';
 
 const logger = getLogger('[Input Controller]');
 
@@ -50,12 +51,9 @@ export const submitUserInput = async (
   }
 };
 
-// Mock userId before auth feature is implemented
-const mockUserId = 'mockUserId';
-
 export const fetchUserInputList = async (req: Request, res: Response) => {
   try {
-    const userId = req.headers['x-user-id'] || mockUserId;
+    const userId = req.headers['x-user-id'] || mockUserId; // mockUserId is used for testing purposes only
 
     if (!userId) {
       return res.status(401).json({

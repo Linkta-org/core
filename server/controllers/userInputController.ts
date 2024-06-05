@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import UserInput from '@server/models/UserInputModel';
+import genAiController from './genAiController';
 import { getLogger } from 'log4js';
 
 const logger = getLogger('[Input Controller]');
@@ -34,7 +35,7 @@ export const submitUserInput = async (
   next: NextFunction
 ) => {
   try {
-    const { userInput } = req.body; //now we need both user input and history to be passed to server from client
+    const { userInput } = req.body;
 
     if (!userInput || typeof userInput !== 'string') {
       return res.status(400).json({ error: 'Invalid user input' });
@@ -42,7 +43,7 @@ export const submitUserInput = async (
 
     // Forward the user input to genAiController's generateResponse method
     req.body.prompt = userInput; // setting the prompt in request body
-    return next();
+    await genAiController.generateResponse(req, res, next);
   } catch (error) {
     logger.error('Error submitting user input:', error);
     res.status(500).json({ error: 'Internal Server Error' });

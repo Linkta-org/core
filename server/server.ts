@@ -8,6 +8,7 @@ import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
 
 import genAI from '@server/routes/genAiRouter';
+import linktaFlow from '@server/routes/linktaFlowRouter';
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
 
@@ -47,6 +48,7 @@ function startServer() {
    * Routes.
    */
   app.use('/gen-ai', genAI);
+  app.use('/v1/flows', linktaFlow);
 
   /**
    * Default route for unknown routes. This should be the last route.

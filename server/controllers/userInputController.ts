@@ -53,10 +53,17 @@ export const submitUserInput = async (
 
 // Middleware to fetch the list of user inputs for a given user ID.
 export const fetchUserInputList = async (req: Request, res: Response) => {
+  let userId;
+
   try {
-    const userId = req.headers['x-user-id'] || mockUserId; // mockUserId is used for testing purposes only
+    userId = req.headers['x-user-id'];
+
+    if (process.env.NODE_ENV !== 'production') {
+      userId = userId || mockUserId;
+    }
 
     if (!userId) {
+      logger.warn('Unauthorized access attempt without a user ID.');
       return res.status(401).json({
         message:
           'You need to log in to access this resource. Please ensure you are logged in and try again.',
@@ -67,7 +74,7 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
 
     res.status(200).json({ userInputs });
   } catch (error) {
-    logger.error('Error fetching user inputs:', error);
+    logger.error(`Error fetching user inputs for userId ${userId}:`, error);
     res.status(500).json({
       message:
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',

@@ -68,9 +68,16 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
       return;
     }
 
-    const userInputs = await UserInput.find({ userId });
+    const userInputs = await UserInput.find({ userId })
+      .sort({ createdAt: -1 })
+      .lean()
+      .select('input');
 
-    res.status(200).json({ userInputs });
+    if (!userInputs.length) {
+      return res.status(200).json({ userInputs: [] });
+    }
+
+    return res.status(200).json({ userInputs });
   } catch (error) {
     logger.error('Error fetching user inputs:', error);
     res.status(500).json({

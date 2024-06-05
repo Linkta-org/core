@@ -51,6 +51,7 @@ export const submitUserInput = async (
   }
 };
 
+// Middleware to fetch the list of user inputs for a given user ID.
 export const fetchUserInputList = async (req: Request, res: Response) => {
   try {
     const userId = req.headers['x-user-id'] || mockUserId; // mockUserId is used for testing purposes only

@@ -9,6 +9,7 @@ const router = Router();
 
 router.post('/', storeUserInputDatabase, submitUserInput);
 
+// Route for fetching the list of user inputs.
 router.get('/', fetchUserInputList);
 
 export default router;

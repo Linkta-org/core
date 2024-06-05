@@ -54,6 +54,7 @@ export const submitUserInput = async (
 // Middleware to fetch the list of user inputs for a given user ID.
 export const fetchUserInputList = async (req: Request, res: Response) => {
   try {
+    // Retrieve the user ID from the request headers or use a mock ID in non-production environments
     const userId =
       process.env.NODE_ENV !== 'production'
         ? req.headers['x-user-id'] || req.headers['x-user-id']
@@ -68,10 +69,12 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
       return;
     }
 
+    // Parse pagination parameters from the query string with default values
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = parseInt(req.query.limit as string, 10) || 5;
     const skip = (page - 1) * limit;
 
+    // Fetch user inputs from the database with pagination and sorting (desc order)
     const userInputs = await UserInput.find({ userId })
       .sort({ createdAt: -1 })
       .skip(skip)

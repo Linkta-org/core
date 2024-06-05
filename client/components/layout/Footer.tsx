@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { footerLinks } from '@/client/components/layout/LayoutConfig';
+import { footerLinks } from '@/client/components/layout/layoutConfig';
 
 const Footer: React.FC = () => {
   return (

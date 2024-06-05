@@ -175,12 +175,12 @@ Design 2 (async):
 - id (string)
 - firstName (string, required, minLength: 3, maxLength: 30, trimmed)
 - lastName (string, required)
-- userInputs (array of userInput references)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 
 #### UserInput
 - id (string)
+- userId (string, required, index:true, reference User)
 - input (string, required)
 - linktaFlows (array of LinktaFlow references)
 - createdAt (timestamp)

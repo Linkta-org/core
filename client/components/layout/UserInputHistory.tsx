@@ -38,7 +38,21 @@ export default function UserInputHistory() {
         {userInputs.slice(0, visibleItems).map((input) => (
           <ListItem key={input._id}>
             <ListItemText
-              primary={<Typography variant="caption">{input.input}</Typography>}
+              primary={
+                <Typography
+                  variant="caption"
+                  noWrap
+                  sx={{
+                    display: 'inline-block',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    maxWidth: '100%',
+                  }}
+                >
+                  {input.input}
+                </Typography>
+              }
             />
           </ListItem>
         ))}

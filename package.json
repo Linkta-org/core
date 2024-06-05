@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "vNODE_ENV=development vite --config client/vite.config.js",
+    "dev:frontend": "NODE_ENV=development vite --config client/vite.config.js",
     "dev:backend": "NODE_ENV=development nodemon server/server.ts",
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "vite build --config client/vite.config.js",

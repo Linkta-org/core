@@ -13,8 +13,7 @@ import { LinktaNode } from './LinktaNode';
 import React from 'react';
 
 const rfStyle = {
-  backgroundColor: '#B8CEFF',
-  border: '1px solid deeppink',
+  backgroundColor: '#173336',
   height: '100%', // Ensure the ReactFlow component takes up full height
   width: '100%', // Ensure the ReactFlow component takes up full width
 };

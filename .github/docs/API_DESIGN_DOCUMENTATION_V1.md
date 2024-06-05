@@ -81,6 +81,9 @@ Design 2 (async):
 - **Description:** Retrieves a list of UserInputs associated with a user.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
+- **Query Parameters:**
+    - `page: The page number for pagination (default: 1)`
+    - `limit: The number of items per page (default: 5)`
 - **Responses:**
     - `200 OK` : `{ "userInputs": [/*Array of userInputs Objects*/] }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`

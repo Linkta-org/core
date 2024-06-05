@@ -68,8 +68,14 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
       return;
     }
 
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 5;
+    const skip = (page - 1) * limit;
+
     const userInputs = await UserInput.find({ userId })
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .lean()
       .select('input');
 

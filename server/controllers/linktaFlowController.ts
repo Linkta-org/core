@@ -6,6 +6,18 @@ import { createError } from '@server/middleware/errorHandling';
 import { getEnv } from '@server/utils/environment';
 getEnv();
 const USER_ID = process.env.USER_ID;
+
+// Fetch all LinktaFlows associated with the authenticated user
+export const fetchLinktaFlows = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    if(!USER_ID) return res.status(401).json({ message: 'You need to log in to access this resource. Please ensure you are logged in and try again.' });
+    const linktaFlows = await LinktaFlow.find({ userId: USER_ID });
+    return res.status(200).json({ linktaFlows });
+  } catch (err: unknown) {
+    const error = createError('fetchLinktaFlows', 'linktaFlowController', 'Failed to fetch LinktaFlows', err);
+    return next(error);
+  }
+};
   
 // Fetch a specific LinktaFlow by ID
 export const fetchLinktaFlow = async (req: Request, res: Response, next: NextFunction) => {

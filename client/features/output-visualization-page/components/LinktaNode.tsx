@@ -1,31 +1,51 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { Box, TextField } from '@mui/material';
 
-const handleStyle = { left: 10 };
+import '@/client/styles/react-flow.css';
 
-export function LinktaNode({ data, isConnectable, color }) {
+type LinktaNodeProps = {
+  isConnectable: boolean;
+  color: string;
+  data: {
+    label: string;
+  };
+  id: string;
+};
+
+const handleStyle = {};
+
+export function LinktaNode({
+  isConnectable,
+  color,
+  data,
+  id,
+}: LinktaNodeProps) {
+  const [placeholderData, setPlaceholderData] = useState({
+    id: id,
+    type: 'linktaNode',
+    position: { x: 0, y: 0 },
+    data: { label: 'TCP/IP Model' },
+  });
   const [isFocused, setIsFocused] = useState(false);
 
   const onFocus = () => setIsFocused(true);
   const onBlur = () => setIsFocused(false);
 
-  const onChange = useCallback((evt) => {
-    console.log(evt.target.value);
-  }, []);
-
   return (
     <Box
       sx={{
-        bgcolor: '#1c4b29',
+        bgcolor: isFocused ? '#1a3e37' : '#183636',
+
         height: '44px',
         width: '168px',
         display: 'flex',
         borderRadius: '5px',
+        border: isFocused ? '0.2px solid #FFA51B' : '0.2px  solid #000',
+        borderLeft: isFocused ? '0.2px solid #FFA51B' : 'none',
         boxShadow: isFocused
           ? '0px 0px 4px 1px #FFA51B96'
-          : '0px 4px 4px 0px #00000040',
-        border: isFocused ? '0.5px solid #FFA51B' : '0.5px solid transparent',
+          : '2px 4px 8px hsl(0deg 0% 0% / 0.25)',
         transition: 'box-shadow 0.3s, border 0.3s',
       }}
       className="linkta-node"
@@ -39,7 +59,7 @@ export function LinktaNode({ data, isConnectable, color }) {
         sx={{
           borderRadius: '5px 0 0 5px',
           width: '8px',
-          bgcolor: color || 'deeppink',
+          bgcolor: color || '#0442E1',
           height: '100%',
         }}
       />
@@ -56,7 +76,13 @@ export function LinktaNode({ data, isConnectable, color }) {
           hiddenLabel
           onFocus={onFocus}
           onBlur={onBlur}
-          onChange={onChange}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPlaceholderData({
+              ...placeholderData,
+              data: { ...data, label: e.target.value },
+            })
+          }
+          value={data.label}
           id="filled-hidden-label-small"
           size="small"
           sx={{
@@ -70,10 +96,10 @@ export function LinktaNode({ data, isConnectable, color }) {
 
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                border: 'none', // Remove default border
+                border: 'none',
               },
               '&.Mui-focused fieldset': {
-                border: 'none', // Remove focus ring border
+                border: 'none',
               },
             },
             '& input': {

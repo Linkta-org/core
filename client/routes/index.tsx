@@ -1,7 +1,7 @@
 import React from 'react';
+import publicRoutes from './public-routes/publicRoutes';
+import privateRoutes from './privateRoutes';
 import { type RouteObject, createBrowserRouter } from 'react-router-dom';
-import publicRoutes from '@client/routes/publicRoutes';
-import privateRoutes from '@client/routes/privateRoutes';
 import NotFoundPage from '@/client/features/not-found-page/NotFoundPage';
 import MainLayout from '@/client/components/layout/MainLayout';
 import ErrorPage from '@/client/features/error-pages/ErrorPage';

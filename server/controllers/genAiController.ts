@@ -11,22 +11,69 @@
 //   TreePromptsFunction,
 // } from '@server/types/index';
 
-import type { NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { startGeneration } from '@/server/models/GeminiModel';
+import { type Content } from '@google/generative-ai';
+import { createError } from '@/server/middleware/errorHandling';
 //handle userinput prompt to pass into startGeneration on GeminiModel.ts
 
-export const generateResponse = async (
+//in initial respsonse generation, there is no chat history, so using []
+export const generateInitialResponse = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { history, prompt } = req.body.prompt;
+  const { userInput } = req.body.prompt;
+  const history: Content[] = [];
   try {
-    if (input) {
-      const response = await startGeneration(history, prompt);
+    if (!userInput) {
+      const response = await startGeneration(history, userInput);
+
+      /*store LLM response to DB 
+      ------> placeholder for the logic <------*/
+
+      res.locals.linktaFlow = response;
+
+      return next();
     }
-  } catch (err) {}
+  } catch (err: unknown) {
+    const methodError = createError(
+      'generateInitialResponse',
+      'genAIController',
+      'Erro generating response from AI.',
+      err
+    );
+    return next(methodError);
+  }
 };
+
+// 
+//all response generation after initial response/generation 
+ //would be call for put/ request 
+export const generateResponseWithHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+
+  //access latest linktaFlow assosicated with current userInput in DB and store the linktaFlow as history to pass into startGeneration
+    //
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // class GenAIController {
 //   AI: AIProvider;

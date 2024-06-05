@@ -20,6 +20,12 @@ export default function UserInputHistory() {
     setVisibleItems((prevVisibleItems) => prevVisibleItems + ITEMS_PER_PAGE);
   };
 
+  const handleShowLess = () => {
+    setVisibleItems((prevVisibleItems) =>
+      Math.max(prevVisibleItems - ITEMS_PER_PAGE, ITEMS_PER_PAGE)
+    );
+  };
+
   return (
     <Box
       className="recent-user-inputs"
@@ -61,9 +67,18 @@ export default function UserInputHistory() {
         <Button
           onClick={handleShowMore}
           variant="contained"
-          sx={{ mt: 2 }}
+          sx={{ display: 'block', margin: '0 auto', mt: 2 }}
         >
           Show More
+        </Button>
+      )}
+      {visibleItems > ITEMS_PER_PAGE && visibleItems >= userInputs.length && (
+        <Button
+          onClick={handleShowLess}
+          variant="contained"
+          sx={{ display: 'block', margin: '0 auto', mt: 2 }}
+        >
+          Show Less
         </Button>
       )}
     </Box>

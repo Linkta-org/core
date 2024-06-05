@@ -74,7 +74,7 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
 
     res.status(200).json({ userInputs });
   } catch (error) {
-    logger.error(`Error fetching user inputs for userId ${userId}:`, error);
+    logger.error(`Error fetching user inputs for user ID ${userId}:`, error);
     res.status(500).json({
       message:
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  fetchUserInputList,
   storeUserInputDatabase,
   submitUserInput,
 } from '@server/controllers/userInputController';
@@ -7,5 +8,7 @@ import {
 const router = Router();
 
 router.post('/', storeUserInputDatabase, submitUserInput);
+
+router.get('/', fetchUserInputList);
 
 export default router;

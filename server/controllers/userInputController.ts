@@ -49,3 +49,29 @@ export const submitUserInput = async (
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+// Mock userId before auth feature is implemented
+const mockUserId = 'mockUserId';
+
+export const fetchUserInputList = async (req: Request, res: Response) => {
+  try {
+    const userId = req.headers['x-user-id'] || mockUserId;
+
+    if (!userId) {
+      return res.status(401).json({
+        message:
+          'You need to log in to access this resource. Please ensure you are logged in and try again.',
+      });
+    }
+
+    const userInputs = await UserInput.find({ userId });
+
+    res.status(200).json({ userInputs });
+  } catch (error) {
+    logger.error('Error fetching user inputs:', error);
+    res.status(500).json({
+      message:
+        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
+    });
+  }
+};

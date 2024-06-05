@@ -19,3 +19,18 @@ export const fetchLinktaFlow = async (req: Request, res: Response, next: NextFun
     return next(error);
   }
 };
+
+// Delete a specific LinktaFlow
+export const deleteLinktaFlow = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if(!USER_ID) return res.status(401).json({ message: 'You need to log in to access this resource. Please ensure you are logged in and try again.' });
+    const linktaFlow = await LinktaFlow.findById(req.params.linktaFlowId);
+    if (!linktaFlow) return res.status(404).json({ message: 'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.' });
+    if (linktaFlow.userId.toString() !== USER_ID) return res.status(403).json({ message: 'You do not have permission to perform this action. If you believe this is an error, please contact support.' });
+    await LinktaFlow.findByIdAndDelete(req.params.linktaFlowId);
+    return res.status(200).json({ message: `Linkta Flow with ID ${req.params.linktaFlowId} has been successfully deleted.` });
+  } catch (err: unknown) {
+    const error = createError('deleteLinktaFlow', 'linktaFlowController', 'Failed to delete LinktaFlow', err);
+    return next(error);
+  }
+};

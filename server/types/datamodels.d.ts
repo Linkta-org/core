@@ -5,13 +5,13 @@ export type User = {
   _id: Types.ObjectId;
   firstName: string;
   lastName: string;
-  userInputs: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 };
 
 export type UserInput = {
   _id: Types.ObjectId;
+  userId: Types.ObjectId;
   input: string;
   linktaFlows: Types.ObjectId[];
   createdAt: Date;

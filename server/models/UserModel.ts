@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import type { User } from '@/server/types/datamodels';
 
 const userSchema = new Schema<User>({
@@ -10,7 +10,6 @@ const userSchema = new Schema<User>({
     trim: true,
   },
   lastName: { type: String, required: true },
-  userInputs: [{ type: Types.ObjectId, ref: 'UserInput' }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

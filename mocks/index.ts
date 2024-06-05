@@ -1,1 +1,1 @@
-export { mockUserId } from './userId';
+export * from './userId';

@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import UserInput from '@server/models/UserInputModel';
 import genAiController from './genAiController';
 import { getLogger } from 'log4js';
-import { mockUserId } from '@/mocks';
+import { MOCK_USER_ID } from '@/mocks';
 
 const logger = getLogger('[Input Controller]');
 
@@ -59,15 +59,16 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
     userId = req.headers['x-user-id'];
 
     if (process.env.NODE_ENV !== 'production') {
-      userId = userId || mockUserId;
+      userId = userId || MOCK_USER_ID;
     }
 
     if (!userId) {
       logger.warn('Unauthorized access attempt without a user ID.');
-      return res.status(401).json({
+      res.status(401).json({
         message:
           'You need to log in to access this resource. Please ensure you are logged in and try again.',
       });
+      return;
     }
 
     const userInputs = await UserInput.find({ userId });

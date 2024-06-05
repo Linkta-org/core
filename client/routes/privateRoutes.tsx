@@ -1,7 +1,7 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import PromptInputPage from '@/client/features/prompt-input-page/PromptInputPage';
+import PromptInputPage from '@/client/components/prompt-input/PromptInputPage';
 import OutputVisualizationPage from '@/client/features/output-visualization-page/OutputVisualizationPage';
 /**
  * Array of RouteObject for protected routes, accessible only after authentication.

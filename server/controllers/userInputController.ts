@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
 import UserInput from '@server/models/UserInputModel';
-// import genAiController from './genAiController';
 import { getLogger } from 'log4js';
 
 const logger = getLogger('[Input Controller]');

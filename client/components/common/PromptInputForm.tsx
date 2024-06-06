@@ -12,7 +12,6 @@ import {
 import { styled } from '@mui/material/styles';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { randomInt } from 'crypto';
 
 interface UserInputPayload {
   userInput: string;
@@ -48,7 +47,6 @@ const PromptInputForm = () => {
   const [inputValue, setInputValue] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
-  const uniqueRequestId = randomInt(1000000).toString();
 
   useEffect(() => {
     const savedCheckedState = localStorage.getItem('isChecked');
@@ -59,6 +57,7 @@ const PromptInputForm = () => {
 
   const newUserInputMutation = useMutation({
     mutationFn: async (input: UserInputPayload) => {
+      const uniqueRequestId = crypto.randomUUID().toString();
       const response = await axios.post(
         'http://localhost:3000/v1/inputs',
         {

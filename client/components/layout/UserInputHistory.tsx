@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   List,
@@ -8,17 +8,44 @@ import {
   Button,
 } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
-import { MOCK_USER_INPUT_LIST } from '@/mocks';
+import { fetchUserInputListFromApi } from '@/client/services/userInputService';
 
 const MAX_HEIGHT = 1000;
 const ITEMS_PER_PAGE = 10;
 
+interface UserInput {
+  _id: string;
+  input: string;
+}
+
 export default function UserInputHistory() {
+  const [userInputList, setUserInputList] = useState<UserInput[]>([]);
   const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE);
-  const userInputs = MOCK_USER_INPUT_LIST;
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadUserInputs = async () => {
+      setLoading(true);
+
+      try {
+        const inputList = await fetchUserInputListFromApi(page);
+        setUserInputList((prevInputList) => [...prevInputList, ...inputList]);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user inputs:', error);
+      }
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    loadUserInputs();
+  }, [page]);
 
   const handleShowMore = () => {
-    setVisibleItems((prevVisibleItems) => prevVisibleItems + ITEMS_PER_PAGE);
+    if (!loading) {
+      setPage((prevPage) => prevPage + 1);
+      setVisibleItems((prevVisibleItems) => prevVisibleItems + ITEMS_PER_PAGE);
+    }
   };
 
   const handleShowLess = () => {
@@ -48,8 +75,8 @@ export default function UserInputHistory() {
         }}
       >
         <List>
-          {userInputs.slice(0, visibleItems).map((input) => (
-            <ListItem key={input._id}>
+          {userInputList.slice(0, visibleItems).map((input, index) => (
+            <ListItem key={`${input._id}-${index}`}>
               <ListItemText
                 primary={
                   <Typography
@@ -72,7 +99,7 @@ export default function UserInputHistory() {
         </List>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-        {visibleItems < userInputs.length && (
+        {visibleItems < userInputList.length && (
           <Button
             onClick={handleShowMore}
             variant="contained"

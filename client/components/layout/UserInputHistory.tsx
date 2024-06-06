@@ -24,6 +24,7 @@ const UserInputHistory = () => {
       pl={2}
     >
       <Typography
+        id="user-input-history-heading"
         variant="body2"
         color={'primary.contrastText'}
         gutterBottom
@@ -36,6 +37,8 @@ const UserInputHistory = () => {
           maxHeight: MAX_HEIGHT,
           overflow: 'auto',
         }}
+        aria-labelledby="user-input-history-heading"
+        role="region"
       >
         {loading ? (
           <UserInputListSkeleton />

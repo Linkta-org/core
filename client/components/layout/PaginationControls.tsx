@@ -20,7 +20,11 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   loading,
 }) => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+    <Box
+      sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}
+      role="group"
+      aria-label="Pagination Controls"
+    >
       {visibleItems < totalItems && (
         <PaginationButton
           onClick={handleShowMore}

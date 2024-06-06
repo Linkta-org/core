@@ -11,6 +11,7 @@ const UserInputListSkeleton = () => {
       pl={2}
     >
       <Typography
+        id="user-input-skeleton-heading"
         variant="body2"
         color="primary.contrastText"
         gutterBottom
@@ -20,13 +21,19 @@ const UserInputListSkeleton = () => {
       <Box
         className="scrollable-box"
         sx={{ maxHeight: 1000, overflow: 'auto' }}
+        aria-labelledby="user-input-skeleton-heading"
+        role="region"
       >
-        <List>
+        <List role="list">
           {skeletonItems.map((_, index) => (
-            <ListItem key={index}>
+            <ListItem
+              key={index}
+              role="listitem"
+            >
               <Skeleton
                 variant="text"
                 width="100%"
+                aria-label="Loading content"
               />
             </ListItem>
           ))}

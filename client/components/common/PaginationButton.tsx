@@ -26,9 +26,13 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'transparent',
+        ':focus': {
+          outline: '2px solid #000',
+        },
       }}
-      startIcon={<Icon />}
+      startIcon={<Icon aria-hidden="true" />}
       disabled={disabled}
+      aria-label={label}
     >
       {label}
     </Button>

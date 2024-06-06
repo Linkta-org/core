@@ -16,9 +16,13 @@ const UserInputList: React.FC<UserInputListProps> = ({
   visibleItems,
 }) => {
   return (
-    <List>
+    <List role="list">
       {userInputList.slice(0, visibleItems).map((input, index) => (
-        <ListItem key={`${input._id}-${index}`}>
+        <ListItem
+          key={`${input._id}-${index}`}
+          role="listitem"
+          aria-labelledby={`user-input-${input._id}`}
+        >
           <ListItemText
             primary={
               <Typography
@@ -31,6 +35,8 @@ const UserInputList: React.FC<UserInputListProps> = ({
                   textOverflow: 'ellipsis',
                   maxWidth: '100%',
                 }}
+                id={`user-input-${input._id}`}
+                aria-label={input.input}
               >
                 {input.input}
               </Typography>

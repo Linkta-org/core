@@ -10,7 +10,6 @@ const logger = getLogger('[Input Controller]');
 export const storeUserInputDatabase = async (req: Request, res: Response) => {
   try {
     const { input, userId } = req.body;
-    console.log('Payload: ', req.body);
 
     if (!input || typeof input !== 'string') {
       return res.status(400).json({ error: 'Invalid user input' });

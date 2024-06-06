@@ -4,7 +4,7 @@ import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
 import useUserInputList from '@/client/hooks/useUserInputList';
 import { ITEMS_PER_PAGE } from './userInputConstants';
-import UserInputListSkeleton from './UserInputListSkeleton';
+import SkeletonList from '@/client/components/common/SkeletonList';
 
 const MAX_HEIGHT = 1000; // TODO: Temp solution
 
@@ -41,7 +41,7 @@ const UserInputHistory = () => {
         role="region"
       >
         {loading ? (
-          <UserInputListSkeleton />
+          <SkeletonList length={ITEMS_PER_PAGE}/>
         ) : (
           <UserInputList
             userInputList={userInputList}

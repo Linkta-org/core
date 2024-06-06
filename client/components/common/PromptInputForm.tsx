@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { MOCK_USER_ID } from '@/mocks';
 
 interface UserInputPayload {
-  userInput: string;
+  input: string;
 }
 
 const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
@@ -57,14 +57,14 @@ const PromptInputForm = () => {
   }, []);
 
   const newUserInputMutation = useMutation({
-    mutationFn: async (input: UserInputPayload) => {
+    mutationFn: async (userInput: UserInputPayload) => {
       const uniqueRequestId = crypto.randomUUID().toString();
-      // console.log('input looks like this: ', input);
+      console.log('userInput looks like this: ', userInput);
       const response = await axios.post(
         'http://localhost:3000/v1/inputs',
         {
           userId: MOCK_USER_ID,
-          userInput: input.userInput,
+          input: userInput.input,
         },
         {
           headers: {
@@ -90,7 +90,7 @@ const PromptInputForm = () => {
   };
 
   const handleSubmit = () => {
-    newUserInputMutation.mutate({ userInput: inputValue });
+    newUserInputMutation.mutate({ input: inputValue });
   };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>) => {

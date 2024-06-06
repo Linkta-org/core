@@ -40,7 +40,13 @@ export default function UserInputHistory() {
       >
         Recent
       </Typography>
-      <Box sx={{ maxHeight: MAX_HEIGHT, overflow: 'auto' }}>
+      <Box
+        className="scrollable-box"
+        sx={{
+          maxHeight: MAX_HEIGHT,
+          overflow: 'auto',
+        }}
+      >
         <List>
           {userInputs.slice(0, visibleItems).map((input) => (
             <ListItem key={input._id}>
@@ -76,6 +82,7 @@ export default function UserInputHistory() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundColor: 'transparent',
             }}
             startIcon={<ExpandMore />}
           >
@@ -92,6 +99,7 @@ export default function UserInputHistory() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundColor: 'transparent',
             }}
             startIcon={<ExpandLess />}
           >

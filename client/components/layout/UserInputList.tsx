@@ -16,12 +16,16 @@ const UserInputList: React.FC<UserInputListProps> = ({
   visibleItems,
 }) => {
   return (
-    <List role="list">
+    <List
+      role="list"
+      sx={{ width: '100%' }}
+    >
       {userInputList.slice(0, visibleItems).map((input, index) => (
         <ListItem
           key={`${input._id}-${index}`}
           role="listitem"
           aria-labelledby={`user-input-${input._id}`}
+          sx={{ padding: 0 }}
         >
           <ListItemText
             primary={
@@ -30,7 +34,6 @@ const UserInputList: React.FC<UserInputListProps> = ({
                 noWrap
                 sx={{
                   display: 'inline-block',
-                  whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   maxWidth: '100%',

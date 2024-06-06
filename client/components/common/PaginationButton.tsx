@@ -1,4 +1,5 @@
 import React from 'react';
+import type { SxProps, Theme } from '@mui/material';
 import { Button } from '@mui/material';
 import type { SvgIconComponent } from '@mui/icons-material';
 
@@ -7,6 +8,7 @@ interface PaginationButtonProps {
   label: string;
   Icon: SvgIconComponent;
   disabled?: boolean;
+  customSx?: SxProps<Theme>;
 }
 
 const PaginationButton: React.FC<PaginationButtonProps> = ({
@@ -14,14 +16,14 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({
   label,
   Icon,
   disabled,
+  customSx,
 }) => {
   return (
     <Button
       onClick={onClick}
       variant="contained"
       sx={{
-        width: '70%',
-        fontSize: '0.7em',
+        fontSize: '0.5em',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -29,6 +31,8 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({
         ':focus': {
           outline: '2px solid #000',
         },
+        mx: 1,
+        ...customSx,
       }}
       startIcon={<Icon aria-hidden="true" />}
       disabled={disabled}

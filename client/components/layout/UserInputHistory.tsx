@@ -6,8 +6,6 @@ import useUserInputList from '@/client/hooks/useUserInputList';
 import { ITEMS_PER_PAGE } from './userInputConstants';
 import SkeletonList from '@/client/components/common/SkeletonList';
 
-const MAX_HEIGHT = 1000; // TODO: Temp solution
-
 const UserInputHistory = () => {
   const { userInputList, loading, handleShowMore, handleShowLess, page } =
     useUserInputList();
@@ -22,6 +20,13 @@ const UserInputHistory = () => {
       className="recent-user-inputs"
       mt={5}
       pl={2}
+      sx={{
+        padding: 3,
+        margin: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}
     >
       <Typography
         id="user-input-history-heading"
@@ -34,8 +39,9 @@ const UserInputHistory = () => {
       <Box
         className="scrollable-box"
         sx={{
-          maxHeight: MAX_HEIGHT,
-          overflow: 'auto',
+          flex: 1,
+          overflowY: 'auto',
+          overflowX: 'hidden',
         }}
         aria-labelledby="user-input-history-heading"
         role="region"

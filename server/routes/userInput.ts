@@ -15,6 +15,6 @@ router.post(
   generateInitialResponse,
   (_: Request, res: Response) => {
     res.send({ message: 'linktaFlow', response: res.locals.linktaFlow });
-});
-
+  }
+);
 export default router;

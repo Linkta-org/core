@@ -41,7 +41,7 @@ const UserInputHistory = () => {
         role="region"
       >
         {loading ? (
-          <SkeletonList length={ITEMS_PER_PAGE}/>
+          <SkeletonList length={ITEMS_PER_PAGE} />
         ) : (
           <UserInputList
             userInputList={userInputList}

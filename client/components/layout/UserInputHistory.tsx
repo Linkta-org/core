@@ -4,6 +4,7 @@ import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
 import useUserInputList from '@/client/hooks/useUserInputList';
 import { ITEMS_PER_PAGE } from './userInputConstants';
+import UserInputListSkeleton from './UserInputListSkeleton';
 
 const MAX_HEIGHT = 1000; // TODO: Temp solution
 
@@ -36,10 +37,14 @@ const UserInputHistory = () => {
           overflow: 'auto',
         }}
       >
-        <UserInputList
-          userInputList={userInputList}
-          visibleItems={visibleItems}
-        />
+        {loading ? (
+          <UserInputListSkeleton />
+        ) : (
+          <UserInputList
+            userInputList={userInputList}
+            visibleItems={visibleItems}
+          />
+        )}
       </Box>
       <PaginationControls
         handleShowMore={handleShowMore}

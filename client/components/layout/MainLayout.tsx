@@ -22,7 +22,7 @@ const MainLayout: React.FC = () => {
 
   useEffect(() => {
     matching && setDrawerOpen(false);
-  }, [ matching ]);
+  }, [matching]);
 
   return (
     <>

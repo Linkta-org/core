@@ -13,7 +13,7 @@ import '@client/styles/SideNavDrawer.css';
 
 type sideNavProps = {
   drawerOpen: boolean;
-  matching: boolean,
+  matching: boolean;
   toggleDrawer: () => void;
 };
 

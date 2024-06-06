@@ -10,6 +10,7 @@ import {
 import { Box, Typography, Button, Drawer, Link } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 import '@client/styles/SideNavDrawer.css';
+import UserInputHistory from '@/client/components/layout/UserInputHistory';
 
 type sideNavProps = {
   drawerOpen: boolean;
@@ -51,18 +52,7 @@ export default function SideNavDrawer({
         <Typography variant="caption">Explore a New Topic</Typography>
       </Link>
 
-      <Box
-        className="recent-user-inputs"
-        mt={5}
-        pl={2}
-      >
-        <Typography
-          variant="body2"
-          color={'primary.contrastText'}
-        >
-          Recent
-        </Typography>
-      </Box>
+      <UserInputHistory />
 
       <Link
         className="side-nav-link"

@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
 } from '@mui/material';
+import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import { MOCK_USER_INPUT_LIST } from '@/mocks';
 
 const MAX_HEIGHT = 1000;
@@ -31,7 +32,6 @@ export default function UserInputHistory() {
       className="recent-user-inputs"
       mt={5}
       pl={2}
-      sx={{ maxHeight: MAX_HEIGHT, overflow: 'auto' }}
     >
       <Typography
         variant="body2"
@@ -40,47 +40,65 @@ export default function UserInputHistory() {
       >
         Recent
       </Typography>
-      <List>
-        {userInputs.slice(0, visibleItems).map((input) => (
-          <ListItem key={input._id}>
-            <ListItemText
-              primary={
-                <Typography
-                  variant="caption"
-                  noWrap
-                  sx={{
-                    display: 'inline-block',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '100%',
-                  }}
-                >
-                  {input.input}
-                </Typography>
-              }
-            />
-          </ListItem>
-        ))}
-      </List>
-      {visibleItems < userInputs.length && (
-        <Button
-          onClick={handleShowMore}
-          variant="contained"
-          sx={{ display: 'block', margin: '0 auto', mt: 2 }}
-        >
-          Show More
-        </Button>
-      )}
-      {visibleItems > ITEMS_PER_PAGE && visibleItems >= userInputs.length && (
-        <Button
-          onClick={handleShowLess}
-          variant="contained"
-          sx={{ display: 'block', margin: '0 auto', mt: 2 }}
-        >
-          Show Less
-        </Button>
-      )}
+      <Box sx={{ maxHeight: MAX_HEIGHT, overflow: 'auto' }}>
+        <List>
+          {userInputs.slice(0, visibleItems).map((input) => (
+            <ListItem key={input._id}>
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="caption"
+                    noWrap
+                    sx={{
+                      display: 'inline-block',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '100%',
+                    }}
+                  >
+                    {input.input}
+                  </Typography>
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        {visibleItems < userInputs.length && (
+          <Button
+            onClick={handleShowMore}
+            variant="contained"
+            sx={{
+              width: '70%',
+              fontSize: '0.7em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            startIcon={<ExpandMore />}
+          >
+            Show More
+          </Button>
+        )}
+        {visibleItems > ITEMS_PER_PAGE && (
+          <Button
+            onClick={handleShowLess}
+            variant="contained"
+            sx={{
+              width: '70%',
+              fontSize: '0.7em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            startIcon={<ExpandLess />}
+          >
+            Show Less
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 }

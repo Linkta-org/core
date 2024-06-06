@@ -74,19 +74,6 @@
   align-items: center;
 }
 
-.scrollable-box::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scrollable-box::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollable-box::-webkit-scrollbar-thumb {
-  background-color: rgba(234, 231, 231, 0.432);
-  border-radius: 4px;
-}
-
 @keyframes opacity-in {
   0% {
     opacity: 0;

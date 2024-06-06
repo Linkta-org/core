@@ -1,10 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
 import useUserInputList from '@/client/hooks/useUserInputList';
 import { ITEMS_PER_PAGE } from './userInputConstants';
 import SkeletonList from '@/client/components/common/SkeletonList';
+
+const UserInputHistoryContainer = styled(Box)({
+  padding: 24,
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  marginTop: 40,
+  paddingLeft: 16,
+});
+
+const ScrollableBox = styled(Box)({
+  flex: 1,
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  '::-webkit-scrollbar': {
+    width: 8,
+  },
+  '::-webkit-scrollbar-track': {
+    background: 'transparent',
+  },
+  '::-webkit-scrollbar-thumb': {
+    backgroundColor: 'rgba(234, 231, 231, 0.432)',
+    borderRadius: 4,
+  },
+});
 
 const UserInputHistory = () => {
   const { userInputList, loading, handleShowMore, handleShowLess, page } =
@@ -16,33 +41,15 @@ const UserInputHistory = () => {
   }, [page]);
 
   return (
-    <Box
-      className="recent-user-inputs"
-      mt={5}
-      pl={2}
-      sx={{
-        padding: 3,
-        margin: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-      }}
-    >
+    <UserInputHistoryContainer>
       <Typography
         id="user-input-history-heading"
         variant="body2"
-        color={'primary.contrastText'}
         gutterBottom
       >
         Recent
       </Typography>
-      <Box
-        className="scrollable-box"
-        sx={{
-          flex: 1,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-        }}
+      <ScrollableBox
         aria-labelledby="user-input-history-heading"
         role="region"
       >
@@ -54,7 +61,7 @@ const UserInputHistory = () => {
             visibleItems={visibleItems}
           />
         )}
-      </Box>
+      </ScrollableBox>
       <PaginationControls
         handleShowMore={handleShowMore}
         handleShowLess={handleShowLess}
@@ -62,7 +69,7 @@ const UserInputHistory = () => {
         totalItems={userInputList.length}
         loading={loading}
       />
-    </Box>
+    </UserInputHistoryContainer>
   );
 };
 

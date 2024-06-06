@@ -1,6 +1,6 @@
 import React from 'react';
 import type { SxProps, Theme } from '@mui/material';
-import { Button } from '@mui/material';
+import { Button, styled } from '@mui/material';
 import type { SvgIconComponent } from '@mui/icons-material';
 
 interface PaginationButtonProps {
@@ -11,6 +11,18 @@ interface PaginationButtonProps {
   customSx?: SxProps<Theme>;
 }
 
+const StyledButton = styled(Button)({
+  fontSize: '0.8em',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'transparent',
+  ':focus': {
+    outline: '2px solid #1976d2',
+  },
+  margin: 8,
+});
+
 const PaginationButton: React.FC<PaginationButtonProps> = ({
   onClick,
   label,
@@ -19,27 +31,16 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({
   customSx,
 }) => {
   return (
-    <Button
+    <StyledButton
       onClick={onClick}
       variant="contained"
-      sx={{
-        fontSize: '0.5em',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'transparent',
-        ':focus': {
-          outline: '2px solid #000',
-        },
-        mx: 1,
-        ...customSx,
-      }}
       startIcon={<Icon aria-hidden="true" />}
       disabled={disabled}
       aria-label={label}
+      sx={customSx}
     >
       {label}
-    </Button>
+    </StyledButton>
   );
 };
 

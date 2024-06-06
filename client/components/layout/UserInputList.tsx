@@ -1,5 +1,11 @@
 import React from 'react';
-import { List, ListItem, ListItemText, Typography } from '@mui/material';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  styled,
+} from '@mui/material';
 
 interface UserInput {
   _id: string;
@@ -11,43 +17,48 @@ interface UserInputListProps {
   visibleItems: number;
 }
 
+const StyledList = styled(List)({
+  width: '100%',
+});
+
+const StyledListItem = styled(ListItem)({
+  padding: 0,
+});
+
+const StyledTypography = styled(Typography)({
+  display: 'inline-block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '100%',
+});
+
 const UserInputList: React.FC<UserInputListProps> = ({
   userInputList,
   visibleItems,
 }) => {
   return (
-    <List
-      role="list"
-      sx={{ width: '100%' }}
-    >
+    <StyledList role="list">
       {userInputList.slice(0, visibleItems).map((input, index) => (
-        <ListItem
+        <StyledListItem
           key={`${input._id}-${index}`}
           role="listitem"
           aria-labelledby={`user-input-${input._id}`}
-          sx={{ padding: 0 }}
         >
           <ListItemText
             primary={
-              <Typography
+              <StyledTypography
                 variant="caption"
                 noWrap
-                sx={{
-                  display: 'inline-block',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  maxWidth: '100%',
-                }}
                 id={`user-input-${input._id}`}
                 aria-label={input.input}
               >
                 {input.input}
-              </Typography>
+              </StyledTypography>
             }
           />
-        </ListItem>
+        </StyledListItem>
       ))}
-    </List>
+    </StyledList>
   );
 };
 

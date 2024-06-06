@@ -1,9 +1,13 @@
 import React from 'react';
-import { List, ListItem, Skeleton } from '@mui/material';
+import { List, ListItem, Skeleton, styled } from '@mui/material';
 
 interface SkeletonListProps {
   length: number;
 }
+
+const StyledSkeleton = styled(Skeleton)({
+  width: '100%',
+});
 
 const SkeletonList: React.FC<SkeletonListProps> = ({ length }) => {
   const skeletonItems = Array.from({ length });
@@ -15,9 +19,8 @@ const SkeletonList: React.FC<SkeletonListProps> = ({ length }) => {
           key={index}
           role="listitem"
         >
-          <Skeleton
+          <StyledSkeleton
             variant="text"
-            width="100%"
             aria-label="Loading content"
           />
         </ListItem>

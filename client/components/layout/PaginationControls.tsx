@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import PaginationButton from '@/client/components/common/PaginationButton';
 import { ITEMS_PER_PAGE } from './userInputConstants';
@@ -10,7 +11,14 @@ interface PaginationControlsProps {
   visibleItems: number;
   totalItems: number;
   loading: boolean;
+  buttonSx?: SxProps<Theme>;
 }
+
+const ControlsContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: 16,
+});
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({
   handleShowMore,
@@ -18,10 +26,10 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   visibleItems,
   totalItems,
   loading,
+  buttonSx,
 }) => {
   return (
-    <Box
-      sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}
+    <ControlsContainer
       role="group"
       aria-label="Pagination Controls"
     >
@@ -31,6 +39,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           label="Show More"
           Icon={ExpandMore}
           disabled={loading}
+          customSx={buttonSx}
         />
       )}
       {visibleItems > ITEMS_PER_PAGE && (
@@ -39,9 +48,10 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           label="Show Less"
           Icon={ExpandLess}
           disabled={loading}
+          customSx={buttonSx}
         />
       )}
-    </Box>
+    </ControlsContainer>
   );
 };
 

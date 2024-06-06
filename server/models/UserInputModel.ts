@@ -3,6 +3,12 @@ import type { UserInput } from '@/server/types/datamodels';
 import userInputSanitizationSchema from '@/utils/sanitizeInput';
 
 const userInputSchema = new Schema<UserInput>({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true,
+  },
   input: {
     type: String,
     required: true,

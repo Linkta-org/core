@@ -81,6 +81,9 @@ Design 2 (async):
 - **Description:** Retrieves a list of UserInputs associated with a user.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
+- **Query Parameters:**
+    - `page: The page number for pagination (default: 1)`
+    - `limit: The number of items per page (default: 5)`
 - **Responses:**
     - `200 OK` : `{ "userInputs": [/*Array of userInputs Objects*/] }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
@@ -175,12 +178,12 @@ Design 2 (async):
 - id (string)
 - firstName (string, required, minLength: 3, maxLength: 30, trimmed)
 - lastName (string, required)
-- userInputs (array of userInput references)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 
 #### UserInput
 - id (string)
+- userId (string, required, index:true, reference User)
 - input (string, required)
 - linktaFlows (array of LinktaFlow references)
 - createdAt (timestamp)

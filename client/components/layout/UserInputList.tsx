@@ -11,7 +11,7 @@ interface UserInputListProps {
   visibleItems: number;
 }
 
-export const UserInputList: React.FC<UserInputListProps> = ({
+const UserInputList: React.FC<UserInputListProps> = ({
   userInputList,
   visibleItems,
 }) => {
@@ -41,3 +41,5 @@ export const UserInputList: React.FC<UserInputListProps> = ({
     </List>
   );
 };
+
+export default UserInputList;

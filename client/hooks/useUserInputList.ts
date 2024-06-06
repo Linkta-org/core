@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react';
 import { fetchUserInputListFromApi } from '@/client/services/userInputService';
 import { MOCK_USER_INPUT_LIST } from '@/mocks';
-
-const ITEMS_PER_PAGE = 10;
+import { ITEMS_PER_PAGE } from '@/client/components/layout/userInputConstants';
 
 interface UserInput {
   _id: string;
   input: string;
 }
 
-export const useUserInputList = () => {
+const useUserInputList = () => {
   // const [userInputList, setUserInputList] = useState<UserInput[]>([]);
   const [userInputList, setUserInputList] =
-    useState<UserInput[]>(MOCK_USER_INPUT_LIST);
+    useState<UserInput[]>(MOCK_USER_INPUT_LIST); // TODO: temp solution for testing styling
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const loadUserInputs = async () => {
+    const loadUserInputList = async () => {
       setLoading(true);
 
       try {
@@ -31,7 +30,7 @@ export const useUserInputList = () => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    loadUserInputs();
+    loadUserInputList();
   }, [page]);
 
   const handleShowMore = () => {
@@ -52,3 +51,5 @@ export const useUserInputList = () => {
 
   return { userInputList, loading, handleShowMore, handleShowLess, page };
 };
+
+export default useUserInputList;

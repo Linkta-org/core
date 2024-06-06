@@ -1,9 +1,8 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
-import { PaginationButton } from '@/client/components/common/PaginationButton';
-
-const ITEMS_PER_PAGE = 10;
+import PaginationButton from '@/client/components/common/PaginationButton';
+import { ITEMS_PER_PAGE } from './userInputConstants';
 
 interface PaginationControlsProps {
   handleShowMore: () => void;
@@ -13,7 +12,7 @@ interface PaginationControlsProps {
   loading: boolean;
 }
 
-export const PaginationControls: React.FC<PaginationControlsProps> = ({
+const PaginationControls: React.FC<PaginationControlsProps> = ({
   handleShowMore,
   handleShowLess,
   visibleItems,
@@ -41,3 +40,5 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
     </Box>
   );
 };
+
+export default PaginationControls;

@@ -9,7 +9,7 @@ interface PaginationButtonProps {
   disabled?: boolean;
 }
 
-export const PaginationButton: React.FC<PaginationButtonProps> = ({
+const PaginationButton: React.FC<PaginationButtonProps> = ({
   onClick,
   label,
   Icon,
@@ -34,3 +34,5 @@ export const PaginationButton: React.FC<PaginationButtonProps> = ({
     </Button>
   );
 };
+
+export default PaginationButton;

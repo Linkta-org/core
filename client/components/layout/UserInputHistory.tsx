@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { UserInputList } from './UserInputList';
-import { PaginationControls } from './PaginationControls';
-import { useUserInputList } from '@/client/hooks/useUserInputList';
+import UserInputList from './UserInputList';
+import PaginationControls from './PaginationControls';
+import useUserInputList from '@/client/hooks/useUserInputList';
+import { ITEMS_PER_PAGE } from './userInputConstants';
 
-const MAX_HEIGHT = 1000;
-const ITEMS_PER_PAGE = 10;
+const MAX_HEIGHT = 1000; // TODO: Temp solution
 
-export default function UserInputHistory() {
+const UserInputHistory = () => {
   const { userInputList, loading, handleShowMore, handleShowLess, page } =
     useUserInputList();
   const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE);
@@ -50,4 +50,6 @@ export default function UserInputHistory() {
       />
     </Box>
   );
-}
+};
+
+export default UserInputHistory;

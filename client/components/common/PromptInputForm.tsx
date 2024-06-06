@@ -57,9 +57,18 @@ const PromptInputForm = () => {
 
   const newUserInputMutation = useMutation({
     mutationFn: async (input: UserInputPayload) => {
-      const response = await axios.post('http://localhost:3000/v1/inputs', {
-        userInput: input.userInput,
-      });
+      const response = await axios.post(
+        'http://localhost:3000/v1/inputs',
+        {
+          userInput: input.userInput,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer TOKEN_PLACEHOLDER',
+          },
+        }
+      );
       return response.data;
     },
     onSuccess: (data) => {

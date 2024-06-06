@@ -9,14 +9,15 @@ const logger = getLogger('[Input Controller]');
 // Middleware to store user input in the database
 export const storeUserInputDatabase = async (req: Request, res: Response) => {
   try {
-    const { userInput } = req.body;
+    const { userInput, userId } = req.body;
+    console.log('Payload: ', req.body);
 
     if (!userInput || typeof userInput !== 'string') {
       return res.status(400).json({ error: 'Invalid user input' });
     }
 
     // Store the user input in the database
-    const newUserInput = new UserInput({ input: userInput });
+    const newUserInput = new UserInput({ input: userInput, userId: userId });
     await newUserInput.save();
 
     // Send a response back

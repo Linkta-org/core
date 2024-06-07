@@ -13,6 +13,7 @@ import { styled } from '@mui/material/styles';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { MOCK_USER_ID } from '@/mocks';
+import env from 'react-dotenv';
 
 interface UserInputPayload {
   input: string;
@@ -59,6 +60,8 @@ const PromptInputForm = () => {
   const newUserInputMutation = useMutation({
     mutationFn: async (userInput: UserInputPayload) => {
       const uniqueRequestId = crypto.randomUUID().toString();
+      const sessionToken = env.SESSION_TOKEN;
+
       const response = await axios.post(
         'http://localhost:3000/v1/inputs',
         {
@@ -68,7 +71,7 @@ const PromptInputForm = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer TOKEN_PLACEHOLDER',
+            Authorization: sessionToken,
             requestId: uniqueRequestId,
           },
         }

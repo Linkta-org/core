@@ -12,7 +12,7 @@ export const storeUserInputDatabase = async (
   next: NextFunction
 ) => {
   try {
-    const { userInput } = req.body;
+    const userInput = req.body.input;
 
     if (!userInput || typeof userInput !== 'string') {
       return res.status(400).json({ error: 'Invalid user input' });

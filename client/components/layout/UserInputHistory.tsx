@@ -7,12 +7,13 @@ import { ITEMS_PER_PAGE } from './userInputConstants';
 import SkeletonList from '@/client/components/common/SkeletonList';
 
 const UserInputHistoryContainer = styled(Box)({
-  padding: 24,
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  marginTop: 40,
-  paddingLeft: 16,
+  width: '100%',
+  boxSizing: 'border-box',
+  marginTop: '2.5rem',
+  overflow: 'hidden',
 });
 
 const ScrollableBox = styled(Box)({
@@ -20,15 +21,19 @@ const ScrollableBox = styled(Box)({
   overflowY: 'auto',
   overflowX: 'hidden',
   '::-webkit-scrollbar': {
-    width: 8,
+    width: '0.5rem',
   },
   '::-webkit-scrollbar-track': {
     background: 'transparent',
   },
   '::-webkit-scrollbar-thumb': {
-    backgroundColor: 'rgba(234, 231, 231, 0.432)',
-    borderRadius: 4,
+    backgroundColor: 'rgba(234, 231, 231, 0.5)',
+    borderRadius: '0.25rem',
   },
+});
+
+const StyledTypography = styled(Typography)({
+  paddingLeft: '1rem',
 });
 
 const UserInputHistory = () => {
@@ -42,13 +47,13 @@ const UserInputHistory = () => {
 
   return (
     <UserInputHistoryContainer>
-      <Typography
+      <StyledTypography
         id="user-input-history-heading"
         variant="body2"
         gutterBottom
       >
         Recent
-      </Typography>
+      </StyledTypography>
       <ScrollableBox
         aria-labelledby="user-input-history-heading"
         role="region"

@@ -18,9 +18,9 @@ const StyledButton = styled(Button)({
   justifyContent: 'center',
   backgroundColor: 'transparent',
   ':focus': {
-    outline: '2px solid #1976d2',
+    outline: '0.125rem solid #1976d2',
   },
-  margin: 8,
+  margin: '0.5rem',
 });
 
 const PaginationButton: React.FC<PaginationButtonProps> = ({

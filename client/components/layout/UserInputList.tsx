@@ -7,7 +7,7 @@ import {
   Typography,
   styled,
 } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface UserInput {
   _id: string;
@@ -24,26 +24,34 @@ const StyledList = styled(List)({
 });
 
 const StyledListItem = styled(ListItem)({
-  padding: 0,
+  paddingLeft: 0,
+  padding: '0.25rem 0',
+  minHeight: '2rem',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: '0.25rem',
+  },
 });
 
 const StyledTypography = styled(Typography)({
   display: 'inline-block',
   overflow: 'hidden',
-  textOverflow: 'clip',
+  textOverflow: 'ellipsis',
   maxWidth: '100%',
+  paddingLeft: '1rem',
 });
 
 const StyledIconButton = styled(IconButton)({
-  color: 'inherit',
-  transform: 'scale(0.6)',
+  color: 'rgba(234, 231, 231, 0.5)',
+  transform: 'scale(0.7)',
+  marginLeft: '0.25em',
 });
 
 const UserInputList: React.FC<UserInputListProps> = ({
   userInputList,
   visibleItems,
 }) => {
-  const handleIconClick = (id: string) => {
+  const handleItemClick = (id: string) => {
     console.log(`Clicked on icon for item with id: ${id}`); // TODO: Implement more logic
   };
 
@@ -54,6 +62,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
           key={`${input._id}-${index}`}
           role="listitem"
           aria-labelledby={`user-input-${input._id}`}
+          onClick={() => handleItemClick(input._id)}
         >
           <ListItemText
             primary={
@@ -67,11 +76,8 @@ const UserInputList: React.FC<UserInputListProps> = ({
               </StyledTypography>
             }
           />
-          <StyledIconButton
-            aria-label={`More options for ${input.input}`}
-            onClick={() => handleIconClick(input._id)}
-          >
-            <MoreHorizIcon />
+          <StyledIconButton>
+            <MoreVertIcon />
           </StyledIconButton>
         </StyledListItem>
       ))}

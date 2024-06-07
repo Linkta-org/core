@@ -17,7 +17,7 @@ interface PaginationControlsProps {
 const ControlsContainer = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
-  marginTop: 16,
+  marginTop: '1rem',
 });
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({

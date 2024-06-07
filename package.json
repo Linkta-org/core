@@ -4,9 +4,10 @@
   "description": "A learning tool for people to learn fast and easy",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "NODE_ENV=development vite --config client/vite.config.js",
-    "dev:backend": "NODE_ENV=development nodemon server/server.ts",
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:dotenv": "react-dotenv",
+    "dev:frontend": "npm run dev:dotenv && vite --config client/vite.config.js",
+    "dev:backend": "npm run dev:dotenv && nodemon server/server.ts",
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "vite build --config client/vite.config.js",
     "build:backend": "tsc -p tsconfig.json",
@@ -72,10 +73,16 @@
     "node": "^21.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dotenv": "^0.1.3",
     "react-router-dom": "^6.22.3",
     "reactflow": "^11.11.3",
     "ts-node": "^10.9.2",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
+  },
+  "react-dotenv": {
+    "whitelist": [
+      "SESSION_TOKEN"
+    ]
   }
 }

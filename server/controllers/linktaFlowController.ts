@@ -37,10 +37,11 @@ export const updateLinktaFlow = async (req: Request, res: Response, next: NextFu
   try {
     if(!USER_ID) return res.status(401).json({ message: 'You need to log in to access this resource. Please ensure you are logged in and try again.' });
     const updatedLinktaFlow = await LinktaFlow.findByIdAndUpdate(req.params.linktaFlowId, req.body.updatedLinktaFlow, { new: true });
+    console.log(req.body);
     if (!updatedLinktaFlow) return res.status(404).json({ message: 'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.' });
     return res.status(200).json({ message: `Linkta Flow updated successfully on ${new Date().toISOString()}.` });
-  } catch (err: any) {
-    if (err.name === 'ValidationError') return res.status(400).json({ message: 'Your request could not be processed as it contains invalid data. Please check your input and try again.' });
+  } catch (err: unknown) {
+    if (err instanceof Error && err.name === 'ValidationError') return res.status(400).json({ message: 'Your request could not be processed as it contains invalid data. Please check your input and try again.' });
     const error = createError('updateLinktaFlow', 'linktaFlowController', 'Failed to update LinktaFlow', err);
     return next(error);
   }

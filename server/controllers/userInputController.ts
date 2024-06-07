@@ -6,7 +6,11 @@ import { MOCK_USER_ID } from '@/mocks';
 const logger = getLogger('[Input Controller]');
 
 // Middleware to store user input in the database
-export const storeUserInputDatabase = async (req: Request, res: Response) => {
+export const storeUserInputDatabase = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { userInput } = req.body;
 
@@ -18,10 +22,7 @@ export const storeUserInputDatabase = async (req: Request, res: Response) => {
     const newUserInput = new UserInput({ input: userInput });
     await newUserInput.save();
 
-    // Send a response back
-    res
-      .status(201)
-      .json({ message: 'User input stored successfully', data: newUserInput });
+    return next();
   } catch (error) {
     logger.error('Error storing user input:', error);
     res.status(500).json({ error: 'Internal Server Error' });

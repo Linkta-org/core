@@ -37,7 +37,6 @@ export const updateLinktaFlow = async (req: Request, res: Response, next: NextFu
   try {
     if(!USER_ID) return res.status(401).json({ message: 'You need to log in to access this resource. Please ensure you are logged in and try again.' });
     const updatedLinktaFlow = await LinktaFlow.findByIdAndUpdate(req.params.linktaFlowId, req.body.updatedLinktaFlow, { new: true });
-    console.log(req.body);
     if (!updatedLinktaFlow) return res.status(404).json({ message: 'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.' });
     return res.status(200).json({ message: `Linkta Flow updated successfully on ${new Date().toISOString()}.` });
   } catch (err: unknown) {

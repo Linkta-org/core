@@ -37,9 +37,6 @@ export const generateInitialResponse = async (
 ** this is a strech feature  & Work in progress ** 
    for LLM ressponse generation after initial response/generation under the same input 
 */
-//notes:
-//method-a(handling history content in backend) get userInput and access linktaFlows(array of flows) and get the latest/last flow in the array( as it would be the most recent one)
-//would be call for put/ request
 export const generateResponseWithHistory = async (
   req: Request,
   res: Response,

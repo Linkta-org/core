@@ -18,6 +18,21 @@ export const storeUserInputDatabase = async (
       return res.status(400).json({ error: 'Invalid user input' });
     }
 
+    // Retrieve the user ID from the request headers or use a mock ID in non-production environments
+    const userId =
+      process.env.NODE_ENV === 'production'
+        ? req.headers['x-user-id'] || req.headers['x-user-id']
+        : MOCK_USER_ID;
+
+    if (!userId) {
+      logger.warn('Unauthorized access attempt without a user ID.');
+      res.status(401).json({
+        message:
+          'You need to log in to access this resource. Please ensure you are logged in and try again.',
+      });
+      return;
+    }
+
     // Store the user input in the database
     const newUserInput = new UserInput({ input: userInput });
     await newUserInput.save();

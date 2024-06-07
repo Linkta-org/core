@@ -14,7 +14,7 @@ const ProtectedRoute: React.FC = () => {
   }
   // TODO: add error handling
   return (
-    <div>
+    <>
       {isAuthenticated ? (
         <Outlet />
       ) : (
@@ -23,7 +23,7 @@ const ProtectedRoute: React.FC = () => {
           replace={true}
         />
       )}
-    </div>
+    </>
   );
 };
 

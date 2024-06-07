@@ -34,7 +34,7 @@ export const generateInitialResponse = async (
 };
 
 /*
-** this is a strech feature  & Work in progress ** 
+** this is a stretch feature  & Work in progress ** 
    for LLM ressponse generation after initial response/generation under the same input 
 */
 export const generateResponseWithHistory = async (

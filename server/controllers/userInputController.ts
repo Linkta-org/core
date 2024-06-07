@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
 import UserInput from '@server/models/UserInputModel';
-import genAiController from './genAiController';
 import { getLogger } from 'log4js';
 import { MOCK_USER_ID } from '@/mocks';
 
@@ -44,7 +43,7 @@ export const submitUserInput = async (
 
     // Forward the user input to genAiController's generateResponse method
     req.body.prompt = userInput; // setting the prompt in request body
-    await genAiController.generateResponse(req, res, next);
+
   } catch (error) {
     logger.error('Error submitting user input:', error);
     res.status(500).json({ error: 'Internal Server Error' });

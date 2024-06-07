@@ -26,7 +26,7 @@ export const generateInitialResponse = async (
     const methodError = createError(
       'generateInitialResponse',
       'genAIController',
-      'Erro generating response from AI.',
+      'Error generating response from AI.',
       err
     );
     return next(methodError);

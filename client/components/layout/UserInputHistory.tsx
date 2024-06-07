@@ -61,19 +61,20 @@ const UserInputHistory = () => {
         {loading ? (
           <SkeletonList length={ITEMS_PER_PAGE} />
         ) : (
-          <UserInputList
-            userInputList={userInputList}
-            visibleItems={visibleItems}
-          />
+          <>
+            <UserInputList
+              userInputList={userInputList}
+              visibleItems={visibleItems}
+            />
+            <PaginationControls
+              handleShowMore={handleShowMore}
+              handleShowLess={handleShowLess}
+              visibleItems={visibleItems}
+              totalItems={userInputList.length}
+            />
+          </>
         )}
       </ScrollableBox>
-      <PaginationControls
-        handleShowMore={handleShowMore}
-        handleShowLess={handleShowLess}
-        visibleItems={visibleItems}
-        totalItems={userInputList.length}
-        loading={loading}
-      />
     </UserInputHistoryContainer>
   );
 };

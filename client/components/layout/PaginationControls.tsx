@@ -1,5 +1,4 @@
 import React from 'react';
-import type { SxProps, Theme } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import PaginationButton from '@/client/components/common/PaginationButton';
@@ -10,14 +9,11 @@ interface PaginationControlsProps {
   handleShowLess: () => void;
   visibleItems: number;
   totalItems: number;
-  loading: boolean;
-  buttonSx?: SxProps<Theme>;
 }
 
 const ControlsContainer = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
-  marginTop: '1rem',
 });
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({
@@ -25,8 +21,6 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   handleShowLess,
   visibleItems,
   totalItems,
-  loading,
-  buttonSx,
 }) => {
   return (
     <ControlsContainer
@@ -38,8 +32,6 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           onClick={handleShowMore}
           label="Show More"
           Icon={ExpandMore}
-          disabled={loading}
-          customSx={buttonSx}
         />
       )}
       {visibleItems > ITEMS_PER_PAGE && (
@@ -47,8 +39,6 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           onClick={handleShowLess}
           label="Show Less"
           Icon={ExpandLess}
-          disabled={loading}
-          customSx={buttonSx}
         />
       )}
     </ControlsContainer>

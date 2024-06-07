@@ -29,7 +29,6 @@ const StyledListItem = styled(ListItem)({
   minHeight: '2rem',
   '&:hover': {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: '0.25rem',
   },
 });
 

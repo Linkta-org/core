@@ -28,28 +28,6 @@ export const storeUserInputDatabase = async (req: Request, res: Response) => {
   }
 };
 
-// Middleware to submit user input to another controller
-export const submitUserInput = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { userInput } = req.body;
-
-    if (!userInput || typeof userInput !== 'string') {
-      return res.status(400).json({ error: 'Invalid user input' });
-    }
-
-    // Forward the user input to genAiController's generateResponse method
-    req.body.prompt = userInput; // setting the prompt in request body
-
-  } catch (error) {
-    logger.error('Error submitting user input:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
 // Middleware to fetch the list of user inputs for a given user ID.
 export const fetchUserInputList = async (req: Request, res: Response) => {
   try {

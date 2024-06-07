@@ -1,149 +1,70 @@
-import createAI from '@server/utils/aiFactory';
-import { createError } from '@/server/middleware/errorHandling';
-import TreePrompts from '@/server/models/TreePromptsModel';
-import { isType } from '@server/utils/typeChecker';
-import { AIProvider } from '@server/types/index';
-
 import type { Request, Response, NextFunction } from 'express';
-import type {
-  GenerativeAIModel,
-  ChainOfThought,
-  TreePromptsFunction,
-} from '@server/types/index';
+import { startGeneration } from '@/server/models/GeminiModel';
+import { type Content } from '@google/generative-ai';
+import { createError } from '@/server/middleware/errorHandling';
 
-class GenAIController {
-  AI: AIProvider;
-  defaultPromptMethod: TreePromptsFunction;
+//in initial respsonse generation, there is no chat history, so using []
+export const generateInitialResponse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userInput = req.body.input;
+  const history: Content[] = [];
+  try {
+    if (userInput) {
+      const response = await startGeneration(history, userInput);
 
-  constructor() {
-    this.AI = AIProvider.Gemini;
-    this.defaultPromptMethod = TreePrompts.costar;
+      console.log('LLM response:', response);
+      /*------> placeholder for store LLM response to DB  <------*/
 
-    this.generateResponse = this.generateResponse.bind(this);
-    this.generateTree = this.generateTree.bind(this);
-    this.createConnection = this.createConnection.bind(this);
-    this.queryTree = this.queryTree.bind(this);
-  }
-
-  /**
-   * Generate a response from the AI.
-   * The response is stored in res.locals.response
-   *
-   * @param req The request object
-   * @param res The response object
-   * @param next The next function in the middleware chain
-   * @return void
-   */
-  async generateResponse(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    const prompt = req.body.prompt;
-
-    try {
-      const AIConnection = this.createConnection(this.AI);
-
-      const response = await AIConnection.generateResponse(prompt);
-
-      res.locals.response = response;
+      res.locals.linktaFlow = response;
 
       return next();
-    } catch (err: unknown) {
-      const methodError = createError(
-        'generateResponse',
-        'genAiController',
-        'Error generating response from AI.',
-        err
-      );
-      return next(methodError);
     }
+  } catch (err: unknown) {
+    const methodError = createError(
+      'generateInitialResponse',
+      'genAIController',
+      'Error generating response from AI.',
+      err
+    );
+    return next(methodError);
   }
+};
 
-  /**
-   * Generate a tree from the AI.
-   * The generated tree is stored in res.locals.tree
-   *
-   * @param req The request object
-   * @param res The response object
-   * @param next The next function in the middleware chain
-   * @return void
-   */
-  async generateTree(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    const userPrompt = req.body.prompt;
+/*
+** this is a stretch feature  & Work in progress ** 
+   for LLM ressponse generation after initial response/generation under the same input 
+*/
+export const generateResponseWithHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userInput: string = req.body.input; //call getUserInput(or get initial userInput from DB)
+    const latestLinktaFlow: string = req.body.linktaFlow; //call getUserInput -> linktaFlows -> linktaFlows[linktaFlow.length-1]
+    const customizedHistory: Content[] = [
+      {
+        role: 'user',
+        parts: [{ text: userInput }],
+      },
+      {
+        role: 'model',
+        parts: [{ text: latestLinktaFlow }],
+      },
+    ];
 
-    try {
-      const response = await this.queryTree(userPrompt);
-
-      // Here we will need to parse the response and build the tree
-      // with something more meaningful, like res.locals.tree
-
-      res.locals.tree = response;
-
-      return next();
-    } catch (err: unknown) {
-      const methodError = createError(
-        'generateTree',
-        'genAiController',
-        'Error generating response from AI.',
-        err
-      );
-
-      return next(methodError);
-    }
+    const response = await startGeneration(customizedHistory, userInput);
+    res.locals.linktaFlow = response;
+  } catch (err) {
+    const methodError = createError(
+      'generateResponseWithContext',
+      'genAIservice',
+      'Error generating response from AI',
+      err
+    );
+    return next(methodError);
   }
-
-  /**
-   * Create a connection to an AI API
-   *
-   * @param AI The type of AI to connect to
-   */
-  createConnection(AI: AIProvider): GenerativeAIModel {
-    const AIConnection = createAI(AI);
-
-    return AIConnection;
-  }
-
-  /**
-   * Query the AI to build a tree
-   *
-   * @param userPrompt The prompt from the user
-   * @param promptMethod (optional) The method to use to generate the prompt
-   * @return The response from the AI
-   */
-  async queryTree(
-    userPrompt: string,
-    promptMethod?: TreePromptsFunction
-  ): Promise<string> {
-    const AI = this.createConnection(this.AI);
-
-    if (!promptMethod) {
-      promptMethod = this.defaultPromptMethod;
-    }
-
-    const prompt = promptMethod(userPrompt);
-
-    if (typeof prompt === 'object') {
-      /**
-       *  Types cannot be arguments because they are not available at runtime
-       * We create a dummy object of the appropriate type to check the type
-       * While we only use this once, I have created this so that we can
-       * expand the types in the future if the AI API changes.
-       */
-      const chainOfThought: ChainOfThought = { history: [], prompt: '' };
-      if (isType(prompt, chainOfThought)) {
-        return AI.generateConversation(prompt.history, prompt.prompt);
-      }
-    }
-
-    // We cast as string as this is our default return.
-    return AI.generateResponse(prompt as string);
-  }
-}
-
-const genAIController = new GenAIController();
-export default genAIController;
+};

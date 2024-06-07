@@ -4,6 +4,7 @@ import ReactFlow, {
   addEdge,
   applyEdgeChanges,
   applyNodeChanges,
+  Controls,
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -14,8 +15,8 @@ import React from 'react';
 
 const rfStyle = {
   backgroundColor: '#173336',
-  height: '100%', // Ensure the ReactFlow component takes up full height
-  width: '100%', // Ensure the ReactFlow component takes up full width
+  height: '100%',
+  width: '100%',
 };
 
 const initialNodes = [
@@ -26,8 +27,7 @@ const initialNodes = [
     data: { value: 123 },
   },
 ];
-// we define the nodeTypes outside of the component to prevent re-renderings
-// you could also use useMemo inside the component
+
 const nodeTypes = { linktaNode: LinktaNode };
 
 function Flow() {
@@ -48,16 +48,20 @@ function Flow() {
   );
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      nodeTypes={nodeTypes}
-      fitView
-      style={rfStyle}
-    />
+    <div style={{ height: '100%', width: '100%' }}>
+      <ReactFlow
+        edges={edges}
+        fitView
+        nodes={nodes}
+        nodeTypes={nodeTypes}
+        onEdgesChange={onEdgesChange}
+        onNodesChange={onNodesChange}
+        onConnect={onConnect}
+        style={rfStyle}
+      >
+        <Controls />
+      </ReactFlow>
+    </div>
   );
 }
 

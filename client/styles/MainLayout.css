@@ -74,7 +74,7 @@
 }
 
 .router-outlet {
-  display: flex;
+  display: grid;
   grid-column-start: 2;
   grid-row-start: 2;
   padding: 20px;

@@ -34,7 +34,7 @@ export const storeUserInputDatabase = async (
     }
 
     // Store the user input in the database
-    const newUserInput = new UserInput({ input: userInput });
+    const newUserInput = new UserInput({ userId: userId, input: userInput });
     await newUserInput.save();
 
     return next();

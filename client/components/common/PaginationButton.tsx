@@ -9,8 +9,8 @@ interface PaginationButtonProps {
 }
 
 const StyledButton = styled(Box)({
-  font: 'inherit',
-  fontSize: '0.7em',
+  fontFamily: 'Roboto, Arial, sans-serif',
+  fontSize: '0.6em',
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -18,7 +18,6 @@ const StyledButton = styled(Box)({
   ':focus': {
     outline: '0.125rem solid #1976d2',
   },
-  margin: '0.5rem',
 });
 
 const PaginationButton: React.FC<PaginationButtonProps> = ({
@@ -33,10 +32,7 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({
       aria-label={label}
       tabIndex={0}
     >
-      <Icon
-        aria-hidden="true"
-        style={{ marginRight: '0.5rem' }}
-      />
+      <Icon aria-hidden="true" />
       {label}
     </StyledButton>
   );

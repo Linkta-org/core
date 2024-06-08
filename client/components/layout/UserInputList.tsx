@@ -25,25 +25,32 @@ const StyledList = styled(List)({
 
 const StyledListItem = styled(ListItem)({
   paddingLeft: 0,
-  padding: '0.25rem 0',
+  padding: '0.2rem 0',
   minHeight: '2rem',
-  '&:hover': {
+  display: 'flex',
+  alignItems: 'center',
+  '&:hover, &:focus-within': {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    '& .MuiIconButton-root': {
+      visibility: 'visible',
+    },
   },
 });
 
 const StyledTypography = styled(Typography)({
-  display: 'inline-block',
+  display: 'block',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: '100%',
   paddingLeft: '1rem',
+  whiteSpace: 'nowrap',
 });
 
 const StyledIconButton = styled(IconButton)({
   color: 'rgba(234, 231, 231, 0.5)',
   transform: 'scale(0.7)',
-  marginLeft: '0.25em',
+  margin: '0 0.25em',
+  visibility: 'hidden',
 });
 
 const UserInputList: React.FC<UserInputListProps> = ({

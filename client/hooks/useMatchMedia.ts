@@ -17,4 +17,3 @@ const useMatchMedia = (breakpoint: number) => {
 };
 
 export default useMatchMedia;
-

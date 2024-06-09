@@ -1,81 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, styled } from '@mui/material';
+import React from 'react';
+import { Box, Typography } from '@mui/material';
 import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
-import useUserInputList from '@/client/hooks/useUserInputList';
+
 import { ITEMS_PER_PAGE } from './userInputConstants';
-import SkeletonList from '@/client/components/common/SkeletonList';
+import styles from '@client/styles/layout/UserInputHistory.module.css';
+import SkeletonList from './SkeletonList';
+import useInputHistory from '@/client/hooks/useInputHistory';
 
-const UserInputHistoryContainer = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-  width: '100%',
-  boxSizing: 'border-box',
-  marginTop: '2.5rem',
-  overflow: 'hidden',
-});
-
-const ScrollableBox = styled(Box)({
-  flex: 1,
-  overflowY: 'auto',
-  overflowX: 'hidden',
-  '::-webkit-scrollbar': {
-    width: '0.5rem',
-  },
-  '::-webkit-scrollbar-track': {
-    background: 'transparent',
-  },
-  '::-webkit-scrollbar-thumb': {
-    backgroundColor: 'rgba(234, 231, 231, 0.5)',
-    borderRadius: '0.25rem',
-  },
-});
-
-const StyledTypography = styled(Typography)({
-  paddingLeft: '1rem',
-});
-
-const UserInputHistory = () => {
-  const { userInputList, loading, handleShowMore, handleShowLess, page } =
-    useUserInputList();
-  const [visibleItems, setVisibleItems] = useState(ITEMS_PER_PAGE);
-
-  useEffect(() => {
-    setVisibleItems(page * ITEMS_PER_PAGE);
-  }, [page]);
+const UserInputHistory: React.FC = () => {
+  const { inputHistory, loading, handleShowMore, handleShowLess, page } =
+    useInputHistory();
+  const visibleItems = page * ITEMS_PER_PAGE;
 
   return (
-    <UserInputHistoryContainer>
-      <StyledTypography
+    <Box className={styles.userInputHistory}>
+      <Typography
         id="user-input-history-heading"
         variant="body2"
         gutterBottom
+        className={styles.userInputHistory__heading}
       >
         Recent
-      </StyledTypography>
-      <ScrollableBox
+      </Typography>
+      <Box
         aria-labelledby="user-input-history-heading"
         role="region"
+        className={styles.userInputHistory__scrollable}
       >
         {loading ? (
           <SkeletonList length={ITEMS_PER_PAGE} />
         ) : (
           <>
             <UserInputList
-              userInputList={userInputList}
+              inputHistory={inputHistory}
               visibleItems={visibleItems}
             />
             <PaginationControls
               handleShowMore={handleShowMore}
               handleShowLess={handleShowLess}
               visibleItems={visibleItems}
-              totalItems={userInputList.length}
+              totalItems={inputHistory.length}
             />
           </>
         )}
-      </ScrollableBox>
-    </UserInputHistoryContainer>
+      </Box>
+    </Box>
   );
 };
 

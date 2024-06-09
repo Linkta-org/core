@@ -1,0 +1,47 @@
+.userInputList {
+  width: 100%;
+  padding-bottom: var(--padding-small);
+}
+
+.userInputList__itemButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-default);
+  padding: var(--padding-small) var(--padding-default);
+  height: var(--height-tab-default);
+}
+
+.userInputList__itemButton:hover,
+.userInputList__itemButton:focus-within {
+  box-shadow: var(--hover-box-shadow);
+  background-color: var(--hover-background-color);
+}
+
+.userInputList__itemButtonSelected {
+  box-shadow: var(--hover-box-shadow);
+  background-color: var(--hover-background-color);
+}
+
+.userInputList__itemButton:hover .userInputList__icon,
+.userInputList__itemButton:focus-within .userInputList__icon,
+.userInputList__itemButtonSelected .userInputList__icon {
+  opacity: 1;
+}
+
+.userInputList__text {
+  overflow: hidden;
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  padding-left: 1rem;
+  white-space: nowrap;
+}
+
+.userInputList__icon {
+  flex-shrink: 0;
+  transform: scale(0.8);
+  color: var(--text-primary);
+  margin-left: auto;
+  opacity: 0;
+}

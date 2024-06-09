@@ -1,8 +1,8 @@
 import { axiosClient } from '@/client/config/axios';
 import { MOCK_USER_ID } from '@/mocks';
 
-export const fetchUserInputListFromApi = async (
-  page: number,
+export const fetchInputHistoryFromApi = async (
+  page: number = 1,
   limit: number = 10
 ) => {
   const userId = MOCK_USER_ID; // TODO: Temp solution for testing before auth feature is implemented

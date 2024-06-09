@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
+import type { NodeProps } from 'reactflow';
 import { Handle, Position } from 'reactflow';
 import { Box, TextField } from '@mui/material';
 
 import '@/client/styles/react-flow.css';
 
-type LinktaNodeProps = {
-  isConnectable: boolean;
-  color: string;
-  data: {
-    label: string;
-  };
+type LinktaNodeData = {
+  color?: string | undefined;
+  label?: string;
   id: string;
+};
+
+type LinktaNodeProps = NodeProps<LinktaNodeData> & {
+  isConnectable: boolean;
 };
 
 const handleStyle = {};
 
 export function LinktaNode({
   isConnectable,
-  color,
+
   data,
-  id,
 }: LinktaNodeProps) {
   const [placeholderData, setPlaceholderData] = useState({
-    id: id,
+    id: data.id,
     type: 'linktaNode',
     position: { x: 0, y: 0 },
     data: { label: 'TCP/IP Model' },
@@ -59,7 +60,7 @@ export function LinktaNode({
         sx={{
           borderRadius: '5px 0 0 5px',
           width: '8px',
-          bgcolor: color || '#0442E1',
+          bgcolor: data.color || '#0442E1',
           height: '100%',
         }}
       />

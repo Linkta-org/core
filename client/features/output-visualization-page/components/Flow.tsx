@@ -1,5 +1,6 @@
 // we define the nodeTypes outside of the component to prevent re-renderings
 import { useCallback, useState } from 'react';
+import type { Edge, Node, EdgeChange, NodeChange, Connection } from 'reactflow';
 import ReactFlow, {
   addEdge,
   applyEdgeChanges,
@@ -19,7 +20,7 @@ const rfStyle = {
   width: '100%',
 };
 
-const initialNodes = [
+const initialNodes: Node[] = [
   {
     id: 'node-1',
     type: 'linktaNode',
@@ -31,19 +32,22 @@ const initialNodes = [
 const nodeTypes = { linktaNode: LinktaNode };
 
 function Flow() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState([]);
+  const [nodes, setNodes] = useState<Node[]>(initialNodes);
+  const [edges, setEdges] = useState<Edge[]>([]);
 
   const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    (changes: NodeChange[]) =>
+      setNodes((nds: Node[]) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
   const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    (changes: EdgeChange[]) =>
+      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
     [setEdges]
   );
   const onConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    (connection: Edge | Connection) =>
+      setEdges((eds) => addEdge(connection, eds)),
     [setEdges]
   );
 

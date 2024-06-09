@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@client/components/common/SideNavDrawer';
-import useMatchMedia from '@client/hooks/useMediaMatch';
+import useMatchMedia from '@client/hooks/useMatchMedia';
 import '@client/styles/MainLayout.css';
 
 /**

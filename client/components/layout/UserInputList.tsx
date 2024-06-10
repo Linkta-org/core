@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IconButton,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   Typography,
   styled,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ListItemMenu from './ListItemMenu';
 
 interface UserInput {
   _id: string;
@@ -23,22 +24,27 @@ const StyledList = styled(List)({
   width: '100%',
 });
 
-const StyledListItem = styled(ListItem)({
-  paddingLeft: 0,
-  padding: '0.2rem 0',
+const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  padding: '0.2rem 1rem',
   minHeight: '2rem',
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
   '&:hover, &:focus-within': {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: theme.palette.action.hover,
     '& .MuiIconButton-root': {
       visibility: 'visible',
     },
   },
-});
+  '&.Mui-selected, &.Mui-selected:hover, &.Mui-selected:focus-within': {
+    backgroundColor: theme.palette.action.selected,
+    '& .MuiIconButton-root': {
+      visibility: 'visible',
+    },
+  },
+}));
 
 const StyledTypography = styled(Typography)({
-  display: 'block',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: '100%',
@@ -57,35 +63,73 @@ const UserInputList: React.FC<UserInputListProps> = ({
   userInputList,
   visibleItems,
 }) => {
-  const handleItemClick = (id: string) => {
-    console.log(`Clicked on icon for item with id: ${id}`); // TODO: Implement more logic
+  const [menuAnchorElement, setMenuAnchorElement] =
+    useState<null | HTMLElement>(null);
+  const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
+    null
+  );
+
+  const handleItemClick = (
+    event: React.MouseEvent<HTMLElement>,
+    id: string
+  ) => {
+    if (selectedUserInputId === id && menuAnchorElement) {
+      handleMenuClose();
+    } else {
+      setMenuAnchorElement(event.currentTarget as HTMLElement);
+      setSelectedUserInputId(id);
+    }
+  };
+
+  const handleMenuClose = () => {
+    setMenuAnchorElement(null);
+    setSelectedUserInputId(null);
   };
 
   return (
     <StyledList role="list">
-      {userInputList.slice(0, visibleItems).map((input, index) => (
-        <StyledListItem
-          key={`${input._id}-${index}`}
+      {userInputList.slice(0, visibleItems).map((userInput) => (
+        <StyledListItemButton
+          key={userInput._id}
+          onClick={(event) => handleItemClick(event, userInput._id)}
           role="listitem"
-          aria-labelledby={`user-input-${input._id}`}
-          onClick={() => handleItemClick(input._id)}
+          aria-labelledby={`user-input-${userInput._id}`}
+          selected={selectedUserInputId === userInput._id}
         >
           <ListItemText
             primary={
               <StyledTypography
                 variant="caption"
                 noWrap
-                id={`user-input-${input._id}`}
-                aria-label={input.input}
+                id={`user-input-${userInput._id}`}
+                aria-label={`Details for ${userInput.input}`}
               >
-                {input.input}
+                {userInput.input}
               </StyledTypography>
             }
           />
-          <StyledIconButton>
+          <StyledIconButton
+            aria-label="More options"
+            aria-haspopup="true"
+            onClick={(event) => {
+              event.stopPropagation();
+              handleItemClick(event, userInput._id);
+            }}
+          >
             <MoreVertIcon />
           </StyledIconButton>
-        </StyledListItem>
+          <ListItemMenu
+            anchorEl={menuAnchorElement}
+            isOpen={
+              Boolean(menuAnchorElement) &&
+              selectedUserInputId === userInput._id
+            }
+            onClose={handleMenuClose}
+            onRename={() => console.log('Rename:', userInput._id)}
+            onRegenerate={() => console.log('Regenerate:', userInput._id)}
+            onDelete={() => console.log('Delete:', userInput._id)}
+          />
+        </StyledListItemButton>
       ))}
     </StyledList>
   );

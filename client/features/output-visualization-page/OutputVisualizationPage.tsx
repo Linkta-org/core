@@ -1,7 +1,8 @@
 import React from 'react';
+import Flow from './components/Flow';
 
 const OutputVisualizationPage = () => {
-  return <div>OutputVisualizationPage Placeholder</div>;
+  return <Flow />;
 };
 
 export default OutputVisualizationPage;

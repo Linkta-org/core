@@ -49,9 +49,9 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
   try {
     // Retrieve the user ID from the request headers or use a mock ID in non-production environments
     const userId =
-      process.env.NODE_ENV === 'production'
-        ? req.headers['x-user-id'] || req.headers['x-user-id']
-        : MOCK_USER_ID;
+      process.env.NODE_ENV === 'development'
+        ? req.headers['x-user-id'] || MOCK_USER_ID
+        : req.headers['x-user-id'];
 
     if (!userId) {
       logger.warn('Unauthorized access attempt without a user ID.');
@@ -64,7 +64,7 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
 
     // Parse pagination parameters from the query string with default values
     const page = parseInt(req.query.page as string, 10) || 1;
-    const limit = parseInt(req.query.limit as string, 10) || 5;
+    const limit = parseInt(req.query.limit as string, 10) || 10;
     const skip = (page - 1) * limit;
 
     // Fetch user inputs from the database with pagination and sorting (desc order)

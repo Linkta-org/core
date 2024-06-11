@@ -1,7 +1,11 @@
 import dagre from '@dagrejs/dagre';
 // Placeholder for initial nodes and edges types
 import type { Node, Edge } from 'reactflow';
-
+import {
+  DEFAULT_NODE_WIDTH,
+  DEFAULT_NODE_HEIGHT,
+  ADJUST_PARAMS_NODES_WITH_PARENT_ID,
+} from '@client/utils/constants';
 const setupDagreFlow = () => {
   const dagreFlow = new dagre.graphlib.Graph();
   dagreFlow.setDefaultEdgeLabel(() => ({}));
@@ -9,14 +13,14 @@ const setupDagreFlow = () => {
   return dagreFlow;
 };
 
-const nodeWidth = 168;
-const nodeHeight = 44;
-
 function dagreAutoLayout(initialNodes: Node[], initialEdges: Edge[]) {
   const dagreGraph = setupDagreFlow();
 
   initialNodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+    dagreGraph.setNode(node.id, {
+      width: DEFAULT_NODE_WIDTH,
+      height: DEFAULT_NODE_HEIGHT,
+    });
   });
 
   initialEdges.forEach((edge) => {
@@ -36,7 +40,7 @@ function dagreAutoLayout(initialNodes: Node[], initialEdges: Edge[]) {
           nodeWithPosition.x -
           parentNodeWithPosition.x +
           parentNodeWithPosition.width -
-          nodeWidth * 0.5535,
+          DEFAULT_NODE_WIDTH * ADJUST_PARAMS_NODES_WITH_PARENT_ID,
         y: nodeWithPosition.y - parentNodeWithPosition.y,
       };
     } else {

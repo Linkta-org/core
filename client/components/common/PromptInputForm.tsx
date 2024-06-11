@@ -58,7 +58,7 @@ const PromptInputForm = () => {
 
   const newUserInputMutation = useMutation({
     mutationFn: async (userInput: UserInputPayload) => {
-      const uniqueRequestId = crypto.randomUUID().toString();
+      const uniqueRequestId = crypto.randomUUID();
 
       const response = await axios.post(
         'http://localhost:3000/v1/inputs',

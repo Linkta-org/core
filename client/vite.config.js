@@ -16,7 +16,7 @@ export default defineConfig({
     checker({
       typescript: true,
       overlay: false,
-    })
+    }),
   ],
   root: path.resolve(__dirname), // Define root directory for the Vite project.
   server: {

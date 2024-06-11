@@ -1,10 +1,10 @@
-import { Node, Edge } from "reactflow";
+import type { Node, Edge } from 'reactflow';
 
 type LinktaFlow = {
-  userId?: string,
+  userId?: string;
   nodes: Node[];
   edges: Edge[];
   userInputId?: string;
-}
+};
 
 export default LinktaFlow;

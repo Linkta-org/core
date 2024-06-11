@@ -4,9 +4,9 @@
   "description": "A learning tool for people to learn fast and easy",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "NODE_ENV=development vite --config client/vite.config.js",
-    "dev:backend": "NODE_ENV=development nodemon server/server.ts",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "vite --config client/vite.config.js",
+    "dev:backend": "nodemon server/server.ts",
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "vite build --config client/vite.config.js",
     "build:backend": "tsc -p tsconfig.json",
@@ -46,7 +46,9 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.2",
     "typescript-eslint": "^7.1.1",
+    "unplugin-turbo-console": "^1.8.6",
     "vite": "^5.1.6",
+    "vite-plugin-checker": "^0.6.4",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "dependencies": {

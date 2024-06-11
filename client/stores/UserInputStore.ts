@@ -1,22 +1,17 @@
 import { create } from 'zustand';
-import type { UserInput } from '../types/datamodels';
+import { devtools } from 'zustand/middleware';
+import type UserInput from '../types/UserInput';
 
-type userInputStore = {
-  lastInput: UserInput | undefined,
-  inputHistory: UserInput[],
+type UserInputStore = {
+  currentInput: UserInput | undefined,
   getLastInput: () => UserInput | undefined,
-  getInputHistory: () => UserInput[],
-  setLastInput: () => void,
-  setInputHistory: () => void
+  setLastInput: (input: UserInput) => void,
 }
 
-const useUserInputStore = create<userInputStore>() ((set, get) => ({
-  lastInput: undefined,
-  inputHistory: [],
-  getLastInput: () => get().lastInput,
-  getInputHistory: () => get().inputHistory,
-  setLastInput: () => set((state) => ({ lastInput: state.lastInput })),
-  setInputHistory: () => set((state) => ({ inputHistory: state.inputHistory  }))
-}))
+const useUserInputStore = create<UserInputStore>() (devtools((set, get) => ({
+  currentInput: undefined,
+  getLastInput: () => get().currentInput,
+  setLastInput: (input) => set({ currentInput: input }),
+})));
 
 export default useUserInputStore;

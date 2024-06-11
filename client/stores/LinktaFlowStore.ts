@@ -1,22 +1,17 @@
 import { create } from "zustand";
-import { LinktaFlow } from "../types/datamodels";
+import { devtools } from "zustand/middleware";
+import type LinktaFlow from "../types/LinktaFlow";
 
 type LinktaFlowStore = {
-  currentLinktaFlow: LinktaFlow | undefined,
-  undoHistory: LinktaFlow[],
-  getCurrentFlow: () => LinktaFlow | undefined,
-  getUndoHistory: () => LinktaFlow[],
-  setCurrentFlow: () => void,
-  setUndoHistory: () => void
-}
+  currentLinktaFlow: LinktaFlow | undefined;
+  getCurrentFlow: () => LinktaFlow | undefined;
+  setCurrentFlow: (flow: LinktaFlow) => void;
+};
 
-const useLinktaFlowStore = create<LinktaFlowStore>() ((set, get) => ({
+const useLinktaFlowStore = create<LinktaFlowStore>() (devtools((set, get) => ({
   currentLinktaFlow: undefined,
-  undoHistory: [],
   getCurrentFlow: () => get().currentLinktaFlow,
-  getUndoHistory: () => get().undoHistory,
-  setCurrentFlow: () => set((state) => ({ currentLinktaFlow: state.currentLinktaFlow })),
-  setUndoHistory: () => set((state) => ({ undoHistory: state.undoHistory}))
-}))
+  setCurrentFlow: (flow) => set({ currentLinktaFlow: flow }),
+})));
 
 export default useLinktaFlowStore;

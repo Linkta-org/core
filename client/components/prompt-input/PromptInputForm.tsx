@@ -12,9 +12,10 @@ import {
 import { styled } from '@mui/material/styles';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { MOCK_USER_ID } from '@/mocks';
 
 interface UserInputPayload {
-  userInput: string;
+  input: string;
 }
 
 const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
@@ -56,10 +57,22 @@ const PromptInputForm = () => {
   }, []);
 
   const newUserInputMutation = useMutation({
-    mutationFn: async (input: UserInputPayload) => {
-      const response = await axios.post('http://localhost:3000/v1/inputs', {
-        userInput: input.userInput,
-      });
+    mutationFn: async (userInput: UserInputPayload) => {
+      const uniqueRequestId = crypto.randomUUID();
+
+      const response = await axios.post(
+        'http://localhost:3000/v1/inputs',
+        {
+          input: userInput.input,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': MOCK_USER_ID,
+            'x-request-id': uniqueRequestId,
+          },
+        }
+      );
       return response.data;
     },
     onSuccess: (data) => {
@@ -76,7 +89,7 @@ const PromptInputForm = () => {
   };
 
   const handleSubmit = () => {
-    newUserInputMutation.mutate({ userInput: inputValue });
+    newUserInputMutation.mutate({ input: inputValue });
   };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>) => {

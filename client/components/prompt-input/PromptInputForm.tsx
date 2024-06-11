@@ -58,7 +58,8 @@ const PromptInputForm = () => {
 
   const newUserInputMutation = useMutation({
     mutationFn: async (userInput: UserInputPayload) => {
-      const uniqueRequestId = crypto.randomUUID().toString();
+      const uniqueRequestId = crypto.randomUUID();
+
       const response = await axios.post(
         'http://localhost:3000/v1/inputs',
         {
@@ -68,7 +69,7 @@ const PromptInputForm = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer TOKEN_PLACEHOLDER',
+            'x-user-id': MOCK_USER_ID,
             requestId: uniqueRequestId,
           },
         }

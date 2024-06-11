@@ -4,7 +4,6 @@ import { Handle, Position } from 'reactflow';
 import { Box, TextField } from '@mui/material';
 import '@/client/styles/react-flow.css';
 
-
 type LinktaNodeData = {
   color?: string | undefined;
   label?: string;

@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { MOCK_USER_ID } from '@/mocks';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import userInputSchema from '@/utils/zodSchema/userInputSchema';
 
@@ -48,9 +48,12 @@ const GenerateButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const PromptInputForm = () => {
-  const [inputValue, setInputValue] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(userInputSchema),
     defaultValues: {
       input: '',
@@ -94,12 +97,9 @@ const PromptInputForm = () => {
     },
   });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleSubmit = () => {
-    newUserInputMutation.mutate({ input: inputValue });
+  const onSubmit = (userInput: UserInputPayload) => {
+    console.log('this is my input: ', userInput.input)
+    newUserInputMutation.mutate({ input: userInput.input });
   };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,17 +121,23 @@ const PromptInputForm = () => {
       >
         Start your learning journey here:
       </Typography>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box
           width="700px"
           display="flex"
           flexDirection="column"
           gap={2}
         >
-          <UserInputBar
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
+          <Controller
+            name="input"
+            control={control}
+            render={({ field }) => (
+              <UserInputBar
+                {...field}
+                error={!!errors.input}
+                helperText={errors.input ? errors.input.message : ''}
+              />
+            )}
           />
           <FormControlLabel
             control={
@@ -145,9 +151,9 @@ const PromptInputForm = () => {
             sx={{ color: 'text.primary' }}
           />
           <GenerateButton
+            type="submit"
             disabled={!isChecked}
             sx={{ alignSelf: 'center' }}
-            onClick={handleSubmit}
           >
             Generate
           </GenerateButton>

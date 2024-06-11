@@ -1,52 +1,45 @@
 import type { Request, Response, NextFunction } from 'express';
 import UserInput from '@server/models/UserInputModel';
-import genAiController from './genAiController';
 import { getLogger } from 'log4js';
 import { MOCK_USER_ID } from '@/mocks';
 
 const logger = getLogger('[Input Controller]');
 
 // Middleware to store user input in the database
-export const storeUserInputDatabase = async (req: Request, res: Response) => {
-  try {
-    const { input, userId } = req.body;
-
-    if (!input || typeof input !== 'string') {
-      return res.status(400).json({ error: 'Invalid user input' });
-    }
-
-    // Store the user input in the database
-    const newUserInput = new UserInput({ input: input, userId: userId });
-    await newUserInput.save();
-
-    // Send a response back
-    res
-      .status(201)
-      .json({ message: 'User input stored successfully', data: newUserInput });
-  } catch (error) {
-    logger.error('Error storing user input:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-// Middleware to submit user input to another controller
-export const submitUserInput = async (
+export const storeUserInputDatabase = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { userInput } = req.body;
+    const userInput = req.body.input;
 
     if (!userInput || typeof userInput !== 'string') {
       return res.status(400).json({ error: 'Invalid user input' });
     }
 
-    // Forward the user input to genAiController's generateResponse method
-    req.body.prompt = userInput; // setting the prompt in request body
-    await genAiController.generateResponse(req, res, next);
+    // Retrieve the user ID from the request headers or use a mock ID in non-production environments
+    const userId =
+      process.env.NODE_ENV === 'production'
+        ? req.headers['x-user-id'] || req.headers['x-user-id']
+        : MOCK_USER_ID;
+
+    if (!userId) {
+      logger.warn('Unauthorized access attempt without a user ID.');
+      res.status(401).json({
+        message:
+          'You need to log in to access this resource. Please ensure you are logged in and try again.',
+      });
+      return;
+    }
+
+    // Store the user input in the database
+    const newUserInput = new UserInput({ userId: userId, input: userInput });
+    await newUserInput.save();
+
+    return next();
   } catch (error) {
-    logger.error('Error submitting user input:', error);
+    logger.error('Error storing user input:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -56,7 +49,7 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
   try {
     // Retrieve the user ID from the request headers or use a mock ID in non-production environments
     const userId =
-      process.env.NODE_ENV !== 'production'
+      process.env.NODE_ENV === 'production'
         ? req.headers['x-user-id'] || req.headers['x-user-id']
         : MOCK_USER_ID;
 

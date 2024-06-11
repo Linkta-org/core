@@ -8,7 +8,6 @@ import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
 import cors from 'cors';
 
-import genAI from '@server/routes/genAiRouter';
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
 import userInput from './routes/userInput';
@@ -58,8 +57,6 @@ function startServer() {
    */
 
   app.use('/v1/inputs', userInput);
-
-  app.use('/gen-ai', genAI);
 
   /**
    * Default route for unknown routes. This should be the last route.

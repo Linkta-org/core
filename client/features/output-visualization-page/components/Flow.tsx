@@ -1,18 +1,25 @@
-// we define the nodeTypes outside of the component to prevent re-renderings
-import { useCallback, useState } from 'react';
-import type { Edge, Node, EdgeChange, NodeChange, Connection } from 'reactflow';
+import React, { useState, useCallback } from 'react';
+import type { EdgeChange, NodeChange, Edge, Node, Connection } from 'reactflow';
 import ReactFlow, {
   addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
   Controls,
+  Background,
+  applyNodeChanges,
+  applyEdgeChanges,
+  MarkerType,
+  ConnectionMode,
+  updateEdge,
 } from 'reactflow';
-
 import 'reactflow/dist/style.css';
+import LinktaFlowEdge from './LinktaFlowEdge';
+import LinktaNode from './LinktaNode';
+import ConnectionLine from './ConnectionLine';
 
-import { LinktaNode } from './LinktaNode';
+const nodeTypes = { linktaNode: LinktaNode };
 
-import React from 'react';
+const edgeTypes = {
+  linktaEdge: LinktaFlowEdge,
+};
 
 const rfStyle = {
   backgroundColor: '#173336',
@@ -20,20 +27,38 @@ const rfStyle = {
   width: '100%',
 };
 
-const initialNodes: Node[] = [
+const initialNodes = [
   {
-    id: 'node-1',
-    type: 'linktaNode',
+    id: '1',
+    label: '1',
     position: { x: 0, y: 0 },
-    data: { value: 123 },
+    data: { label: '😎 drag me around 😎' },
+    type: 'linktaNode',
+  },
+  {
+    id: '2',
+    label: '2',
+    position: { x: 0, y: 150 },
+    data: { label: '...or me' },
+    type: 'linktaNode',
   },
 ];
 
-const nodeTypes = { linktaNode: LinktaNode };
+const initialEdges = [
+  {
+    id: '1-2',
+    source: '1',
+    target: '2',
+    sourceHandle: 'c',
+    targetHandle: 'a',
+    type: 'linktaEdge',
+    markerEnd: { type: MarkerType.Arrow },
+  },
+];
 
 function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [edges, setEdges] = useState<Edge[]>(initialEdges);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
@@ -45,27 +70,46 @@ function Flow() {
       setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
     [setEdges]
   );
+
+  const onEdgeUpdate = useCallback(
+    (oldEdge: Edge, newConnection: Connection) =>
+      setEdges((els) => updateEdge(oldEdge, newConnection, els)),
+    []
+  );
+
   const onConnect = useCallback(
-    (connection: Edge | Connection) =>
-      setEdges((eds) => addEdge(connection, eds)),
-    [setEdges]
+    (params: Connection) =>
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...params,
+            type: 'floating',
+            markerEnd: { type: MarkerType.Arrow },
+          },
+          eds
+        )
+      ),
+    []
   );
 
   return (
-    <div style={{ height: '100%', width: '100%' }}>
-      <ReactFlow
-        edges={edges}
-        fitView
-        nodes={nodes}
-        nodeTypes={nodeTypes}
-        onEdgesChange={onEdgesChange}
-        onNodesChange={onNodesChange}
-        onConnect={onConnect}
-        style={rfStyle}
-      >
-        <Controls />
-      </ReactFlow>
-    </div>
+    <ReactFlow
+      nodes={nodes}
+      onNodesChange={onNodesChange}
+      nodeTypes={nodeTypes}
+      edges={edges}
+      onEdgesChange={onEdgesChange}
+      edgeTypes={edgeTypes}
+      onEdgeUpdate={onEdgeUpdate}
+      onConnect={onConnect}
+      fitView
+      connectionMode={ConnectionMode.Loose}
+      connectionLineComponent={ConnectionLine}
+      style={rfStyle}
+    >
+      <Background />
+      <Controls />
+    </ReactFlow>
   );
 }
 

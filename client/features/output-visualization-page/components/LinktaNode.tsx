@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import type { NodeProps } from 'reactflow';
 import { Handle, Position } from 'reactflow';
 import { Box, TextField } from '@mui/material';
-
 import '@/client/styles/react-flow.css';
 
 type LinktaNodeData = {
@@ -17,11 +16,7 @@ type LinktaNodeProps = NodeProps<LinktaNodeData> & {
 
 const handleStyle = {};
 
-export function LinktaNode({
-  isConnectable,
-
-  data,
-}: LinktaNodeProps) {
+const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
   const [placeholderData, setPlaceholderData] = useState({
     id: data.id,
     type: 'linktaNode',
@@ -37,7 +32,6 @@ export function LinktaNode({
     <Box
       sx={{
         bgcolor: isFocused ? '#1a3e37' : '#183636',
-
         height: '44px',
         width: '168px',
         display: 'flex',
@@ -52,8 +46,9 @@ export function LinktaNode({
       className="linkta-node"
     >
       <Handle
-        type="target"
+        type="source"
         position={Position.Top}
+        id="a"
         isConnectable={isConnectable}
       />
       <Box
@@ -119,7 +114,7 @@ export function LinktaNode({
       <Handle
         type="source"
         position={Position.Left}
-        id="b"
+        id="c"
         isConnectable={isConnectable}
       />
       <Handle
@@ -131,4 +126,7 @@ export function LinktaNode({
       />
     </Box>
   );
-}
+});
+
+LinktaNode.displayName = 'LinktaNode';
+export default LinktaNode;

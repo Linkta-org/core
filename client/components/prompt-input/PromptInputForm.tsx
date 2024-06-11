@@ -52,6 +52,9 @@ const PromptInputForm = () => {
   const [isChecked, setIsChecked] = useState(false);
   useForm({
     resolver: zodResolver(userInputSchema),
+    defaultValues: {
+      input: '',
+    },
   });
   const navigate = useNavigate();
 

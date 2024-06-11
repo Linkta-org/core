@@ -13,6 +13,9 @@ import { styled } from '@mui/material/styles';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { MOCK_USER_ID } from '@/mocks';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import userInputSchema from '@/utils/zodSchema/userInputSchema';
 
 interface UserInputPayload {
   input: string;
@@ -47,6 +50,9 @@ const GenerateButton = styled(Button)<ButtonProps>(({ theme }) => ({
 const PromptInputForm = () => {
   const [inputValue, setInputValue] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  useForm({
+    resolver: zodResolver(userInputSchema),
+  });
   const navigate = useNavigate();
 
   useEffect(() => {

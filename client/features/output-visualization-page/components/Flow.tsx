@@ -12,7 +12,7 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from './LinktaFlowEdge';
-import { LinktaNode } from './LinktaNode';
+import LinktaNode from './LinktaNode';
 import ConnectionLine from './ConnectionLine';
 
 const nodeTypes = { linktaNode: LinktaNode };
@@ -26,7 +26,6 @@ const rfStyle = {
   height: '100%',
   width: '100%',
 };
-
 
 const initialNodes = [
   {
@@ -63,13 +62,13 @@ function Flow() {
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
+      setNodes((nds: Node[]) => applyNodeChanges(changes, nds)),
+    [setNodes]
   );
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) =>
-      setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
+      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
+    [setEdges]
   );
 
   const onEdgeUpdate = useCallback(

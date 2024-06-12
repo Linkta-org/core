@@ -11,6 +11,8 @@ import cors from 'cors';
 
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
+import userInput from './routes/userInput';
+import linktaFlow from '@server/routes/linktaFlowRouter';
 
 getEnv();
 const uri = process.env.MONGO_DB_URI;
@@ -60,7 +62,9 @@ function startServer() {
   /**
    * Routes.
    */
-  app.use('/gen-ai', genAI);
+
+  app.use('/v1/inputs', userInput);
+  app.use('/v1/flows', linktaFlow);
   app.use('/v1/flows', linktaFlow);
 
   /**

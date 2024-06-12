@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { MOCK_USER_ID } from '@/mocks';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import userInputSchema from '@/utils/zodSchema/userInputSchema';
+import userInputValidationSchema from '@/utils/zodSchema/userInputValidation';
 
 interface UserInputPayload {
   input: string;
@@ -52,13 +52,15 @@ const UserInputCheckbox = styled(Checkbox)(({ theme }) => ({
 }));
 
 const PromptInputForm = () => {
+  // Here we utilize the useForm hook's properties to manage form state while also initializing default values and resolving our validation schema.
+  // The control object is used by react-hook-form's Controller to link our UserInputBar and UserInputCheckbox components to the form's state, handling any necessary state updates or validation checks.
   const {
     handleSubmit,
     control,
     watch,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(userInputSchema),
+    resolver: zodResolver(userInputValidationSchema),
     defaultValues: {
       input: '',
       isChecked: JSON.parse(localStorage.getItem('isChecked') || 'false'),
@@ -66,10 +68,11 @@ const PromptInputForm = () => {
   });
   const navigate = useNavigate();
 
+  // Here we utilize the watch function to subscribe to checkbox state changes and save those changes to our localStorage.
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === 'isChecked') {
-        localStorage.setItem('isChecked', value.isChecked.toString());
+        localStorage.setItem('isChecked', value.isChecked);
       }
     });
     return () => subscription.unsubscribe();

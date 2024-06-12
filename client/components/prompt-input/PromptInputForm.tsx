@@ -85,14 +85,13 @@ const PromptInputForm = () => {
       const response = await axios.post(
         'http://localhost:3000/v1/inputs',
         {
-          userId: MOCK_USER_ID,
           input: userInput.input,
         },
         {
           headers: {
             'Content-Type': 'application/json',
             'x-user-id': MOCK_USER_ID,
-            requestId: uniqueRequestId,
+            'x-request-id': uniqueRequestId,
           },
         }
       );

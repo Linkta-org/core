@@ -1,9 +1,9 @@
-import { Router} from 'express';
+import { Router } from 'express';
 import {
   fetchLinktaFlows,
   fetchLinktaFlow,
   updateLinktaFlow,
-  deleteLinktaFlow
+  deleteLinktaFlow,
 } from '@/server/controllers/linktaFlowController';
 
 const router = Router();

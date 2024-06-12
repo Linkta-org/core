@@ -7,7 +7,6 @@ import { getLogger, configure, isConfigured } from 'log4js';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
 import cors from 'cors';
-import cors from 'cors';
 
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
@@ -64,7 +63,6 @@ function startServer() {
    */
 
   app.use('/v1/inputs', userInput);
-  app.use('/v1/flows', linktaFlow);
   app.use('/v1/flows', linktaFlow);
 
   /**

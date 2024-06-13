@@ -4,25 +4,26 @@ import IconButton from '@mui/material/IconButton';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import RedoRoundedIcon from '@mui/icons-material/RedoRounded';
 
-import { useStore } from 'zustand';
+import { useStoreWithEqualityFn } from 'zustand/traditional';
 import type { TemporalState } from 'zundo';
-import type { StoreState } from '@/client/stores/undoRedoStore';
-import undoRedoStore from '@/client/stores/undoRedoStore';
+import type { LinktaFlowStore } from '@/client/stores/LinktaFlowStore';
+import useLinktaFlowStore from '@/client/stores/LinktaFlowStore';
 
 const useTemporalStore = <T,>(
-  selector: (state: TemporalState<StoreState>) => T,
+  selector: (state: TemporalState<LinktaFlowStore>) => T,
   equality?: (a: T, b: T) => boolean
-) => useStore(undoRedoStore.temporal, selector, equality);
+) => useStoreWithEqualityFn(useLinktaFlowStore.temporal, selector, equality);
 
 const UndoAndRedo = () => {
   const { undo, redo, pastStates, futureStates } = useTemporalStore(
     (state) => state
   );
 
+  console.log('Past States:', pastStates);
+  console.log('Future States:', futureStates);
+
   return (
     <>
-      <div>{JSON.stringify(pastStates)}</div>
-      <div>{JSON.stringify(futureStates)}</div>
       <ButtonGroup orientation="vertical">
         <IconButton
           aria-label="undo"

@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react';
 // we define the nodeTypes outside of the component to prevent re-renderings
-import { useCallback, useState } from 'react';
-import type { Edge, Node, EdgeChange, NodeChange, Connection } from 'reactflow';
+import { useCallback } from 'react';
+import type {
+  Edge,
+  Node,
+  EdgeChange,
+  NodeChange,
+  Connection,
+  Viewport,
+} from 'reactflow';
 import ReactFlow, {
   addEdge,
   Controls,
@@ -12,6 +19,8 @@ import ReactFlow, {
   ConnectionMode,
   updateEdge,
   Panel,
+  useOnViewportChange,
+  useViewport,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from './LinktaFlowEdge';
@@ -24,7 +33,7 @@ const edgeTypes = {
   linktaEdge: LinktaFlowEdge,
 };
 import UndoAndRedo from './UndoAndRedo';
-import undoRedoStore from '@/client/stores/undoRedoStore';
+import useLinktaFlowStore from '@/client/stores/LinktaFlowStore';
 
 const rfStyle = {
   backgroundColor: '#173336',
@@ -61,28 +70,53 @@ const initialEdges = [
   },
 ];
 
-function Flow() {
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
-  const { setCurrentFlow } = undoRedoStore();
+function ViewportChangeLogger() {
+  useOnViewportChange({
+    onStart: (viewport: Viewport) => console.log('start', viewport),
+    onChange: (viewport: Viewport) => console.log('change', viewport),
+    onEnd: (viewport: Viewport) => console.log('end', viewport),
+  });
+  return null;
+}
 
-  useEffect(() => {
-    const flow = { nodes, edges };
-    setCurrentFlow(flow);
-  }, [nodes, edges, setCurrentFlow]);
+function Flow() {
+  const {
+    currentLinktaFlow,
+    setCurrentFlow,
+    setCurrentEdges,
+    setCurrentNodes,
+  } = useLinktaFlowStore();
+  const { pause, resume } = useLinktaFlowStore.temporal.getState();
+  const { x, y, zoom } = useViewport();
+
+  // const nodes = currentLinktaFlow?.nodes || initialNodes;
+  // const edges = currentLinktaFlow?.edges || initialEdges;
+
+  const [nodes, setNodes] = React.useState<Node[]>(initialNodes);
+  const [edges, setEdges] = React.useState<Edge[]>(initialEdges);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      console.log('onNodesChange is getting called', changes);
-      setNodes((nds: Node[]) => applyNodeChanges(changes, nds));
+      setNodes((nds) => applyNodeChanges(changes, nds));
     },
     [setNodes]
   );
+
   const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
+    (changes: EdgeChange[]) => {
+      setEdges((eds) => applyEdgeChanges(changes, eds));
+    },
     [setEdges]
   );
+
+  ViewportChangeLogger();
+
+  console.log('currentLinktaFlow:', currentLinktaFlow);
+
+  const onNodeDragStop = useCallback(() => {
+    console.log('onNodeDragStop called');
+    setCurrentFlow({ nodes, edges });
+  }, [setCurrentFlow, nodes, edges]);
 
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) =>
@@ -108,12 +142,14 @@ function Flow() {
   return (
     <ReactFlow
       nodes={nodes}
+      //onEdgeUpdateEnd={onEdgeUpdateEnd}
       onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
       nodeTypes={nodeTypes}
       edges={edges}
-      onEdgesChange={onEdgesChange}
       edgeTypes={edgeTypes}
       onEdgeUpdate={onEdgeUpdate}
+      onNodeDragStop={onNodeDragStop}
       onConnect={onConnect}
       fitView
       connectionMode={ConnectionMode.Loose}
@@ -121,9 +157,9 @@ function Flow() {
       style={rfStyle}
     >
       <Background />
-      <Controls position="bottom-right" />
+      <Controls position="bottom-left" />
       <Panel
-        position="bottom-right"
+        position="bottom-left"
         style={{ bottom: 120 }}
       >
         <UndoAndRedo />

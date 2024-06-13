@@ -95,14 +95,13 @@ User authentication and authorization are managed through Firebase Authenticatio
 
 ## Technology Stack
 - **Programming Language:** TypeScript
-- **Frontend:** React, Zustand, React Query, React Flow,  Material UI, React Hook Form
-- **Backend:** Node.js, Express, Redis, MongoDB
+- **Frontend:** React, Zustand, React Query, React Flow,  Material UI, React Hook Form, Axios
+- **Backend:** Node.js, Express, Redis, MongoDB, Mongoose
 - **LLM Provider**: Gemini (version TBD)
 - **Auth Provider:** Firebase Authentication
 - **DevOps/Infrastructure:** GCP, Firebase Hosting, GitHub Actions, Git
 - **Testing:** Jest, React Testing Library, Cypress
-- **Other:** Zod, log4js
-- **Pending decisions:** Choice of rate limiter, and monitoring and alerting tools
+- **Others:** Zod, log4js, Turbo Console Log
 
 ## Data Design
 The detailed field-level information for each entity can be found in the "Data Design" section of the [API Design documentation](./API_DESIGN_DOCUMENTATION_V1.md).
@@ -114,8 +113,10 @@ The detailed API endpoints, request/response formats, and authentication require
 ### User Interface Design:
 The detailed view of the application's user interface, including wireframes and interactive prototypes can be found in the [Figma](https://www.figma.com/file/9QKsvDQ9jivgA9XfS0oqPd/Design-System---Linkta?type=design&node-id=691-3754&mode=design&t=kUnZmiidrbvSyFQ0-0).
 
-### Modules:
-#### UserInput Submission and Processing - Sprint 0
+🔈**Note: The below epics and tasks are for sprint planning only, refer to the [Linkta Core MVP Project](https://github.com/orgs/Linkta-org/projects/6) for the most up to date tasks**.
+
+### Epics
+#### UserInput Submission and Processing
 Story: As a user, I want to easily submit my input through an intuitive interface and have it processed securely into a structured LinktaFlow.
 
 Design:
@@ -186,7 +187,7 @@ Backend:
         - Data integrity is maintained
         - Retrieval and querying of stored data are efficient
 
-#### LinktaFlow Visualization and Interaction - Sprint 1
+#### LinktaFlow Visualization and Interaction
 >_Work in progress_
 
 Story: As a user, I want to interactively visualize, update, and regenerate my LinktaFlows and perform CRUD operations on nodes.
@@ -217,7 +218,7 @@ Backend:
 3. Handle LinktaFlow data manipulation and storage in the database
 4. (TBD) Implement LinktaFlow versioning and history tracking
 
-#### User Authentication and Authorization - Sprint 2
+#### User Authentication and Authorization
 >_Work in progress_
 
 Story: As a user, I want a secure and user-friendly authentication system to access my account and protected features.
@@ -237,7 +238,7 @@ Backend:
 5. (TBD) Implement API endpoint for session login and logout
 6. (TBD) Handle session management
 
-#### User Management and Settings - Sprint 3
+#### User Management and Settings
 > Work in progress
 
 Story: As a user, I want to manage my LinktaFlows, update my profile, and customize settings in a dedicated management area
@@ -255,7 +256,9 @@ Backend:
 4. Handle user data manipulation and storage in MongoDB
 5. (TBD) Implement LinktaFlow versioning and history tracking within the user model
 
-#### Bug Reporting - Sprint 4
+#### Bug Reporting
+> Work in progress
+
 Story: As a user, I want a simple way to report bugs or issues to contribute to the continuous improvement of the platform
 
 Frontend:

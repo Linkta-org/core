@@ -31,80 +31,58 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 
 ### UserInput Submission and Processing
 
-#### Submit UserInput
-
-Design 1:
+#### Generate LinktaFlow from UserInput
 - **Endpoint:** `POST /v1/inputs`
 - **Description:** Receives a UserInput and begins processing it to generate a LinktaFlow.
 - **Payload:** `{ "input": "User's Initial Input" }`
 - **Headers:**
     - `Authorization: Bearer <session_token>`
-    - `requestId: <Unique Request ID>`
+    - `x-request-id: <unique request ID>`
 - **Responses:**
-- `200 OK: { "linktaFlow": <LinktaFlow Object>} `
-- `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
-- `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
-- `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
-- `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
-
-Design 2 (async):
-> If the LLM interaction in design 1 remains time-consuming , we can explore this asynchronous approach to ensure a non-blocking user experience.
-
-**Step 1: Immediate Acknowledgement**
-
-- **Endpoint:** `POST /v1/inputs `
-- **Description:** Receives a UserInput and begins processing it to generate a LinktaFlow.
-- **Payload:** `{ "input": "User's Initial Input" }`
-- **Headers:**
-    - `Authorization: Bearer <session_token>`
-    - `requestId: <Unique Request ID>`
-- **Responses:**
-    - `202 Accepted` : `{ "message": "Your input has been received and is now being processed. You can check the progress using the task ID: [taskID].", "taskId": "[Generated TaskId]" }`
+    - `200 OK` : `{ "linktaFlow": <LinktaFlow Object> }`
     - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
-
-**Step 2: Status Endpoint**
-- **Endpoint:** `GET /v1/inputs/status/:task_id `
-- **Description:** Checks the status of a UserInput processing task.
-- **Headers:**
-    - `Authorization: Bearer <session_token>`
-- **Responses:**
-    - `200 OK`  (processing ongoing): `{ "status": "processing", "message": "Your input is still being processed. Please check back shortly for updates." }`
-    - `200 OK`  (processing completed): `{ "status": "completed", "linktaFlow": <LinktaFlow Object>}`
-    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
-    - `404 Not Found` : `{ "message": "The requested task could not be found. The task ID might be incorrect or the task might have been completed." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
-#### Fetch UserInput List
+#### Fetch Input History
 - **Endpoint:** `GET /v1/inputs`
 - **Description:** Retrieves a list of UserInputs associated with a user.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
-- **Query Parameters:**
-    - `page: The page number for pagination (default: 1)`
-    - `limit: The number of items per page (default: 5)`
 - **Responses:**
-    - `200 OK` : `{ "userInputs": [/*Array of userInputs Objects*/] }`
+    - `200 OK` : `{ "inputHistory": [/*Array of userInput Objects*/] }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+
+#### Update UserInput Title
+- **Endpoint:** `PUT /v1/inputs/:userInputId`
+- **Description:** Add/update title of a specific user input(refelcting the 'Rename' feature on UI design).
+- **Payload:** `{ "title": "Updated title" }`
+- **Headers:**
+    - `Authorization: Bearer <session_token>`
+- **Responses:**
+    - `200 OK` : `{ "message": "Input Title updated successfully on [timestamp] " }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+
+#### Delete UserInput
+- **Endpoint:** `DELETE /v1/inputs/:userInputId`
+- **Description:** Deletes a specific userInput and its associated LinktaFlow.
+- **Headers:**
+    - `Authorization: Bearer <session_token>`
+- **Responses:**
+    - `200 OK` : `{ "message": "Input ID [userInputId] has been successfully deleted." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
 ### LinktaFlow Management
 >_Work in progress_
 
-#### Fetch LinktaFlow List
-- **Endpoint:** `GET /v1/flows`
-- **Description:** Retrieves all LinktaFlows associated with the authenticated user.
-- **Headers:**
-    - `Authorization: Bearer <session_token>`
-- **Responses:**
-    - `200 OK`  : `{ "linktaFlows": [/*Array of linktaFlow Objects*/] }  `
-    - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
-    - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
-
-#### Fetch Specific LinktaFlow
+#### Fetch LinktaFlow
 - **Endpoint:** `GET /v1/flows/:linktaFlowId `
-- **Description:** Retrieves a specific LinktaFlow object based on the tree's unique identifier.
+- **Description:** Retrieves a specific LinktaFlow object based on the user input id.
 - **Headers:**
     - `Authorization: Bearer <session_token>`
 - **Responses:**
@@ -124,19 +102,48 @@ Design 2 (async):
     - `400 Bad Request`  :` { "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." } `
     - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
     - `404 Not Found  : { "message": "The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect." }  `
+    - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
     - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
-#### Delete LinktaFlow
-- **Endpoint:** `DELETE /v1/flows/:linktaFlowId `
-- **Description:** Deletes a specific LinktaFlow Object and all its associated data.
+#### Save LinktaFlow As A Copy
+- **Endpoint:** `POST /v1/flows/save-as`
+- **Description:** Creates new UserInput and LinktaFlow documents with the provided user input, custom title, and LinktaFlow object.
+- **Payload:**
+  ```json
+  {
+    "input": "User's New Input",
+    "title": "Custom Title",
+    "linktaFlow": {
+      "nodes": [
+        {
+          "id": "node1",
+          "type": "input",
+          "data": {
+            "label": "Start"
+          }
+        },
+        ...
+      ],
+      "edges": [
+        {
+          "id": "edge1",
+          "source": "node1",
+          "target": "node2"
+        },
+        ...
+      ]
+    }
+  }
+  ```
 - **Headers:**
     - `Authorization: Bearer <session_token>`
+    - `x-request-id: <unique request ID>`
 - **Responses:**
-    - `200 OK`  : `{ "message": "Linkta Flow with ID [linktaFlowId] has been successfully deleted." } `
-    - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
-    - `403 Forbidden`  : `{ "message": "You do not have permission to perform this action. If you believe this is an error, please contact support." } `
-    - `404 Not Found`  : `{ "message": "The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect." } `
-    - `500 Internal Server Error`  :` { "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
+    - `201 Created` : `{ "message": "Your new input and Linkta Flow have been created successfully." }`
+    - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
 ### User Management and Settings
 >_Work in progress_
@@ -167,9 +174,83 @@ Design 2 (async):
 ### Bug Reporting
 >_Work in progress_
 
+## Controllers, Middlewares and Services
+
+### Controllers
+
+#### UserInput Controller
+- `generateLinktaFlowFromUserInput` : Receives a UserInput and begins processing it to generate a LinktaFlow.
+- `fetchInputHistory` : Retrieves a list of UserInputs associated with a user.
+- `updateUserInputTitle` : Updates the title of a specific UserInput.
+- `deleteUserInput` : Deletes a specific UserInput and its associated LinktaFlow.
+
+#### LinktaFlow Controller
+- `fetchLinktaFlow` : Retrieves a specific LinktaFlow object based on the LinktaFlow's unique identifier.
+- `updateLinktaFlow` : Updates a specific LinktaFlow.
+- `saveLinktaFlowAsACopy`: Creates a new LinktaFlow object and UserInput based on the provided input, title, and LinktaFlow object.
+
+#### User Account and Settings Controller
+>  _Work in progress_
+- `updateUserSettings` : Updates user settings.
+- `deleteUserAccount` : Deletes the user account and associated data.
+
+#### Bug Report Controller
+>  _Work in progress_
+- `submitBugReport` : Submits a new bug report.
+
+### Services
+
+#### Authentication Service
+>  _Work in progress_
+- `generateSessionToken` : Generates a custom session token for the client upon successful Firebase Authentication.
+- `verifySessionToken` : Validates the session token for any subsequent requests that require authentication.
+- `validateFirebaseToken` : Validates the Firebase ID Token using the Firebase Admin SDK.
+- `invalidateSessionToken` : Clears the session token when the user logs out or when the token expires.
+
+#### AI Service
+- `startGeneration` : Generates a response with a prompt(userInput) and optional chat history.
+
+#### UserInput Service
+- `createUserInput` : Creates a new user input record in the database.
+- `findUserInputsByUserId` : Retrieves a list of user inputs associated with a specific user ID.
+- `updateUserInput` : Updates the title or other properties of a specific user input.
+- `deleteUserInputAndAssociatedData` : Deletes a specific user input and its associated LinktaFlow data from the database.
+
+#### LinktaFlow Service
+>  _Work in progress_
+- `createLinktaFlowFromInput` : Creates a new LinktaFlow record in the database based on the given UserInput.
+- `createLinktaFlowFromObject` : Creates a new LinktaFlow record in the database based on the given LinktaFlow object.
+- `findLinktaFlowById` : Retrieves a specific LinktaFlow object based on its unique identifier.
+- `updateLinktaFlowById` : Updates the properties of a specific LinktaFlow.
+
+#### User Account and Settings Service
+>  _Work in progress_
+- `createUser` : Creates a new user record in the database upon successful authentication, if the user doesn't already exist.
+- `updateUserSettingsByUserId` : Updates the user's settings based on the provided payload.
+- `deleteUserAndAssociatedData` : Deletes the user's account and associated data, including user inputs and LinktaFlows.
+
+#### Bug Report Service
+>  _Work in progress_
+- `createBugReport` : Creates a new bug report record in the database, optionally associating it with a user ID if the user is authenticated.
+
+### Middlewares
+
+#### Authentication Middleware
+>  _Work in progress_
+- `login` : Authenticates a user using Firebase Authentication and generates a session token.
+- `logout` : Invalidates the session token, effectively logging out the user.
+
+#### AI Middleware
+- `generateInitialResponse`: Handles generating initial response from AI.
+- `generateResponseWithHistory`: Handles LLM response generation after the initial request and response cycle under the same userInput(**generateResponseWithHistory will be a stretch feature, as it provides context for LLM to continuosly generate enahnced responses under the same input)
+
+#### Validation Middleware
+- `validateUserInput` : Validates the user input to ensure it meets the required format and constraints.
+- `validateLinktaFlow` : Validates the LinktaFlow data to ensure it meets the required format and constraints.
+
 ## Data Design
 ### Diagram
->_Work in progress_
+![Data ERD](./assets/data-ERD.png "data erd")
 
 ### Data Entities
 >_Work in progress_
@@ -185,12 +266,15 @@ Design 2 (async):
 - id (string)
 - userId (string, required, index:true, reference User)
 - input (string, required)
-- linktaFlows (array of LinktaFlow references)
+- title (string, required)
+- linktaFlowId (string)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 
 #### LinktaFlow
 - id (string)
+- userInputId (UserInput reference)
+- userId (User reference)
 - nodes (array of Node objects)
     - Node
         - id (string)
@@ -249,118 +333,9 @@ Design 2 (async):
                 - offset (number, optional)
                 - borderRadius (number, optional)
                 - curvature (number, optional)
-- userInputId (UserInput reference)
-- userId (User reference)
 
 #### Bug Report
 >_Work in progress_
-
-## Services and Utility Functions
-
-**User Authentication and Authorization**
->_Work in progress_
-
-_Initial request_:
-- **Firebase Token Validation:** Validates Firebase ID Token using Firebase Admin SDK
-- **Session Token Generation:** If Firebase Authentication is successful, generate a custom session token for the client. This token securely contains the user's ID as an embedded claim.
-
-_Subsequent requests_:
-- **Session Token Validation:** Validates the session token for any subsequent requests that require authentication.
-- The API extracts the user ID from the token to identify the user and authorize actions based on their permissions.
-
-**Session Termination:**
-- **Token Invalidation:** Clears the session token
-
-> **_Using the Session Token: _**
-_Header Example: _`_Authorization: Bearer <session_token> _`_ _
-**_Token Validation and User ID Extraction: _**_When a request is received, the API validates the session token and extracts the user ID embedded within it. This ID is then used to perform user-specific actions, such as accessing or modifying user data._
-
-### UserInput Submission and Processing
-
-Class: UserInputController
-Methods:
-- submitUserInput: Validates and processes the user input through sanitization and AI services, then stores and returns the generated LinktaFlow.
-- sanitizeUserInput: Utility method for cleansing user input to ensure safety and conformity to expected formats.
-- storeUserInputInDatabase: Utility method for storing sanitized user input into the database.
-
-TBD:
-- fetchUserInput: Retrieves and returns details of a specific user input by ID, ensuring the request is authorized and the input exists.
-
-For design 2:
-- fetchUserInputStatus: Checks and returns the processing status of a user input.
-
-### LinktaFlow Interaction
-> _Work in progress_
-
-> Current design in sandbox repo (to be removed)
-
-Class: GenAIController
-Methods:
-- generateResponse: Handles generating a basic response from the AI.
-- generateTree: Manages the full lifecycle of generating a tree based on user input, which involves invoking AI, parsing the response, and storing the result in the database.
-- createConnection: Establishes a connection to the AI service.
-- queryTree: Constructs and sends a query to the AI service based on a refined prompt methodology.
-
-Class: TreePrompts
-Methods:
-- oneShot(prompt: string)
-Generates a single, detailed instruction prompt for the LLM to process and respond to based on the user's input. This method is straightforward but noted to be less effective.
-- zeroShot(prompt: string)
-Creates a prompt that instructs the AI to output in a structured JSON format without previous examples, focusing purely on the user's current input.
-- chainOfThought(prompt: string)
-Utilizes a conversational approach, building a context through a simulated dialogue history that influences the AI’s response to the current prompt.
-- costar(prompt: string)
-Generates a highly detailed and structured prompt, dictating the format, context, tone, and audience for the AI's response, aimed at producing complex tree-like structures for visualization.
-
-Class: Gemini
-Methods:
-- generateResponse: Generates a response from a prompt.
-- generateConversation: Manages a conversational context with the AI, allowing for more dynamic interactions based on a conversation history.
-
-**Data Flow**
-User Input on Frontend
-│
-└───► PromptInputForm (React Component)
-     │
-     └───► User types into TextField
-          │
-          └───► inputValue state updated
-               │
-               └───► User clicks "Generate" button
-                    │
-                    └───► handleSubmit function triggers
-                         │
-                         └───► newPromptMutation.mutate sends POST request to Backend
-                              │
-                              └───► Express Server (/gen-ai/query endpoint)
-                                   │
-                                   └───► genAIController.generateTree handles request
-                                        │
-                                        ├─► TreePrompts utility generates appropriate prompt
-                                        │  │
-                                        │  └───► genAIController.createConnection establishes connection with AI provider
-                                        │       │
-                                        │       └───► genAIController.queryTree sends prompt to AI
-                                        │            │
-                                        │            └───► Gemini AI generates tree based on prompt
-                                        │
-                                        └───► MongoDB: Store generated LinktaFlow and UserInput
-                                             │
-                                             └───► Response with tree data sent back to Frontend
-                                                  │
-                                                  └───► PromptInputForm receives response
-                                                       │
-                                                       └───► User navigates to '/output' displaying the result
-
-### User Management and Settings
-> _Work in progress_
-
-**Update User Settings:**
-
-- Updates the user's settings in the database based on the provided payload
-**Delete User Account:**
-
-- Removes the user's record from the database, along with any related data such as user settings, LinktaFlows, and input history.
 
 ## Error Handling
 > _Work in progress_

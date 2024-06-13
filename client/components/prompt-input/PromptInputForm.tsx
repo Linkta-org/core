@@ -56,9 +56,10 @@ const PromptInputForm = () => {
   // The control object is used by react-hook-form's Controller to link our UserInputBar and UserInputCheckbox components to the form's state, handling any necessary state updates or validation checks.
   const {
     handleSubmit,
+    reset,
     control,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = useForm({
     resolver: zodResolver(userInputValidationSchema),
     defaultValues: {
@@ -99,6 +100,7 @@ const PromptInputForm = () => {
     },
     onSuccess: (data) => {
       console.log('UserInput sent successfully', data);
+      reset();
       navigate('/output');
     },
     onError: (error) => {
@@ -159,7 +161,7 @@ const PromptInputForm = () => {
           />
           <GenerateButton
             type="submit"
-            disabled={!control._formValues.isChecked}
+            disabled={isSubmitted || !control._formValues.isChecked}
             sx={{ alignSelf: 'center' }}
           >
             Generate

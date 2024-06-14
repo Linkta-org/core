@@ -10,6 +10,7 @@ export interface LinktaFlowStore {
   setCurrentFlow: (flow: LinktaFlow) => void;
   setCurrentNodes: (nodes: LinktaFlow['nodes']) => void;
   setCurrentEdges: (edges: LinktaFlow['edges']) => void;
+  setCurrentViewport: (viewport: LinktaFlow['viewport']) => void;
 }
 
 const useLinktaFlowStore = create<LinktaFlowStore>()(
@@ -27,6 +28,11 @@ const useLinktaFlowStore = create<LinktaFlowStore>()(
         setCurrentEdges: (edges) => {
           set((state) => ({
             currentLinktaFlow: { ...state.currentLinktaFlow, edges },
+          }));
+        },
+        setCurrentViewport: (viewport) => {
+          set((state) => ({
+            currentLinktaFlow: { ...state.currentLinktaFlow, viewport },
           }));
         },
       }),

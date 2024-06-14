@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // we define the nodeTypes outside of the component to prevent re-renderings
 import { useCallback } from 'react';
 import type {
@@ -8,6 +8,7 @@ import type {
   NodeChange,
   Connection,
   Viewport,
+  OnMoveEnd,
 } from 'reactflow';
 import ReactFlow, {
   addEdge,
@@ -85,21 +86,20 @@ function Flow() {
     setCurrentFlow,
     setCurrentEdges,
     setCurrentNodes,
+    setCurrentViewport,
   } = useLinktaFlowStore();
-  const { pause, resume } = useLinktaFlowStore.temporal.getState();
   const { x, y, zoom } = useViewport();
 
-  const [nodes, setNodes] = React.useState<Node[]>(initialNodes);
-  const [edges, setEdges] = React.useState<Edge[]>(initialEdges);
+  const nodesFromFlow = currentLinktaFlow?.nodes || initialNodes;
+  const edgesFromFlow = currentLinktaFlow?.edges || initialEdges;
+  const [nodes, setNodes] = useState<Node[]>(nodesFromFlow);
+  const [edges, setEdges] = useState<Edge[]>(edgesFromFlow);
+
+  const viewport = { x, y, zoom };
   console.log('nodes:', nodes);
   console.log('edges:', edges);
+  console.log('viewport', viewport);
 
-  useEffect(() => {
-    if (currentLinktaFlow) {
-      setNodes(currentLinktaFlow.nodes || initialNodes);
-      setEdges(currentLinktaFlow.edges || initialEdges);
-    }
-  }, [currentLinktaFlow]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -114,8 +114,8 @@ function Flow() {
 
   const onNodeDragStop = useCallback(() => {
     console.log('onNodeDragStop called');
-    setCurrentFlow({ nodes, edges });
-  }, [setCurrentFlow, nodes, edges]);
+    setCurrentNodes(nodes);
+  }, [setCurrentNodes, nodes]);
 
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) =>
@@ -124,12 +124,25 @@ function Flow() {
     [setEdges]
   );
 
+  const onEdgeUpdateEnd = useCallback(() => {
+    console.log('onEdgeUpdateEnd called');
+    setCurrentEdges(edges);
+  }, [setCurrentEdges, edges]);
+
   //When the user drags an edge, this event fires
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
       setEdges((eds) => applyEdgeChanges(changes, eds));
     },
     [setEdges]
+  );
+
+  const onMoveEnd = useCallback(
+    (event: React.MouseEvent | React.TouchEvent | null, data: Viewport) => {
+      console.log('onMoveEnd', data);
+      setCurrentViewport(data);
+    },
+    [setCurrentViewport]
   );
 
   //When a connection line is completed and two nodes are connected by the user, this event fires with the new connection.
@@ -145,21 +158,29 @@ function Flow() {
     [edges, setCurrentEdges]
   );
 
+  useEffect(() => {
+    setNodes(nodesFromFlow);
+    setEdges(edgesFromFlow);
+  }, [nodesFromFlow, edgesFromFlow]);
+
   return (
     <ReactFlow
       nodes={nodes}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
       nodeTypes={nodeTypes}
+      onNodesChange={onNodesChange}
+      onNodeDragStop={onNodeDragStop}
       edges={edges}
       edgeTypes={edgeTypes}
+      onEdgesChange={onEdgesChange}
       onEdgeUpdate={onEdgeUpdate}
-      onNodeDragStop={onNodeDragStop}
+      onEdgeUpdateEnd={onEdgeUpdateEnd}
       onConnect={onConnect}
       fitView
       connectionMode={ConnectionMode.Loose}
       connectionLineComponent={ConnectionLine}
       style={rfStyle}
+      onMoveEnd={onMoveEnd}
+      viewport={viewport}
     >
       <Background />
       <Controls position="bottom-left" />

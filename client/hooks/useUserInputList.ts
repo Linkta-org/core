@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchUserInputListFromApi } from '@/client/services/userInputService';
-import { ITEMS_PER_PAGE } from '@/client/components/layout/userInputConstants';
+import { fetchUserInputListFromApi } from '@services/userInputService';
+import { ITEMS_PER_PAGE } from '@components/layout/userInputConstants';
 
 interface UserInput {
   _id: string;

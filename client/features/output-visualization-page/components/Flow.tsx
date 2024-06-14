@@ -11,9 +11,9 @@ import ReactFlow, {
   updateEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import LinktaFlowEdge from './LinktaFlowEdge';
-import LinktaNode from './LinktaNode';
-import ConnectionLine from './ConnectionLine';
+import LinktaFlowEdge from '@features/output-visualization-page/components/LinktaFlowEdge';
+import LinktaNode from '@features/output-visualization-page/components/LinktaNode';
+import ConnectionLine from '@features/output-visualization-page/components/ConnectionLine';
 
 const nodeTypes = { linktaNode: LinktaNode };
 

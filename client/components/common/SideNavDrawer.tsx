@@ -9,8 +9,8 @@ import {
 } from '@mui/icons-material';
 import { Box, Typography, Button, Drawer, Link } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
-import '@client/styles/SideNavDrawer.css';
-import UserInputHistory from '@/client/components/layout/UserInputHistory';
+import '@styles/SideNavDrawer.css';
+import UserInputHistory from '@components/layout/UserInputHistory';
 
 type sideNavProps = {
   drawerOpen: boolean;

@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { MOCK_USER_ID } from '@/mocks';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import userInputValidationSchema from '@/utils/zodSchema/userInputValidation';
+import userInputValidationSchema from '@zod/userInputValidation';
 
 interface UserInputPayload {
   input: string;

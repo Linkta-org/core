@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type LinktaFlow from '@/client/types/LinktaFlow';
+import type LinktaFlow from '@/types/LinktaFlow';
 
 type LinktaFlowStore = {
   currentLinktaFlow: LinktaFlow | undefined;

@@ -10,7 +10,7 @@ import {
   DEFAULT_NODE_WIDTH,
   DEFAULT_NODE_HEIGHT,
   ADJUST_PARAMS_NODES_WITH_PARENT_ID,
-} from '@client/utils/constants';
+} from '@utils/constants';
 
 /**
  * Sets up the Dagre flow.

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useStore, getBezierPath } from 'reactflow';
 import type { EdgeProps, Position } from 'reactflow';
-import { getEdgeParams } from '@client/utils/getEdgeParams';
+import { getEdgeParams } from '@utils/getEdgeParams';
 
 function LinktaFlowEdge({ id, source, target, markerEnd, style }: EdgeProps) {
   const sourceNode = useStore(

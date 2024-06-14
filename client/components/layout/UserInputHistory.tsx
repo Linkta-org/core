@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography, styled } from '@mui/material';
 import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
-import useUserInputList from '@/client/hooks/useUserInputList';
+import useUserInputList from '@hooks/useUserInputList';
 import { ITEMS_PER_PAGE } from './userInputConstants';
-import SkeletonList from '@/client/components/common/SkeletonList';
+import SkeletonList from '@components/common/SkeletonList';
 
 const UserInputHistoryContainer = styled(Box)({
   display: 'flex',

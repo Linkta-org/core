@@ -1,4 +1,4 @@
-import { axiosClient } from '@/client/config/axios';
+import { axiosClient } from '@config/axios';
 import { MOCK_USER_ID } from '@/mocks';
 
 export const fetchUserInputListFromApi = async (

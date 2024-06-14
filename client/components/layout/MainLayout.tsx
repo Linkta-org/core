@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
-import SideNavDrawer from '@client/components/common/SideNavDrawer';
-import useMatchMedia from '@client/hooks/useMatchMedia';
-import '@client/styles/MainLayout.css';
+import SideNavDrawer from '@components/common/SideNavDrawer';
+import useMatchMedia from '@hooks/useMatchMedia';
+import '@styles/MainLayout.css';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.

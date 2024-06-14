@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, styled } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
-import PaginationButton from '@/client/components/common/PaginationButton';
+import PaginationButton from '@components/common/PaginationButton';
 import { ITEMS_PER_PAGE } from './userInputConstants';
 
 interface PaginationControlsProps {

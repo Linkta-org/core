@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { type Auth, getAuth } from 'firebase/auth';
-import type { FirebaseConfig } from '@/client/types/index';
+import type { FirebaseConfig } from '@/types/index';
 
 const firebaseConfig: FirebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY!,

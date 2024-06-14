@@ -34,6 +34,7 @@ const edgeTypes = {
 };
 import UndoAndRedo from './UndoAndRedo';
 import useLinktaFlowStore from '@/client/stores/LinktaFlowStore';
+import { set } from 'mongoose';
 
 const rfStyle = {
   backgroundColor: '#173336',
@@ -89,24 +90,19 @@ function Flow() {
   const { pause, resume } = useLinktaFlowStore.temporal.getState();
   const { x, y, zoom } = useViewport();
 
-  // const nodes = currentLinktaFlow?.nodes || initialNodes;
-  // const edges = currentLinktaFlow?.edges || initialEdges;
+  const nodes = currentLinktaFlow?.nodes || initialNodes;
+  const edges = currentLinktaFlow?.edges || initialEdges;
 
-  const [nodes, setNodes] = React.useState<Node[]>(initialNodes);
-  const [edges, setEdges] = React.useState<Edge[]>(initialEdges);
+  const [, setNodes] = React.useState<Node[]>(nodes);
+  const [, setEdges] = React.useState<Edge[]>(edges);
+  console.log('nodes:', nodes);
+  console.log('edges:', edges);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
       setNodes((nds) => applyNodeChanges(changes, nds));
     },
     [setNodes]
-  );
-
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => {
-      setEdges((eds) => applyEdgeChanges(changes, eds));
-    },
-    [setEdges]
   );
 
   ViewportChangeLogger();
@@ -120,29 +116,32 @@ function Flow() {
 
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) =>
+      //setCurrentEdges(updateEdge(oldEdge, newConnection, edges)),
       setEdges((els) => updateEdge(oldEdge, newConnection, els)),
-    []
+    [setEdges]
   );
 
+  //When the user drags an edge, this event fires
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange[]) => {
+      setEdges((eds) => applyEdgeChanges(changes, eds));
+    },
+    [setEdges]
+  );
+
+  //When a connection line is completed and two nodes are connected by the user, this event fires with the new connection.
   const onConnect = useCallback(
-    (params: Connection) =>
-      setEdges((eds) =>
-        addEdge(
-          {
-            ...params,
-            type: 'floating',
-            markerEnd: { type: MarkerType.Arrow },
-          },
-          eds
-        )
-      ),
-    []
+    (params: Connection) => {
+      const newEdge = addEdge({ ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } }, edges);
+      setEdges(newEdge);
+      setCurrentEdges(newEdge);
+    },
+    [edges, setCurrentEdges]
   );
 
   return (
     <ReactFlow
       nodes={nodes}
-      //onEdgeUpdateEnd={onEdgeUpdateEnd}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       nodeTypes={nodeTypes}

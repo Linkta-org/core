@@ -25,6 +25,9 @@ runs:
     - name: Install Dependencies
       shell: bash
       run: npm ci
-    - name: Lint
+    - name: LintClient
       shell: bash
-      run: npm run lint
+      run: npm run lint:client
+    - name: LintServer
+      shell: bash
+      run: npm run lint:server

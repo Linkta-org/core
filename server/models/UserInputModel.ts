@@ -9,6 +9,10 @@ const userInputSchema = new Schema<UserInput>({
     required: true,
     index: true,
   },
+  title: {
+    type: String,
+    default: 'input',
+  },
   input: {
     type: String,
     required: true,
@@ -16,7 +20,11 @@ const userInputSchema = new Schema<UserInput>({
     minlength: 3,
     maxlength: 100,
   },
-  linktaFlows: [{ type: Schema.Types.ObjectId, ref: 'LinktaFlow' }],
+  linktaFlowId: {
+    type: Schema.Types.ObjectId,
+    ref: 'LinktaFlow',
+    required: true,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

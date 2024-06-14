@@ -12,6 +12,7 @@ import ListItemMenu from './ListItemMenu';
 
 interface UserInput {
   _id: string;
+  title: string;
   input: string;
 }
 
@@ -102,9 +103,9 @@ const UserInputList: React.FC<UserInputListProps> = ({
                 variant="caption"
                 noWrap
                 id={`user-input-${userInput._id}`}
-                aria-label={`Details for ${userInput.input}`}
+                aria-label={`Details for ${userInput.title}`}
               >
-                {userInput.input}
+                {userInput.title}
               </StyledTypography>
             }
           />

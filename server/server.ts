@@ -2,16 +2,16 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import { getEnv } from '@server/utils/environment';
+import { getEnv } from '@utils/environment';
 import { getLogger, configure, isConfigured } from 'log4js';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
 import cors from 'cors';
 
-import log4jsConfig from '@server/utils/log4js.config.json';
-import { globalErrorHandler } from '@server/middleware/errorHandling';
+import log4jsConfig from '@utils/log4js.config.json';
+import { globalErrorHandler } from '@middleware/errorHandling';
 import userInput from './routes/userInput';
-import linktaFlowRouter from '@server/routes/linktaFlowRouter';
+import linktaFlowRouter from '@routes/linktaFlowRouter';
 
 getEnv();
 const uri = process.env.MONGO_DB_URI;

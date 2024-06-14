@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import LinktaFlow from '@/server/models/LinktaFlowModel';
-import { createError } from '@server/middleware/errorHandling';
+import LinktaFlow from '@models/LinktaFlowModel';
+import { createError } from '@middleware/errorHandling';
 
 // Until authentication is implemented, user id will be stored in a single variable
 import { MOCK_USER_ID } from '@/mocks';

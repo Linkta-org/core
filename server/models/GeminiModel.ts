@@ -1,4 +1,4 @@
-import { getEnv } from '@/server/utils/environment';
+import { getEnv } from '@utils/environment';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 import type {

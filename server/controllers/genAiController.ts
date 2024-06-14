@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { startGeneration } from '@/server/models/GeminiModel';
+import { startGeneration } from '@models/GeminiModel';
 import { type Content } from '@google/generative-ai';
-import { createError } from '@/server/middleware/errorHandling';
+import { createError } from '@middleware/errorHandling';
 
 //in initial respsonse generation, there is no chat history, so using []
 export const generateInitialResponse = async (
@@ -34,8 +34,8 @@ export const generateInitialResponse = async (
 };
 
 /*
-** this is a stretch feature  & Work in progress ** 
-   for LLM ressponse generation after initial response/generation under the same input 
+** this is a stretch feature  & Work in progress **
+   for LLM ressponse generation after initial response/generation under the same input
 */
 export const generateResponseWithHistory = async (
   req: Request,

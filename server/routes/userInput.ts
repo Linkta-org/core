@@ -3,8 +3,8 @@ import type { Request, Response } from 'express';
 import {
   fetchUserInputList,
   storeUserInputDatabase,
-} from '@server/controllers/userInputController';
-import { generateInitialResponse } from '@/server/controllers/genAiController';
+} from '@controllers/userInputController';
+import { generateInitialResponse } from '@controllers/genAiController';
 
 const router = Router();
 

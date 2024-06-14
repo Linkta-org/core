@@ -7,6 +7,7 @@ import useDrawerStore from '@/client/stores/userDrawerStore';
 
 interface UserInput {
   _id: string;
+  title: string;
   input: string;
 }
 
@@ -73,7 +74,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
                   <Typography variant="caption">{userInput.input}</Typography>
                 }
                 id={`user-input-${userInput._id}`}
-                aria-label={`Details for ${userInput.input}`}
+                aria-label={`Details for ${userInput.title}`}
                 className={styles.userInputList__text}
               />
               <MoreVertIcon className={styles.userInputList__icon} />

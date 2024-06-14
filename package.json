@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix ./client --config vite.config.js\" \"npm run dev --prefix ./server\"",
+    "lint": "concurrently \"npm run lint --prefix ./client\" \"npm run lint --prefix ./server\"",
     "lint:client": "npm run lint --prefix ./client",
     "lint:server": "npm run lint --prefix ./server"
   },

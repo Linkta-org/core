@@ -27,7 +27,11 @@ runs:
       run: npm ci
     - name: LintClient
       shell: bash
-      run: npm run lint:client
+      run:
+        cd client
+        npm run lint
     - name: LintServer
       shell: bash
-      run: npm run lint:server
+      run:
+        cd server
+        npm run

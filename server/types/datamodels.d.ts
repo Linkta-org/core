@@ -12,8 +12,9 @@ export type User = {
 export type UserInput = {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
+  title: string;
   input: string;
-  linktaFlows: Types.ObjectId[];
+  linktaFlowId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 };

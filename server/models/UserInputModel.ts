@@ -10,6 +10,10 @@ const userInputSchema = new Schema<UserInput>({
     required: true,
     index: true,
   },
+  title: {
+    type: String,
+    default: '',
+  },
   input: {
     type: String,
     required: true,
@@ -17,7 +21,10 @@ const userInputSchema = new Schema<UserInput>({
     minlength: 3,
     maxlength: 100,
   },
-  linktaFlows: [{ type: Schema.Types.ObjectId, ref: 'LinktaFlow' }],
+  linktaFlowId: {
+    type: Schema.Types.ObjectId,
+    ref: 'LinktaFlow',
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -34,6 +41,10 @@ userInputSchema.pre<UserInput>('save', async function (next) {
   }
 
   this.input = result.data.input;
+
+  if (!this.title) {
+    this.title = this.input;
+  }
   next();
 });
 

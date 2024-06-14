@@ -5,16 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev1": "tsx ./server.ts",
-    "dev:frontend": "vite --config client/vite.config.js",
-    "dev:backend": "nodemon server.ts",
-    "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "vite build --config client/vite.config.js",
-    "build:backend": "tsc -p tsconfig.json",
-    "start": "NODE_ENV=production concurrently \"npm run start:frontend\" \"npm run start:backend\"",
-    "start:frontend": "NODE_ENV=production vite preview --config client/vite.config.js",
-    "start:backend": "NODE_ENV=production node dist/server/server.ts",
+    "dev": "tsx watch-path=./ ./server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.ts",
     "lint": "eslint . --fix && prettier --write ."
   },
   "keywords": [

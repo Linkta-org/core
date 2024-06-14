@@ -6,7 +6,7 @@ import { resolve } from 'path';
  */
 export function getEnv(): void {
   const projectRoot = process.cwd();
-  const envPath = resolve(projectRoot, 'server', '.env');
+  const envPath = resolve(projectRoot, '.env');
 
   const envConfig = {
     path: envPath,

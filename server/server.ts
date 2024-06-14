@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { getEnv } from '@utils/environment';
-import { getLogger, configure, isConfigured } from 'log4js';
+// import { getLogger, configure, isConfigured } from 'log4js';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
 import cors from 'cors';
@@ -18,10 +18,10 @@ const uri = process.env.MONGO_DB_URI;
 mongoose.set('strictQuery', false);
 
 log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
-configure(log4jsConfig);
+// configure(log4jsConfig);
 
-const logger = getLogger('[Linkta Server]');
-isConfigured() && logger.info('Log4JS is configured!');
+// const logger = getLogger('[Linkta Server]');
+// isConfigured() && logger.info('Log4JS is configured!');
 
 const corsOptions = {
   origin: 'http://localhost:5173',

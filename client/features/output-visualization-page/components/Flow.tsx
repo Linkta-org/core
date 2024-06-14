@@ -34,7 +34,6 @@ const edgeTypes = {
 };
 import UndoAndRedo from './UndoAndRedo';
 import useLinktaFlowStore from '@/client/stores/LinktaFlowStore';
-import { set } from 'mongoose';
 
 const rfStyle = {
   backgroundColor: '#173336',
@@ -90,13 +89,17 @@ function Flow() {
   const { pause, resume } = useLinktaFlowStore.temporal.getState();
   const { x, y, zoom } = useViewport();
 
-  const nodes = currentLinktaFlow?.nodes || initialNodes;
-  const edges = currentLinktaFlow?.edges || initialEdges;
-
-  const [, setNodes] = React.useState<Node[]>(nodes);
-  const [, setEdges] = React.useState<Edge[]>(edges);
+  const [nodes, setNodes] = React.useState<Node[]>(initialNodes);
+  const [edges, setEdges] = React.useState<Edge[]>(initialEdges);
   console.log('nodes:', nodes);
   console.log('edges:', edges);
+
+  useEffect(() => {
+    if (currentLinktaFlow) {
+      setNodes(currentLinktaFlow.nodes || initialNodes);
+      setEdges(currentLinktaFlow.edges || initialEdges);
+    }
+  }, [currentLinktaFlow]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -132,7 +135,10 @@ function Flow() {
   //When a connection line is completed and two nodes are connected by the user, this event fires with the new connection.
   const onConnect = useCallback(
     (params: Connection) => {
-      const newEdge = addEdge({ ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } }, edges);
+      const newEdge = addEdge(
+        { ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } },
+        edges
+      );
       setEdges(newEdge);
       setCurrentEdges(newEdge);
     },

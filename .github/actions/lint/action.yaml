@@ -1,8 +1,7 @@
-name: Lint and Format
+name: Lint
 
 description: |
-  This action will lint the application code. If linting passes, it will format the code.
-  The linting and formatting is accomplished through the package.json script "lint"
+  This action will lint the application code without auto-fixing errors.
 
 inputs:
   node-version:
@@ -13,10 +12,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        ref: ${{ github.head_ref }}
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v3
       with:

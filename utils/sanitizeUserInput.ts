@@ -32,3 +32,7 @@ const userInputSanitizationSchema = z.object({
 
 export type UserInputSanitization = z.infer<typeof userInputSanitizationSchema>;
 export default userInputSanitizationSchema;
+
+export const sanitizeUserInput = (input: string): string => {
+  return userInputSanitizationSchema.parse({ input }).input;
+};

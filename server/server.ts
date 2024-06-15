@@ -45,6 +45,7 @@ function startServer() {
     throw new Error('Missing DB connection string!');
   }
 
+  // eslint-disable-next-line no-console -- TODO: implement logging service to replace console.dir and remove this line to re-enable eslint
   connectToDatabase(uri).catch(console.dir);
 
   app.use(bodyParser.json());
@@ -82,9 +83,10 @@ function startServer() {
    * Start the server.
    */
   const server: Server = app.listen(PORT, () => {
-    console.log(
-      `Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`
-    );
+    // TODO: implement logging service
+    // console.log(
+    //   `Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`
+    // );
   });
 
   /**
@@ -104,7 +106,8 @@ function startServer() {
  */
 function stopServer(server: Server) {
   server.close(() => {
-    console.log('Server stopped.');
+    // TODO: implement logging service
+    // console.log('Server stopped.');
 
     // disconnect from the database
 
@@ -131,12 +134,13 @@ async function connectToDatabase(link: string) {
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
-    console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!'
-    );
-    await mongoose
-      .connect(uri ?? '')
-      .then(() => console.log('MONGOOSE connected!'));
+    // TODO: implement logging service
+    // console.log(
+    //   'Pinged your deployment. You successfully connected to MongoDB!'
+    // );
+    await mongoose.connect(uri ?? '');
+    // TODO: implement logging service
+    // .then(() => console.log('MONGOOSE connected!'));
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();

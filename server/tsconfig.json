@@ -24,7 +24,7 @@
       "@routes/*": ["routes/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"],
-      "@zod/*": ["zod/*"],
+      "@zod/*": ["zod/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
@@ -37,7 +37,7 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
-    "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
+    "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "resolveJsonModule": true,
     "moduleResolution": "Node10"
@@ -51,7 +51,7 @@
     "routes/**/*",
     "types/**/*",
     "utils/**/*",
-    "zod/**/*",
+    "zod/**/*"
   ],
   "exclude": ["dist", "node_modules"],
   "ts-node": {

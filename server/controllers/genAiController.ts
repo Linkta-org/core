@@ -3,7 +3,7 @@ import { startGeneration } from '@models/GeminiModel';
 import { type Content } from '@google/generative-ai';
 import { createError } from '@middleware/errorHandling';
 
-//in initial respsonse generation, there is no chat history, so using []
+//in initial response generation, there is no chat history, so using []
 export const generateInitialResponse = async (
   req: Request,
   res: Response,
@@ -15,7 +15,8 @@ export const generateInitialResponse = async (
     if (userInput) {
       const response = await startGeneration(history, userInput);
 
-      console.log('LLM response:', response);
+      // TODO: implement logging service
+      // console.log('LLM response:', response);
       /*------> placeholder for store LLM response to DB  <------*/
 
       res.locals.linktaFlow = response;
@@ -35,7 +36,7 @@ export const generateInitialResponse = async (
 
 /*
 ** this is a stretch feature  & Work in progress **
-   for LLM ressponse generation after initial response/generation under the same input
+   for LLM response generation after initial response/generation under the same input
 */
 export const generateResponseWithHistory = async (
   req: Request,

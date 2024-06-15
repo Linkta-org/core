@@ -1,8 +1,7 @@
-name: Linting Workflow
+# This workflow checks for linting and formatting errors in all client and server files on 
+# pull request to dev branch. If errors are found, it will fail.
 
-description: |
-  This workflow checks for linting and formatting errors in all client and server files on 
-  pull request to dev branch. If errors are found, it will fail.
+name: Linting Workflow
 
 on:
   pull_request:

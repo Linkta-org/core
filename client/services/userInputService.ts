@@ -16,7 +16,8 @@ export const fetchUserInputListFromApi = async (
     });
     return response.data.userInputs || [];
   } catch (error) {
-    console.error('Error fetching user inputs:', error);
+    // TODO: implement logging service
+    // console.error('Error fetching user inputs:', error);
     return [];
   }
 };

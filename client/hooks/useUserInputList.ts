@@ -35,7 +35,8 @@ const useUserInputList = (): UseUserInputListResult => {
       const inputList = await fetchUserInputListFromApi(page, ITEMS_PER_PAGE);
       setUserInputList((prevInputList) => [...prevInputList, ...inputList]);
     } catch (error) {
-      console.error('Error fetching user inputs:', error);
+      // TODO: implement logging service
+      // console.error('Error fetching user inputs:', error);
     } finally {
       setLoading(false);
     }

@@ -67,6 +67,8 @@
     "types/**/*",
     "utils/**/*",
     "zod/**/*",
+    "*.tsx",
+    "__tests__/**/*.ts*"
   ],
   "exclude": ["dist", "node_modules"],
   "ts-node": {

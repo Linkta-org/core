@@ -1,5 +1,5 @@
 import { axiosClient } from '@/client/config/axios';
-import { MOCK_USER_ID } from '@/mocks';
+import { MOCK_USER_ID } from '@/server/mocks';
 
 export const fetchUserInputListFromApi = async (
   page: number,
@@ -14,7 +14,7 @@ export const fetchUserInputListFromApi = async (
         'x-user-id': userId,
       },
     });
-    return response.data.userInputs || [];
+    return response.data.inputHistory || [];
   } catch (error) {
     console.error('Error fetching user inputs:', error);
     return [];

@@ -39,7 +39,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
     - `Authorization: Bearer <session_token>`
     - `x-request-id: <unique request ID>`
 - **Responses:**
-    - `200 OK` : `{ "linktaFlow": <LinktaFlow Object> }`
+    - `200 OK` : `{ "linktaFlow": <LinktaFlow Object>, "inputHistory": [/*Array of userInput Objects*/] }`
     - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`

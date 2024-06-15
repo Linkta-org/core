@@ -3,7 +3,7 @@ import LinktaFlow from '@/server/models/LinktaFlowModel';
 import { createError } from '@server/middleware/errorHandling';
 
 // Until authentication is implemented, user id will be stored in a single variable
-import { MOCK_USER_ID } from '@/mocks';
+import { MOCK_USER_ID } from '@/server/mocks';
 
 // Fetch all LinktaFlows associated with the authenticated user
 export const fetchLinktaFlows = async (

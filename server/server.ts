@@ -10,7 +10,7 @@ import cors from 'cors';
 
 import log4jsConfig from '@server/utils/log4js.config.json';
 import { globalErrorHandler } from '@server/middleware/errorHandling';
-import userInput from './routes/userInput';
+import userInput from './routes/userInputRouter';
 import linktaFlowRouter from '@server/routes/linktaFlowRouter';
 
 getEnv();

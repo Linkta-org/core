@@ -8,6 +8,9 @@ inputs:
     description: 'The version of node to use'
     required: true
     default: '20.11.1'
+  directory:
+    description: 'The directory in which to run linting'
+    required: true
 
 runs:
   using: 'composite'
@@ -19,7 +22,11 @@ runs:
         cache: 'npm'
     - name: Install Dependencies
       shell: bash
-      run: npm ci
+      run: |
+        cd ${{ inputs.directory }}
+        npm ci
     - name: Lint
       shell: bash
-      run: npm run lint
+      run: |
+        cd ${{ inputs.directory }}
+        npm run lint

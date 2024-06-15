@@ -18,12 +18,12 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       - name: Lint Client
-        working-directory: ./client
         uses: ./.github/actions/lint
         with:
           node-version: '20.11.1' # The original node version of the project
+          directory: './client'
       - name: Lint Server
-        working-directory: ./server
         uses: ./.github/actions/lint
         with:
           node-version: '20.11.1' # The original node version of the project
+          directory: './server'

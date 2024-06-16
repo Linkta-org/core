@@ -31,9 +31,8 @@ const escapeHTML = (input: string): string => {
     .replace(/\//g, '&#x2F;');
 };
 
-// Combined schema for user input
-export const userInputValidationSchema = {
-  id: z.string().min(1, 'Document ID is required'),
+// Validation schema for user input
+export const userInputInputSchema = z.object({
   input: z
     .string()
     .trim()
@@ -42,8 +41,17 @@ export const userInputValidationSchema = {
     .refine((val) => hasHtmlChars(val), {
       message: 'Input includes special HTML characters',
     }),
+});
+
+// Validation schema for title
+export const userInputTitleSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-};
+});
+
+// Validation schema for user input ID
+export const userInputIdSchema = z.object({
+  userInputId: z.string().min(1, 'Input ID is required'),
+});
 
 // Sanitization schema for user input
 export const userInputSanitizationSchema = z.object({
@@ -54,3 +62,11 @@ export const userInputSanitizationSchema = z.object({
 export const sanitizeUserInput = (input: string): string => {
   return userInputSanitizationSchema.parse({ input }).input;
 };
+
+// Combined schema for updating user input
+export const updateUserInputSchema = z.object({
+  params: userInputIdSchema,
+  body: z.object({
+    title: userInputTitleSchema.shape.title,
+  }),
+});

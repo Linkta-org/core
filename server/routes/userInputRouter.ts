@@ -5,7 +5,11 @@ import UserInputService from '@/server/services/userInputService';
 import LinktaFlowService from '@/server/services/linktaFlowService';
 import AIService from '@/server/services/aiService';
 import validationMiddleware from '@/server/middleware/validationMiddleware';
-import { userInputValidationSchema } from '@/server/zod/UserInputSchemas';
+import {
+  userInputIdSchema,
+  userInputInputSchema,
+  userInputTitleSchema,
+} from '@/server/zod/UserInputSchemas';
 
 const router = Router();
 
@@ -32,7 +36,7 @@ const userInputController = new UserInputController(
  */
 router.post(
   '/',
-  validationMiddleware(userInputValidationSchema.input, 'body'),
+  validationMiddleware(userInputInputSchema, 'body'),
   userInputController.generateLinktaFlowFromInput,
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
@@ -53,6 +57,25 @@ router.get(
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
     return res.status(200).json(res.locals.inputHistory);
+  }
+);
+
+/**
+ * @route PUT /v1/inputs/:userInputId
+ * @description Updates the title of a specific user input and fetches the updated input history.
+ * @returns {Object} 200 - { message, inputHistory }
+ */
+router.put(
+  '/:userInputId',
+  validationMiddleware(userInputIdSchema, 'params'),
+  validationMiddleware(userInputTitleSchema, 'body'),
+  userInputController.updateInputTitle,
+  userInputController.fetchInputHistory,
+  (_: Request, res: Response) => {
+    return res.status(200).json({
+      message: res.locals.message,
+      inputHistory: res.locals.inputHistory,
+    });
   }
 );
 

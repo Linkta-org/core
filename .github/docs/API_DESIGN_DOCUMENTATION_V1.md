@@ -181,7 +181,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 #### UserInput Controller
 - `generateLinktaFlowFromUserInput` : Receives a UserInput and begins processing it to generate a LinktaFlow.
 - `fetchInputHistory` : Retrieves a list of UserInputs associated with a user.
-- `updateUserInputTitle` : Updates the title of a specific UserInput.
+- `updateInputTitle` : Updates the title of a specific UserInput.
 - `deleteUserInput` : Deletes a specific UserInput and its associated LinktaFlow.
 
 #### LinktaFlow Controller
@@ -213,7 +213,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 #### UserInput Service
 - `createUserInput` : Creates a new user input record in the database.
 - `findUserInputsByUserId` : Retrieves a list of user inputs associated with a specific user ID.
-- `updateUserInput` : Updates the title or other properties of a specific user input.
+- `updateInputTitle` : Updates the title of a specific user input.
 - `deleteUserInputAndAssociatedData` : Deletes a specific user input and its associated LinktaFlow data from the database.
 
 #### LinktaFlow Service

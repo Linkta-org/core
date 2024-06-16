@@ -52,6 +52,33 @@ class UserInputService {
       throw methodError;
     }
   }
+
+  public async updateInputTitle(
+    userInputId: Types.ObjectId,
+    newTitle: string
+  ): Promise<IUserInput> {
+    try {
+      const updatedUserInput = await UserInput.findByIdAndUpdate(
+        userInputId,
+        { title: newTitle },
+        { new: true }
+      );
+
+      if (!updatedUserInput) {
+        throw new Error(`UserInput with id ${userInputId} not found.`);
+      }
+
+      return updatedUserInput;
+    } catch (error) {
+      const methodError = createError(
+        'updateInputTitle',
+        'UserInputService',
+        'Error updating input title.',
+        error
+      );
+      throw methodError;
+    }
+  }
 }
 
 export default UserInputService;

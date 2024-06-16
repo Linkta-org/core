@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import { MOCK_USER_ID } from '@/server/mocks';
 import mongoose from 'mongoose';
-import { sanitizeUserInput } from '@/utils/sanitizeUserInput';
+import { sanitizeUserInput } from '@/server/zod/UserInputSchemas';
 import type IUserInputService from '@/server/services/userInputService';
 import type ILinktaFlowService from '@/server/services/linktaFlowService';
 import { createError } from '@/server/middleware/errorHandling';
@@ -33,10 +33,6 @@ class UserInputController {
   ) => {
     try {
       const userInput = req.body.input;
-      //TODO: replace with validation middleware
-      if (!userInput || typeof userInput !== 'string') {
-        return res.status(400).json({ error: 'Invalid user input' });
-      }
 
       // TODO: replace with auth middleware
       let userId =
@@ -136,6 +132,49 @@ class UserInputController {
     } catch (error) {
       const methodError = createError(
         'fetchInputHistory',
+        'UserInputController',
+        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
+        error
+      );
+      return next(methodError);
+    }
+  };
+
+  public updateInputTitle = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { title } = req.body;
+      const { userInputId } = req.params;
+
+      // TODO: Replace with auth middleware
+      let userId =
+        process.env.NODE_ENV === 'development'
+          ? req.headers['x-user-id'] || MOCK_USER_ID
+          : req.headers['x-user-id'];
+
+      if (Array.isArray(userId)) {
+        userId = userId[0];
+      }
+
+      if (!userId) {
+        res.status(401).json({
+          message:
+            'You need to log in to access this resource. Please ensure you are logged in and try again.',
+        });
+        return;
+      }
+
+      const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
+
+      await this.userInputService.updateInputTitle(userInputObjectId, title);
+      res.locals.message = 'Input updated Successfully!';
+      next();
+    } catch (error) {
+      const methodError = createError(
+        'updateInputTitle',
         'UserInputController',
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
         error

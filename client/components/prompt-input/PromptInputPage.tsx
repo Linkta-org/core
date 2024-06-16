@@ -2,8 +2,10 @@ import { Box } from '@mui/material';
 import React from 'react';
 import PromptInputForm from './PromptInputForm';
 import PromptInputInstructions from './PromptInputInstructions';
+import useDocumentTitle from '@/client/hooks/useDocumentTitle';
 
 const PromptInputPage = () => {
+  useDocumentTitle('Prompt');
   return (
     <Box className="prompt-input-view">
       <PromptInputForm />

@@ -170,11 +170,58 @@ class UserInputController {
       const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
 
       await this.userInputService.updateInputTitle(userInputObjectId, title);
-      res.locals.message = 'Input updated Successfully!';
+      res.locals.message = 'Input Title updated successfully.';
       next();
     } catch (error) {
       const methodError = createError(
         'updateInputTitle',
+        'UserInputController',
+        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
+        error
+      );
+      return next(methodError);
+    }
+  };
+
+  public deleteUserInput = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { userInputId } = req.params;
+
+      //TODO: replace with auth middleware
+      let userId =
+        process.env.NODE_ENV === 'development'
+          ? req.headers['x-user-id'] || MOCK_USER_ID
+          : req.headers['x-user-id'];
+
+      if (Array.isArray(userId)) {
+        userId = userId[0];
+      }
+
+      if (!userId) {
+        res.status(401).json({
+          message:
+            'You need to log in to access this resource. Please ensure you are logged in and try again.',
+        });
+        return;
+      }
+
+      const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
+
+      await this.userInputService.deleteUserInput(userInputObjectId);
+
+      await this.linktaFlowService.deleteLinktaFlowByUserInputId(
+        userInputObjectId
+      );
+
+      res.locals.message = 'Input has been successfully deleted.';
+      next();
+    } catch (error) {
+      const methodError = createError(
+        'deleteUserInput',
         'UserInputController',
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
         error

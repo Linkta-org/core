@@ -79,6 +79,30 @@ class UserInputService {
       throw methodError;
     }
   }
+
+  public async deleteUserInput(
+    userInputId: Types.ObjectId
+  ): Promise<IUserInput | null> {
+    try {
+      const userInput = await UserInput.findById(userInputId);
+
+      if (!userInput) {
+        throw new Error(`UserInput with id ${userInputId} not found.`);
+      }
+
+      const deletedUserInput = await UserInput.findByIdAndDelete(userInputId);
+
+      return deletedUserInput;
+    } catch (error) {
+      const methodError = createError(
+        'deleteInputAndAssociatedData',
+        'UserInputService',
+        'Error deleting input and associated data.',
+        error
+      );
+      throw methodError;
+    }
+  }
 }
 
 export default UserInputService;

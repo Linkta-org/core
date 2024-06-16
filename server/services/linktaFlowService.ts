@@ -4,6 +4,7 @@ import type { Types } from 'mongoose';
 import User from '@server/models/UserModel';
 import UserInput from '@server/models/UserInputModel';
 import type IaiService from './aiService';
+import type { LinktaFlow as ILinktaFlow } from '@/server/types';
 
 class LinktaFlowService {
   private aiService: IaiService;
@@ -23,7 +24,7 @@ class LinktaFlowService {
     userId: Types.ObjectId,
     userInputId: Types.ObjectId,
     userInput: string
-  ) {
+  ): Promise<ILinktaFlow> {
     try {
       const aiResponse =
         await this.aiService.generateInitialResponse(userInput);
@@ -58,6 +59,25 @@ class LinktaFlowService {
         'createLinktaFlow',
         'LinktaFlowService',
         'Error creating LinktaFlow.',
+        error
+      );
+      throw methodError;
+    }
+  }
+  public async deleteLinktaFlowByUserInputId(
+    userInputId: Types.ObjectId
+  ): Promise<ILinktaFlow | null> {
+    try {
+      const deletedLinktaFlow = await LinktaFlow.findOneAndDelete({
+        userInputId,
+      });
+
+      return deletedLinktaFlow;
+    } catch (error) {
+      const methodError = createError(
+        'deleteLinktaFlowByUserInputId',
+        'LinktaFlowService',
+        'Error deleting LinktaFlow data.',
         error
       );
       throw methodError;

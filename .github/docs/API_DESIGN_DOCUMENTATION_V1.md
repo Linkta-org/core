@@ -62,7 +62,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 - **Headers:**
     - `Authorization: Bearer <session_token>`
 - **Responses:**
-    - `200 OK` : `{ "message": "Input Title updated successfully on [timestamp] " }`
+    - `200 OK` : `{ "message": "Input Title updated successfully.", "inputHistory": [/*Array of userInput Objects*/] }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
@@ -73,7 +73,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 - **Headers:**
     - `Authorization: Bearer <session_token>`
 - **Responses:**
-    - `200 OK` : `{ "message": "Input ID [userInputId] has been successfully deleted." }`
+    - `200 OK` : `{ "message": "Input has been successfully deleted.", "inputHistory": [/*Array of userInput Objects*/] }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
@@ -222,6 +222,8 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 - `createLinktaFlowFromObject` : Creates a new LinktaFlow record in the database based on the given LinktaFlow object.
 - `findLinktaFlowById` : Retrieves a specific LinktaFlow object based on its unique identifier.
 - `updateLinktaFlowById` : Updates the properties of a specific LinktaFlow.
+- `deleteLinktaFlowByUserInputId`: Delete a LinktaFlow based on a UserInputId
+
 
 #### User Account and Settings Service
 >  _Work in progress_

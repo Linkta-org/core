@@ -79,4 +79,22 @@ router.put(
   }
 );
 
+/**
+ * @route DELETE /v1/inputs/:userInputId
+ * @description Deletes a specific user input and fetches the updated input history.
+ * @returns {Object} 200 - { message, inputHistory }
+ */
+router.delete(
+  '/:userInputId',
+  validationMiddleware(userInputIdSchema, 'params'),
+  userInputController.deleteUserInput,
+  userInputController.fetchInputHistory,
+  (_: Request, res: Response) => {
+    return res.status(200).json({
+      message: res.locals.message,
+      inputHistory: res.locals.inputHistory,
+    });
+  }
+);
+
 export default router;

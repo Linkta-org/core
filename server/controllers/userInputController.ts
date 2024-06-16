@@ -109,7 +109,7 @@ class UserInputController {
       if (Array.isArray(userId)) {
         userId = userId[0];
       }
-
+      //TODO: replace with validation middleware
       if (!userId) {
         res.status(401).json({
           message:

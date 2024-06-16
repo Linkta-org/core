@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import type { UserInput } from '@/server/types/datamodels';
 import userInputSanitizationSchema from '@/utils/sanitizeInput';
+import { formatZodErrorMessages } from '@/server/utils/helpers';
 
 const userInputSchema = new Schema<UserInput>({
   userId: {
@@ -28,8 +29,8 @@ userInputSchema.pre<UserInput>('save', async function (next) {
   });
 
   if (!result.success) {
-    const errors = result.error.errors.map((e) => e.message).join(',');
-    return next(new Error(`Sanitization failed: ${errors}`));
+    const errorMessage = formatZodErrorMessages(result.error);
+    return next(new Error(`Sanitization failed: ${errorMessage}`));
   }
 
   this.input = result.data.input;

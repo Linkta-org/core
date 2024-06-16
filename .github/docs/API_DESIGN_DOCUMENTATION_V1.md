@@ -245,8 +245,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 - `generateResponseWithHistory`: Handles LLM response generation after the initial request and response cycle under the same userInput(**generateResponseWithHistory will be a stretch feature, as it provides context for LLM to continuosly generate enahnced responses under the same input)
 
 #### Validation Middleware
-- `validateUserInput` : Validates the user input to ensure it meets the required format and constraints.
-- `validateLinktaFlow` : Validates the LinktaFlow data to ensure it meets the required format and constraints.
+- The validation middleware function validates different parts of an incoming request (body, query, params, headers) using Zod schemas. If the validation fails, it responds with a 400 Bad Request status and an appropriate error message.
 
 ## Data Design
 ### Diagram

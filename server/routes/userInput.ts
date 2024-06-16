@@ -5,11 +5,13 @@ import {
   storeUserInputDatabase,
 } from '@server/controllers/userInputController';
 import { generateInitialResponse } from '@/server/controllers/genAiController';
-
+import validationMiddleware from '@/server/middleware/validationMiddleware';
+import userInputValidationSchema from '@/utils/zodSchema/userInputValidation';
 const router = Router();
-
+// TODO: to add additional validation to headers/params
 router.post(
   '/',
+  validationMiddleware(userInputValidationSchema, 'body'),
   storeUserInputDatabase,
   generateInitialResponse,
   (_: Request, res: Response) => {

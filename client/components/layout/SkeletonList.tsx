@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItem, Skeleton } from '@mui/material';
-import styles from '@client/styles/layout/SkeletonList.module.css';
+import styles from '@styles/layout/SkeletonList.module.css';
 
 interface SkeletonListProps {
   length: number;

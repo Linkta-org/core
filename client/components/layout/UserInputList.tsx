@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
-import styles from '@client/styles/layout/UserInputList.module.css';
-import useDrawerStore from '@/client/stores/userDrawerStore';
+import styles from '@styles/layout/UserInputList.module.css';
+import useDrawerStore from '@stores/userDrawerStore';
 
 interface UserInput {
   _id: string;

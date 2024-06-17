@@ -3,7 +3,7 @@ import { Menu, MenuItem, Typography } from '@mui/material';
 import RenameIcon from '@mui/icons-material/EditOutlined';
 import RegenerateIcon from '@mui/icons-material/AutorenewOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import styles from '@client/styles/layout/OptionsMenu.module.css';
+import styles from '@styles/layout/OptionsMenu.module.css';
 
 interface OptionsMenuProps {
   arialabelledby: string;

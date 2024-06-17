@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch server",
+    "dev": "nodemon --exec tsx  server.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.ts",
     "lint": "eslint . && prettier --check .",

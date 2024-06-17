@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import type { ZodSchema } from 'zod';
 import { ZodError } from 'zod';
-import { formatZodErrorMessages } from '@/server/utils/helpers';
+import { formatZodErrorMessages } from '@utils/helpers';
 
 type ValidationTarget = 'body' | 'query' | 'params' | 'headers';
 

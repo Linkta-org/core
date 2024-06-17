@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import PaginationButton from '@components/layout/PaginationButton';
 import { ITEMS_PER_PAGE } from './userInputConstants';
-import styles from '@client/styles/layout/PaginationControls.module.css';
+import styles from '@styles/layout/PaginationControls.module.css';
 
 interface PaginationControlsProps {
   handleShowMore: () => void;

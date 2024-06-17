@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import styles from '@client/styles/layout/PaginationButton.module.css';
+import styles from '@styles/layout/PaginationButton.module.css';
 import type { SvgIconComponent } from '@mui/icons-material';
 
 interface PaginationButtonProps {

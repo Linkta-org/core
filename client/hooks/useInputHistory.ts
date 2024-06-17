@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchUserInputListFromApi } from '@/client/services/userInputService';
+import { fetchInputHistoryFromApi } from '@/client/services/userInputService';
 import { ITEMS_PER_PAGE } from '@/client/components/layout/userInputConstants';
 
 interface UserInput {
@@ -7,8 +7,8 @@ interface UserInput {
   input: string;
 }
 
-interface UseUserInputListResult {
-  userInputList: UserInput[];
+interface UseInputHistoryResult {
+  inputHistory: UserInput[];
   loading: boolean;
   handleShowMore: () => void;
   handleShowLess: () => void;
@@ -18,22 +18,28 @@ interface UseUserInputListResult {
 /**
  * Custom hook to manage user input list pagination and fetching data from API.
  *
- * @returns {UseUserInputListResult} The current user input list, loading state, page number, and handlers for pagination.
+ * @returns {UseInputHistoryResult} The current user input list, loading state, page number, and handlers for pagination.
  */
-const useUserInputList = (): UseUserInputListResult => {
-  const [userInputList, setUserInputList] = useState<UserInput[]>([]);
+const useInputHistory = (): UseInputHistoryResult => {
+  const [inputHistory, setInputHistory] = useState<UserInput[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
   /**
    * Fetches the user input list from the API based on the current page.
    */
-  const loadUserInputList = useCallback(async () => {
+  const loadInputHistory = useCallback(async () => {
     setLoading(true);
 
     try {
-      const inputList = await fetchUserInputListFromApi(page, ITEMS_PER_PAGE);
-      setUserInputList((prevInputList) => [...prevInputList, ...inputList]);
+      const curInputHistory = await fetchInputHistoryFromApi(
+        page,
+        ITEMS_PER_PAGE
+      );
+      setInputHistory((prevInputHistory) => [
+        ...prevInputHistory,
+        ...curInputHistory,
+      ]);
     } catch (error) {
       console.error('Error fetching user inputs:', error);
     } finally {
@@ -42,8 +48,8 @@ const useUserInputList = (): UseUserInputListResult => {
   }, [page]);
 
   useEffect(() => {
-    void loadUserInputList();
-  }, [loadUserInputList]);
+    void loadInputHistory();
+  }, [loadInputHistory]);
 
   /**
    * Handles showing more items by incrementing the page number.
@@ -59,15 +65,15 @@ const useUserInputList = (): UseUserInputListResult => {
    */
   const handleShowLess = useCallback(() => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
-    setUserInputList((prevInputList) =>
-      prevInputList.slice(
+    setInputHistory((prevInputHistory) =>
+      prevInputHistory.slice(
         0,
-        Math.max(prevInputList.length - ITEMS_PER_PAGE, ITEMS_PER_PAGE)
+        Math.max(prevInputHistory.length - ITEMS_PER_PAGE, ITEMS_PER_PAGE)
       )
     );
   }, []);
 
-  return { userInputList, loading, handleShowMore, handleShowLess, page };
+  return { inputHistory, loading, handleShowMore, handleShowLess, page };
 };
 
-export default useUserInputList;
+export default useInputHistory;

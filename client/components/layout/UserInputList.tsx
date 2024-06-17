@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import {
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  styled,
-} from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
+import { List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import ListItemMenu from './ListItemMenu';
+import OptionsMenu from './OptionsMenu';
+import styles from '@client/styles/layout/UserInputList.module.css';
+import useDrawerStore from '@/client/stores/userDrawerStore';
 
 interface UserInput {
   _id: string;
@@ -16,51 +11,12 @@ interface UserInput {
 }
 
 interface UserInputListProps {
-  userInputList: UserInput[];
+  inputHistory: UserInput[];
   visibleItems: number;
 }
-
-const StyledList = styled(List)({
-  width: '100%',
-});
-
-const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
-  padding: '0.2rem 1rem',
-  minHeight: '2rem',
-  display: 'flex',
-  alignItems: 'center',
-  position: 'relative',
-  '&:hover, &:focus-within': {
-    backgroundColor: theme.palette.action.hover,
-    '& .MuiIconButton-root': {
-      visibility: 'visible',
-    },
-  },
-  '&.Mui-selected, &.Mui-selected:hover, &.Mui-selected:focus-within': {
-    backgroundColor: theme.palette.action.selected,
-    '& .MuiIconButton-root': {
-      visibility: 'visible',
-    },
-  },
-}));
-
-const StyledTypography = styled(Typography)({
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  maxWidth: '100%',
-  paddingLeft: '1rem',
-  whiteSpace: 'nowrap',
-});
-
-const StyledIconButton = styled(IconButton)({
-  color: 'rgba(234, 231, 231, 0.5)',
-  transform: 'scale(0.7)',
-  margin: '0 0.25em',
-  visibility: 'hidden',
-});
-
+// TODO: event handlers for rename, regenerate, and delete to be implemented
 const UserInputList: React.FC<UserInputListProps> = ({
-  userInputList,
+  inputHistory,
   visibleItems,
 }) => {
   const [menuAnchorElement, setMenuAnchorElement] =
@@ -68,71 +24,98 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
     null
   );
+  const { drawerOpen } = useDrawerStore();
+  const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
 
-  const handleItemClick = (
-    event: React.MouseEvent<HTMLElement>,
-    id: string
-  ) => {
-    if (selectedUserInputId === id && menuAnchorElement) {
-      handleMenuClose();
-    } else {
-      setMenuAnchorElement(event.currentTarget as HTMLElement);
+  const handleItemClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>, id: string) => {
+      setMenuAnchorElement(event.currentTarget);
       setSelectedUserInputId(id);
-    }
-  };
+    },
+    []
+  );
 
-  const handleMenuClose = () => {
+  const handleMenuClose = useCallback(() => {
     setMenuAnchorElement(null);
     setSelectedUserInputId(null);
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!drawerOpen) {
+      setMenuAnchorElement(null);
+      setSelectedUserInputId(null);
+    }
+  }, [drawerOpen]);
 
   return (
-    <StyledList role="list">
-      {userInputList.slice(0, visibleItems).map((userInput) => (
-        <StyledListItemButton
-          key={userInput._id}
-          onClick={(event) => handleItemClick(event, userInput._id)}
-          role="listitem"
-          aria-labelledby={`user-input-${userInput._id}`}
-          selected={selectedUserInputId === userInput._id}
-        >
-          <ListItemText
-            primary={
-              <StyledTypography
-                variant="caption"
-                noWrap
+    <>
+      <List
+        className={styles.userInputList}
+        role="list"
+      >
+        {inputHistory.slice(0, visibleItems).map((userInput, index) => {
+          const uniqueId = `${userInput._id}-${index}`;
+          return (
+            <ListItemButton
+              id={uniqueId}
+              key={uniqueId}
+              onClick={(event) => handleItemClick(event, uniqueId)}
+              role="listitem"
+              aria-labelledby={`user-input-${userInput._id}`}
+              className={`${styles.userInputList__itemButton} ${
+                selectedUserInputId === uniqueId
+                  ? styles.userInputList__itemButtonSelected
+                  : ''
+              }`}
+            >
+              <ListItemText
+                primary={
+                  <Typography variant="caption">{userInput.input}</Typography>
+                }
                 id={`user-input-${userInput._id}`}
                 aria-label={`Details for ${userInput.input}`}
-              >
-                {userInput.input}
-              </StyledTypography>
-            }
-          />
-          <StyledIconButton
-            aria-label="More options"
-            aria-haspopup="true"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleItemClick(event, userInput._id);
-            }}
-          >
-            <MoreVertIcon />
-          </StyledIconButton>
-          <ListItemMenu
-            anchorEl={menuAnchorElement}
-            isOpen={
-              Boolean(menuAnchorElement) &&
-              selectedUserInputId === userInput._id
-            }
-            onClose={handleMenuClose}
-            onRename={() => console.log('Rename:', userInput._id)}
-            onRegenerate={() => console.log('Regenerate:', userInput._id)}
-            onDelete={() => console.log('Delete:', userInput._id)}
-          />
-        </StyledListItemButton>
-      ))}
-    </StyledList>
+                className={styles.userInputList__text}
+              />
+              <MoreVertIcon className={styles.userInputList__icon} />
+            </ListItemButton>
+          );
+        })}
+      </List>
+      <OptionsMenu
+        arialabelledby={`user-input-button-${selectedUserInputId}`}
+        anchorEl={menuAnchorElement}
+        isOpen={isMenuOpen}
+        onClose={handleMenuClose}
+        onRename={() => {
+          if (selectedUserInputId) {
+            console.log(
+              'Rename Event Handler Placeholder:',
+              selectedUserInputId
+            );
+          }
+          handleMenuClose();
+        }}
+        onRegenerate={() => {
+          if (selectedUserInputId) {
+            console.log(
+              'Regenerate Event Handler Placeholder:',
+              selectedUserInputId
+            );
+          }
+          handleMenuClose();
+        }}
+        onDelete={() => {
+          if (selectedUserInputId) {
+            console.log(
+              'Delete Event Handler Placeholder:',
+              selectedUserInputId
+            );
+          }
+          handleMenuClose();
+        }}
+      />
+    </>
   );
 };
 
-export default UserInputList;
+export default React.memo(UserInputList);

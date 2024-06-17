@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, styled } from '@mui/material';
+import { Box } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
-import PaginationButton from '@/client/components/common/PaginationButton';
 import { ITEMS_PER_PAGE } from './userInputConstants';
+import styles from '@client/styles/layout/PaginationControls.module.css';
+import PaginationButton from './PaginationButton';
 
 interface PaginationControlsProps {
   handleShowMore: () => void;
@@ -11,11 +12,6 @@ interface PaginationControlsProps {
   totalItems: number;
 }
 
-const ControlsContainer = styled(Box)({
-  display: 'flex',
-  justifyContent: 'center',
-});
-
 const PaginationControls: React.FC<PaginationControlsProps> = ({
   handleShowMore,
   handleShowLess,
@@ -23,9 +19,10 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   totalItems,
 }) => {
   return (
-    <ControlsContainer
+    <Box
       role="group"
       aria-label="Pagination Controls"
+      className={styles.paginationControls}
     >
       {visibleItems < totalItems && (
         <PaginationButton
@@ -41,7 +38,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           Icon={ExpandLess}
         />
       )}
-    </ControlsContainer>
+    </Box>
   );
 };
 

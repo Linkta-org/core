@@ -1,0 +1,61 @@
+.optionsMenu {
+  border-radius: 0 0.4rem 0.4rem 0;
+  border: var(--border-highlight-default);
+  background-color: transparent;
+  width: 125px;
+}
+
+.optionsMenu__list {
+  padding: 0;
+  margin: 0;
+}
+
+.optionsMenu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-small);
+  padding: var(--padding-small) var(--padding-default);
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  white-space: nowrap;
+  width: 100%;
+  height: var(--height-tab-default);
+  background-color: var(--background-default);
+  transition: background-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.optionsMenu__item:first-child,
+.optionsMenu__item:nth-child(2) {
+  border-bottom: 1px solid rgba(159, 133, 18, 0.4);
+}
+
+.optionsMenu__item:first-child {
+  border-top-right-radius: var(--border-radius-default);
+}
+
+.optionsMenu__item:last-child {
+  border-bottom-right-radius: var(--border-radius-default);
+}
+
+.optionsMenu__item:hover,
+.optionsMenu__item:focus-within,
+.optionsMenu__item.Mui-selected,
+.optionsMenu__item.Mui-selected:hover,
+.optionsMenu__item.Mui-selected:focus-within {
+  background-color: rgba(39, 86, 92, 0.9);
+  border: var(--border-highlight-default);
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.optionsMenu__itemIcon {
+  transform: scale(0.8);
+}
+
+.optionsMenu__itemText {
+  padding: var(--padding-small);
+}

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@client/components/common/SideNavDrawer';
 import useMatchMedia from '@client/hooks/useMatchMedia';
 import '@client/styles/MainLayout.css';
+import useDrawerStore from '@/client/stores/userDrawerStore';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -14,15 +15,15 @@ import '@client/styles/MainLayout.css';
 const MainLayout: React.FC = () => {
   const breakpoint = 768;
   const matching = useMatchMedia(breakpoint);
+  const { drawerOpen, setDrawerOpen } = useDrawerStore();
 
-  const [drawerOpen, setDrawerOpen] = useState(!matching);
   const toggleDrawer = () => {
     !matching && setDrawerOpen(!drawerOpen);
   };
 
   useEffect(() => {
     matching && setDrawerOpen(false);
-  }, [matching]);
+  }, [matching, setDrawerOpen]);
 
   return (
     <>

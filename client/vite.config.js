@@ -19,6 +19,11 @@ export default defineConfig({
     }),
   ],
   root: path.resolve(__dirname), // Define root directory for the Vite project.
+  css: {
+    modules: {
+      localsConvention: 'camelCase', // Configure CSS modules
+    },
+  },
   server: {
     proxy: {
       // Proxy configuration for API calls

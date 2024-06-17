@@ -1,13 +1,10 @@
 import React from 'react';
-import { List, ListItem, Skeleton, styled } from '@mui/material';
+import { List, ListItem, Skeleton } from '@mui/material';
+import styles from '@client/styles/layout/SkeletonList.module.css';
 
 interface SkeletonListProps {
   length: number;
 }
-
-const StyledSkeleton = styled(Skeleton)({
-  width: '100%',
-});
 
 const SkeletonList: React.FC<SkeletonListProps> = ({ length }) => {
   const skeletonItems = Array.from({ length });
@@ -19,9 +16,10 @@ const SkeletonList: React.FC<SkeletonListProps> = ({ length }) => {
           key={index}
           role="listitem"
         >
-          <StyledSkeleton
+          <Skeleton
             variant="text"
             aria-label="Loading content"
+            className={styles.skeletonList__skeleton}
           />
         </ListItem>
       ))}

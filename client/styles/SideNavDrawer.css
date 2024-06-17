@@ -21,6 +21,7 @@
   width: 186px;
   gap: 5px;
   padding-bottom: 20px;
+  overflow: hidden;
 }
 
 button.first-button {

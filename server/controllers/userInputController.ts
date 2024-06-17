@@ -73,7 +73,7 @@ export const fetchUserInputList = async (req: Request, res: Response) => {
       .skip(skip)
       .limit(limit)
       .lean()
-      .select('input');
+      .select('title input');
 
     if (!userInputs.length) {
       return res.status(200).json({ userInputs: [] });

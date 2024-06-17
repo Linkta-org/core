@@ -64,8 +64,8 @@ UserInput Service [color: green, icon: settings]{
 
 // Generate LinktaFlow from UserInput Flow
 UserInput Authenticated User > Generate LinktaFlow From UserInput: POST /v1/inputs
-Generate LinktaFlow From UserInput <> Validate UserInput
-Generate LinktaFlow From UserInput > Create UserInput: validation passes
+Generate LinktaFlow From UserInput > Validation Middleware
+Validation Middleware > Create UserInput: validation passes
 Create UserInput > Database [color: blue, icon: database, shape: cylinder]
 Create UserInput  > Create LinktaFlow From Input: validation passes
 Create LinktaFlow From Input > Generate Initial Response
@@ -77,17 +77,20 @@ Create LinktaFlow From Input > Generate LinktaFlow From UserInput
 
 // Fetch Input History Flow
 UserInput Authenticated User > Fetch Input History: GET /v1/inputs
+Fetch Input History > Validation Middleware
 Fetch Input History > Find UserInputs by User ID
 Find UserInputs by User ID <> Database
 
 // Update UserInput Title
 UserInput Authenticated User > Update UserInput Title: PUT /v1/inputs/:userInputId
-Update UserInput Title > Update UserInput
+Update UserInput Title > Validation Middleware
+Validation Middleware > Update UserInput
 Update UserInput > Database
 
 // Delete UserInput
 UserInput Authenticated User > Delete UserInput: DELETE /v1/inputs/:userInputId
-Delete UserInput > Delete UserInput and Associated Data
+Delete UserInput > Validation Middleware
+Validation Middleware > Delete UserInput and Associated Data
 Delete UserInput and Associated Data > Database
 
 // LinktaFlow
@@ -107,19 +110,22 @@ LinktaFlow Service [color: yellow, icon: settings]{
 
 // Fetch LinktaFlow Flow
 LinktaFlow Authenticated User > Fetch LinktaFlow: GET /v1/flows/:linkaFlowId
-Fetch LinktaFlow > Find LinktaFlow by ID
+Fetch LinktaFlow > Validation Middleware
+Validation Middleware > Find LinktaFlow by ID
 Find LinktaFlow by ID > Database
 
 // Update LinktaFlow Flow
 LinktaFlow Authenticated User > Update LinktaFlow: PUT /v1/flows/:linkaFlowId
-Update LinktaFlow > Update LinktaFlow by ID
+Update LinktaFlow > Validation Middleware
+Validation Middleware > Update LinktaFlow by ID
 Update LinktaFlow by ID > Database
 
 // Save LinktaFlow As A Copy
 LinktaFlow Authenticated User > Save LinktaFlow As A Copy: /v1/flows/save-as
-Save LinktaFlow As A Copy > Create LinktaFlow From Object
+Save LinktaFlow As A Copy > Validation Middleware
+Validation Middleware > Create LinktaFlow From Object
 Create LinktaFlow From Object > Database
-Save LinktaFlow As A Copy > Create UserInput
+Validation Middleware > Create UserInput
 Create UserInput > Database
 
 // User Account and Settings
@@ -137,7 +143,8 @@ User Account and Settings Service [color: red, icon: settings]{
 
 // Update User Settings Flow
 User Account Authenticated User > Update User Settings: PUT /v1/users/settings
-Update User Settings > Update User Settings by User ID
+Update User Settings > Validation Middleware
+Validation Middleware > Update User Settings by User ID
 Update User Settings by User ID > Database
 
 // Delete User Account Flow
@@ -171,10 +178,7 @@ AI Service [color: orange, icon: settings] {
 }
 
 // Validation
-Validation Middleware [color: pink, icon: lock] {
-  Validate UserInput [icon: play-circle]
-  Validate LinktaFlow [icon: play-circle]
-}
+Validation Middleware [color: pink, icon: lock]
 
 // Connections from Client to other processes
 Client <> Firebase Auth: Retrieves Firebase ID token

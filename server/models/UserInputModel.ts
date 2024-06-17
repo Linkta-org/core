@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import type { UserInput } from '@/types/datamodels';
 import userInputSanitizationSchema from '@zod/sanitizeInput';
+import { formatZodErrorMessages } from '@utils/helpers';
 
 const userInputSchema = new Schema<UserInput>({
   userId: {
@@ -9,6 +10,10 @@ const userInputSchema = new Schema<UserInput>({
     required: true,
     index: true,
   },
+  title: {
+    type: String,
+    default: '',
+  },
   input: {
     type: String,
     required: true,
@@ -16,7 +21,10 @@ const userInputSchema = new Schema<UserInput>({
     minlength: 3,
     maxlength: 100,
   },
-  linktaFlows: [{ type: Schema.Types.ObjectId, ref: 'LinktaFlow' }],
+  linktaFlowId: {
+    type: Schema.Types.ObjectId,
+    ref: 'LinktaFlow',
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -28,11 +36,15 @@ userInputSchema.pre<UserInput>('save', async function (next) {
   });
 
   if (!result.success) {
-    const errors = result.error.errors.map((e) => e.message).join(',');
-    return next(new Error(`Sanitization failed: ${errors}`));
+    const errorMessage = formatZodErrorMessages(result.error);
+    return next(new Error(`Sanitization failed: ${errorMessage}`));
   }
 
   this.input = result.data.input;
+
+  if (!this.title) {
+    this.title = this.input;
+  }
   next();
 });
 

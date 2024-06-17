@@ -1,0 +1,28 @@
+.userInputHistory {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.userInputHistory__scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.userInputHistory__scrollable::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.userInputHistory__scrollable::-webkit-scrollbar-thumb {
+  background-color: rgba(238, 238, 238, 0.4);
+  border-radius: var(--border-radius-default);
+}
+
+.userInputHistory__heading {
+  padding: var(--padding-small) var(--padding-default);
+  width: 100%;
+}

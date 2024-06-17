@@ -42,7 +42,7 @@ const useInputHistory = (): UseInputHistoryResult => {
         ...curInputHistory,
       ]);
     } catch (error) {
-      console.error('Error fetching user inputs:', error);
+      // console.error('Error fetching user inputs:', error);
     } finally {
       setLoading(false);
     }

@@ -89,28 +89,28 @@ const UserInputList: React.FC<UserInputListProps> = ({
         onClose={handleMenuClose}
         onRename={() => {
           if (selectedUserInputId) {
-            console.log(
-              'Rename Event Handler Placeholder:',
-              selectedUserInputId
-            );
+            // console.log(
+            //   'Rename Event Handler Placeholder:',
+            //   selectedUserInputId
+            // );
           }
           handleMenuClose();
         }}
         onRegenerate={() => {
           if (selectedUserInputId) {
-            console.log(
-              'Regenerate Event Handler Placeholder:',
-              selectedUserInputId
-            );
+            // console.log(
+            //   'Regenerate Event Handler Placeholder:',
+            //   selectedUserInputId
+            // );
           }
           handleMenuClose();
         }}
         onDelete={() => {
           if (selectedUserInputId) {
-            console.log(
-              'Delete Event Handler Placeholder:',
-              selectedUserInputId
-            );
+            // console.log(
+            //   'Delete Event Handler Placeholder:',
+            //   selectedUserInputId
+            // );
           }
           handleMenuClose();
         }}

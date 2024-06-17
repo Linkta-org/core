@@ -50,7 +50,7 @@ function startServer() {
   }
 
   // eslint-disable-next-line no-console -- TODO: implement logging service to replace console.dir and remove this line to re-enable eslint
-  connectToDatabase(uri || "").catch(console.dir);
+  connectToDatabase(uri || '').catch(console.dir);
 
   app.use(bodyParser.json());
 
@@ -60,7 +60,7 @@ function startServer() {
    * Test route for the server. This should direct to the frontend.
    */
   app.get('/', (_: Request, res: Response) => {
-    logger.info('A GET request hit the server root endpoint')
+    logger.info('A GET request hit the server root endpoint');
     res.send({ message: 'Hello from the Backend!' });
   });
 
@@ -140,8 +140,9 @@ async function connectToDatabase(link: string) {
     logger.info(
       'Pinged your deployment. You successfully connected to MongoDB!'
     );
-    await mongoose.connect(uri ?? '')
-    .then(() => logger.info('MONGOOSE connected!'));
+    await mongoose
+      .connect(uri ?? '')
+      .then(() => logger.info('MONGOOSE connected!'));
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();

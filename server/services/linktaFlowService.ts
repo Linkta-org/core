@@ -3,31 +3,23 @@ import { createError } from '@/server/middleware/errorHandling';
 import type { Types } from 'mongoose';
 import User from '@server/models/UserModel';
 import UserInput from '@server/models/UserInputModel';
-import type IaiService from './aiService';
 import type { LinktaFlow as ILinktaFlow } from '@/server/types';
+import type createAIService from './aiService';
 
-class LinktaFlowService {
-  private aiService: IaiService;
+const createLinktaFlowService = (
 
-  /**
-   * Constructs a new LinktaFlowService instance.
-   * @param {IaiService} aiService - The AI service used to generate initial responses.
-   */
-  constructor(aiService: IaiService) {
-    this.aiService = aiService;
-  }
+  aiService: ReturnType<typeof createAIService>
+) => {
+  // Private services
+  const _aiService = aiService;
 
-  /**
-   * Public method: Creates a LinktaFlow from user input.
-   */
-  public async createLinktaFlowFromInput(
+  const createLinktaFlowFromInput = async (
     userId: Types.ObjectId,
     userInputId: Types.ObjectId,
     userInput: string
-  ): Promise<ILinktaFlow> {
+  ): Promise<ILinktaFlow> => {
     try {
-      const aiResponse =
-        await this.aiService.generateInitialResponse(userInput);
+      const aiResponse = await _aiService.generateInitialResponse(userInput);
 
       const parsedAiResponse = JSON.parse(aiResponse);
 
@@ -63,10 +55,11 @@ class LinktaFlowService {
       );
       throw methodError;
     }
-  }
-  public async deleteLinktaFlowByUserInputId(
+  };
+
+  const deleteLinktaFlowByUserInputId = async (
     userInputId: Types.ObjectId
-  ): Promise<ILinktaFlow | null> {
+  ): Promise<ILinktaFlow | null> => {
     try {
       const deletedLinktaFlow = await LinktaFlow.findOneAndDelete({
         userInputId,
@@ -82,7 +75,12 @@ class LinktaFlowService {
       );
       throw methodError;
     }
-  }
-}
+  };
 
-export default LinktaFlowService;
+  return {
+    createLinktaFlowFromInput,
+    deleteLinktaFlowByUserInputId,
+  };
+};
+
+export default createLinktaFlowService;

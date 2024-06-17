@@ -2,31 +2,19 @@ import type { NextFunction, Request, Response } from 'express';
 import { MOCK_USER_ID } from '@/server/mocks';
 import mongoose from 'mongoose';
 import { sanitizeUserInput } from '@/server/zod/UserInputSchemas';
-import type IUserInputService from '@/server/services/userInputService';
-import type ILinktaFlowService from '@/server/services/linktaFlowService';
 import { createError } from '@/server/middleware/errorHandling';
+import type createUserInputService from '@/server/services/userInputService';
+import type createLinktaFlowService from '@/server/services/linktaFlowService';
 
-class UserInputController {
-  private userInputService: IUserInputService;
-  private linktaFlowService: ILinktaFlowService;
+const createUserInputController = (
+  userInputService: ReturnType<typeof createUserInputService>,
+  linktaFlowService: ReturnType<typeof createLinktaFlowService>
+) => {
+  // Private services
+  const _userInputService = userInputService;
+  const _linktaFlowService = linktaFlowService;
 
-  /**
-   * Initializes the UserInputController with the necessary services.
-   * @param {IUserInputService} userInputService - Service to handle user input operations.
-   * @param {ILinktaFlowService} linktaFlowService - Service to handle LinktaFlow operations.
-   */
-  constructor(
-    userInputService: IUserInputService,
-    linktaFlowService: ILinktaFlowService
-  ) {
-    this.userInputService = userInputService;
-    this.linktaFlowService = linktaFlowService;
-  }
-
-  /**
-   * Public method: Generates a LinktaFlow from user input.
-   */
-  public generateLinktaFlowFromInput = async (
+  const generateLinktaFlowFromInput = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -55,17 +43,16 @@ class UserInputController {
 
       const sanitizedInput = sanitizeUserInput(userInput);
 
-      const newUserInput = await this.userInputService.createUserInput(
+      const newUserInput = await _userInputService.createUserInput(
         userObjectId,
         sanitizedInput
       );
 
-      const newLinktaFlow =
-        await this.linktaFlowService.createLinktaFlowFromInput(
-          userObjectId,
-          newUserInput._id,
-          sanitizedInput
-        );
+      const newLinktaFlow = await _linktaFlowService.createLinktaFlowFromInput(
+        userObjectId,
+        newUserInput._id,
+        sanitizedInput
+      );
 
       const { _id, userInputId, nodes, edges } = newLinktaFlow;
 
@@ -87,10 +74,8 @@ class UserInputController {
       return next(methodError);
     }
   };
-  /**
-   * Public method: Fetches the input history for a given user ID.
-   */
-  public fetchInputHistory = async (
+
+  const fetchInputHistory = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -121,7 +106,7 @@ class UserInputController {
       const userObjectId = new mongoose.Types.ObjectId(userId);
 
       // Fetch user inputs from the database with pagination and sorting (desc order)
-      const inputHistory = await this.userInputService.fetchInputHistory(
+      const inputHistory = await _userInputService.fetchInputHistory(
         userObjectId,
         page,
         limit
@@ -140,7 +125,7 @@ class UserInputController {
     }
   };
 
-  public updateInputTitle = async (
+  const updateInputTitle = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -169,7 +154,7 @@ class UserInputController {
 
       const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
 
-      await this.userInputService.updateInputTitle(userInputObjectId, title);
+      await _userInputService.updateInputTitle(userInputObjectId, title);
       res.locals.message = 'Input Title updated successfully.';
       next();
     } catch (error) {
@@ -183,7 +168,7 @@ class UserInputController {
     }
   };
 
-  public deleteUserInput = async (
+  const deleteUserInput = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -211,11 +196,9 @@ class UserInputController {
 
       const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
 
-      await this.userInputService.deleteUserInput(userInputObjectId);
+      await _userInputService.deleteUserInput(userInputObjectId);
 
-      await this.linktaFlowService.deleteLinktaFlowByUserInputId(
-        userInputObjectId
-      );
+      await _linktaFlowService.deleteLinktaFlowByUserInputId(userInputObjectId);
 
       res.locals.message = 'Input has been successfully deleted.';
       next();
@@ -229,6 +212,13 @@ class UserInputController {
       return next(methodError);
     }
   };
-}
 
-export default UserInputController;
+  return {
+    generateLinktaFlowFromInput,
+    fetchInputHistory,
+    updateInputTitle,
+    deleteUserInput,
+  };
+};
+
+export default createUserInputController;

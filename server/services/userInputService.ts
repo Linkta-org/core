@@ -3,14 +3,12 @@ import type { UserInput as IUserInput } from '@/server/types';
 import type { Types } from 'mongoose';
 import { createError } from '@/server/middleware/errorHandling';
 
-class UserInputService {
-  /**
-   * Public method: Creates a new user input and saves it to the database.
-   */
-  public async createUserInput(
+const createUserInputService = () => {
+  
+  const createUserInput = async (
     userId: Types.ObjectId,
     input: string
-  ): Promise<IUserInput> {
+  ): Promise<IUserInput> => {
     try {
       const newUserInput = new UserInput({ userId, input });
       await newUserInput.save();
@@ -24,13 +22,13 @@ class UserInputService {
       );
       throw methodError;
     }
-  }
+  };
 
-  public async fetchInputHistory(
+  const fetchInputHistory = async (
     userId: Types.ObjectId,
     page: number,
     limit: number
-  ): Promise<IUserInput[]> {
+  ): Promise<IUserInput[]> => {
     try {
       const skip = (page - 1) * limit;
 
@@ -51,12 +49,12 @@ class UserInputService {
       );
       throw methodError;
     }
-  }
+  };
 
-  public async updateInputTitle(
+  const updateInputTitle = async (
     userInputId: Types.ObjectId,
     newTitle: string
-  ): Promise<IUserInput> {
+  ): Promise<IUserInput> => {
     try {
       const updatedUserInput = await UserInput.findByIdAndUpdate(
         userInputId,
@@ -78,11 +76,11 @@ class UserInputService {
       );
       throw methodError;
     }
-  }
+  };
 
-  public async deleteUserInput(
+  const deleteUserInput = async (
     userInputId: Types.ObjectId
-  ): Promise<IUserInput | null> {
+  ): Promise<IUserInput | null> => {
     try {
       const userInput = await UserInput.findById(userInputId);
 
@@ -102,7 +100,14 @@ class UserInputService {
       );
       throw methodError;
     }
-  }
-}
+  };
 
-export default UserInputService;
+  return {
+    createUserInput,
+    fetchInputHistory,
+    updateInputTitle,
+    deleteUserInput,
+  };
+};
+
+export default createUserInputService;

@@ -2,8 +2,11 @@ import { startGeneration } from '@/server/models/GeminiModel';
 import { type Content } from '@google/generative-ai';
 import { createError } from '@/server/middleware/errorHandling';
 
-class AIService {
-  public async generateInitialResponse(userInput: string): Promise<string> {
+const createAIService = () => {
+  
+  const generateInitialResponse = async (
+    userInput: string
+  ): Promise<string> => {
     const history: Content[] = [];
     try {
       if (!userInput) {
@@ -23,7 +26,9 @@ class AIService {
       );
       throw methodError;
     }
-  }
-}
+  };
 
-export default AIService;
+  return { generateInitialResponse };
+};
+
+export default createAIService;

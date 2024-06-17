@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
-import UserInputController from '@server/controllers/userInputController';
-import UserInputService from '@/server/services/userInputService';
-import LinktaFlowService from '@/server/services/linktaFlowService';
-import AIService from '@/server/services/aiService';
+import createUserInputController from '@server/controllers/userInputController';
+import createUserInputService from '@/server/services/userInputService';
+import createLinktaFlowService from '@/server/services/linktaFlowService';
+import createAIService from '@/server/services/aiService';
 import validationMiddleware from '@/server/middleware/validationMiddleware';
 import {
   userInputIdSchema,
@@ -20,11 +20,11 @@ const router = Router();
  * - LinktaFlowService: Creates LinktaFlow data.
  * - UserInputController: Controls user input actions.
  */
-const aiService = new AIService();
-const userInputService = new UserInputService();
-const linktaFlowService = new LinktaFlowService(aiService);
+const aiService = createAIService();
+const userInputService = createUserInputService();
+const linktaFlowService = createLinktaFlowService(aiService);
 
-const userInputController = new UserInputController(
+const userInputController = createUserInputController(
   userInputService,
   linktaFlowService
 );
@@ -80,10 +80,10 @@ router.put(
 );
 
 /**
- * @route DELETE /v1/inputs/:userInputId
- * @description Deletes a specific user input and fetches the updated input history.
- * @returns {Object} 200 - { message, inputHistory }
- */
+@route DELETE /v1/inputs/:userInputId
+@description Deletes a specific user input and fetches the updated input history.
+@returns {Object} 200 - { message, inputHistory }
+*/
 router.delete(
   '/:userInputId',
   validationMiddleware(userInputIdSchema, 'params'),

@@ -4,6 +4,7 @@ import { ITEMS_PER_PAGE } from '@/client/components/layout/userInputConstants';
 
 interface UserInput {
   _id: string;
+  title: string;
   input: string;
 }
 

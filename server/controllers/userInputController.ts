@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
-import UserInput from '@server/models/UserInputModel';
-import { getLogger } from 'log4js';
+import UserInput from '@models/UserInputModel';
 import { MOCK_USER_ID } from '@/mocks';
+import log4js from 'log4js';
 
-const logger = getLogger('[Input Controller]');
+const logger = log4js.getLogger('[Input Controller]');
 
 // Middleware to store user input in the database
 export const storeUserInputDatabase = async (

@@ -125,9 +125,15 @@ const UserInputList: React.FC<UserInputListProps> = ({
               selectedUserInputId === userInput._id
             }
             onClose={handleMenuClose}
-            onRename={() => console.log('Rename:', userInput._id)}
-            onRegenerate={() => console.log('Regenerate:', userInput._id)}
-            onDelete={() => console.log('Delete:', userInput._id)}
+            onRename={() => {
+              // console.log('Rename:', userInput._id)
+            }}
+            onRegenerate={() => {
+              // console.log('Regenerate:', userInput._id)
+            }}
+            onDelete={() => {
+              // console.log('Delete:', userInput._id)
+            }}
           />
         </StyledListItemButton>
       ))}

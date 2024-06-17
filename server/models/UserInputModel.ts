@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import type { UserInput } from '@/server/types/datamodels';
-import userInputSanitizationSchema from '@/utils/sanitizeInput';
+import type { UserInput } from '@/types/datamodels';
+import userInputSanitizationSchema from '@zod/sanitizeInput';
 
 const userInputSchema = new Schema<UserInput>({
   userId: {

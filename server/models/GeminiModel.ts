@@ -1,4 +1,4 @@
-import { getEnv } from '@/server/utils/environment';
+import { getEnv } from '@utils/environment';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 import type {
@@ -77,8 +77,10 @@ export const startGeneration = async (
   const his = await chat.getHistory();
   const msgContent = { role: 'user', parts: [{ text: prompt }] };
   const contents = [...his, msgContent];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO: remove when logging service is implemented to use totalTokens
   const { totalTokens } = await model.countTokens({ contents });
-  console.log('totalToken:', totalTokens);
+  // TODO: implement logging service
+  // console.log('totalToken:', totalTokens);
 
   return result.response.text();
 };

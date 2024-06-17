@@ -1,4 +1,4 @@
-import type { MiddlewareError } from '@/server/types/errorHandling';
+import type { MiddlewareError } from '@/types/errorHandling';
 import type { Request, Response } from 'express';
 
 /**
@@ -26,8 +26,9 @@ export function createError(
       errorString = JSON.stringify(error, Object.getOwnPropertyNames(error));
       break;
     default:
-      console.error('Error type not handled in createError.');
-      console.error('Error type:', typeof error);
+    // TODO: implement logging service
+    // console.error('Error type not handled in createError.');
+    // console.error('Error type:', typeof error);
   }
 
   const errorMessage = `Error occured in ${controller}.${method}: ${errorString}`;

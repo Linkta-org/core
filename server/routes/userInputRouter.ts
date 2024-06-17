@@ -6,9 +6,9 @@ import {
 } from '@controllers/userInputController';
 import { generateInitialResponse } from '@controllers/genAiController';
 
-const router = Router();
+const userInputRouter = Router();
 
-router.post(
+userInputRouter.post(
   '/',
   storeUserInputDatabase,
   generateInitialResponse,
@@ -18,6 +18,6 @@ router.post(
 );
 
 // Route for fetching the list of user inputs.
-router.get('/', fetchUserInputList);
+userInputRouter.get('/', fetchUserInputList);
 
-export default router;
+export default userInputRouter;

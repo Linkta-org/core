@@ -8,7 +8,7 @@ type DrawerState = {
 
 const useDrawerStore = create<DrawerState>()(
   devtools((set) => ({
-    drawerOpen: false,
+    drawerOpen: true,
     setDrawerOpen: (open: boolean) => set({ drawerOpen: open }),
   }))
 );

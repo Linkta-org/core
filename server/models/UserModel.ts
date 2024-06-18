@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import type { User } from '@/server/types/datamodels';
+import type { User } from '@/types/datamodels';
 
 const userSchema = new Schema<User>({
   firstName: {

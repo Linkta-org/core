@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
-import { fetchInputHistoryFromApi } from '@/client/services/userInputService';
-import { ITEMS_PER_PAGE } from '@/client/components/layout/userInputConstants';
+import { fetchInputHistoryFromApi } from '@services/userInputService';
+import { ITEMS_PER_PAGE } from '@components/layout/userInputConstants';
 
 interface UserInput {
   _id: string;
@@ -42,7 +42,7 @@ const useInputHistory = (): UseInputHistoryResult => {
         ...curInputHistory,
       ]);
     } catch (error) {
-      console.error('Error fetching user inputs:', error);
+      // console.error('Error fetching user inputs:', error);
     } finally {
       setLoading(false);
     }

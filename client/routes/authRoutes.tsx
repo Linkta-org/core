@@ -1,11 +1,11 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
-import HelpAndFeedback from '@/client/features/help-and-feedback-page/HelpAndFeedbackPage';
-import Settings from '@/client/features/settings-page/Settings';
-import SignInPage from '@/client/features/auth-pages/SignInPage';
-import SignUpPage from '@/client/features/auth-pages/SignUpPage';
-import ForgotPasswordPage from '@/client/features/auth-pages/ForgotPasswordPage';
-import PasswordResetPage from '@/client/features/auth-pages/PasswordResetPage';
+import HelpAndFeedback from '@features/help-and-feedback-page/HelpAndFeedbackPage';
+import Settings from '@features/settings-page/Settings';
+import SignInPage from '@features/auth-pages/SignInPage';
+import SignUpPage from '@features/auth-pages/SignUpPage';
+import ForgotPasswordPage from '@features/auth-pages/ForgotPasswordPage';
+import PasswordResetPage from '@features/auth-pages/PasswordResetPage';
 
 //TODO: replace palceholders with components when ready
 const authRoutes: RouteObject[] = [

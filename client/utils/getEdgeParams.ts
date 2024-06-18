@@ -41,9 +41,10 @@ function getHandleCoordsByPosition(node: Node, handlePosition: Position) {
   );
 
   if (!handle) {
-    console.warn(
-      `Handle not found for position ${handlePosition}. Using node center as fallback.`
-    );
+    // TODO: implement logging service
+    // console.warn(
+    //   `Handle not found for position ${handlePosition}. Using node center as fallback.`
+    // );
     return [
       node.position.x + (node.width || 0) / 2,
       node.position.y + (node.height || 0) / 2,

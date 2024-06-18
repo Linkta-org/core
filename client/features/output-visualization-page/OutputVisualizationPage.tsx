@@ -1,5 +1,5 @@
 import React from 'react';
-import Flow from './components/Flow';
+import Flow from '@features/output-visualization-page/components/Flow';
 import { ReactFlowProvider } from 'reactflow';
 
 const OutputVisualizationPage = () => {

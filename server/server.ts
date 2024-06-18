@@ -1,27 +1,31 @@
 import express from 'express';
-import bodyParser from 'body-parser';
+import cors from 'cors';
+import log4js from 'log4js';
 import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import { getEnv } from '@server/utils/environment';
-import { getLogger, configure, isConfigured } from 'log4js';
+import { globalErrorHandler } from '@middleware/errorHandling';
+import linktaFlowRouter from '@routes/linktaFlowRouter';
+import log4jsConfig from '@/utils/log4js.config.json';
+import { getEnv } from '@utils/environment';
+import userInputRouter from '@routes/userInputRouter';
 import type { Express, Request, Response } from 'express';
 import type { Server } from 'http';
-import cors from 'cors';
-
-import log4jsConfig from '@server/utils/log4js.config.json';
-import { globalErrorHandler } from '@server/middleware/errorHandling';
-import userInput from './routes/userInput';
-import linktaFlowRouter from '@server/routes/linktaFlowRouter';
 
 getEnv();
-const uri = process.env.MONGO_DB_URI;
-mongoose.set('strictQuery', false);
 
+/**
+ * configure log4js and create an instance of logger
+ * see /controllers/userInputController for usage example
+ */
+const { getLogger, configure, isConfigured } = log4js;
 log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
 configure(log4jsConfig);
-
 const logger = getLogger('[Linkta Server]');
 isConfigured() && logger.info('Log4JS is configured!');
+
+const uri = process.env.MONGO_DB_URI;
+mongoose.set('strictQuery', false);
 
 const corsOptions = {
   origin: 'http://localhost:5173',
@@ -45,7 +49,8 @@ function startServer() {
     throw new Error('Missing DB connection string!');
   }
 
-  connectToDatabase(uri).catch(console.dir);
+  // eslint-disable-next-line no-console -- TODO: implement logging service to replace console.dir and remove this line to re-enable eslint
+  connectToDatabase(uri || '').catch(console.dir);
 
   app.use(bodyParser.json());
 
@@ -55,6 +60,7 @@ function startServer() {
    * Test route for the server. This should direct to the frontend.
    */
   app.get('/', (_: Request, res: Response) => {
+    logger.info('A GET request hit the server root endpoint');
     res.send({ message: 'Hello from the Backend!' });
   });
 
@@ -62,7 +68,7 @@ function startServer() {
    * Routes.
    */
 
-  app.use('/v1/inputs', userInput);
+  app.use('/v1/inputs', userInputRouter);
   app.use('/v1/flows', linktaFlowRouter);
 
   /**
@@ -82,7 +88,7 @@ function startServer() {
    * Start the server.
    */
   const server: Server = app.listen(PORT, () => {
-    console.log(
+    logger.info(
       `Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`
     );
   });
@@ -104,7 +110,7 @@ function startServer() {
  */
 function stopServer(server: Server) {
   server.close(() => {
-    console.log('Server stopped.');
+    logger.warn('Server stopped.');
 
     // disconnect from the database
 
@@ -131,12 +137,12 @@ async function connectToDatabase(link: string) {
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
-    console.log(
+    logger.info(
       'Pinged your deployment. You successfully connected to MongoDB!'
     );
     await mongoose
       .connect(uri ?? '')
-      .then(() => console.log('MONGOOSE connected!'));
+      .then(() => logger.info('MONGOOSE connected!'));
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();

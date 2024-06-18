@@ -1,0 +1,29 @@
+# This workflow checks for linting and formatting errors in all client and server files on 
+# pull request to dev branch. If errors are found, it will fail.
+
+name: Linting Workflow
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  lint-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Lint Client
+        uses: ./.github/actions/lint
+        with:
+          node-version: '20.11.1' # The original node version of the project
+          directory: './client'
+      - name: Lint Server
+        uses: ./.github/actions/lint
+        with:
+          node-version: '20.11.1' # The original node version of the project
+          directory: './server'

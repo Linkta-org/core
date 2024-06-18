@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import type { LinktaFlow } from '@/server/types/datamodels';
+import type { LinktaFlow } from '@/types/datamodels';
 import type { Node, Edge } from 'reactflow';
 
 // Define the Node schema

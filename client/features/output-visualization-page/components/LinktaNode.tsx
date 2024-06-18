@@ -2,7 +2,7 @@ import React, { useState, memo } from 'react';
 import type { NodeProps } from 'reactflow';
 import { Handle, Position } from 'reactflow';
 import { Box, TextField } from '@mui/material';
-import '@/client/styles/react-flow.css';
+import '@styles/react-flow.css';
 
 type LinktaNodeData = {
   color?: string | undefined;

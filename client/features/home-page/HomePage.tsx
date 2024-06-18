@@ -1,7 +1,7 @@
 import React from 'react';
-import HomePageMainHero from './components/HomePageMainHero';
-import HomePageTreeVisualizationPanel from './components/HomePageTreeVisualizationPanel';
-import useDocumentTitle from '@/client/hooks/useDocumentTitle';
+import HomePageMainHero from '@features/home-page/components/HomePageMainHero';
+import HomePageTreeVisualizationPanel from '@features/home-page/components/HomePageTreeVisualizationPanel';
+import useDocumentTitle from '@hooks/useDocumentTitle';
 
 const HomePage = () => {
   useDocumentTitle();

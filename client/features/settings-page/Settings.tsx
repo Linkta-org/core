@@ -1,5 +1,5 @@
 import React from 'react';
-import useDocumentTitle from '@/client/hooks/useDocumentTitle';
+import useDocumentTitle from '@hooks/useDocumentTitle';
 
 const Settings = () => {
   useDocumentTitle('Settings');

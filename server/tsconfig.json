@@ -1,21 +1,30 @@
 {
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
-    "lib": ["DOM"],
-    "target": "ES2021" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "module": "NodeNext" /* Specify what module code is generated. */,
+    "target": "ES6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "ESNext" /* Specify what module code is generated. */,
     "rootDirs": [
-      "client",
-      "server"
+      "./",
+      "./controllers",
+      "./middleware",
+      "./mocks",
+      "./models",
+      "./routes",
+      "./types",
+      "./utils",
+      "./zod"
     ] /* Specify the root folder within your source files. */,
-    "jsx": "react",
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
       "@/*": ["*"],
-      "@client/*": ["client/*"],
-      "@server/*": ["server/*"],
-      "@test/*": ["test/*"],
-      "@config/*": ["config/*"]
+      "@controllers/*": ["controllers/*"],
+      "@middleware/*": ["middleware/*"],
+      "@mocks/*": ["mocks/*"],
+      "@models/*": ["models/*"],
+      "@routes/*": ["routes/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"],
+      "@zod/*": ["zod/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
@@ -28,16 +37,21 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
-    // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
+    "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "moduleResolution": "Node10"
   },
   "include": [
-    "client/**/*",
-    "server/**/*",
-    "test/**/*",
+    "./**/*",
+    "controllers/**/*",
+    "middleware/**/*",
+    "mocks/**/*",
+    "models/**/*",
+    "routes/**/*",
+    "types/**/*",
     "utils/**/*",
-    "mocks/**/*"
+    "zod/**/*"
   ],
   "exclude": ["dist", "node_modules"],
   "ts-node": {

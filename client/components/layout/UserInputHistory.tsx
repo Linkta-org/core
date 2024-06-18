@@ -2,11 +2,10 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
-
 import { ITEMS_PER_PAGE } from './userInputConstants';
-import styles from '@client/styles/layout/UserInputHistory.module.css';
+import styles from '@styles/layout/UserInputHistory.module.css';
 import SkeletonList from './SkeletonList';
-import useInputHistory from '@/client/hooks/useInputHistory';
+import useInputHistory from '@hooks/useInputHistory';
 
 const UserInputHistory: React.FC = () => {
   const { inputHistory, loading, handleShowMore, handleShowLess, page } =

@@ -3,13 +3,13 @@ import type { Request, Response } from 'express';
 import {
   fetchUserInputList,
   storeUserInputDatabase,
-} from '@server/controllers/userInputController';
-import { generateInitialResponse } from '@/server/controllers/genAiController';
-import validationMiddleware from '@/server/middleware/validationMiddleware';
-import userInputValidationSchema from '@/utils/zodSchema/userInputValidation';
-const router = Router();
+} from '@controllers/userInputController';
+import { generateInitialResponse } from '@controllers/genAiController';
+import validationMiddleware from '@middleware/validationMiddleware';
+import userInputValidationSchema from '@zod/userInputValidation';
+const userInputRouter = Router();
 // TODO: to add additional validation to headers/params
-router.post(
+userInputRouter.post(
   '/',
   validationMiddleware(userInputValidationSchema, 'body'),
   storeUserInputDatabase,
@@ -20,6 +20,6 @@ router.post(
 );
 
 // Route for fetching the list of user inputs.
-router.get('/', fetchUserInputList);
+userInputRouter.get('/', fetchUserInputList);
 
-export default router;
+export default userInputRouter;

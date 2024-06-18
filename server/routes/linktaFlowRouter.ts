@@ -4,7 +4,7 @@ import {
   fetchLinktaFlow,
   updateLinktaFlow,
   deleteLinktaFlow,
-} from '@/server/controllers/linktaFlowController';
+} from '@controllers/linktaFlowController';
 // TODO: to add validation
 const router = Router();
 

@@ -1,4 +1,4 @@
-import { axiosClient } from '@/client/config/axios';
+import { axiosClient } from '@config/axios';
 import { MOCK_USER_ID } from '@/mocks';
 
 export const fetchInputHistoryFromApi = async (
@@ -16,7 +16,8 @@ export const fetchInputHistoryFromApi = async (
     });
     return response.data.userInputs || [];
   } catch (error) {
-    console.error('Error fetching user inputs:', error);
+    // TODO: implement logging service
+    // console.error('Error fetching user inputs:', error);
     return [];
   }
 };

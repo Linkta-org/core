@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { MOCK_USER_ID } from '@/mocks';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import userInputValidationSchema from '@/utils/zodSchema/userInputValidation';
+import userInputValidationSchema from '@zod/userInputValidation';
 
 interface UserInputPayload {
   input: string;
@@ -98,13 +98,16 @@ const PromptInputForm = () => {
       );
       return response.data;
     },
-    onSuccess: (data) => {
-      console.log('UserInput sent successfully', data);
+    // TODO: underscore added to var to signal to eslint that it is intentionally unused for now. Remove when variable is properly used.
+    onSuccess: (_data) => {
+      // console.log('UserInput sent successfully', _data);
       reset();
       navigate('/output');
     },
-    onError: (error) => {
-      console.error('Error sending prompt: ', error);
+    // TODO: underscore added to var to signal to eslint that it is intentionally unused for now. Remove when variable is properly used.
+    onError: (_error) => {
+      // TODO: implement logging service
+      // console.error('Error sending prompt: ', _error);
     },
   });
 

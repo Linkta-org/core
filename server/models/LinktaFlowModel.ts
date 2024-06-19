@@ -4,10 +4,10 @@ import type { Node, Edge } from 'reactflow';
 
 // Define the Node schema
 const nodeSchema = new Schema<Node>({
-  type: { type: String, required: true },
+  type: { type: String },
   position: {
-    x: { type: Number, required: true },
-    y: { type: Number, required: true },
+    x: { type: Number },
+    y: { type: Number },
   },
   data: {
     label: { type: String, required: true },

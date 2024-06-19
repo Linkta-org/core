@@ -11,7 +11,7 @@ const UserInputHistory: React.FC = () => {
   const { inputHistory, loading, handleShowMore, handleShowLess, page } =
     useInputHistory();
   const visibleItems = page * ITEMS_PER_PAGE;
-console.log('inputHistory:', inputHistory);
+
   return (
     <Box className={styles.userInputHistory}>
       <Typography

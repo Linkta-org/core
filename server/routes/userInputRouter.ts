@@ -52,7 +52,7 @@ router.get(
   '/',
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
-    return res.status(200).json({inputHistory: res.locals.inputHistory});
+    return res.status(200).json({ inputHistory: res.locals.inputHistory });
   }
 );
 

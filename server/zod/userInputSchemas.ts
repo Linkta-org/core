@@ -57,5 +57,5 @@ export const userInputIdSchema = z.object({
     .string()
     .refine((val) => mongoose.Types.ObjectId.isValid(val), {
       message: 'Invalid input ID',
-    })
+    }),
 });

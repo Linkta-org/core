@@ -21,12 +21,14 @@ Fixes # (issue)
 - [ ] 📝 Documentation update
 - [ ] Other 🗒️ ______________
 
-## How Has This Been Tested?
+## How Can this be tested? Testing Plan to review this PR
 
-<!--Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. Remove if not applicable. -->
+<!--Please provide a short testing plan for PR reviewers to verify the changes you made actually work and that no new bugs or errors are introduced. Provide simple and specific steps the reviewer can follow to test the changes you made.-->
 
-- [ ] Test A
-- [ ] Test B
+- [ ] Where in the app does this change take place?
+- [ ] What are the steps to test this change?
+- [ ] What is the expected output?
+
 
 ## Checklist:
 

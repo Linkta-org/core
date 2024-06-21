@@ -1,19 +1,42 @@
 import { Router } from 'express';
-import {
-  fetchLinktaFlows,
-  fetchLinktaFlow,
-  updateLinktaFlow,
-  deleteLinktaFlow,
-} from '@controllers/linktaFlowController';
-// TODO: to add validation
+import type { Request, Response } from 'express';
+import createLinktaFlowController from '@/controllers/linktaFlowController';
+import createLinktaFlowService from '@/services/linktaFlowService';
+
 const router = Router();
 
-router.get('/', fetchLinktaFlows);
+// Instantiate the services
+const linktaFlowService = createLinktaFlowService();
 
-router.get('/:linktaFlowId', fetchLinktaFlow);
+// Instantiate the controller with the services
+const linktaFlowController = createLinktaFlowController(linktaFlowService);
 
-router.put('/:linktaFlowId', updateLinktaFlow);
+/**
+ * @route GET /v1/flows/:userInputId
+ * @description Fetch a specific LinktaFlow by userInputId.
+ * @returns {Object} 200 - linktaFlow
+ */
+router.get(
+  '/:userInputId',
+  linktaFlowController.fetchLinktaFlow,
+  (_: Request, res: Response) => {
+    return res.status(200).json({ linktaFlow: res.locals.linktaFlow });
+  }
+);
 
-router.delete('/:linktaFlowId', deleteLinktaFlow);
+/**
+ * @route PUT /v1/flows/:linktaFlowId
+ * @description Update a specific LinktaFlow.
+ * @returns {Object} 200 - message
+ */
+router.put(
+  '/:linktaFlowId',
+  linktaFlowController.updateLinktaFlow,
+  (_: Request, res: Response) => {
+    return res.status(200).json({
+      message: res.locals.message,
+    });
+  }
+);
 
 export default router;

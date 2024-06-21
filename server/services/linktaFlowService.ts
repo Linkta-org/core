@@ -1,8 +1,7 @@
 import LinktaFlowModel from '@/models/LinktaFlowModel';
 import { createError } from '@/middleware/errorHandling';
 import type { Types } from 'mongoose';
-import User from '@/models/UserModel';
-import UserInput from '@/models/UserInputModel';
+import UserInputModel from '@/models/UserInputModel';
 import type { LinktaFlow } from '@/types';
 import type { Node, Edge } from 'reactflow';
 
@@ -31,13 +30,8 @@ const createLinktaFlowService = () => {
       // Create LinktaFlow in DB
       const newLinktaFlow = await LinktaFlowModel.create(linktaFlowData);
 
-      // Update user's linktaFlows array
-      await User.findByIdAndUpdate(userId, {
-        $push: { linktaFlows: newLinktaFlow._id },
-      });
-
       // Update userInput with the corresponding linktaFlowId
-      await UserInput.findByIdAndUpdate(userInputId, {
+      await UserInputModel.findByIdAndUpdate(userInputId, {
         $set: { linktaFlowId: newLinktaFlow._id },
       });
 
@@ -77,9 +71,70 @@ const createLinktaFlowService = () => {
     }
   };
 
+  /**
+   * Fetches a Linkta flow by user input ID.
+   */
+  const fetchLinktaFlow = async (
+    userInputId: Types.ObjectId
+  ): Promise<LinktaFlow | null> => {
+    try {
+      const linktaFlow = await LinktaFlowModel.findOne({
+        userInputId,
+      });
+
+      if (!linktaFlow) {
+        throw new Error(
+          'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.'
+        );
+      }
+
+      return linktaFlow;
+    } catch (error) {
+      throw createError(
+        'fetchLinktaFlow',
+        'LinktaFlowService',
+        'Error fetching LinktaFlow',
+        error
+      );
+    }
+  };
+
+  /**
+   * Updates a Linkta flow by its ID.
+   */
+  const updateLinktaFlow = async (
+    linktaFlowId: Types.ObjectId,
+    updatedLinktaFlow: Partial<LinktaFlow>
+  ): Promise<LinktaFlow | null> => {
+    try {
+      const linktaFlow = await LinktaFlowModel.findByIdAndUpdate(
+        linktaFlowId,
+        updatedLinktaFlow,
+        { new: true }
+      );
+
+      if (!linktaFlow) {
+        throw new Error(
+          'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.'
+        );
+      }
+
+      return linktaFlow;
+    } catch (error) {
+      throw createError(
+        'updateLinktaFlow',
+        'LinktaFlowService',
+        'Error updating LinktaFlow',
+        error
+      );
+    }
+  };
+
   return {
     createLinktaFlow,
     deleteLinktaFlowByUserInputId,
+    fetchLinktaFlow,
+    updateLinktaFlow,
   };
 };
 

@@ -1,90 +1,203 @@
-import type { Request, Response, NextFunction } from 'express';
-import UserInput from '@models/UserInputModel';
+import type { NextFunction, Request, Response } from 'express';
 import { MOCK_USER_ID } from '@/mocks';
+import mongoose from 'mongoose';
+import { createError } from '@/middleware/errorHandling';
+import type createUserInputService from '@/services/userInputService';
+import type createLinktaFlowService from '@/services/linktaFlowService';
+import type createAIService from '@/services/aiService';
 import log4js from 'log4js';
 
 const logger = log4js.getLogger('[Input Controller]');
 
-// Middleware to store user input in the database
-export const storeUserInputDatabase = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
+/**
+ * Creates user input controller with the provided services.
+ *
+ * @param {ReturnType<typeof createUserInputService>} userInputService - Service to handle user inputs.
+ * @param {ReturnType<typeof createLinktaFlowService>} linktaFlowService - Service to handle Linkta flows.
+ * @param {ReturnType<typeof createAIService>} aiService - Service to handle AI interactions.
+ * @returns {object} User input controller.
+ */
+const createUserInputController = (
+  userInputService: ReturnType<typeof createUserInputService>,
+  linktaFlowService: ReturnType<typeof createLinktaFlowService>,
+  aiService: ReturnType<typeof createAIService>
 ) => {
-  try {
-    const userInput = req.body.input;
+  // Private services
+  const privateUserInputService = userInputService;
+  const privateLinktaFlowService = linktaFlowService;
+  const privateAIService = aiService;
 
-    if (!userInput || typeof userInput !== 'string') {
-      return res.status(400).json({ error: 'Invalid user input' });
-    }
+  /**
+   * Generates a Linkta flow from user input.
+   */
+  const generateLinktaFlowFromInput = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      // TODO: replace with auth middleware
+      const userId = MOCK_USER_ID;
 
-    // Retrieve the user ID from the request headers or use a mock ID in non-production environments
-    const userId =
-      process.env.NODE_ENV === 'production'
-        ? req.headers['x-user-id'] || req.headers['x-user-id']
-        : MOCK_USER_ID;
+      const userInput = req.body.input;
 
-    if (!userId) {
-      logger.warn('Unauthorized access attempt without a user ID.');
-      res.status(401).json({
-        message:
-          'You need to log in to access this resource. Please ensure you are logged in and try again.',
-      });
-      return;
-    }
+      // convert userId string to object id
+      const userObjectId = new mongoose.Types.ObjectId(userId);
 
-    // Store the user input in the database
-    const newUserInput = new UserInput({ userId: userId, input: userInput });
-    await newUserInput.save();
+      // Create a new user input document in DB
+      const newUserInput = await privateUserInputService.createUserInput(
+        userObjectId,
+        userInput
+      );
 
-    return next();
-  } catch (error) {
-    logger.error('Error storing user input:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+      // Generate initial response from AI service based on user input
+      const aiResponse =
+        await privateAIService.generateInitialResponse(userInput);
+      const parsedAiResponse = JSON.parse(aiResponse);
 
-// Middleware to fetch the list of user inputs for a given user ID.
-export const fetchUserInputList = async (req: Request, res: Response) => {
-  try {
-    // Retrieve the user ID from the request headers or use a mock ID in non-production environments
-    const userId =
-      process.env.NODE_ENV === 'development'
-        ? req.headers['x-user-id'] || MOCK_USER_ID
-        : req.headers['x-user-id'];
+      // Create a new Linkta flow based on AI response
+      const newLinktaFlow = await privateLinktaFlowService.createLinktaFlow(
+        userObjectId,
+        newUserInput._id,
+        parsedAiResponse.nodes,
+        parsedAiResponse.edges
+      );
 
-    if (!userId) {
-      logger.warn('Unauthorized access attempt without a user ID.');
-      res.status(401).json({
-        message:
-          'You need to log in to access this resource. Please ensure you are logged in and try again.',
-      });
-      return;
-    }
+      const { _id, userInputId, nodes, edges } = newLinktaFlow;
 
-    // Parse pagination parameters from the query string with default values
-    const page = parseInt(req.query.page as string, 10) || 1;
-    const limit = parseInt(req.query.limit as string, 10) || 10;
-    const skip = (page - 1) * limit;
+      // Store the new Linkta flow in response local variables
+      res.locals.linktaFlow = {
+        _id,
+        userInputId,
+        nodes,
+        edges,
+      };
 
-    // Fetch user inputs from the database with pagination and sorting (desc order)
-    const userInputs = await UserInput.find({ userId })
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean()
-      .select('title input');
+      next();
+    } catch (error) {
+      logger.error('Error generating Linkta flow from user input', error);
 
-    if (!userInputs.length) {
-      return res.status(200).json({ userInputs: [] });
-    }
-
-    return res.status(200).json({ userInputs });
-  } catch (error) {
-    logger.error('Error fetching user inputs:', error);
-    res.status(500).json({
-      message:
+      const methodError = createError(
+        'generateLinktaFlowFromInput',
+        'UserInputController',
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-    });
-  }
+        error
+      );
+      return next(methodError);
+    }
+  };
+
+  /**
+   * Fetches input history for the user.
+   */
+  const fetchInputHistory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      // TODO: replace with auth middleware
+      const userId = MOCK_USER_ID;
+
+      // Parse pagination parameters from the query string with default values
+      const page = parseInt(req.query.page as string, 10) || 1;
+      const limit = parseInt(req.query.limit as string, 10) || 10;
+
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+
+      // Fetch user inputs from the database with pagination and sorting (desc order)
+      const inputHistory = await privateUserInputService.fetchInputHistory(
+        userObjectId,
+        page,
+        limit
+      );
+
+      res.locals.inputHistory = inputHistory;
+      next();
+    } catch (error) {
+      logger.error('Error fetching input history for user', error);
+
+      const methodError = createError(
+        'fetchInputHistory',
+        'UserInputController',
+        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
+        error
+      );
+      return next(methodError);
+    }
+  };
+
+  /**
+   * Updates the title of a user input.
+   */
+  const updateInputTitle = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { title } = req.body;
+      const { userInputId } = req.params;
+
+      const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
+
+      await privateUserInputService.updateInputTitle(userInputObjectId, title);
+      res.locals.message = 'Input Title updated successfully.';
+      next();
+    } catch (error) {
+      logger.error('Error updating user input title', error);
+      const methodError = createError(
+        'updateInputTitle',
+        'UserInputController',
+        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
+        error
+      );
+      return next(methodError);
+    }
+  };
+
+  /**
+   * Deletes a user input and associated Linkta flow.
+   */
+  const deleteUserInput = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { userInputId } = req.params;
+
+      const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
+
+      await privateUserInputService.deleteUserInput(userInputObjectId);
+
+      await privateLinktaFlowService.deleteLinktaFlowByUserInputId(
+        userInputObjectId
+      );
+
+      res.locals.message = 'Input has been successfully deleted.';
+      next();
+    } catch (error) {
+      logger.error(
+        'Error deleting user input and associated Linkta flow',
+        error
+      );
+      const methodError = createError(
+        'deleteUserInput',
+        'UserInputController',
+        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
+        error
+      );
+      return next(methodError);
+    }
+  };
+
+  return {
+    generateLinktaFlowFromInput,
+    fetchInputHistory,
+    updateInputTitle,
+    deleteUserInput,
+  };
 };
+
+export default createUserInputController;

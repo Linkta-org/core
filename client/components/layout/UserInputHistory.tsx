@@ -2,15 +2,21 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
-import { ITEMS_PER_PAGE } from './userInputConstants';
+import { ITEMS_PER_PAGE } from '@utils/constants';
 import styles from '@styles/layout/UserInputHistory.module.css';
 import SkeletonList from './SkeletonList';
 import useInputHistory from '@hooks/useInputHistory';
 
 const UserInputHistory: React.FC = () => {
-  const { inputHistory, loading, handleShowMore, handleShowLess, page } =
-    useInputHistory();
-  const visibleItems = page * ITEMS_PER_PAGE;
+  const {
+    inputHistory,
+    loading,
+    handleShowMore,
+    handleShowLess,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInputHistory();
+  const visibleItems = inputHistory.length;
 
   return (
     <Box className={styles.userInputHistory}>
@@ -27,7 +33,7 @@ const UserInputHistory: React.FC = () => {
         role="region"
         className={styles.userInputHistory__scrollable}
       >
-        {loading ? (
+        {loading && !isFetchingNextPage ? (
           <SkeletonList length={ITEMS_PER_PAGE} />
         ) : (
           <>
@@ -39,7 +45,8 @@ const UserInputHistory: React.FC = () => {
               handleShowMore={handleShowMore}
               handleShowLess={handleShowLess}
               visibleItems={visibleItems}
-              totalItems={inputHistory.length}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
             />
           </>
         )}

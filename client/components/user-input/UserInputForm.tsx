@@ -23,17 +23,18 @@ interface UserInputPayload {
 }
 
 const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
-  width: 700,
+  maxWidth: 700,
+  minWidth: 200,
   color: theme.palette.secondary.main,
   '& .MuiOutlinedInput-root': {
-    borderRadius: '20px',
+    borderRadius: '10px',
     '& fieldset': {
       borderColor: theme.palette.secondary.main,
-      borderRadius: '20px',
+      borderRadius: '10px',
     },
     '& input': {
       backgroundColor: theme.palette.grey[400],
-      borderRadius: '20px',
+      borderRadius: '10px',
       color: 'black',
     },
   },
@@ -45,7 +46,6 @@ const GenerateButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: 'black',
   backgroundColor: theme.palette.secondary.main,
   borderRadius: 20,
-  textTransform: 'none',
 }));
 
 const UserInputCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -161,7 +161,7 @@ const UserInputForm = () => {
           <GenerateButton
             type="submit"
             disabled={isSubmitted || !control._formValues.isChecked}
-            sx={{ alignSelf: 'center' }}
+            sx={{ alignSelf: 'center', mt: 8 }}
           >
             Generate
           </GenerateButton>

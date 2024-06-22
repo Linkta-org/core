@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
-import React from 'react';
+import React, { MouseEvent } from 'react';
+import styles from '@styles/UserInputView.module.css';
 
 
 interface PopularTopicsProps {
@@ -16,23 +17,29 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
     'Systems Design'
   ];
 
-  const handleClickTopic = (e: any) => {
-    console.log(e);
+  const handleClickTopic = (e: MouseEvent, index: number) => {
+    console.log(index, e.target);
   }
 
 
   return (
     <>
-      <Box className='popular-topics'>
-        <Typography className='topics-header'>Popular Topics</Typography>
+      <Box className={`${styles.popularTopics} popular-topics`}>
+        <Typography
+          variant='h6'
+          className={`${styles.topicsHeader} topics-header`}
+          >
+            Popular Topics
+        </Typography>
         {
           topicsList.map((topic, i) => {
             return <Button
-              className='topic-button'
+              variant='outlined'
+              className={`${styles.topicsButton} topics-button`}
               key={`topic-button-${i}`}
-              onClick={handleClickTopic}
+              onClick={(e) => handleClickTopic(e, i)}
               >
-                <Typography className='topic-data' id={`topic-${i}`}>{topic}</Typography>
+                <Typography variant='body1' color='textPrimary' className='topic-data' id={`topic-${i}`}>{topic}</Typography>
               </Button>
           })
         }

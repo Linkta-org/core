@@ -23,7 +23,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const [menuAnchorElement, setMenuAnchorElement] =
     useState<null | HTMLElement>(null);
   const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
-    null
+    null,
   );
   const { drawerOpen } = useDrawerStore();
   const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
@@ -33,7 +33,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
       setMenuAnchorElement(event.currentTarget);
       setSelectedUserInputId(id);
     },
-    []
+    [],
   );
 
   const handleMenuClose = useCallback(() => {
@@ -52,7 +52,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
     <>
       <List
         className={styles.userInputList}
-        role="list"
+        role='list'
       >
         {inputHistory.slice(0, visibleItems).map((userInput, index) => {
           const uniqueId = `${userInput._id}-${index}`;
@@ -61,7 +61,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
               id={uniqueId}
               key={uniqueId}
               onClick={(event) => handleItemClick(event, uniqueId)}
-              role="listitem"
+              role='listitem'
               aria-labelledby={`user-input-${userInput._id}`}
               className={`${styles.userInputList__itemButton} ${
                 selectedUserInputId === uniqueId
@@ -71,7 +71,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
             >
               <ListItemText
                 primary={
-                  <Typography variant="caption">{userInput.input}</Typography>
+                  <Typography variant='caption'>{userInput.input}</Typography>
                 }
                 id={`user-input-${userInput._id}`}
                 aria-label={`Details for ${userInput.title}`}

@@ -1,0 +1,19 @@
+#npm run text 
+
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run TypeScript compiler in noEmit mode to check for errors in client and server
+npx --prefix ./client tsc --noEmit --project ./client/tsconfig.json
+CLIENT_TSC=$?
+
+npx --prefix ./server tsc --noEmit --project ./server/tsconfig.json
+SERVER_TSC=$?
+
+if [ $CLIENT_TSC -ne 0 ] || [ $SERVER_TSC -ne 0 ]; then
+  echo "TypeScript errors detected. Commit aborted."
+  exit 1
+fi
+
+# If tsc passes, then run lint-staged
+npx lint-staged

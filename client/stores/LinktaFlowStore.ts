@@ -13,7 +13,7 @@ const useLinktaFlowStore = create<LinktaFlowStore>()(
     currentLinktaFlow: undefined,
     getCurrentFlow: () => get().currentLinktaFlow,
     setCurrentFlow: (flow) => set({ currentLinktaFlow: flow }),
-  }))
+  })),
 );
 
 export default useLinktaFlowStore;

@@ -66,19 +66,19 @@ const model = genAI.getGenerativeModel({
  */
 export const startGeneration = async (
   history: Content[],
-  prompt: string
+  prompt: string,
 ): Promise<string> => {
   if (!model) {
     throw new Error('Model not found');
   }
   const chat = model.startChat({ history });
   const result = await chat.sendMessage(prompt);
-  //count tokens
-  const his = await chat.getHistory();
-  const msgContent = { role: 'user', parts: [{ text: prompt }] };
-  const contents = [...his, msgContent];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO: remove when logging service is implemented to use totalTokens
-  const { totalTokens } = await model.countTokens({ contents });
+  // //count tokens
+  // const his = await chat.getHistory();
+  // const msgContent = { role: 'user', parts: [{ text: prompt }] };
+  // const contents = [...his, msgContent];
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO: remove when logging service is implemented to use totalTokens
+  // const { totalTokens } = await model.countTokens({ contents });
   // TODO: implement logging service
   // console.log('totalToken:', totalTokens);
 

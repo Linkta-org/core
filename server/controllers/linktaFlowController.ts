@@ -9,7 +9,7 @@ import { MOCK_USER_ID } from '@/mocks';
 export const fetchLinktaFlows = async (
   _req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!MOCK_USER_ID)
@@ -24,7 +24,7 @@ export const fetchLinktaFlows = async (
       'fetchLinktaFlows',
       'linktaFlowController',
       'Failed to fetch LinktaFlows',
-      err
+      err,
     );
     return next(error);
   }
@@ -34,7 +34,7 @@ export const fetchLinktaFlows = async (
 export const fetchLinktaFlow = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!MOCK_USER_ID)
@@ -43,7 +43,7 @@ export const fetchLinktaFlow = async (
           'You need to log in to access this resource. Please ensure you are logged in and try again.',
       });
     const linktaFlow = await LinktaFlow.findById(
-      req.params.linktaFlowId
+      req.params.linktaFlowId,
     ).populate('nodes edges');
     if (!linktaFlow)
       return res.status(404).json({
@@ -56,7 +56,7 @@ export const fetchLinktaFlow = async (
       'fetchLinktaFlow',
       'linktaFlowController',
       'Failed to fetch LinktaFlow',
-      err
+      err,
     );
     return next(error);
   }
@@ -66,7 +66,7 @@ export const fetchLinktaFlow = async (
 export const updateLinktaFlow = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!MOCK_USER_ID)
@@ -77,7 +77,7 @@ export const updateLinktaFlow = async (
     const updatedLinktaFlow = await LinktaFlow.findByIdAndUpdate(
       req.params.linktaFlowId,
       req.body.updatedLinktaFlow,
-      { new: true }
+      { new: true },
     );
     if (!updatedLinktaFlow)
       return res.status(404).json({
@@ -97,7 +97,7 @@ export const updateLinktaFlow = async (
       'updateLinktaFlow',
       'linktaFlowController',
       'Failed to update LinktaFlow',
-      err
+      err,
     );
     return next(error);
   }
@@ -107,7 +107,7 @@ export const updateLinktaFlow = async (
 export const deleteLinktaFlow = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!MOCK_USER_ID)
@@ -135,7 +135,7 @@ export const deleteLinktaFlow = async (
       'deleteLinktaFlow',
       'linktaFlowController',
       'Failed to delete LinktaFlow',
-      err
+      err,
     );
     return next(error);
   }

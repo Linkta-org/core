@@ -21,16 +21,16 @@ const UserInputHistory: React.FC = () => {
   return (
     <Box className={styles.userInputHistory}>
       <Typography
-        id="user-input-history-heading"
-        variant="body2"
+        id='user-input-history-heading'
+        variant='body2'
         gutterBottom
         className={styles.userInputHistory__heading}
       >
         Recent
       </Typography>
       <Box
-        aria-labelledby="user-input-history-heading"
-        role="region"
+        aria-labelledby='user-input-history-heading'
+        role='region'
         className={styles.userInputHistory__scrollable}
       >
         {loading && !isFetchingNextPage ? (

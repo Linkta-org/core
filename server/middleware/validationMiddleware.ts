@@ -19,7 +19,7 @@ type RequestPart =
  */
 const validationMiddleware = (
   schema: ZodSchema<RequestPart>,
-  target: ValidationTarget
+  target: ValidationTarget,
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {

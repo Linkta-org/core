@@ -10,15 +10,15 @@ const SkeletonList: React.FC<SkeletonListProps> = ({ length }) => {
   const skeletonItems = Array.from({ length });
 
   return (
-    <List role="list">
+    <List role='list'>
       {skeletonItems.map((_, index) => (
         <ListItem
           key={index}
-          role="listitem"
+          role='listitem'
         >
           <Skeleton
-            variant="text"
-            aria-label="Loading content"
+            variant='text'
+            aria-label='Loading content'
             className={styles.skeletonList__skeleton}
           />
         </ListItem>

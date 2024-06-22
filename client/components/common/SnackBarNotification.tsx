@@ -35,7 +35,7 @@ export default function SnackBarNotification({
 }: SnackBarNotificationProps) {
   const handleClose = (
     event?: React.SyntheticEvent | Event,
-    reason?: string
+    reason?: string,
   ) => {
     event?.preventDefault();
     if (reason === 'clickaway') {
@@ -55,7 +55,7 @@ export default function SnackBarNotification({
       <Alert
         onClose={handleClose}
         severity={severity}
-        variant="outlined"
+        variant='outlined'
         sx={{
           width: '100%',
           bgcolor: 'background.paper',

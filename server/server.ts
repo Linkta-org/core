@@ -89,7 +89,7 @@ function startServer() {
    */
   const server: Server = app.listen(PORT, () => {
     logger.info(
-      `Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`
+      `Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`,
     );
   });
 
@@ -138,7 +138,7 @@ async function connectToDatabase(link: string) {
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
     logger.info(
-      'Pinged your deployment. You successfully connected to MongoDB!'
+      'Pinged your deployment. You successfully connected to MongoDB!',
     );
     await mongoose
       .connect(uri ?? '')

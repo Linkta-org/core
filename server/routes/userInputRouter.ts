@@ -22,7 +22,7 @@ const aiService = createAIService();
 const userInputController = createUserInputController(
   userInputService,
   linktaFlowService,
-  aiService
+  aiService,
 );
 
 /**
@@ -40,7 +40,7 @@ router.post(
       linktaFlow: res.locals.linktaFlow,
       inputHistory: res.locals.inputHistory,
     });
-  }
+  },
 );
 
 /**
@@ -53,7 +53,7 @@ router.get(
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
     return res.status(200).json({ inputHistory: res.locals.inputHistory });
-  }
+  },
 );
 
 /**
@@ -72,7 +72,7 @@ router.put(
       message: res.locals.message,
       inputHistory: res.locals.inputHistory,
     });
-  }
+  },
 );
 
 /**
@@ -90,7 +90,7 @@ router.delete(
       message: res.locals.message,
       inputHistory: res.locals.inputHistory,
     });
-  }
+  },
 );
 
 export default router;

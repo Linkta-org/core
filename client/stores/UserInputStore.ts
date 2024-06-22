@@ -13,7 +13,7 @@ const useUserInputStore = create<UserInputStore>()(
     currentInput: undefined,
     getLastInput: () => get().currentInput,
     setLastInput: (input) => set({ currentInput: input }),
-  }))
+  })),
 );
 
 export default useUserInputStore;

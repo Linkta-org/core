@@ -65,7 +65,7 @@
     "react/no-unused-prop-types": "warn",
     "react/prop-types": "off",
 
-    // React hooks rulesz
+    // React hooks rules
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   },

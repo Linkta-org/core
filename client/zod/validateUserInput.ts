@@ -9,10 +9,10 @@ const userInputValidationSchema = z.object({
   input: z
     .string()
     .trim()
-    .min(3, 'Input must be between 3 and 100 characters in length')
-    .max(100, { message: 'Input must be between 3 and 100 characters in length' })
+    .min(3, 'Input must be between 3 and 100 characters in length!')
+    .max(100, { message: 'Input must be between 3 and 100 characters in length!' })
     .refine((val) => hasHtmlChars(val), {
-      message: 'Input must not include special HTML characters such as \< or \>',
+      message: 'Input must not include special HTML characters such as "\<" or "\>" !',
     }),
 });
 

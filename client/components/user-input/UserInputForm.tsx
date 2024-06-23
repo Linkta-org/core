@@ -13,34 +13,6 @@ interface UserInputPayload {
   input: string;
 }
 
-// const UserInputBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
-//   color: theme.palette.secondary.main,
-//   '& .MuiOutlinedInput-root': {
-//     borderRadius: '10px',
-//     '& fieldset': {
-//       borderColor: theme.palette.secondary.main,
-//       borderRadius: '10px',
-//     },
-//     '& input': {
-//       backgroundColor: theme.palette.grey[400],
-//       borderRadius: '10px',
-//       color: 'black',
-//     },
-//   },
-// }));
-
-// const GenerateButton = styled(Button)<ButtonProps>(({ theme }) => ({
-//   height: 40,
-//   width: 150,
-//   color: 'black',
-//   backgroundColor: theme.palette.secondary.main,
-//   borderRadius: 20,
-// }));
-
-// const UserInputCheckbox = styled(Checkbox)(({ theme }) => ({
-//   color: theme.palette.primary.main,
-// }));
-
 const UserInputForm = () => {
   // Here we utilize the useForm hook's properties to manage form state while also initializing default values and resolving our validation schema.
   // The control object is used by react-hook-form's Controller to link our UserInputBar and UserInputCheckbox components to the form's state, handling any necessary state updates or validation checks.
@@ -142,6 +114,7 @@ const UserInputForm = () => {
                 control={control}
                 render={({ field }) => (
                   <Checkbox
+                    className={`${styles.UserInputCheckbox}`}
                     {...field}
                     checked={field.value}
                   />
@@ -152,9 +125,10 @@ const UserInputForm = () => {
         </Box>
 
         <Button
+          variant="contained"
+          className={`${styles.userInputSubmitButton}`}
           type="submit"
           disabled={isSubmitted || !control._formValues.isChecked}
-          sx={{ alignSelf: 'center', mt: 8 }}
         >
           Generate
         </Button>

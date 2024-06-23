@@ -1,8 +1,3 @@
-:root {
-  --secondary-main: #ffa51b;
-  color: #fff;
-}
-
 .background-image,
 .background-color,
 .static-layout {
@@ -22,6 +17,7 @@
 }
 
 .static-layout {
+  min-width: 300px;
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 50px 1fr auto;

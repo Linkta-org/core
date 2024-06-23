@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
-import React, { MouseEvent } from 'react';
+import React, { type MouseEvent } from 'react';
 import styles from '@styles/UserInputView.module.css';
 
 

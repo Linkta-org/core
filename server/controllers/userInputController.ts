@@ -53,7 +53,9 @@ const createUserInputController = (
       // Generate initial response from AI service based on user input
       const aiResponse =
         await privateAIService.generateInitialResponse(userInput);
+      logger.debug(aiResponse);
       const parsedAiResponse = JSON.parse(aiResponse);
+      logger.debug(parsedAiResponse);
 
       // Create a new Linkta flow based on AI response
       const newLinktaFlow = await privateLinktaFlowService.createLinktaFlow(

@@ -12,7 +12,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "project": "./server/tsconfig.json"
+    "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint", "no-relative-import-paths", "prettier"],
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],

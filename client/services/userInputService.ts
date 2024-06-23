@@ -1,15 +1,18 @@
 import { axiosClient } from '@config/axios';
 
+interface UserInput {
+  _id: string;
+  title: string;
+  input: string;
+}
+
 export const fetchInputHistoryFromApi = async (
-  page: number = 1,
-  limit: number = 10
-) => {
+  page: number,
+  limit: number
+): Promise<UserInput[]> => {
   try {
     const response = await axiosClient.get(`/v1/inputs`, {
       params: { page, limit },
-      // headers: {
-      //   TODO: to add headers here if needed
-      // },
     });
     return response.data.inputHistory || [];
   } catch (error) {

@@ -24,10 +24,10 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
 
   return (
     <>
-      <Box className={`${styles.popularTopics} popular-topics`}>
+      <Box className={`${styles.popularTopics}`}>
         <Typography
           variant='h6'
-          className={`${styles.topicsHeader} topics-header`}
+          className={`${styles.topicsHeading}`}
           >
             Popular Topics
         </Typography>
@@ -35,7 +35,7 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
           topicsList.map((topic, i) => {
             return <Button
               variant='outlined'
-              className={`${styles.topicsButton} topics-button`}
+              className={`${styles.topicsButton}`}
               key={`topic-button-${i}`}
               onClick={(e) => handleClickTopic(e, i)}
               >

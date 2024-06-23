@@ -8,7 +8,7 @@ import styles from '@styles/UserInputView.module.css'
 const UserInputView = () => {
   useDocumentTitle('Prompt');
   return (
-    <Box className={`${styles.userInputView} user-input-view`}>
+    <Box className={`${styles.userInputView}`}>
       <UserInputForm />
       <PopularTopics />
     </Box>

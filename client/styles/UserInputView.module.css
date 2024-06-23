@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   gap: 5rem;
+  padding: 0px 25px;
 }
 
 .userInputForm {
@@ -13,21 +14,58 @@
   gap: 1rem;
 }
 
-.userInputInstruction {
+.userInputFormTitle {
+  align-self: flex-start;
+}
 
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  gap: 25px;
+}
+
+/* selects the text input formControl container div */
+.userInputTextField {
+  align-self: center;
+  width: 100%;
+  max-width: 700px;
+}
+
+/* selects the div containing the input */
+.userInputTextField :global(.MuiOutlinedInput-root) {
+
+  border-radius: 10px;
+  border: 2px solid var(--secondary-main);
+  background-color: var(--foundation-N200);
+  color: var(--primary-contrastText);
+}
+
+.userInputCheckbox {
+}
+
+.userInputDisclaimer {
+  max-width: 700px;
+}
+
+.userInputSubmitButton {
+  height: 40px;
+  width: 150px;
+  color: black;
+  background-color: yellow;
+  border-radius: 50%;
 }
 
 .popularTopics {
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
-  width: 85%;
   column-gap: 25px;
   row-gap: 10px;
   padding: 0px, 20px;
 }
 
-.topicsHeader {
+.topicsHeading {
   grid-column-start: 1;
   grid-column-end: 3;
 }

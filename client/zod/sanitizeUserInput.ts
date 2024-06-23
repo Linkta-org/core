@@ -6,7 +6,7 @@ import { z } from 'zod';
  * @returns {string} The processed string.
  */
 
-const removeExtraWhiteSpaces = (input: string): string => {
+const trimeWhiteSpace = (input: string): string => {
   return input.trim().replace(/\s+/g, ' ');
 };
 
@@ -16,7 +16,7 @@ const removeExtraWhiteSpaces = (input: string): string => {
  * @returns {string} The processed string with escaped HTML characters.
  */
 
-const escapeHTML = (input: string): string => {
+const escapeHtmlChars = (input: string): string => {
   return input
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -27,7 +27,7 @@ const escapeHTML = (input: string): string => {
 };
 
 const userInputSanitizationSchema = z.object({
-  input: z.string().transform(removeExtraWhiteSpaces).transform(escapeHTML),
+  input: z.string().transform(trimeWhiteSpace).transform(escapeHtmlChars),
 });
 
 export type UserInputSanitization = z.infer<typeof userInputSanitizationSchema>;

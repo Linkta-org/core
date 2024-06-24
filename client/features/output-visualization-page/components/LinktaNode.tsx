@@ -43,12 +43,12 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
           : '2px 4px 8px hsl(0deg 0% 0% / 0.25)',
         transition: 'box-shadow 0.3s, border 0.3s',
       }}
-      className="linkta-node"
+      className='linkta-node'
     >
       <Handle
-        type="source"
+        type='source'
         position={Position.Top}
-        id="a"
+        id='a'
         isConnectable={isConnectable}
       />
       <Box
@@ -68,7 +68,7 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
         }}
       >
         <TextField
-          defaultValue="Transport Layer"
+          defaultValue='Transport Layer'
           hiddenLabel
           onFocus={onFocus}
           onBlur={onBlur}
@@ -79,8 +79,8 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
             })
           }
           value={data.label}
-          id="filled-hidden-label-small"
-          size="small"
+          id='filled-hidden-label-small'
+          size='small'
           sx={{
             background: 'transparent',
             border: 'none',
@@ -106,21 +106,21 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
         />
       </Box>
       <Handle
-        type="source"
+        type='source'
         position={Position.Right}
-        id="b"
+        id='b'
         isConnectable={isConnectable}
       />
       <Handle
-        type="source"
+        type='source'
         position={Position.Left}
-        id="c"
+        id='c'
         isConnectable={isConnectable}
       />
       <Handle
-        type="source"
+        type='source'
         position={Position.Bottom}
-        id="a"
+        id='a'
         style={handleStyle}
         isConnectable={isConnectable}
       />

@@ -1,5 +1,5 @@
 import { startGeneration } from '@/models/GeminiModel';
-import { type Content } from '@google/generative-ai';
+import type { Content } from '@google/generative-ai';
 import { createError } from '@/middleware/errorHandling';
 
 /**
@@ -11,7 +11,7 @@ const createAIService = () => {
    * Generates the initial response from the AI model based on user input.
    */
   const generateInitialResponse = async (
-    userInput: string
+    userInput: string,
   ): Promise<string> => {
     const history: Content[] = [];
     try {
@@ -28,7 +28,7 @@ const createAIService = () => {
         'generateInitialResponse',
         'AIService',
         'Error generating response from AI.',
-        error
+        error,
       );
       throw methodError;
     }

@@ -18,7 +18,7 @@ const createLinktaFlowService = () => {
     userId: Types.ObjectId,
     userInputId: Types.ObjectId,
     nodes: Node[],
-    edges: Edge[]
+    edges: Edge[],
   ): Promise<LinktaFlow> => {
     try {
       const linktaFlowData = {
@@ -47,7 +47,7 @@ const createLinktaFlowService = () => {
         'createLinktaFlow',
         'LinktaFlowService',
         'Error creating LinktaFlow.',
-        error
+        error,
       );
       throw methodError;
     }
@@ -57,7 +57,7 @@ const createLinktaFlowService = () => {
    * Deletes a Linkta flow by user input ID.
    */
   const deleteLinktaFlowByUserInputId = async (
-    userInputId: Types.ObjectId
+    userInputId: Types.ObjectId,
   ): Promise<LinktaFlow | null> => {
     try {
       // Delete LinktaFlow in DB
@@ -71,7 +71,7 @@ const createLinktaFlowService = () => {
         'deleteLinktaFlowByUserInputId',
         'LinktaFlowService',
         'Error deleting LinktaFlow data.',
-        error
+        error,
       );
       throw methodError;
     }

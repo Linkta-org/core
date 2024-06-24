@@ -20,7 +20,7 @@ const logger = log4js.getLogger('[Input Controller]');
 const createUserInputController = (
   userInputService: ReturnType<typeof createUserInputService>,
   linktaFlowService: ReturnType<typeof createLinktaFlowService>,
-  aiService: ReturnType<typeof createAIService>
+  aiService: ReturnType<typeof createAIService>,
 ) => {
   // Private services
   const privateUserInputService = userInputService;
@@ -33,7 +33,7 @@ const createUserInputController = (
   const generateLinktaFlowFromInput = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       // TODO: replace with auth middleware
@@ -47,7 +47,7 @@ const createUserInputController = (
       // Create a new user input document in DB
       const newUserInput = await privateUserInputService.createUserInput(
         userObjectId,
-        userInput
+        userInput,
       );
 
       // Generate initial response from AI service based on user input
@@ -60,7 +60,7 @@ const createUserInputController = (
         userObjectId,
         newUserInput._id,
         parsedAiResponse.nodes,
-        parsedAiResponse.edges
+        parsedAiResponse.edges,
       );
 
       const { _id, userInputId, nodes, edges } = newLinktaFlow;
@@ -81,7 +81,7 @@ const createUserInputController = (
         'generateLinktaFlowFromInput',
         'UserInputController',
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error
+        error,
       );
       return next(methodError);
     }
@@ -93,7 +93,7 @@ const createUserInputController = (
   const fetchInputHistory = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       // TODO: replace with auth middleware
@@ -109,7 +109,7 @@ const createUserInputController = (
       const inputHistory = await privateUserInputService.fetchInputHistory(
         userObjectId,
         page,
-        limit
+        limit,
       );
 
       res.locals.inputHistory = inputHistory;
@@ -121,7 +121,7 @@ const createUserInputController = (
         'fetchInputHistory',
         'UserInputController',
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error
+        error,
       );
       return next(methodError);
     }
@@ -133,7 +133,7 @@ const createUserInputController = (
   const updateInputTitle = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       const { title } = req.body;
@@ -150,7 +150,7 @@ const createUserInputController = (
         'updateInputTitle',
         'UserInputController',
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error
+        error,
       );
       return next(methodError);
     }
@@ -162,7 +162,7 @@ const createUserInputController = (
   const deleteUserInput = async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       const { userInputId } = req.params;
@@ -172,7 +172,7 @@ const createUserInputController = (
       await privateUserInputService.deleteUserInput(userInputObjectId);
 
       await privateLinktaFlowService.deleteLinktaFlowByUserInputId(
-        userInputObjectId
+        userInputObjectId,
       );
 
       res.locals.message = 'Input has been successfully deleted.';
@@ -180,13 +180,13 @@ const createUserInputController = (
     } catch (error) {
       logger.error(
         'Error deleting user input and associated Linkta flow',
-        error
+        error,
       );
       const methodError = createError(
         'deleteUserInput',
         'UserInputController',
         'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error
+        error,
       );
       return next(methodError);
     }

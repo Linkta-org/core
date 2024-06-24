@@ -7,7 +7,7 @@ import useDocumentTitle from '@hooks/useDocumentTitle';
 const PromptInputPage = () => {
   useDocumentTitle('Prompt');
   return (
-    <Box className="prompt-input-view">
+    <Box className='prompt-input-view'>
       <PromptInputForm />
       <PromptInputInstructions />
     </Box>

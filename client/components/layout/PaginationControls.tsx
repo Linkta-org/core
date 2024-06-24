@@ -22,8 +22,8 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
 }) => {
   return (
     <Box
-      role="group"
-      aria-label="Pagination Controls"
+      role='group'
+      aria-label='Pagination Controls'
       className={styles.paginationControls}
     >
       {hasNextPage && (
@@ -36,7 +36,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
       {visibleItems > ITEMS_PER_PAGE && (
         <PaginationButton
           onClick={handleShowLess}
-          label="Show Less"
+          label='Show Less'
           Icon={ExpandLess}
         />
       )}

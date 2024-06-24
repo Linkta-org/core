@@ -50,7 +50,7 @@ const useInputHistory = (): UseInputHistoryResult => {
           pages: newPages,
           pageParams: oldData.pageParams.slice(0, -1),
         };
-      }
+      },
     );
   }, [queryClient]);
 

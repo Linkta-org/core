@@ -17,13 +17,13 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({
   return (
     <Box
       onClick={onClick}
-      role="button"
+      role='button'
       aria-label={label}
       tabIndex={0}
       className={styles.paginationButton}
     >
       <Icon
-        aria-hidden="true"
+        aria-hidden='true'
         className={styles.paginationButton_icon}
       />
       {label}

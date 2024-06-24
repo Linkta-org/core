@@ -2,21 +2,23 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import PaginationButton from '@components/layout/PaginationButton';
-import { ITEMS_PER_PAGE } from './userInputConstants';
 import styles from '@styles/layout/PaginationControls.module.css';
+import { ITEMS_PER_PAGE } from '@utils/constants';
 
 interface PaginationControlsProps {
   handleShowMore: () => void;
   handleShowLess: () => void;
   visibleItems: number;
-  totalItems: number;
+  hasNextPage: boolean | undefined;
+  isFetchingNextPage: boolean;
 }
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({
   handleShowMore,
   handleShowLess,
   visibleItems,
-  totalItems,
+  hasNextPage,
+  isFetchingNextPage,
 }) => {
   return (
     <Box
@@ -24,10 +26,10 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
       aria-label="Pagination Controls"
       className={styles.paginationControls}
     >
-      {visibleItems < totalItems && (
+      {hasNextPage && (
         <PaginationButton
           onClick={handleShowMore}
-          label="Show More"
+          label={isFetchingNextPage ? 'Loading more...' : 'Show More'}
           Icon={ExpandMore}
         />
       )}

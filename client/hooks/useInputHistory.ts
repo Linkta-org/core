@@ -1,6 +1,7 @@
-import { useEffect, useState, useCallback } from 'react';
-import { fetchInputHistoryFromApi } from '@services/userInputService';
-import { ITEMS_PER_PAGE } from '@components/layout/userInputConstants';
+import type { InfiniteData } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import useInfiniteInputQuery from './useInfiniteInputQuery';
+import { useCallback } from 'react';
 
 interface UserInput {
   _id: string;
@@ -13,68 +14,68 @@ interface UseInputHistoryResult {
   loading: boolean;
   handleShowMore: () => void;
   handleShowLess: () => void;
-  page: number;
+  hasNextPage: boolean | undefined;
+  isFetchingNextPage: boolean;
 }
 
 /**
- * Custom hook to manage user input list pagination and fetching data from API.
- *
- * @returns {UseInputHistoryResult} The current user input list, loading state, page number, and handlers for pagination.
+ * Custom hook to manage user input history with infinite scrolling.
+ * @returns {UseInputHistoryResult} The input history data, loading state, pagination handlers, and fetching states.
  */
 const useInputHistory = (): UseInputHistoryResult => {
-  const [inputHistory, setInputHistory] = useState<UserInput[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  /**
-   * Fetches the user input list from the API based on the current page.
-   */
-  const loadInputHistory = useCallback(async () => {
-    setLoading(true);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteInputQuery();
 
-    try {
-      const curInputHistory = await fetchInputHistoryFromApi(
-        page,
-        ITEMS_PER_PAGE
-      );
-      setInputHistory((prevInputHistory) => [
-        ...prevInputHistory,
-        ...curInputHistory,
-      ]);
-    } catch (error) {
-      // console.error('Error fetching user inputs:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [page]);
+  // Flatten the pages of user input history into a single array.
+  const inputHistory = data ? data.pages.flat() : [];
 
-  useEffect(() => {
-    void loadInputHistory();
-  }, [loadInputHistory]);
+  // Function to update the query data by removing the last page.
+  const updateQueryData = useCallback(() => {
+    queryClient.setQueryData<InfiniteData<UserInput[]>>(
+      ['inputHistory'],
+      (oldData) => {
+        if (!oldData) return oldData;
 
-  /**
-   * Handles showing more items by incrementing the page number.
-   */
-  const handleShowMore = useCallback(() => {
-    if (!loading) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [loading]);
+        const newPages = oldData.pages.slice(0, -1);
 
-  /**
-   * Handles showing fewer items by decrementing the page number and slicing the user input list.
-   */
-  const handleShowLess = useCallback(() => {
-    setPage((prevPage) => Math.max(prevPage - 1, 1));
-    setInputHistory((prevInputHistory) =>
-      prevInputHistory.slice(
-        0,
-        Math.max(prevInputHistory.length - ITEMS_PER_PAGE, ITEMS_PER_PAGE)
-      )
+        return {
+          pages: newPages,
+          pageParams: oldData.pageParams.slice(0, -1),
+        };
+      }
     );
-  }, []);
+  }, [queryClient]);
 
-  return { inputHistory, loading, handleShowMore, handleShowLess, page };
+  // Handle showing more items by fetching the next page.
+  const handleShowMore = useCallback(() => {
+    if (!isFetchingNextPage) {
+      void fetchNextPage();
+    }
+  }, [fetchNextPage, isFetchingNextPage]);
+
+  // Handle showing fewer items by removing the last page from the cached data.
+  const handleShowLess = useCallback(() => {
+    if (data && data.pages.length > 1) {
+      updateQueryData();
+    }
+  }, [data, updateQueryData]);
+
+  return {
+    inputHistory,
+    loading: status === 'pending' || isFetching,
+    handleShowMore,
+    handleShowLess,
+    hasNextPage,
+    isFetchingNextPage,
+  };
 };
 
 export default useInputHistory;

@@ -24,3 +24,6 @@ cd ..
 cd server 
 # npm run format - to be added back in future PR
 npm run lint
+
+# Confirm pre-commit hook ran before completing commit
+echo 'Pre-commit hook ran successfully with no TypeScript or linting errors detected.'

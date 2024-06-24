@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import styles from '@styles/layout/UnauthorizedLayout.module.css';
 
 /**
@@ -10,6 +10,13 @@ import styles from '@styles/layout/UnauthorizedLayout.module.css';
  */
 const UnauthorizedLayout: React.FC = () => {
 
+  const handleSignIn = () => {
+    console.log('SIGN IN');
+  }
+
+  const handleSignUp = () => {
+    console.log('SIGN UP');
+  }
 
   return (
     <>
@@ -28,13 +35,35 @@ const UnauthorizedLayout: React.FC = () => {
         <Box className={`${styles.headerBar}`}>
           <img
             className={`${styles.logoImage}`}
-            src="../assets/linkta-logo-web.png"
+            src="../assets/linkta-logo-amber.png"
             alt="The Linkta.io logo at approximately 50 pixels square, located in the upper-left corner of the page."
           />
+          <Typography variant='h6'>Linkta</Typography>
+
+          <Button className={`${styles.signInButton}`} variant='contained' onClick={handleSignIn}>Sign In</Button>
+          <Button className={`${styles.signUpButton}`} variant='contained' onClick={handleSignUp}>Start Growing</Button>
         </Box>
 
         <Box className={`${styles.routerOutlet}`}>
           <Outlet />
+        </Box>
+
+        <Box className={`${styles.footerBar}`}>
+          <Typography variant='body2' className='first'>
+            2024 Linkta L.L.C. All rights Reserved
+          </Typography>
+          <Typography variant='body2'>
+            Cookie Preferences
+          </Typography>
+          <Typography variant='body2'>
+            Security
+          </Typography>
+          <Typography variant='body2'>
+            Legal
+          </Typography>
+          <Typography variant='body2'>
+            Privacy
+          </Typography>
         </Box>
 
       </Box>

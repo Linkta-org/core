@@ -7,10 +7,9 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import { globalErrorHandler } from '@middleware/errorHandling';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
 import log4jsConfig from '@/utils/log4js.config.json';
-import isAuthorized from './firebaseAuthMiddleware';
 import { getEnv } from '@utils/environment';
 import userInputRouter from '@routes/userInputRouter';
-import type { Express, Request, Response } from 'express';
+import type { Express, Response } from 'express';
 import type { Server } from 'http';
 
 getEnv();

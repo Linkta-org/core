@@ -16,4 +16,5 @@ if [ $CLIENT_TSC -ne 0 ] || [ $SERVER_TSC -ne 0 ]; then
 fi
 
 # If tsc passes, then run lint-staged
-npx lint-staged
+cd ./client && npx lint-staged
+cd .. && cd ./server && npx lint-staged

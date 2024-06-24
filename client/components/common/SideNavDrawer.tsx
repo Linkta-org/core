@@ -39,11 +39,11 @@ export default function SideNavDrawer({
         to='/sign-in'
       >
         <AccountCircleOutlined />
-        <Typography variant='caption'>test.user@linkta.org</Typography>
+        <Typography variant='caption'>test-1.user@linkta.org</Typography>
       </Link>
 
       <Link
-        className='side-nav-link'
+        className="side-nav-link"
         underline='none'
         component={RouterLink}
         to='/generate'

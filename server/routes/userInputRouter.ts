@@ -47,6 +47,7 @@ router.post(
  * @route GET /v1/inputs
  * @description Fetches the list of user inputs.
  * @returns {Array} 200 - inputHistory
+ * This is a test 
  */
 router.get(
   '/',
@@ -63,7 +64,7 @@ router.get(
  */
 router.put(
   '/:userInputId',
-  validationMiddleware(userInputIdSchema, 'params'),
+  validationMiddleware(userInputIdSchema, "params"),
   validationMiddleware(userInputTitleSchema, 'body'),
   userInputController.updateInputTitle,
   userInputController.fetchInputHistory,

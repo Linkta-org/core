@@ -1,0 +1,63 @@
+.signInPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 40px;
+  gap: 40px;
+
+  & p, h6 {
+    color: var(--light-gray);
+  }
+
+  & a {
+    color: var(--link-text);
+    text-decoration: underline;
+    margin: 0px 5px;
+  }
+}
+
+.headingText {
+  color: var(--light-gray);
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 50px;
+  margin: 50px 0px;
+}
+
+.authButton {
+  display: flex;
+  height: 50px;
+  border-radius: 25px;
+  padding-right: 20px;
+  color: black;
+  background-color: var(--light-gray);
+  &:hover {
+    color: var(--secondary-dark);
+  }
+}
+
+.buttonIcon {
+  height: 30px;
+  margin-right: 20px;
+}
+
+.authViewForm {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.formSubmitButton {
+  background-color: var(--secondary-dark);
+  height: 50px;
+  border-radius: 25px;
+  color: var(--primary-dark);
+  font-size: 1.2rem;
+  &:hover {
+    color: var(--secondary-dark);
+  }
+}

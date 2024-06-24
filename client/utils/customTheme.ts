@@ -36,6 +36,8 @@ const themeOptions: ThemeOptions = {
       styleOverrides: {
         ':root': {
           '--divider': '#4F5D66',
+          '--light-gray': '#D9D9D9',
+          '--link-text': '#7CD2D7',
           '--primary-light': '#3d8590',
           '--primary-main': '#23616a',
           '--primary-dark': '#01383f',

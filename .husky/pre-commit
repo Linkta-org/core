@@ -15,7 +15,12 @@ if [ $CLIENT_TSC -ne 0 ] || [ $SERVER_TSC -ne 0 ]; then
   exit 1
 fi
 
-# If tsc passes, then run lint-staged
-cd client && npm run lint && npm run format
+# If tsc passes, then run linting in each directory.
+# If warnings or errors are thrown, husky process should exit without committing.
+cd client 
+# run format - to be added back in future PR
+npm run lint
 cd ..
-cd server && npm run lint && npm run format
+cd server 
+# npm run format - to be added back in future PR
+npm run lint

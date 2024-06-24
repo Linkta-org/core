@@ -36,7 +36,7 @@ export default function SideNavDrawer({
         underline="none"
         mt={9}
         component={RouterLink}
-        to="/sign-in"
+        to="/userLogin"
       >
         <AccountCircleOutlined />
         <Typography variant="caption">test.user@linkta.org</Typography>
@@ -59,7 +59,7 @@ export default function SideNavDrawer({
         underline="none"
         mt={'auto'}
         component={RouterLink}
-        to="/help-and-feedback"
+        to="/help"
       >
         <HelpOutlineOutlined />
         <Typography variant="caption">Help and Feedback</Typography>
@@ -94,7 +94,7 @@ export default function SideNavDrawer({
             mt={3}
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
-            to="/sign-in"
+            to="/userLogin"
           >
             <AccountCircleOutlined />
           </Link>
@@ -113,7 +113,7 @@ export default function SideNavDrawer({
             sx={{ marginTop: 'auto' }}
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
-            to="/help-and-feedback"
+            to="/help"
           >
             <HelpOutlineOutlined />
           </Link>

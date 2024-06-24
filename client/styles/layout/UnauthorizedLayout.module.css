@@ -1,0 +1,35 @@
+.backgroundColor {
+  background-color: #01383f;
+  position: fixed;
+  inset: 0px;
+}
+
+.backgroundImage {
+  background-image: url(../assets/tree-night.webp);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+  position: fixed;
+  inset: 0px;
+}
+
+.staticLayout {
+  position: fixed;
+  inset: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* .headerBar {
+} */
+
+.logoImage {
+  height: 60px;
+  aspect-ratio: 1 / 1;
+}
+
+.routerOutlet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

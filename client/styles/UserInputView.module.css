@@ -33,7 +33,6 @@
 
 /* selects the div containing the input */
 .userInputTextField :global(.MuiOutlinedInput-root) {
-
   border-radius: 10px;
   border: 2px solid var(--secondary-main);
   background-color: var(--foundation-N200);

@@ -4,7 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TextField, Button, FormControlLabel, Box, Typography, Checkbox } from '@mui/material';
+import {
+  TextField,
+  Button,
+  FormControlLabel,
+  Box,
+  Typography,
+  Checkbox,
+} from '@mui/material';
 import userInputValidationSchema from '@zod/validateUserInput';
 import styles from '@styles/UserInputView.module.css';
 import { MOCK_USER_ID } from '@/mocks';
@@ -79,8 +86,10 @@ const UserInputForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className={`${styles.userInputForm}`}>
-
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={`${styles.userInputForm}`}
+      >
         <Typography
           className={`${styles.userInputFormTitle}`}
           variant="h6"
@@ -96,7 +105,7 @@ const UserInputForm = () => {
             render={({ field }) => (
               <TextField
                 {...field}
-                variant='outlined'
+                variant="outlined"
                 className={`${styles.userInputTextField}`}
                 error={!!errors.input}
                 helperText={errors.input ? errors.input.message : ''}
@@ -132,7 +141,6 @@ const UserInputForm = () => {
         >
           Generate
         </Button>
-
       </form>
     </>
   );

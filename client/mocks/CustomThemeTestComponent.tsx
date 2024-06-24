@@ -18,7 +18,7 @@ const CustomThemeTestComponent = () => {
       }}
     >
       <Typography
-        variant="h4"
+        variant='h4'
         gutterBottom
         sx={{ color: 'text-secondary' }}
       >

@@ -10,10 +10,10 @@ const ConnectionLine = ({
   return (
     <g>
       <path
-        fill="none"
-        stroke="#FFA51B"
+        fill='none'
+        stroke='#FFA51B'
         strokeWidth={1.5}
-        className="animated"
+        className='animated'
         d={`M${fromX},${fromY} C ${fromX} ${toY} ${fromX} ${toY} ${toX},${toY}`}
       />
     </g>

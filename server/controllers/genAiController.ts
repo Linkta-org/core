@@ -1,13 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
 import { startGeneration } from '@models/GeminiModel';
-import { type Content } from '@google/generative-ai';
+import type { Content } from '@google/generative-ai';
 import { createError } from '@middleware/errorHandling';
 
 //in initial response generation, there is no chat history, so using []
 export const generateInitialResponse = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const userInput = req.body.input;
   const history: Content[] = [];
@@ -28,7 +28,7 @@ export const generateInitialResponse = async (
       'generateInitialResponse',
       'genAIController',
       'Error generating response from AI.',
-      err
+      err,
     );
     return next(methodError);
   }
@@ -41,7 +41,7 @@ export const generateInitialResponse = async (
 export const generateResponseWithHistory = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const userInput: string = req.body.input; //call getUserInput(or get initial userInput from DB)
@@ -64,7 +64,7 @@ export const generateResponseWithHistory = async (
       'generateResponseWithContext',
       'genAIservice',
       'Error generating response from AI',
-      err
+      err,
     );
     return next(methodError);
   }

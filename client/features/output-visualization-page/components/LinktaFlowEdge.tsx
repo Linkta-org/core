@@ -5,10 +5,10 @@ import { getEdgeParams } from '@utils/getEdgeParams';
 
 function LinktaFlowEdge({ id, source, target, markerEnd, style }: EdgeProps) {
   const sourceNode = useStore(
-    useCallback((store) => store.nodeInternals.get(source), [source])
+    useCallback((store) => store.nodeInternals.get(source), [source]),
   );
   const targetNode = useStore(
-    useCallback((store) => store.nodeInternals.get(target), [target])
+    useCallback((store) => store.nodeInternals.get(target), [target]),
   );
 
   if (!sourceNode || !targetNode) {
@@ -17,7 +17,7 @@ function LinktaFlowEdge({ id, source, target, markerEnd, style }: EdgeProps) {
 
   const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
     sourceNode,
-    targetNode
+    targetNode,
   );
 
   const [edgePath] = getBezierPath({
@@ -32,7 +32,7 @@ function LinktaFlowEdge({ id, source, target, markerEnd, style }: EdgeProps) {
   return (
     <path
       id={id}
-      className="react-flow__edge-path"
+      className='react-flow__edge-path'
       d={edgePath}
       strokeWidth={3}
       markerEnd={markerEnd}

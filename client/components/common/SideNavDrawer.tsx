@@ -30,53 +30,53 @@ export default function SideNavDrawer({
   };
 
   const DrawerListExpanded = (
-    <Box className="side-nav-bar">
+    <Box className='side-nav-bar'>
       <Link
-        className="side-nav-link"
-        underline="none"
+        className='side-nav-link'
+        underline='none'
         mt={9}
         component={RouterLink}
-        to="/sign-in"
+        to='/sign-in'
       >
         <AccountCircleOutlined />
-        <Typography variant="caption">test.user@linkta.org</Typography>
+        <Typography variant='caption'>test-2.user@linkta.org</Typography>
       </Link>
 
       <Link
-        className="side-nav-link"
-        underline="none"
+        className='side-nav-link'
+        underline='none'
         component={RouterLink}
-        to="/generate"
+        to='/generate'
       >
         <AddCircleOutline />
-        <Typography variant="caption">Explore a New Topic</Typography>
+        <Typography variant='caption'>Explore a New Topic</Typography>
       </Link>
 
       <UserInputHistory />
 
       <Link
-        className="side-nav-link"
-        underline="none"
+        className='side-nav-link'
+        underline='none'
         mt={'auto'}
         component={RouterLink}
-        to="/help-and-feedback"
+        to='/help-and-feedback'
       >
         <HelpOutlineOutlined />
-        <Typography variant="caption">Help and Feedback</Typography>
+        <Typography variant='caption'>Help and Feedback</Typography>
       </Link>
 
       <Link
-        className="side-nav-link"
-        underline="none"
+        className='side-nav-link'
+        underline='none'
         component={RouterLink}
-        to="/settings"
+        to='/settings'
       >
         <SettingsOutlined />
-        <Typography variant="caption">Settings</Typography>
+        <Typography variant='caption'>Settings</Typography>
       </Link>
 
       <Button
-        className="drawer-close-button"
+        className='drawer-close-button'
         onClick={toggleDrawer}
         sx={{ paddingInline: '13.5px' }}
       >
@@ -88,41 +88,41 @@ export default function SideNavDrawer({
   return (
     <>
       {!drawerOpen ? (
-        <Box className="side-nav-compact">
+        <Box className='side-nav-compact'>
           <Link
-            className="side-mini-button"
+            className='side-mini-button'
             mt={3}
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
-            to="/sign-in"
+            to='/sign-in'
           >
             <AccountCircleOutlined />
           </Link>
 
           <Link
-            className="side-mini-button"
+            className='side-mini-button'
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
-            to="/generate"
+            to='/generate'
           >
             <AddCircleOutline />
           </Link>
 
           <Link
-            className="side-mini-button"
+            className='side-mini-button'
             sx={{ marginTop: 'auto' }}
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
-            to="/help-and-feedback"
+            to='/help-and-feedback'
           >
             <HelpOutlineOutlined />
           </Link>
 
           <Link
-            className="side-mini-button"
+            className='side-mini-button'
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
-            to="/settings"
+            to='/settings'
           >
             <SettingsOutlined />
           </Link>
@@ -136,14 +136,14 @@ export default function SideNavDrawer({
           </Button>
         </Box>
       ) : (
-        <Box className="side-nav"></Box>
+        <Box className='side-nav'></Box>
       )}
 
       <Drawer
-        className="drawer"
+        className='drawer'
         open={drawerOpen}
         onClose={toggleDrawer}
-        variant="persistent"
+        variant='persistent'
       >
         {DrawerListExpanded}
       </Drawer>

@@ -10,7 +10,7 @@ const useDrawerStore = create<DrawerState>()(
   devtools((set) => ({
     drawerOpen: true,
     setDrawerOpen: (open: boolean) => set({ drawerOpen: open }),
-  }))
+  })),
 );
 
 export default useDrawerStore;

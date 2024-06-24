@@ -22,7 +22,7 @@ const aiService = createAIService();
 const userInputController = createUserInputController(
   userInputService,
   linktaFlowService,
-  aiService
+  aiService,
 );
 
 /**
@@ -40,20 +40,21 @@ router.post(
       linktaFlow: res.locals.linktaFlow,
       inputHistory: res.locals.inputHistory,
     });
-  }
+  },
 );
 
 /**
  * @route GET /v1/inputs
  * @description Fetches the list of user inputs.
  * @returns {Array} 200 - inputHistory
+ * This is a second test for the lint-staged config
  */
 router.get(
   '/',
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
     return res.status(200).json({ inputHistory: res.locals.inputHistory });
-  }
+  },
 );
 
 /**
@@ -72,7 +73,7 @@ router.put(
       message: res.locals.message,
       inputHistory: res.locals.inputHistory,
     });
-  }
+  },
 );
 
 /**
@@ -90,7 +91,7 @@ router.delete(
       message: res.locals.message,
       inputHistory: res.locals.inputHistory,
     });
-  }
+  },
 );
 
 export default router;

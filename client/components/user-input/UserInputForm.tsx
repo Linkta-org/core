@@ -63,7 +63,7 @@ const UserInputForm = () => {
             'x-user-id': MOCK_USER_ID,
             'x-request-id': uniqueRequestId,
           },
-        }
+        },
       );
       return response.data;
     },
@@ -100,7 +100,7 @@ const UserInputForm = () => {
 
         <Box className={`${styles.inputsContainer}`}>
           <Controller
-            name="input"
+            name='input'
             control={control}
             render={({ field }) => (
               <TextField
@@ -119,7 +119,7 @@ const UserInputForm = () => {
             sx={{ color: 'text.primary' }}
             control={
               <Controller
-                name="isChecked"
+                name='isChecked'
                 control={control}
                 render={({ field }) => (
                   <Checkbox

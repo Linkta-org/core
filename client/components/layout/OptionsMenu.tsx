@@ -44,15 +44,15 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
           onRename();
           onClose();
         }}
-        aria-label="Rename input title"
+        aria-label='Rename input title'
         className={styles.optionsMenu__item}
       >
         <RenameIcon
-          fontSize="small"
+          fontSize='small'
           className={styles.optionsMenu__itemIcon}
         />
         <Typography
-          variant="caption"
+          variant='caption'
           className={styles.optionsMenu__itemText}
         >
           Rename
@@ -63,15 +63,15 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
           onRegenerate();
           onClose();
         }}
-        aria-label="Regenerate Linkta Flow"
+        aria-label='Regenerate Linkta Flow'
         className={styles.optionsMenu__item}
       >
         <RegenerateIcon
-          fontSize="small"
+          fontSize='small'
           className={styles.optionsMenu__itemIcon}
         />
         <Typography
-          variant="caption"
+          variant='caption'
           className={styles.optionsMenu__itemText}
         >
           Regenerate
@@ -82,15 +82,15 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
           onDelete();
           onClose();
         }}
-        aria-label="Delete Linkta Flow"
+        aria-label='Delete Linkta Flow'
         className={styles.optionsMenu__item}
       >
         <DeleteIcon
-          fontSize="small"
+          fontSize='small'
           className={styles.optionsMenu__itemIcon}
         />
         <Typography
-          variant="caption"
+          variant='caption'
           className={styles.optionsMenu__itemText}
         >
           Delete

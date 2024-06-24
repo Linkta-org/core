@@ -63,18 +63,18 @@ function Flow() {
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
       setNodes((nds: Node[]) => applyNodeChanges(changes, nds)),
-    [setNodes]
+    [setNodes],
   );
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) =>
       setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
-    [setEdges]
+    [setEdges],
   );
 
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) =>
       setEdges((els) => updateEdge(oldEdge, newConnection, els)),
-    []
+    [],
   );
 
   const onConnect = useCallback(
@@ -86,10 +86,10 @@ function Flow() {
             type: 'floating',
             markerEnd: { type: MarkerType.Arrow },
           },
-          eds
-        )
+          eds,
+        ),
       ),
-    []
+    [],
   );
 
   return (

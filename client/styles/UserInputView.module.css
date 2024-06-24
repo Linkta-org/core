@@ -1,0 +1,81 @@
+.userInputView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  padding: 0px 25px;
+}
+
+.userInputForm {
+  display: flex;
+  max-width: 600px;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInputFormTitle {
+  align-self: flex-start;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* selects the text input formControl container div */
+.userInputTextField {
+  align-self: center;
+  width: 100%;
+}
+
+/* selects the div containing the input */
+.userInputTextField :global(.MuiOutlinedInput-root) {
+  border-radius: 10px;
+  border: 2px solid var(--secondary-main);
+  background-color: var(--foundation-N200);
+  color: var(--primary-contrastText);
+}
+
+.userInputCheckbox {
+}
+
+.userInputDisclaimer {
+}
+
+.userInputSubmitButton {
+  margin-top: 30px;
+  height: 40px;
+  width: 150px;
+  border-radius: 20px;
+  background-color: var(--secondary-main);
+  color: var(--secondary-contrastText);
+}
+
+.userInputSubmitButton:hover {
+  background-color: var(--secondary-dark);
+  color: var(--secondary-light);
+}
+
+.popularTopics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  column-gap: 25px;
+  row-gap: 10px;
+  padding: 0px, 20px;
+}
+
+.topicsHeading {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.topicsButton {
+  opacity: 0.8;
+  background-color: rgba(128, 128, 128, 0.318);
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  width: 100%;
+}

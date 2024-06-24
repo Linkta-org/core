@@ -1,7 +1,7 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import PromptInputPage from '@components/prompt-input/PromptInputPage';
+import UserInputView from '@components/user-input/UserInputView';
 import OutputVisualizationPage from '@features/output-visualization-page/OutputVisualizationPage';
 /**
  * Array of RouteObject for protected routes, accessible only after authentication.
@@ -11,7 +11,7 @@ const privateRoutes: RouteObject[] = [
   {
     element: <ProtectedRoute />,
     children: [
-      { path: 'generate', element: <PromptInputPage /> },
+      { path: 'generate', element: <UserInputView /> },
       { path: 'output', element: <OutputVisualizationPage /> },
     ],
   },

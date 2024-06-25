@@ -3,14 +3,14 @@ import type { RouteObject } from 'react-router-dom';
 import SignInPage from '@features/auth-pages/SignInPage';
 import SignUpPage from '@features/auth-pages/SignUpPage';
 import ForgotPasswordPage from '@features/auth-pages/ForgotPasswordPage';
-import PasswordResetPage from '@features/auth-pages/PasswordResetPage';
+import PasswordUpdatePage from '@features/auth-pages/PasswordUpdatePage';
 
 //TODO: replace palceholders with components when ready
 const authRoutes: RouteObject[] = [
   { path: 'userLogin', element: <SignInPage /> },
   { path: 'userSignup', element: <SignUpPage /> },
   { path: 'forgotPassword', element: <ForgotPasswordPage /> },
-  { path: 'resetPassword', element: <PasswordResetPage /> },
+  { path: 'resetPassword', element: <PasswordUpdatePage /> },
 ];
 
 export default authRoutes;

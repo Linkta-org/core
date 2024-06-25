@@ -3,8 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 40px;
-  gap: 40px;
+  padding-top: 2dvh;
+  gap: 3dvh;
 
   & p, h6 {
     color: var(--light-gray);
@@ -23,8 +23,8 @@
 
 .buttonWrapper {
   display: flex;
-  gap: 50px;
-  margin: 50px 0px;
+  gap: 30px;
+  margin: 3dvh 0px;
 }
 
 .authButton {
@@ -48,7 +48,7 @@
   width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 5dvh;
 }
 
 .formSubmitButton {
@@ -60,4 +60,9 @@
   &:hover {
     color: var(--secondary-dark);
   }
+}
+
+.termsAndConditions {
+  max-width: 400px;
+  text-align: center;
 }

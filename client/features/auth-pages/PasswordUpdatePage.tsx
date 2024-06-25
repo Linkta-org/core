@@ -3,65 +3,46 @@ import useDocumentTitle from '@hooks/useDocumentTitle';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import styles from '@styles/layout/AuthStyles.module.css';
 
-const SignInPage = () => {
+const PasswordUpdatePage = () => {
   useDocumentTitle('Sign in');
   return (
     <Box className={`${styles.signInPage}`}>
       <Typography
         variant='h3'
+        mt={6}
         className={`${styles.headingText}`}
       >
-        Sign In
+        Reset your password.
       </Typography>
 
-      <Box className={`${styles.buttonWrapper}`}>
-        <Button
-          variant='contained'
-          className={`${styles.authButton}`}
-        >
-          <img
-            src='../assets/google-icon.png'
-            className={`${styles.buttonIcon}`}
-            alt='A Google "G" icon on the button to sign in with Google.'
-          ></img>
-          Sign In with Google
-        </Button>
-
-        <Button
-          variant='contained'
-          className={`${styles.authButton}`}
-        >
-          <img
-            src='../assets/github-icon.png'
-            className={`${styles.buttonIcon}`}
-            alt='A GitHub octocat icon on the button to sign in with GitHub.'
-          ></img>
-          Sign In with GitHub
-        </Button>
-      </Box>
-
-      <Typography variant='h6'>- OR -</Typography>
+      <Typography
+        sx={{ maxWidth: 400 }}
+        mb={6}
+        variant='body1'
+      >
+        Enter a valid username and password to reset your password.
+      </Typography>
 
       <form className={`${styles.authViewForm}`}>
         <TextField
-          placeholder='email address'
+          placeholder='new password'
           variant='standard'
         ></TextField>
         <TextField
-          placeholder='password'
+          placeholder='confirm password'
           variant='standard'
         ></TextField>
         <Button
           variant='contained'
           className={`${styles.formSubmitButton}`}
         >
-          Sign In
+          Update Password
         </Button>
       </form>
 
       <Typography variant='body2'>
-        Forgot your password?
-        <Link>Reset</Link>
+        Already have an account?
+        <Link>Log In</Link>
       </Typography>
 
       <Typography
@@ -75,4 +56,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default PasswordUpdatePage;

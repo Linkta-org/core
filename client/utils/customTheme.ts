@@ -35,8 +35,9 @@ const themeOptions: ThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         ':root': {
-          '--divider-gray': '#D9D9D9',
-          '--foundation-N200': '#4F5D66',
+          '--divider': '#4F5D66',
+          '--light-gray': '#D9D9D9',
+          '--link-text': '#7CD2D7',
           '--primary-light': '#3d8590',
           '--primary-main': '#23616a',
           '--primary-dark': '#01383f',

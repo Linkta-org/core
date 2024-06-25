@@ -1,0 +1,22 @@
+.homeContainer {
+  padding: 15%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  max-height: 50%;
+}
+
+.bodyText {
+  grid-column-start: 1;
+}
+
+.imagePlaceholder {
+  border-radius: 10px;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  background-color: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

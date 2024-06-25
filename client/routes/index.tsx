@@ -8,7 +8,10 @@ import ErrorPage from '@features/error-pages/ErrorPage';
 import useAuth from '@hooks/useAuth';
 import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
 
-const { isAuthenticated } = useAuth();
+const authState = () => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated;
+}
 /**
  * Initializes the application's router using createBrowserRouter, combining various routes under MainLayout for a unified layout. It includes:
  * - Root path '/' for MainLayout with nested public, private routes, and catch-all '*' path directing to NotFoundPage for undefined routes.
@@ -17,7 +20,7 @@ const { isAuthenticated } = useAuth();
 const router = createBrowserRouter([
   {
     path: '/',
-    element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
+    element: authState() ? <MainLayout /> : <UnauthorizedLayout />,
     children: [
       ...publicRoutes,
       ...privateRoutes,

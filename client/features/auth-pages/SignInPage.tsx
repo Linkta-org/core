@@ -22,6 +22,7 @@ const SignInPage = () => {
           <img
             src='../assets/google-icon.png'
             className={`${styles.buttonIcon}`}
+            alt='A Google "G" icon on the button to sign in with Google.'
           ></img>
           Sign In with Google
         </Button>
@@ -33,6 +34,7 @@ const SignInPage = () => {
           <img
             src='../assets/github-icon.png'
             className={`${styles.buttonIcon}`}
+            alt='A GitHub octocat icon on the button to sign in with GitHub.'
           ></img>
           Sign In with GitHub
         </Button>

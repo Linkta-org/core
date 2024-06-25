@@ -22,6 +22,7 @@ const SignUpPage = () => {
           <img
             src='../assets/google-icon.png'
             className={`${styles.buttonIcon}`}
+            alt='A Google "G" icon on the button to sign up with Google.'
           ></img>
           Sign Up with Google
         </Button>
@@ -33,6 +34,7 @@ const SignUpPage = () => {
           <img
             src='../assets/github-icon.png'
             className={`${styles.buttonIcon}`}
+            alt='A GitHub octocat icon on the button to sign up with GitHub.'
           ></img>
           Sign Up with GitHub
         </Button>

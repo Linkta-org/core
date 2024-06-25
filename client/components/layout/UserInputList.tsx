@@ -48,7 +48,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
     }
   }, [drawerOpen]);
 
-  const throwEslintError = [1];
+  const throwEslintError = [0, 1, 2];
 
   return (
     <>

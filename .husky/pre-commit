@@ -3,27 +3,42 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+echo "┏━━━ 🛠️  Running TypeScript compiler checks ━━━━━━━"
+
 # Run TypeScript compiler in noEmit mode to check for errors in client and server
+echo "📁 Checking TypeScript in ./client"
 npx --prefix ./client tsc --noEmit --project ./client/tsconfig.json
 CLIENT_TSC=$?
 
+
+echo "📁 Checking TypeScript in ./server"
 npx --prefix ./server tsc --noEmit --project ./server/tsconfig.json
 SERVER_TSC=$?
 
 if [ $CLIENT_TSC -ne 0 ] || [ $SERVER_TSC -ne 0 ]; then
-  echo "TypeScript errors detected. Commit aborted."
+  echo "❌ TypeScript errors detected. Commit aborted."
   exit 1
 fi
 
-# If tsc passes, then run linting in each directory.
-# If warnings or errors are thrown, husky process should exit without committing.
-cd client 
-# run format - to be added back in future PR
-npm run lint
-cd ..
-cd server 
-# npm run format - to be added back in future PR
-npm run lint
+echo "✅ TypeScript checks passed"
+
+echo "┏━━━ 🕵️‍♀️  Running lint-staged ━━━━━━━"
+
+# Run lint-staged in client and server directories
+echo "📁 Linting and formatting in ./client"
+npx lint-staged --cwd ./client
+CLIENT_LINT=$?
+
+echo "📁 Linting and formatting in ./server"
+npx lint-staged --cwd ./server
+SERVER_LINT=$?
+
+if [ $CLIENT_LINT -ne 0 ] || [ $SERVER_LINT -ne 0 ]; then
+  echo "❌ Linting errors detected. Commit aborted."
+  exit 1
+fi
+
+echo "✅ Linting and formatting passed. Ready to commit."
 
 # Confirm pre-commit hook ran before completing commit
 echo 'Pre-commit hook ran successfully with no TypeScript or linting errors detected.'

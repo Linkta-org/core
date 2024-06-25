@@ -37,7 +37,7 @@ function getHandleCoordsByPosition(node: Node, handlePosition: Position) {
   }
 
   const handle = node[internalsSymbol]?.handleBounds?.source?.find(
-    (h) => h.position === handlePosition
+    (h) => h.position === handlePosition,
   );
 
   if (!handle) {

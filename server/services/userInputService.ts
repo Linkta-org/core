@@ -14,7 +14,7 @@ const createUserInputService = () => {
   const createUserInput = async (
     userId: Types.ObjectId,
     input: string,
-    title?: string
+    title?: string,
   ): Promise<UserInput> => {
     try {
       // Set the title to the input value if not provided
@@ -33,7 +33,7 @@ const createUserInputService = () => {
         'createUserInput',
         'UserInputService',
         'Error creating user input.',
-        error
+        error,
       );
       throw methodError;
     }
@@ -45,7 +45,7 @@ const createUserInputService = () => {
   const fetchInputHistory = async (
     userId: Types.ObjectId,
     page: number,
-    limit: number
+    limit: number,
   ): Promise<UserInput[]> => {
     try {
       // Calculate the number of items to skip for pagination
@@ -65,7 +65,7 @@ const createUserInputService = () => {
         'fetchInputHistory',
         'UserInputService',
         'Error fetching input history.',
-        error
+        error,
       );
       throw methodError;
     }
@@ -76,14 +76,14 @@ const createUserInputService = () => {
    */
   const updateInputTitle = async (
     userInputId: Types.ObjectId,
-    newTitle: string
+    newTitle: string,
   ): Promise<UserInput> => {
     try {
       // Update the title of the specified user input in DB
       const updatedUserInput = await UserInputModel.findByIdAndUpdate(
         userInputId,
         { title: newTitle },
-        { new: true }
+        { new: true },
       );
 
       if (!updatedUserInput) {
@@ -96,7 +96,7 @@ const createUserInputService = () => {
         'updateInputTitle',
         'UserInputService',
         'Error updating input title.',
-        error
+        error,
       );
       throw methodError;
     }
@@ -106,7 +106,7 @@ const createUserInputService = () => {
    * Deletes a user input.
    */
   const deleteUserInput = async (
-    userInputId: Types.ObjectId
+    userInputId: Types.ObjectId,
   ): Promise<UserInput | null> => {
     try {
       // Delete the user input document in DB
@@ -119,7 +119,7 @@ const createUserInputService = () => {
         'deleteInputAndAssociatedData',
         'UserInputService',
         'Error deleting input and associated data.',
-        error
+        error,
       );
       throw methodError;
     }

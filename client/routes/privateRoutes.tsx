@@ -1,7 +1,7 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import PromptInputPage from '@components/prompt-input/PromptInputPage';
+import UserInputView from '@components/user-input/UserInputView';
 import OutputVisualizationPage from '@features/output-visualization-page/OutputVisualizationPage';
 import HelpAndFeedback from '@features/help-and-feedback-page/HelpAndFeedbackPage';
 import Settings from '@features/settings-page/Settings';
@@ -13,7 +13,7 @@ const privateRoutes: RouteObject[] = [
   {
     element: <ProtectedRoute />,
     children: [
-      { path: 'generate', element: <PromptInputPage /> },
+      { path: 'generate', element: <UserInputView /> },
       { path: 'output', element: <OutputVisualizationPage /> },
       { path: 'help', element: <HelpAndFeedback /> },
       { path: 'settings', element: <Settings /> },

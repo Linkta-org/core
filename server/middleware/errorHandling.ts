@@ -16,7 +16,7 @@ export function createError(
   method: string,
   controller: string,
   errorString: string,
-  error: unknown
+  error: unknown,
 ): Error {
   switch (typeof error) {
     case 'string':
@@ -48,7 +48,7 @@ export function createError(
 export function globalErrorHandler(
   err: Error,
   _: Request,
-  res: Response
+  res: Response,
 ): Response {
   const defaultError: MiddlewareError = {
     name: 'MiddlewareError',

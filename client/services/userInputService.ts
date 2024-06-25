@@ -8,7 +8,7 @@ interface UserInput {
 
 export const fetchInputHistoryFromApi = async (
   page: number,
-  limit: number
+  limit: number,
 ): Promise<UserInput[]> => {
   try {
     const response = await axiosClient.get(`/v1/inputs`, {

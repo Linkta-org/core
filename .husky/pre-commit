@@ -39,3 +39,6 @@ if [ $CLIENT_LINT -ne 0 ] || [ $SERVER_LINT -ne 0 ]; then
 fi
 
 echo "✅ Linting and formatting passed. Ready to commit."
+
+# Confirm pre-commit hook ran before completing commit
+echo 'Pre-commit hook ran successfully with no TypeScript or linting errors detected.'

@@ -68,7 +68,7 @@
     "utils/**/*",
     "zod/**/*",
     "*.tsx",
-    "__tests__/**/*.ts*"
+    "tests/**/*.ts*"
   ],
   "exclude": ["dist", "node_modules"],
   "ts-node": {

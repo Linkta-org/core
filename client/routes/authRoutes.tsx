@@ -10,7 +10,7 @@ const authRoutes: RouteObject[] = [
   { path: 'userLogin', element: <SignInPage /> },
   { path: 'userSignup', element: <SignUpPage /> },
   { path: 'forgotPassword', element: <ForgotPasswordPage /> },
-  { path: 'resetPassword', element: <PasswordUpdatePage /> },
+  { path: 'updatePassword', element: <PasswordUpdatePage /> },
 ];
 
 export default authRoutes;

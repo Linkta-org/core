@@ -68,11 +68,11 @@
   width: 100%;
   padding: 5px 25px;
 
-  &>p:first-child {
+  & > p:first-child {
     margin-right: auto;
   }
 
-  &>p:not(:first-child) {
+  & > p:not(:first-child) {
     margin-left: 20px;
   }
 }

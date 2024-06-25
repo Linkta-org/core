@@ -8,14 +8,23 @@ const HomePage = () => {
   return (
     <Box className={`${styles.homeContainer}`}>
       <Typography variant='h4'>
-        Revolutionizing Learning:
-        Intuitive Visualization for Complex Concepts
+        Revolutionizing Learning: Intuitive Visualization for Complex Concepts
       </Typography>
-      <Typography variant='body2' className={`${styles.bodyText}`}>
-        Experience a new era of understanding, where concepts become clear and logic flows effortlessly, making the path from confusion to clarity both intuitive and accessible.
+      <Typography
+        variant='body2'
+        className={`${styles.bodyText}`}
+      >
+        Experience a new era of understanding, where concepts become clear and
+        logic flows effortlessly, making the path from confusion to clarity both
+        intuitive and accessible.
       </Typography>
       <Box className={`${styles.imagePlaceholder}`}>
-        <Typography variant='h6' color='secondary'>Placeholder</Typography>
+        <Typography
+          variant='h6'
+          color='secondary'
+        >
+          Placeholder
+        </Typography>
       </Box>
     </Box>
   );

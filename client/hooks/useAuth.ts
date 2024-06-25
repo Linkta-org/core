@@ -6,7 +6,7 @@
  */
 const useAuth = () => {
   // TODO: implement auth logic, currenly only using placeholders
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   const isLoading = false;
 
   return { isAuthenticated, isLoading };

@@ -6,7 +6,8 @@
   padding-top: 2dvh;
   gap: 3dvh;
 
-  & p, h6 {
+  & p,
+  h6 {
     color: var(--light-gray);
   }
 

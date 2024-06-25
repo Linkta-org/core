@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 50px;
+  max-height: 50%;
 }
 
 .bodyText {
@@ -11,7 +12,6 @@
 
 .imagePlaceholder {
   border-radius: 10px;
-  margin: 10px;
   grid-column-start: 2;
   grid-row-start: 1;
   grid-row-end: 3;

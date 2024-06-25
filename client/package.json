@@ -10,7 +10,8 @@
     "start": "vite preview --config vite.config.js",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "keywords": [
     "education"

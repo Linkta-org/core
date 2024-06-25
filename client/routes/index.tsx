@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { type RouteObject, createBrowserRouter } from 'react-router-dom';
 import publicRoutes from '@routes/publicRoutes';
 import privateRoutes from '@routes/privateRoutes';
@@ -8,9 +8,11 @@ import ErrorPage from '@features/error-pages/ErrorPage';
 import useAuth from '@hooks/useAuth';
 import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
 
-const authState = () => {
+function authState() {
+  const [isAuthState, setIsAuthState] = useState(false);
   const { isAuthenticated } = useAuth();
-  return isAuthenticated;
+  setIsAuthState(isAuthenticated);
+  return isAuthState;
 }
 /**
  * Initializes the application's router using createBrowserRouter, combining various routes under MainLayout for a unified layout. It includes:

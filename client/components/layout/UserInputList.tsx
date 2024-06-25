@@ -73,7 +73,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
             >
               <ListItemText
                 primary={
-                  <Typography variant='caption'>{userInput.input}</Typography>
+                  <Typography variant="caption">{userInput.input}</Typography>
                 }
                 id={`user-input-${userInput._id}`}
                 aria-label={`Details for ${userInput.title}`}

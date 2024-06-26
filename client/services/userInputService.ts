@@ -28,6 +28,6 @@ export const deleteUserInput = async (id: string) => {
     return response.data;
   } catch (error) {
     // TODO: implement logging service
-    console.error('Error deleting user input:', error);
+    // console.error('Error deleting user input:', error);
   }
 };

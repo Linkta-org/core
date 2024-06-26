@@ -58,7 +58,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
           prevInputs.filter((input) => `${input._id}-${inputs.indexOf(input)}` !== selectedUserInputId)
         );
       } catch (error) {
-        console.error('Failed to delete user input:', error);
+        // console.error('Failed to delete user input:', error);
       }
     }
     handleMenuClose();

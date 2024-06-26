@@ -4,6 +4,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
 import styles from '@styles/layout/UserInputList.module.css';
 import useDrawerStore from '@stores/userDrawerStore';
+import { deleteUserInput } from '@/services/userInputService';
 
 interface UserInput {
   _id: string;
@@ -25,6 +26,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
     null,
   );
+  const [inputs, setInputs] = useState(inputHistory); // Local state for inputs
   const { drawerOpen } = useDrawerStore();
   const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
 
@@ -48,13 +50,27 @@ const UserInputList: React.FC<UserInputListProps> = ({
     }
   }, [drawerOpen]);
 
+  const handleDelete = useCallback(async () => {
+    if (selectedUserInputId) {
+      try {
+        await deleteUserInput(selectedUserInputId.split('-')[0]); // Extract ID and send delete request
+        setInputs((prevInputs) =>
+          prevInputs.filter((input) => `${input._id}-${inputs.indexOf(input)}` !== selectedUserInputId)
+        );
+      } catch (error) {
+        console.error('Failed to delete user input:', error);
+      }
+    }
+    handleMenuClose();
+  }, [selectedUserInputId, handleMenuClose]);
+
   return (
     <>
       <List
         className={styles.userInputList}
         role='list'
       >
-        {inputHistory.slice(0, visibleItems).map((userInput, index) => {
+        {inputs.slice(0, visibleItems).map((userInput, index) => {
           const uniqueId = `${userInput._id}-${index}`;
           return (
             <ListItemButton
@@ -105,15 +121,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
           }
           handleMenuClose();
         }}
-        onDelete={() => {
-          if (selectedUserInputId) {
-            // console.log(
-            //   'Delete Event Handler Placeholder:',
-            //   selectedUserInputId
-            // );
-          }
-          handleMenuClose();
-        }}
+        onDelete={handleDelete}
       />
     </>
   );

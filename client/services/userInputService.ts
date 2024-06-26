@@ -21,3 +21,9 @@ export const fetchInputHistoryFromApi = async (
     return [];
   }
 };
+
+export const deleteUserInput = async (id: string) => {
+  id = id.slice(0, 24);
+  const response = await axiosClient.delete(`/v1/inputs/${id}`);
+  return response.data;
+};

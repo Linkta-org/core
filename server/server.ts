@@ -111,6 +111,8 @@ function startServer() {
 function stopServer(server: Server) {
   server.close(() => {
     logger.warn('Server stopped.');
+    logger.warn('Server stopped.');
+    logger.warn('Server stopped.');
 
     // disconnect from the database
 

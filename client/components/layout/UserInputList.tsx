@@ -53,7 +53,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const handleDelete = useCallback(async () => {
     if (selectedUserInputId) {
       try {
-        await deleteUserInput(selectedUserInputId.split('-')[0]); // Extract ID and send delete request
+        await deleteUserInput(selectedUserInputId.slice(0, 24));
         setInputs((prevInputs) =>
           prevInputs.filter((input) => `${input._id}-${inputs.indexOf(input)}` !== selectedUserInputId)
         );

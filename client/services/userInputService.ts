@@ -17,7 +17,7 @@ export const fetchInputHistoryFromApi = async (
     return response.data.inputHistory || [];
   } catch (error) {
     // TODO: implement logging service
-    // console.error('Error fetching user inputs:', error);
+    console.log('Error fetching user inputs:', error);
     return [];
   }
 };

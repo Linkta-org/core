@@ -2,12 +2,7 @@ import type { InfiniteData } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import useInfiniteInputQuery from './useInfiniteInputQuery';
 import { useCallback } from 'react';
-
-interface UserInput {
-  _id: string;
-  title: string;
-  input: string;
-}
+import type { UserInput } from '../types';
 
 interface UseInputHistoryResult {
   inputHistory: UserInput[];

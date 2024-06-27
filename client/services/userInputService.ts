@@ -1,10 +1,5 @@
 import { axiosClient } from '@config/axios';
-
-interface UserInput {
-  _id: string;
-  title: string;
-  input: string;
-}
+import type { UserInput } from '../types';
 
 export const fetchInputHistoryFromApi = async (
   page: number,

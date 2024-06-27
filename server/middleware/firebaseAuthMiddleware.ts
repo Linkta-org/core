@@ -25,7 +25,7 @@ initializeApp({
 
 const isAuthorized = async (req: Request, _res: Response, next: NextFunction) => {
   const idToken = req.headers.authorization;
-  logger.debug('TOKEN: ', idToken);
+  logger.debug('AUTH REQUEST HEADER: ', idToken);
 
   /**
    * If the idToken is valid, the verifyIdToken() method will return a decoded token object.
@@ -33,7 +33,7 @@ const isAuthorized = async (req: Request, _res: Response, next: NextFunction) =>
    */
   try {
     const verification = await admin.auth().verifyIdToken(idToken as string);
-    logger.debug('VERIFICATION: ', verification);
+    logger.info('User\'s ID Token successfully verified!');
     next(verification.uid);
   } catch (err) {
     logger.error(err);

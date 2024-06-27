@@ -1,6 +1,7 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
+
 import styles from '@styles/layout/UnauthorizedLayout.module.css';
 
 /**
@@ -9,12 +10,14 @@ import styles from '@styles/layout/UnauthorizedLayout.module.css';
  * The `Outlet` component handles rendering of route-specific content in the main section.
  */
 const UnauthorizedLayout: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleSignIn = () => {
-    console.log('SIGN IN');
+    navigate('/userLogin');
   };
 
   const handleSignUp = () => {
-    console.log('SIGN UP');
+    navigate('/userSignup');
   };
 
   return (
@@ -37,7 +40,6 @@ const UnauthorizedLayout: React.FC = () => {
             alt='The Linkta.io logo at approximately 50 pixels square, located in the upper-left corner of the page.'
           />
           <Typography variant='h6'>Linkta</Typography>
-
           <Button
             className={`${styles.signInButton}`}
             variant='contained'

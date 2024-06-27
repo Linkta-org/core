@@ -11,6 +11,7 @@
       "./features",
       "./hooks",
       "./mocks",
+      "./mutations",
       "./routes",
       "./services",
       "./stores",
@@ -29,6 +30,7 @@
       "@features/*": ["features/*"],
       "@hooks/*": ["hooks/*"],
       "@mocks/*": ["mocks/*"],
+      "@mutations/*": ["mutations/*"],
       "@routes/*": ["routes/*"],
       "@services/*": ["services/*"],
       "@stores/*": ["stores/*"],
@@ -60,6 +62,7 @@
     "features/**/*",
     "hooks/**/*",
     "mocks/**/*",
+    "mutations/**/*",
     "routes/**/*",
     "services/**/*",
     "styles/**/*",
@@ -68,7 +71,8 @@
     "utils/**/*",
     "zod/**/*",
     "*.tsx",
-    "__tests__/**/*.ts*"
+    "__tests__/**/*.ts*",
+    "**/*.d.ts"
   ],
   "exclude": ["dist", "node_modules"],
   "ts-node": {

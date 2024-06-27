@@ -34,7 +34,8 @@
     "dist",
     "package*.json",
     "*.config.js",
-    "*.html"
+    "*.html",
+    "**/*d.ts"
   ],
   "overrides": [
     {

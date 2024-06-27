@@ -23,7 +23,7 @@ initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
 });
 
-const isAuthorized = async (req: Request, res: Response, next: NextFunction) => {
+const isAuthorized = async (req: Request, _res: Response, next: NextFunction) => {
   const idToken = req.headers.authorization;
   logger.debug('TOKEN: ', idToken);
 
@@ -37,7 +37,6 @@ const isAuthorized = async (req: Request, res: Response, next: NextFunction) => 
     next(verification.uid);
   } catch (err) {
     logger.error(err);
-    res.status(401).send(err);
   }
 }
 

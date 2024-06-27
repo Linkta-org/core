@@ -9,7 +9,6 @@ import linktaFlowRouter from '@routes/linktaFlowRouter';
 import log4jsConfig from '@/utils/log4js.config.json';
 import { getEnv } from '@utils/environment';
 import userInputRouter from '@routes/userInputRouter';
-import authRouter from '@routes/authRouter';
 import type { Express, Response } from 'express';
 import type { Server } from 'http';
 
@@ -74,10 +73,6 @@ function startServer() {
 
   app.use('/v1/flows', linktaFlowRouter, () => {
     logger.debug('HIT v1/flows handler');
-  });
-
-  app.use('/v1/auth', authRouter, () => {
-    logger.debug('HIT v1/auth handler');
   });
 
   /**

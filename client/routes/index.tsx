@@ -1,30 +1,35 @@
 import React from 'react';
 import { type RouteObject, createBrowserRouter } from 'react-router-dom';
-import publicRoutes from '@routes/publicRoutes';
-import privateRoutes from '@routes/privateRoutes';
-import NotFoundPage from '@features/not-found-page/NotFoundPage';
-import MainLayout from '@components/layout/MainLayout';
-import ErrorPage from '@features/error-pages/ErrorPage';
 import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
+import NotFoundPage from '@features/not-found-page/NotFoundPage';
+import ErrorPage from '@features/error-pages/ErrorPage';
+import MainLayout from '@components/layout/MainLayout';
+import privateRoutes from '@routes/privateRoutes';
+import publicRoutes from '@routes/publicRoutes';
+import useAuth from '@hooks/useAuth';
 
-// TODO: replace this variable with a call to a Firebase method
-const isAuthenticated = true;
 /**
- * Initializes the application's router using createBrowserRouter, combining various routes under MainLayout for a unified layout. It includes:
- * - Root path '/' for MainLayout with nested public, private routes, and catch-all '*' path directing to NotFoundPage for undefined routes.
+ * Initializes the application's router using createBrowserRouter, combining various routes under one of two static layouts.
+ * It includes:
+ * - Root path '/' for static layout with nested public, private routes, and catch-all '*' path directing to NotFoundPage for undefined routes.
  * - errorElement is defined to render the ErrorPage component in the event of routing errors
+ * - the two static layouts are: MainLayout for logged in users / UnauthorizedLayout for logged out users
  */
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
-    children: [
-      ...publicRoutes,
-      ...privateRoutes,
-      { path: '*', element: <NotFoundPage /> },
-    ] as RouteObject[],
-    errorElement: <ErrorPage />,
-  },
-] as RouteObject[]);
+const IndexRouter = () => {
+  const { isAuthenticated } = useAuth();
 
-export default router;
+  return createBrowserRouter([
+    {
+      path: '/',
+      element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
+      children: [
+        ...publicRoutes,
+        ...privateRoutes,
+        { path: '*', element: <NotFoundPage /> },
+      ] as RouteObject[],
+      errorElement: <ErrorPage />,
+    },
+  ] as RouteObject[]);
+};
+
+export default IndexRouter;

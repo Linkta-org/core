@@ -5,15 +5,16 @@ import {
   updateLinktaFlow,
   deleteLinktaFlow,
 } from '@controllers/linktaFlowController';
-// TODO: to add validation
-const router = Router();
+import isAuthorized from '@middleware/firebaseAuthMiddleware';
 
-router.get('/', fetchLinktaFlows);
+const linktaFlowRouter = Router();
 
-router.get('/:linktaFlowId', fetchLinktaFlow);
+linktaFlowRouter.get('/', isAuthorized, fetchLinktaFlows);
 
-router.put('/:linktaFlowId', updateLinktaFlow);
+linktaFlowRouter.get('/:linktaFlowId', isAuthorized, fetchLinktaFlow);
 
-router.delete('/:linktaFlowId', deleteLinktaFlow);
+linktaFlowRouter.put('/:linktaFlowId', isAuthorized, updateLinktaFlow);
 
-export default router;
+linktaFlowRouter.delete('/:linktaFlowId', isAuthorized, deleteLinktaFlow);
+
+export default linktaFlowRouter;

@@ -51,7 +51,8 @@
     "routes/**/*",
     "types/**/*",
     "utils/**/*",
-    "zod/**/*"
+    "zod/**/*",
+    "tests/**/*"
   ],
   "exclude": ["dist", "node_modules"],
   "ts-node": {

@@ -9,7 +9,9 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.ts",
     "lint": "eslint . && prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "keywords": [
     "education"
@@ -36,7 +38,8 @@
     "typescript": "^5.4.2",
     "typescript-eslint": "^7.1.1",
     "vite": "^5.1.6",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "@google/generative-ai": "^0.12.0",

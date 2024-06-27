@@ -4,6 +4,7 @@
   "description": "A learning tool for people to learn fast and easy",
   "main": "index.js",
   "scripts": {
+    "prepare": "husky install",
     "lint-staged": "lint-staged",
     "dev": "concurrently \"npm run dev --prefix ./client\" \"npm run dev --prefix ./server\"",
     "prepare": "husky"

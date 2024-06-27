@@ -13,7 +13,8 @@ const SignInPage = () => {
 
   const handleGoogleAuthClick = () => {
     googleAuthMutation.mutate(undefined, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        console.log('Signed in with GOOGLE AUTH SUCCESSFULLY', data);
         navigate('/generate');
       },
     });

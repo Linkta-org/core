@@ -16,16 +16,14 @@ const ProtectedRoute: React.FC = () => {
   // TODO: add error handling
   return (
     <>
-      {
-        isAuthenticated ? (
-          <Outlet />
-        ) : (
-          <Navigate
-            to='/userLogin'
-            replace={true}
-          />
-        )
-      }
+      {isAuthenticated ? (
+        <Outlet />
+      ) : (
+        <Navigate
+          to='/userLogin'
+          replace={true}
+        />
+      )}
     </>
   );
 };

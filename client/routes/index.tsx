@@ -18,20 +18,18 @@ import useAuth from '@hooks/useAuth';
 const IndexRouter = () => {
   const { isAuthenticated } = useAuth();
 
-  return createBrowserRouter(
-    [
-      {
-        path: '/',
-        element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
-        children: [
-          ...publicRoutes,
-          ...privateRoutes,
-          { path: '*', element: <NotFoundPage /> },
-        ] as RouteObject[],
-        errorElement: <ErrorPage />,
-      },
-    ] as RouteObject[]
-  );
-}
+  return createBrowserRouter([
+    {
+      path: '/',
+      element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
+      children: [
+        ...publicRoutes,
+        ...privateRoutes,
+        { path: '*', element: <NotFoundPage /> },
+      ] as RouteObject[],
+      errorElement: <ErrorPage />,
+    },
+  ] as RouteObject[]);
+};
 
 export default IndexRouter;

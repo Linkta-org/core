@@ -68,7 +68,6 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
         }}
       >
         <TextField
-          defaultValue='Transport Layer'
           hiddenLabel
           onFocus={onFocus}
           onBlur={onBlur}

@@ -9,7 +9,7 @@ import type { Express, Request, Response } from 'express';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
 import log4jsConfig from '@/utils/log4js.config.json';
 import userInputRouter from '@routes/userInputRouter';
-import { rateLimit } from 'express-rate-limit';
+import RateLimiter from '@middleware/rateLimiterMiddleware';
 import { getEnv } from '@utils/environment';
 import type { Server } from 'http';
 
@@ -40,22 +40,6 @@ const corsOptions = {
 };
 
 /**
- * Express rate limiter configuration
- */
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 60, // Limit each IP to 60 requests per `window` (here, per 15 minutes).
-  standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-  message: 'Rate limit reached. You have sent too many requests!', // The message sent in the response to the client
-  handler: (_req, res, _next, options) => {
-    // override the default handler to add the server-side log
-    logger.error('Rate Limiter Hit!');
-    res.status(options.statusCode).send(options.message);
-  },
-});
-
-/**
  * Start the server.
  */
 function startServer() {
@@ -63,7 +47,7 @@ function startServer() {
   const PORT = process.env.PORT || 3000;
 
   // Apply the rate limiting middleware to all requests.
-  app.use(limiter);
+  app.use(RateLimiter);
 
   if (!uri) {
     throw new Error('Missing DB connection string!');

@@ -4,8 +4,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
 import styles from '@styles/layout/UserInputList.module.css';
 import useDrawerStore from '@stores/userDrawerStore';
-import { deleteUserInput } from '@/services/userInputService';
 import { useNavigate } from 'react-router-dom';
+import { deleteUserInput } from '@/services/userInputService';
 import useUpdateInputTitleMutation from '../../hooks/useUpdateInputTitleMutation';
 import type { UserInput } from '../../types';
 

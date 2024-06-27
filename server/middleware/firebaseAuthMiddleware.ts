@@ -1,37 +1,43 @@
-import * as admin from 'firebase-admin';
-import { getServiceAccountEnv } from './environment';
+import admin from 'firebase-admin';
+import { initializeApp } from 'firebase-admin/app';
 import { Request, Response, NextFunction } from 'express';
+import { getServiceAccountEnv } from '@utils/environment';
 import log4js from 'log4js';
-import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
+
+getServiceAccountEnv();
 
 const { getLogger } = log4js;
 const logger = getLogger('[USER AUTH]');
 
-interface WithToken extends Request {
-  currentUser: DecodedIdToken
+/**
+ * The developer must create a new private key via the Firebase console
+ * then create a local .env.service-account file with the following properties
+ */
+const serviceAccount = {
+  projectId: process.env.PROJECT_ID,
+  privateKey: process.env.PRIVATE_KEY,
+  clientEmail: process.env.CLIENT_EMAIL
 }
 
-getServiceAccountEnv();
-const key = process.env.PRIVATE_KEY as string;
+initializeApp({
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+});
 
-admin.initializeApp({
-  credential: admin.credential.cert(key)
-})
-
-const isAuthorized = async (req: WithToken, _res: Response, next: NextFunction) => {
-  const idToken = req.headers.authorization?.split('Bearer ')[1];
+const isAuthorized = async (req: Request, res: Response, next: NextFunction) => {
+  const idToken = req.headers.authorization;
+  logger.debug('TOKEN: ', idToken);
 
   /**
-   * If the ID token is valid, the verifyIdToken() method will return a decoded token object.
+   * If the idToken is valid, the verifyIdToken() method will return a decoded token object.
    * This object contains the user's information, such as their uid and email address.
    */
   try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken as string);
-    req.currentUser = decodedToken;
-    next();
+    const verification = await admin.auth().verifyIdToken(idToken as string);
+    logger.debug('VERIFICATION: ', verification);
+    next(verification.uid);
   } catch (err) {
     logger.error(err);
-    next(err);
+    res.status(401).send(err);
   }
 }
 

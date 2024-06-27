@@ -1,4 +1,5 @@
-import { Router, Request, Response } from 'express';
+import type { Request, Response } from 'express';
+import { Router } from 'express';
 import createUserInputController from '@/controllers/userInputController';
 import validationMiddleware from '@/middleware/validationMiddleware';
 import createLinktaFlowService from '@/services/linktaFlowService';

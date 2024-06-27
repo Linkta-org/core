@@ -16,7 +16,7 @@ import {
 import styles from '@styles/UserInputView.module.css';
 import { auth } from '@/firebaseConfig';
 import type { UserInputPayload } from '../UserInput';
-import { useNewUserInputMutation } from '@/mutations/newUserInputMutation';
+import { useNewUserInputMutation } from '@/hooks/newUserInputMutation';
 
 interface CustomFormData {
   input: string;

@@ -4,7 +4,7 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import styles from '@styles/layout/AuthStyles.module.css';
-import { useGoogleAuthMutation } from '@/mutations/googleAuthMutation';
+import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
 
 const SignUpPage = () => {
   useDocumentTitle('Sign in');

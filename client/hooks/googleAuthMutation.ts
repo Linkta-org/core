@@ -2,7 +2,7 @@ import type { UseMutationResult } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
-import { auth } from '@/firebaseConfig';
+import { auth } from '@/firebase/firebaseConfig';
 
 type GoogleAuthResult = {
   token: string | undefined;

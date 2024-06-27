@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import type { UseMutationResult } from '@tanstack/react-query';
 import type { User } from 'firebase/auth';
 
-import { auth } from '../firebaseConfig';
+import { auth } from '../firebase/firebaseConfig';
 
 type CreateUserResult = {
   user: User;

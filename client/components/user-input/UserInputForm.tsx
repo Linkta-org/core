@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import styles from '@styles/UserInputView.module.css';
-import { auth } from '@/firebaseConfig';
+import { auth } from '@/firebase/firebaseConfig';
 import type { UserInputPayload } from '../UserInput';
 import { useNewUserInputMutation } from '@/hooks/newUserInputMutation';
 

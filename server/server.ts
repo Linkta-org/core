@@ -5,10 +5,12 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { globalErrorHandler } from '@middleware/errorHandling';
+import type { Express, Request, Response } from 'express';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
 import log4jsConfig from '@/utils/log4js.config.json';
-import { getEnv } from '@utils/environment';
 import userInputRouter from '@routes/userInputRouter';
+import RateLimiter from '@middleware/rateLimiterMiddleware';
+import { getEnv } from '@utils/environment';
 import type { Express, Response } from 'express';
 import type { Server } from 'http';
 
@@ -44,6 +46,9 @@ const corsOptions = {
 function startServer() {
   const app: Express = express();
   const PORT = process.env.PORT || 3000;
+
+  // Apply the rate limiting middleware to all requests.
+  app.use(RateLimiter);
 
   if (!uri) {
     throw new Error('Missing DB connection string!');
@@ -114,6 +119,8 @@ function startServer() {
  */
 function stopServer(server: Server) {
   server.close(() => {
+    logger.warn('Server stopped.');
+    logger.warn('Server stopped.');
     logger.warn('Server stopped.');
 
     // disconnect from the database

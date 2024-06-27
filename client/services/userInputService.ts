@@ -17,7 +17,17 @@ export const fetchInputHistoryFromApi = async (
     return response.data.inputHistory || [];
   } catch (error) {
     // TODO: implement logging service
-    // console.error('Error fetching user inputs:', error);
+    console.log('Error fetching user inputs:', error);
     return [];
+  }
+};
+
+export const deleteUserInput = async (id: string) => {
+  try {
+    const response = await axiosClient.delete(`/v1/inputs/${id}`);
+    return response.data;
+  } catch (error) {
+    // TODO: implement logging service
+    // console.error('Error deleting user input:', error);
   }
 };

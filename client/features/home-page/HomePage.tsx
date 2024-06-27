@@ -16,16 +16,15 @@ const HomePage = () => {
           className={`${styles.bodyText}`}
         >
           Experience a new era of understanding, where concepts become clear and
-          logic flows effortlessly, making the path from confusion to clarity both
-          intuitive and accessible.
+          logic flows effortlessly, making the path from confusion to clarity
+          both intuitive and accessible.
         </Typography>
       </Box>
       <img
         className={`${styles.homeImage}`}
-        alt='A static image of a 3D model showing various gadgets and widgets.'
+        alt='A 3D model showing various gadgets and widgets.'
         src='../../assets/Linkta-Landing.png'
-      >
-      </img>
+      ></img>
     </Box>
   );
 };

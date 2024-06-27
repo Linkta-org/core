@@ -11,6 +11,7 @@ import log4jsConfig from '@/utils/log4js.config.json';
 import userInputRouter from '@routes/userInputRouter';
 import RateLimiter from '@middleware/rateLimiterMiddleware';
 import { getEnv } from '@utils/environment';
+import type { Express, Response } from 'express';
 import type { Server } from 'http';
 
 getEnv();
@@ -61,25 +62,29 @@ function startServer() {
   app.use(cors(corsOptions));
 
   /**
-   * Test route for the server. This should direct to the frontend.
+   * Server health check route handler
    */
-  app.get('/', (_: Request, res: Response) => {
-    logger.info('A GET request hit the server root endpoint');
-    res.send({ message: 'Hello from the Backend!' });
+  app.get('/', (_req, res: Response) => {
+    logger.debug('HIT / handler');
+    res.send({ message: 'Hello from the Server!' });
   });
 
   /**
-   * Routes.
+   * Routers
    */
+  app.use('/v1/inputs', userInputRouter, () => {
+    logger.debug('HIT v1/inputs handler');
+  });
 
-  app.use('/v1/inputs', userInputRouter);
-  app.use('/v1/flows', linktaFlowRouter);
+  app.use('/v1/flows', linktaFlowRouter, () => {
+    logger.debug('HIT v1/flows handler');
+  });
 
   /**
    * Default route for unknown routes. This should be the last route.
    * There should be handling for this in the frontend.
    */
-  app.use((_: Request, res: Response) => {
+  app.use((_req, res: Response) => {
     res.status(404).send({ message: 'Route not found' });
   });
 

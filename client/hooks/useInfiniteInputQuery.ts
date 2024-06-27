@@ -5,12 +5,7 @@ import type {
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchInputHistoryFromApi } from '@services/userInputService';
 import { ITEMS_PER_PAGE } from '@utils/constants';
-
-interface UserInput {
-  _id: string;
-  title: string;
-  input: string;
-}
+import type { UserInput } from '../types';
 
 type UserInputsPage = UserInput[];
 type InfiniteUserInputsData = InfiniteData<UserInputsPage>;

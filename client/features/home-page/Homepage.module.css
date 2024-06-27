@@ -1,22 +1,20 @@
 .homeContainer {
-  padding: 15%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 50px;
-  max-height: 50%;
+  height: 80dvh;
+}
+
+.copyContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 50dvw;
 }
 
 .bodyText {
   grid-column-start: 1;
 }
 
-.imagePlaceholder {
-  border-radius: 10px;
-  grid-column-start: 2;
-  grid-row-start: 1;
-  grid-row-end: 3;
-  background-color: gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.homeImage {
+  width: 400px;
+  aspect-ratio: 10 / 8;
 }

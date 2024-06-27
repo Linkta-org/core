@@ -1,4 +1,4 @@
-#npm run text 
+#npm run text
 
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"

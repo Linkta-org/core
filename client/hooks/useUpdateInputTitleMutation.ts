@@ -7,7 +7,7 @@ import { axiosClient } from '@config/axios';
 import type {
   UpdateInputTitleParams,
   UpdateInputTitleResponse,
-} from '../types';
+} from '@/types/UserInput';
 
 //  Updates the title of a user input via API call.
 const updateInputTitleInApi = async ({

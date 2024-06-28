@@ -5,12 +5,12 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { globalErrorHandler } from '@middleware/errorHandling';
+import type { Express, Response } from 'express';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
 import log4jsConfig from '@/utils/log4js.config.json';
 import userInputRouter from '@routes/userInputRouter';
 import RateLimiter from '@middleware/rateLimiterMiddleware';
 import { getEnv } from '@utils/environment';
-import type { Express, Response } from 'express';
 import type { Server } from 'http';
 
 getEnv();

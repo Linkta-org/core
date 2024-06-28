@@ -1,0 +1,36 @@
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  gap: var(--gap-default);
+  width: 100%;
+}
+
+.skeletonList__skeleton {
+  height: var(--height-tab-default);
+  max-width: 100%;
+}
+
+.skeletonList__skeleton,
+.paginationButton {
+  margin: var(--gap-small) 1rem;
+}
+
+.userInputHistory {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.userInputHistory__heading {
+  padding: var(--padding-small) var(--padding-default);
+  width: 100%;
+}
+
+.paginationButton {
+  width: 6vw;
+  height: 2vw;
+}

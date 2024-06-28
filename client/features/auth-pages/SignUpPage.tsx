@@ -1,10 +1,27 @@
 import React from 'react';
-import useDocumentTitle from '@hooks/useDocumentTitle';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+
+import useDocumentTitle from '@hooks/useDocumentTitle';
 import styles from '@styles/layout/AuthStyles.module.css';
+import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
 
 const SignUpPage = () => {
   useDocumentTitle('Sign in');
+  const navigate = useNavigate();
+  const googleAuthMutation = useGoogleAuthMutation();
+
+  const handleGoogleAuthClick = () => {
+    googleAuthMutation.mutate(undefined, {
+      onSuccess: () => {
+        navigate('/generate');
+      },
+      onError: (error) => {
+        console.error('something went wrong', error.message);
+      },
+    });
+  };
+
   return (
     <Box className={`${styles.signInPage}`}>
       <Typography
@@ -18,6 +35,7 @@ const SignUpPage = () => {
         <Button
           variant='contained'
           className={`${styles.authButton}`}
+          onClick={handleGoogleAuthClick}
         >
           <img
             src='../assets/google-icon.png'
@@ -65,7 +83,12 @@ const SignUpPage = () => {
 
       <Typography variant='body2'>
         Already have an account?
-        <Link>Sign In</Link>
+        <Link
+          component={RouterLink}
+          to='/userLogin'
+        >
+          Sign In
+        </Link>
       </Typography>
 
       <Typography

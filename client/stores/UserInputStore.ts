@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { UserInput } from '@/types';
+import type { UserInput } from '@/types/UserInput';
 
 type UserInputStore = {
   currentInput: UserInput | undefined;

@@ -5,11 +5,13 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import styles from '@styles/layout/AuthStyles.module.css';
 import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
+import { useGithubAuthMutation } from '../useSignInWithGitHub';
 
 const SignUpPage = () => {
   useDocumentTitle('Sign in');
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
+  const githubAuthMutation = useGithubAuthMutation();
 
   const handleGoogleAuthClick = () => {
     googleAuthMutation.mutate(undefined, {
@@ -18,6 +20,15 @@ const SignUpPage = () => {
       },
       onError: (error) => {
         console.error('something went wrong', error.message);
+      },
+    });
+  };
+
+  const handleGithubAuthClick = () => {
+    githubAuthMutation.mutate(undefined, {
+      onSuccess: (data) => {
+        console.log('Signed in with GOOGLE AUTH SUCCESSFULLY', data);
+        navigate('/generate');
       },
     });
   };
@@ -48,6 +59,7 @@ const SignUpPage = () => {
         <Button
           variant='contained'
           className={`${styles.authButton}`}
+          onClick={handleGithubAuthClick}
         >
           <img
             src='../assets/github-icon.png'

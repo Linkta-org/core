@@ -30,6 +30,7 @@ const isAuthorized = async (
 ) => {
   const idToken = req.headers.authorization;
   logger.debug('AUTH REQUEST HEADER: ', idToken);
+  logger.debug('REQ.HEADERS: ', req.headers);
 
   /**
    * If the idToken is valid, the verifyIdToken() method will return a decoded token object.

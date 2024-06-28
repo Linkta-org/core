@@ -29,7 +29,7 @@ const uri = process.env.MONGO_DB_URI;
 mongoose.set('strictQuery', false);
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: process.env.CLIENT_BASE_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: [
     'Content-Type',

@@ -5,6 +5,7 @@ import OptionsMenu from './OptionsMenu';
 import styles from '@styles/layout/UserInputList.module.css';
 import useDrawerStore from '@stores/userDrawerStore';
 import { deleteUserInput } from '@/services/userInputService';
+import { useNavigate } from 'react-router-dom';
 import useUpdateInputTitleMutation from '../../hooks/useUpdateInputTitleMutation';
 import type { UserInput } from '../../types';
 
@@ -26,13 +27,16 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const { drawerOpen } = useDrawerStore();
   const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
   const updateInputTitleMutation = useUpdateInputTitleMutation();
+  const navigate = useNavigate();
 
   const handleItemClick = useCallback(
     (event: React.MouseEvent<HTMLElement>, id: string) => {
       setMenuAnchorElement(event.currentTarget);
       setSelectedUserInputId(id);
+      const userInputId = id.split('-')[0];
+      navigate(`/output/${userInputId}`);
     },
-    [],
+    [navigate],
   );
 
   const handleMenuClose = useCallback(() => {
@@ -76,7 +80,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
       }
     }
     handleMenuClose();
-  }, [selectedUserInputId, handleMenuClose]);
+  }, [selectedUserInputId, handleMenuClose, inputs]);
 
   return (
     <>

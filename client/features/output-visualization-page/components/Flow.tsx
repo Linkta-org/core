@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import type { EdgeChange, NodeChange, Edge, Node, Connection } from 'reactflow';
 import ReactFlow, {
   addEdge,
@@ -14,6 +14,7 @@ import 'reactflow/dist/style.css';
 import LinktaFlowEdge from '@features/output-visualization-page/components/LinktaFlowEdge';
 import LinktaNode from '@features/output-visualization-page/components/LinktaNode';
 import ConnectionLine from '@features/output-visualization-page/components/ConnectionLine';
+import useFetchLinktaFlow from '@hooks/useFetchLinktaFlow';
 
 const nodeTypes = { linktaNode: LinktaNode };
 
@@ -56,9 +57,17 @@ const initialEdges = [
   },
 ];
 
-function Flow() {
+function Flow({ userInputId }: { userInputId: string }) {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const { data: linktaFlow } = useFetchLinktaFlow(userInputId);
+
+  useEffect(() => {
+    if (linktaFlow) {
+      setNodes(linktaFlow.nodes);
+      setEdges(linktaFlow.edges);
+    }
+  }, [linktaFlow]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>

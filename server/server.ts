@@ -12,6 +12,11 @@ import userInputRouter from '@routes/userInputRouter';
 import RateLimiter from '@middleware/rateLimiterMiddleware';
 import { getEnv } from '@utils/environment';
 import type { Server } from 'http';
+import { replaceTscAliasPaths } from 'tsc-alias';
+
+replaceTscAliasPaths({
+  resolveFullPaths: true,
+}).catch((err) => console.log(err));
 
 getEnv();
 

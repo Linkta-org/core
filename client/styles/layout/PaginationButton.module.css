@@ -1,0 +1,14 @@
+.paginationButton {
+  font-size: 0.6em;
+  display: flex;
+  align-items: center;
+  padding-left: 1.5rem;
+}
+
+.paginationButton:focus {
+  outline: 0.125rem solid var(--primary-main);
+}
+
+.paginationButton_icon {
+  transform: scale(0.7);
+}

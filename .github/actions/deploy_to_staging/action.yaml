@@ -1,0 +1,44 @@
+name: Deploy to Staging
+
+description: Deploy the bundled file to the staging environment
+
+inputs:
+  node-version:
+    description: "Node.js version"
+    required: false
+    default: "20.11.1"
+
+runs:
+  using: "ubuntu-latest"
+  steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: BundledFiles
+        path: dist
+    - name: Configure SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/staging.key
+        chmod 600 ~/.ssh/staging.key
+        cat ${{ secrets.SSH_KNOWN_HOSTS }} >> ~/.ssh/known_hosts
+        cat >> ~/.ssh/config << END
+        Host staging
+          HostName ${{ secrets.STAGING_SERVER }}
+          User ${{ secrets.SSH_STAGING_USERNAME }}
+          IdentityFile ~/.ssh/staging.key
+        END
+    - name: Move files to Staging
+      run: |
+        mkdir -p ~/incoming
+        scp -r dist ${{ secrets.SSH_STAGING_USERNAME }}@staging:~/incoming
+    - name: Stop Staging Server
+      run: |
+        ssh staging "systemctl --user stop nodeserver"
+    # the following will need to be modified after development to reflect the correct directories
+    - name: Deploy to Staging
+      run: |
+        ssh staging "cd ~/incoming && tar -xvf dist.tar.gz && rm -rf /home/linkta_gh/Linkta.org/* && mv dist/* /home/linkta_gh/Linkta.org && rm -rf dist && rm -f dist.tar.gz && exit"
+    - name: Start Staging Server
+      run: |
+        ssh staging "systemctl --user start nodeserver"

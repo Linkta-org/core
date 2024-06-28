@@ -1,0 +1,32 @@
+name: Lint
+
+description: |
+  This action will lint the application code without auto-fixing errors.
+
+inputs:
+  node-version:
+    description: 'The version of node to use'
+    required: true
+    default: '20.11.1'
+  directory:
+    description: 'The directory in which to run linting'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        cd ${{ inputs.directory }}
+        npm ci
+    - name: Lint
+      shell: bash
+      run: |
+        cd ${{ inputs.directory }}
+        npm run lint

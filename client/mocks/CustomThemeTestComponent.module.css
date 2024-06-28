@@ -1,0 +1,26 @@
+.testContainer {
+  background-color: var(--background-default);
+  color: var(--text-primary);
+  padding: 16px;
+  border: 1px solid var(--divider-color);
+}
+
+.testButton {
+  background-color: var(--primary-main);
+  color: var(--primary-contrastText);
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.testButton:hover {
+  background-color: var(--primary-dark);
+}
+
+.testBox {
+  background-color: var(--background-paper);
+  color: var(--text-primary);
+  padding: 8px;
+  margin: 8px 0;
+}

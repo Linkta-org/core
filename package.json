@@ -1,0 +1,24 @@
+{
+  "name": "linkta",
+  "version": "1.0.0",
+  "description": "A learning tool for people to learn fast and easy",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "lint-staged": "lint-staged",
+    "dev": "concurrently \"npm run dev --prefix ./client\" \"npm run dev --prefix ./server\"",
+    "nuke-and-install": "node scripts/nuke_and_install.js"
+  },
+  "keywords": [
+    "education"
+  ],
+  "author": "linkta",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.2.5"
+  }
+}

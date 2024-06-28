@@ -1,0 +1,77 @@
+.background-image,
+.background-color,
+.static-layout {
+  position: fixed;
+  inset: 0px;
+}
+
+.background-image {
+  background-image: url(../assets/white-tree.png);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+}
+
+.background-color {
+  background-color: #01383f;
+}
+
+.static-layout {
+  min-width: 300px;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  grid-template-rows: 50px 1fr auto;
+}
+
+.static-layout.layout-open {
+  grid-template-columns: 186px 1fr;
+}
+
+.static-layout.layout-closed {
+  grid-template-columns: 60px 1fr;
+}
+
+.linkta-logo-container,
+.top-nav-bar {
+  border-bottom: 1px solid #4f5d66;
+}
+
+.linkta-logo-container,
+.side-nav-compact,
+.side-nav-bar {
+  border-right: 1px solid #4f5d66;
+}
+
+.linkta-logo-container {
+  display: flex;
+  justify-content: start;
+}
+
+.linkta-logo-container.layout-open {
+  border-right: none;
+}
+
+.linkta-logo-image {
+  transition: 250ms ease;
+}
+
+.linkta-logo-image.layout-open {
+  margin-left: 130px;
+}
+
+.linkta-logo-image.layout-closed {
+  margin-left: 8px;
+}
+
+.top-nav-bar {
+  display: flex;
+  align-items: center;
+  padding-right: 25px;
+}
+
+.router-outlet {
+  display: flex;
+  grid-column-start: 2;
+  grid-row-start: 2;
+  justify-content: center;
+}

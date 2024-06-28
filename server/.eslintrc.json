@@ -1,0 +1,66 @@
+{
+  "root": true,
+  "env": {
+    "browser": false,
+    "es2024": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "no-relative-import-paths", "prettier"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "ignorePatterns": [
+    "node_modules/",
+    "dist",
+    "package*.json",
+    "*.config.js",
+    "*.html"
+  ],
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-unsafe-call": "warn",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ],
+  "rules": {
+    // General JavaScript/TypeScript rules
+    "no-console": "warn",
+    "no-unused-vars": "off", // replaced by @typescript-eslint/no-unused-vars
+    "prefer-rest-params": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-duplicate-enum-values": "error",
+    "@typescript-eslint/prefer-as-const": "error",
+    "no-shadow": "off", // replaced by @typescript-eslint/no-shadow
+    "@typescript-eslint/no-shadow": "error",
+    // Prettier integration
+    "prettier/prettier": "warn",
+
+    // Import/export rules
+    "import/no-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-relative-import-paths/no-relative-import-paths": [
+      "warn",
+      {
+        "allowSameFolder": true,
+        "prefix": "@"
+      }
+    ]
+  },
+  "settings": {}
+}

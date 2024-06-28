@@ -59,7 +59,7 @@ const UserInputForm = () => {
       const userInput: UserInputPayload = {
         input: data.input,
         headers: {
-          Authorization: `Bearer ${idToken}`,
+          Authorization: `${idToken}`,
         },
       };
 

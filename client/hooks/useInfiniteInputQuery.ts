@@ -6,6 +6,7 @@ import type {
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { axiosClient } from '@config/axios';
 import type { UserInput } from '../types';
+import { auth } from '../firebase/firebaseConfig';
 
 type UserInputsPage = UserInput[];
 type InfiniteUserInputsData = InfiniteData<UserInputsPage>;
@@ -17,8 +18,14 @@ const fetchInputHistoryFromApi = async (
   limit: number,
 ): Promise<UserInput[]> => {
   try {
+    const idToken = await auth.currentUser?.getIdToken();
+    if (!idToken) throw new Error('No ID token available');
+
     const response = await axiosClient.get(`/v1/inputs`, {
       params: { page, limit },
+      headers: {
+        Authorization: `${idToken}`,
+      },
     });
     return response.data.inputHistory || [];
   } catch (error) {

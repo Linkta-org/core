@@ -1,6 +1,10 @@
 import admin from 'firebase-admin';
 import { initializeApp } from 'firebase-admin/app';
-import type { Request, Response, NextFunction } from 'express';
+import type {
+  Request as ExpressRequest,
+  Response,
+  NextFunction,
+} from 'express';
 import { getServiceAccountEnv } from '@utils/environment';
 import log4js from 'log4js';
 
@@ -23,8 +27,14 @@ initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
 
+interface CustomRequest extends ExpressRequest {
+  user?: {
+    userId: string;
+  };
+}
+
 const isAuthorized = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction,
 ) => {
@@ -39,7 +49,12 @@ const isAuthorized = async (
   try {
     const verification = await admin.auth().verifyIdToken(idToken as string);
     logger.info("User's ID Token successfully verified!");
-    next(verification.uid);
+
+    req.user = {
+      userId: verification.uid,
+    };
+
+    next();
   } catch (err) {
     logger.error(err);
     res.status(401).send('Failed to authenticate the user.');

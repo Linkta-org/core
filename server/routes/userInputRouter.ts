@@ -10,7 +10,7 @@ import {
   userInputIdSchema,
   userInputInputSchema,
   userInputTitleSchema,
-} from '@/zod/userInputSchemas';
+} from '@/validators/userInputSchemas';
 
 const userInputRouter = Router();
 

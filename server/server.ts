@@ -3,6 +3,7 @@ import cors from 'cors';
 import log4js from 'log4js';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import { replaceTscAliasPaths } from 'tsc-alias';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { globalErrorHandler } from '@middleware/errorHandling';
 import type { Express, Response } from 'express';
@@ -24,6 +25,15 @@ log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
 configure(log4jsConfig);
 const logger = getLogger('[Linkta Server]');
 isConfigured() && logger.info('Log4JS is configured!');
+
+/**
+ * on build command, replace absolute paths with relative paths
+ */
+replaceTscAliasPaths({
+  resolveFullPaths: true,
+  resolveFullExtension: '.js',
+  verbose: true,
+}).catch((err) => logger.error(err));
 
 const uri = process.env.MONGO_DB_URI;
 mongoose.set('strictQuery', false);

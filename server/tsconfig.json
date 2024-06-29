@@ -53,7 +53,7 @@
     "utils/**/*",
     "validators/**/*"
   ],
-  "exclude": ["dist", "node_modules"],
+  "exclude": ["dist", "node_modules", "./utils/path-alias.js"],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   }

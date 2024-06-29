@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Box, Typography, Link, TextField } from '@mui/material';
+import { Button, Box, Typography, Link } from '@mui/material';
 
 import styles from '@styles/layout/AuthStyles.module.css';
 import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
@@ -69,23 +69,6 @@ const SignInPage = () => {
       </Box>
 
       <Typography variant='h6'>- OR -</Typography>
-
-      <form className={`${styles.authViewForm}`}>
-        <TextField
-          placeholder='email address'
-          variant='standard'
-        ></TextField>
-        <TextField
-          placeholder='password'
-          variant='standard'
-        ></TextField>
-        <Button
-          variant='contained'
-          className={`${styles.formSubmitButton}`}
-        >
-          Sign In
-        </Button>
-      </form>
 
       <Typography variant='body2'>
         Forgot your password?

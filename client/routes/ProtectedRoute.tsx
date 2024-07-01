@@ -10,6 +10,9 @@ import useAuth from '@hooks/useAuth';
 const ProtectedRoute: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
+  console.log('isAuthenticated', isAuthenticated);
+  console.log('isLoading', isLoading);
+
   if (isLoading) {
     return <Loader />;
   }

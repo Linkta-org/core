@@ -4,18 +4,16 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
 import styles from '@styles/layout/UserInputList.module.css';
 import useDrawerStore from '@stores/userDrawerStore';
-
-interface UserInput {
-  _id: string;
-  title: string;
-  input: string;
-}
+import { deleteUserInput } from '@/services/userInputService';
+import { useNavigate } from 'react-router-dom';
+import useUpdateInputTitleMutation from '../../hooks/useUpdateInputTitleMutation';
+import type { UserInput } from '../../types';
 
 interface UserInputListProps {
   inputHistory: UserInput[];
   visibleItems: number;
 }
-// TODO: event handlers for rename, regenerate, and delete to be implemented
+// TODO: event handlers for regenerate and delete to be implemented
 const UserInputList: React.FC<UserInputListProps> = ({
   inputHistory,
   visibleItems,
@@ -25,15 +23,20 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
     null,
   );
+  const [inputs, setInputs] = useState(inputHistory); // Local state for inputs
   const { drawerOpen } = useDrawerStore();
   const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
+  const updateInputTitleMutation = useUpdateInputTitleMutation();
+  const navigate = useNavigate();
 
   const handleItemClick = useCallback(
     (event: React.MouseEvent<HTMLElement>, id: string) => {
       setMenuAnchorElement(event.currentTarget);
       setSelectedUserInputId(id);
+      const userInputId = id.split('-')[0];
+      navigate(`/output/${userInputId}`);
     },
-    [],
+    [navigate],
   );
 
   const handleMenuClose = useCallback(() => {
@@ -47,6 +50,37 @@ const UserInputList: React.FC<UserInputListProps> = ({
       setSelectedUserInputId(null);
     }
   }, [drawerOpen]);
+
+  /**
+   * Handles the rename action for a selected user input.
+   */
+  const handleRename = useCallback(() => {
+    if (selectedUserInputId) {
+      // Extract the actual userInputId
+      const userInputId = selectedUserInputId.split('-')[0];
+      const newTitle = prompt('Enter new title:', ''); //TODO: to remove after UI is implemented
+      if (newTitle) {
+        updateInputTitleMutation.mutate({ userInputId, newTitle });
+      }
+    }
+  }, [selectedUserInputId, updateInputTitleMutation]);
+
+  const handleDelete = useCallback(async () => {
+    if (selectedUserInputId) {
+      try {
+        await deleteUserInput(selectedUserInputId.slice(0, 24));
+        setInputs((prevInputs) =>
+          prevInputs.filter(
+            (input) =>
+              `${input._id}-${inputs.indexOf(input)}` !== selectedUserInputId,
+          ),
+        );
+      } catch (error) {
+        // console.error('Failed to delete user input:', error);
+      }
+    }
+    handleMenuClose();
+  }, [selectedUserInputId, handleMenuClose, inputs]);
 
   return (
     <>
@@ -71,7 +105,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
             >
               <ListItemText
                 primary={
-                  <Typography variant='caption'>{userInput.input}</Typography>
+                  <Typography variant='caption'>{userInput.title}</Typography>
                 }
                 id={`user-input-${userInput._id}`}
                 aria-label={`Details for ${userInput.title}`}
@@ -87,15 +121,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
         anchorEl={menuAnchorElement}
         isOpen={isMenuOpen}
         onClose={handleMenuClose}
-        onRename={() => {
-          if (selectedUserInputId) {
-            // console.log(
-            //   'Rename Event Handler Placeholder:',
-            //   selectedUserInputId
-            // );
-          }
-          handleMenuClose();
-        }}
+        onRename={handleRename}
         onRegenerate={() => {
           if (selectedUserInputId) {
             // console.log(
@@ -105,18 +131,10 @@ const UserInputList: React.FC<UserInputListProps> = ({
           }
           handleMenuClose();
         }}
-        onDelete={() => {
-          if (selectedUserInputId) {
-            // console.log(
-            //   'Delete Event Handler Placeholder:',
-            //   selectedUserInputId
-            // );
-          }
-          handleMenuClose();
-        }}
+        onDelete={handleDelete}
       />
     </>
   );
 };
 
-export default React.memo(UserInputList);
+export default UserInputList;

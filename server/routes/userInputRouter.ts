@@ -1,17 +1,18 @@
-import { Router } from 'express';
 import type { Request, Response } from 'express';
+import { Router } from 'express';
 import createUserInputController from '@/controllers/userInputController';
-import createUserInputService from '@/services/userInputService';
-import createLinktaFlowService from '@/services/linktaFlowService';
-import createAIService from '@/services/aiService';
 import validationMiddleware from '@/middleware/validationMiddleware';
+import createLinktaFlowService from '@/services/linktaFlowService';
+import createUserInputService from '@/services/userInputService';
+import isAuthorized from '@middleware/firebaseAuthMiddleware';
+import createAIService from '@/services/aiService';
 import {
   userInputIdSchema,
   userInputInputSchema,
   userInputTitleSchema,
-} from '@/zod/userInputSchemas';
+} from '@/validators/userInputSchemas';
 
-const router = Router();
+const userInputRouter = Router();
 
 // Instantiate the services
 const userInputService = createUserInputService();
@@ -30,8 +31,9 @@ const userInputController = createUserInputController(
  * @description Generates a LinktaFlow and fetches updated input history.
  * @returns {Object} 200 - { linktaFlow, inputHistory }
  */
-router.post(
+userInputRouter.post(
   '/',
+  isAuthorized,
   validationMiddleware(userInputInputSchema, 'body'),
   userInputController.generateLinktaFlowFromInput,
   userInputController.fetchInputHistory,
@@ -49,8 +51,9 @@ router.post(
  * @returns {Array} 200 - inputHistory
  * This is a second test for the lint-staged config
  */
-router.get(
+userInputRouter.get(
   '/',
+  isAuthorized,
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
     return res.status(200).json({ inputHistory: res.locals.inputHistory });
@@ -62,8 +65,9 @@ router.get(
  * @description Updates the title of a specific user input and fetches the updated input history.
  * @returns {Object} 200 - { message, inputHistory }
  */
-router.put(
+userInputRouter.put(
   '/:userInputId',
+  isAuthorized,
   validationMiddleware(userInputIdSchema, 'params'),
   validationMiddleware(userInputTitleSchema, 'body'),
   userInputController.updateInputTitle,
@@ -81,8 +85,9 @@ router.put(
 @description Deletes a specific user input and fetches the updated input history.
 @returns {Object} 200 - { message, inputHistory }
 */
-router.delete(
+userInputRouter.delete(
   '/:userInputId',
+  isAuthorized,
   validationMiddleware(userInputIdSchema, 'params'),
   userInputController.deleteUserInput,
   userInputController.fetchInputHistory,
@@ -94,4 +99,4 @@ router.delete(
   },
 );
 
-export default router;
+export default userInputRouter;

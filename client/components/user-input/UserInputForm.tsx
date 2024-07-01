@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import userInputValidationSchema from '@zod/validateUserInput';
 import {
   TextField,
   Button,
@@ -12,12 +12,15 @@ import {
   Typography,
   Checkbox,
 } from '@mui/material';
-import userInputValidationSchema from '@zod/validateUserInput';
-import styles from '@styles/UserInputView.module.css';
-import { MOCK_USER_ID } from '@/mocks';
 
-interface UserInputPayload {
+import styles from '@styles/UserInputView.module.css';
+import { auth } from '@/firebase/firebaseConfig';
+import type { UserInputPayload } from '../UserInput';
+import { useNewUserInputMutation } from '@/hooks/newUserInputMutation';
+
+interface CustomFormData {
   input: string;
+  isChecked: boolean;
 }
 
 const UserInputForm = () => {
@@ -37,7 +40,7 @@ const UserInputForm = () => {
     },
   });
   const navigate = useNavigate();
-
+  const newUserInputMutation = useNewUserInputMutation();
   // Here we utilize the watch function to subscribe to checkbox state changes and save those changes to our localStorage.
   useEffect(() => {
     const subscription = watch((value, { name }) => {
@@ -48,40 +51,30 @@ const UserInputForm = () => {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const newUserInputMutation = useMutation({
-    mutationFn: async (userInput: UserInputPayload) => {
-      const uniqueRequestId = crypto.randomUUID();
+  const onSubmit: SubmitHandler<CustomFormData> = async (data) => {
+    try {
+      const idToken = await auth.currentUser?.getIdToken();
+      if (!idToken) throw new Error('No ID token available');
 
-      const response = await axios.post(
-        'http://localhost:3000/v1/inputs',
-        {
-          input: userInput.input,
+      const userInput: UserInputPayload = {
+        input: data.input,
+        headers: {
+          Authorization: `${idToken}`,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-user-id': MOCK_USER_ID,
-            'x-request-id': uniqueRequestId,
-          },
-        },
-      );
-      return response.data;
-    },
-    // TODO: underscore added to var to signal to eslint that it is intentionally unused for now. Remove when variable is properly used.
-    onSuccess: (_data) => {
-      // console.log('UserInput sent successfully', _data);
-      reset();
-      navigate('/output');
-    },
-    // TODO: underscore added to var to signal to eslint that it is intentionally unused for now. Remove when variable is properly used.
-    onError: (_error) => {
-      // TODO: implement logging service
-      // console.error('Error sending prompt: ', _error);
-    },
-  });
+      };
 
-  const onSubmit = (userInput: UserInputPayload) => {
-    newUserInputMutation.mutate({ input: userInput.input });
+      newUserInputMutation.mutate(userInput, {
+        onSuccess: () => {
+          reset();
+          navigate('/output');
+        },
+        onError: (error) => {
+          console.error('Error sending prompt: ', error);
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching ID token', error);
+    }
   };
 
   return (
@@ -139,7 +132,7 @@ const UserInputForm = () => {
           type='submit'
           disabled={isSubmitted || !control._formValues.isChecked}
         >
-          Generate
+          {newUserInputMutation.status === 'pending' ? 'Loading' : 'Generate'}
         </Button>
       </form>
     </>

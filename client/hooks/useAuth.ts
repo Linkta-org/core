@@ -4,10 +4,27 @@
  *   - `isAuthenticated`: Boolean indicating whether the user is currently authenticated.
  *   - `isLoading`: Boolean indicating if the authentication status check is in progress.
  */
+
+import { auth } from '@/firebase/firebaseConfig';
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+
 const useAuth = () => {
-  // TODO: implement auth logic, currenly only using placeholders
-  const isAuthenticated = true;
-  const isLoading = false;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return { isAuthenticated, isLoading };
 };

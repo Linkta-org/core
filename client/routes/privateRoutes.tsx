@@ -14,7 +14,7 @@ const privateRoutes: RouteObject[] = [
     element: <ProtectedRoute />,
     children: [
       { path: 'generate', element: <UserInputView /> },
-      { path: 'output', element: <OutputVisualizationPage /> },
+      { path: 'output/:userInputId', element: <OutputVisualizationPage /> },
       { path: 'help', element: <HelpAndFeedback /> },
       { path: 'settings', element: <Settings /> },
     ],

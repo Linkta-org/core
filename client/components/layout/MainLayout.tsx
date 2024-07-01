@@ -6,6 +6,8 @@ import SideNavDrawer from '@components/common/SideNavDrawer';
 import useMatchMedia from '@hooks/useMatchMedia';
 import '@styles/MainLayout.css';
 import useDrawerStore from '@stores/userDrawerStore';
+import useSignOut from '@hooks/useSignOut';
+import useAuth from '@hooks/useAuth';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -16,6 +18,8 @@ const MainLayout: React.FC = () => {
   const breakpoint = 768;
   const matching = useMatchMedia(breakpoint);
   const { drawerOpen, setDrawerOpen } = useDrawerStore();
+  const signOutMutation = useSignOut();
+  const { isAuthenticated } = useAuth();
 
   const toggleDrawer = () => {
     !matching && setDrawerOpen(!drawerOpen);
@@ -24,6 +28,17 @@ const MainLayout: React.FC = () => {
   useEffect(() => {
     matching && setDrawerOpen(false);
   }, [matching, setDrawerOpen]);
+
+  const handleSignOut = () => {
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        console.log('Signed out successfully');
+      },
+      onError: (error) => {
+        console.error('Error signing out:', error);
+      },
+    });
+  };
 
   return (
     <>
@@ -66,6 +81,20 @@ const MainLayout: React.FC = () => {
             >
               <Typography variant='button'>Save</Typography>
             </Button>
+
+            {isAuthenticated && (
+              <Button
+                className='save-button-group-item'
+                sx={{
+                  borderTopLeftRadius: 50,
+                  borderBottomLeftRadius: 50,
+                  paddingBottom: '4px',
+                }}
+                onClick={handleSignOut}
+              >
+                <Typography variant='button'>Sign Out</Typography>
+              </Button>
+            )}
 
             <Button
               className='save-button-group-item'

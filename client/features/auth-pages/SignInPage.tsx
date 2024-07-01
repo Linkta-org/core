@@ -1,17 +1,38 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Box, Typography, Link } from '@mui/material';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Button, Box, Typography, Link, TextField } from '@mui/material';
 
 import styles from '@styles/layout/AuthStyles.module.css';
 import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
+import { useSignInWithEmailAndPasswordMutation } from '@/hooks/useSignInWithEmailAndPassword';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(1, { message: 'Please enter a password' }),
+});
+
+type FormData = z.infer<typeof schema>;
 
 const SignInPage = () => {
   useDocumentTitle('Sign in');
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMuation = useGithubAuthMutation();
+  const signInWithEmailAndPasswordMutation =
+    useSignInWithEmailAndPasswordMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
   const handleGoogleAuthClick = () => {
     googleAuthMutation.mutate(undefined, {
@@ -29,6 +50,24 @@ const SignInPage = () => {
         navigate('/generate');
       },
     });
+  };
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const { email, password } = data;
+    console.log('email', email);
+
+    signInWithEmailAndPasswordMutation.mutate(
+      { email, password },
+      {
+        onSuccess: (res) => {
+          console.log('SIGNED IN with USER PASSWORD AUTH SUCCESSFULLY', res);
+          navigate('/generate');
+        },
+        onError: (error) => {
+          console.error('something went wrong', error.message);
+        },
+      },
+    );
   };
 
   return (
@@ -70,9 +109,46 @@ const SignInPage = () => {
 
       <Typography variant='h6'>- OR -</Typography>
 
+      <form
+        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+        className={`${styles.authViewForm}`}
+      >
+        <TextField
+          label='full name'
+          variant='standard'
+          type='text'
+        ></TextField>
+        <TextField
+          label='email address'
+          variant='standard'
+          type='email'
+          {...register('email')}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        ></TextField>
+        <TextField
+          label='password'
+          type='password'
+          variant='standard'
+          {...register('password')}
+        ></TextField>
+        <Button
+          type='submit'
+          variant='contained'
+          className={`${styles.formSubmitButton}`}
+        >
+          Sign In to Linkta
+        </Button>
+      </form>
+
       <Typography variant='body2'>
-        Forgot your password?
-        <Link>Reset</Link>
+        Need to create an account?
+        <Link
+          component={RouterLink}
+          to='/userSignup'
+        >
+          Sign Up
+        </Link>
       </Typography>
 
       <Typography

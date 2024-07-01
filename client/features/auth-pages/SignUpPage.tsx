@@ -63,7 +63,7 @@ const SignUpPage = () => {
       { email, password },
       {
         onSuccess: (res) => {
-          console.log('Signed in with USER PASSWORD AUTH SUCCESSFULLY', res);
+          console.log('SIGNED UP with USER PASSWORD AUTH SUCCESSFULLY', res);
           navigate('/generate');
         },
         onError: (error) => {

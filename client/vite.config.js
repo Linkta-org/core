@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
@@ -29,5 +30,9 @@ export default defineConfig({
       // Proxy configuration for API calls
       '/api': 'http://localhost:3000',
     },
+  },
+  test: {
+    include: ['**/*.unit.test.[jt]s?(x)'],
+    environment: 'jsdom',
   },
 });

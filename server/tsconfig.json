@@ -51,7 +51,8 @@
     "routes/**/*",
     "types/**/*",
     "utils/**/*",
-    "validators/**/*"
+    "validators/**/*",
+    "tests/**/*"
   ],
   "exclude": ["dist", "node_modules", "./utils/path-alias.js"],
   "ts-node": {

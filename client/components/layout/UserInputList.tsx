@@ -88,7 +88,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
         className={styles.userInputList}
         role='list'
       >
-        {inputs.slice(0, visibleItems).map((userInput, index) => {
+        {inputHistory.slice(0, visibleItems).map((userInput, index) => {
           const uniqueId = `${userInput._id}-${index}`;
           return (
             <ListItemButton

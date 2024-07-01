@@ -4,9 +4,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
 import styles from '@styles/layout/UserInputList.module.css';
 import useDrawerStore from '@stores/userDrawerStore';
-import { deleteUserInput } from '@/services/userInputService';
 import { useNavigate } from 'react-router-dom';
 import useUpdateInputTitleMutation from '../../hooks/useUpdateInputTitleMutation';
+import useDeleteInputMutation from '../../hooks/useDeleteInputMutation';
 import type { UserInput } from '../../types';
 
 interface UserInputListProps {
@@ -23,10 +23,10 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
     null,
   );
-  const [inputs, setInputs] = useState(inputHistory); // Local state for inputs
   const { drawerOpen } = useDrawerStore();
   const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
   const updateInputTitleMutation = useUpdateInputTitleMutation();
+  const deleteInputMutation = useDeleteInputMutation();
   const navigate = useNavigate();
 
   const handleItemClick = useCallback(
@@ -65,22 +65,16 @@ const UserInputList: React.FC<UserInputListProps> = ({
     }
   }, [selectedUserInputId, updateInputTitleMutation]);
 
-  const handleDelete = useCallback(async () => {
+  /**
+   * Handles the delete action for a selected user input.
+   */
+  const handleDelete = useCallback(() => {
     if (selectedUserInputId) {
-      try {
-        await deleteUserInput(selectedUserInputId.slice(0, 24));
-        setInputs((prevInputs) =>
-          prevInputs.filter(
-            (input) =>
-              `${input._id}-${inputs.indexOf(input)}` !== selectedUserInputId,
-          ),
-        );
-      } catch (error) {
-        // console.error('Failed to delete user input:', error);
-      }
+      // Extract the actual userInputId
+      const userInputId = selectedUserInputId.split('-')[0];
+      deleteInputMutation.mutate(userInputId);
     }
-    handleMenuClose();
-  }, [selectedUserInputId, handleMenuClose, inputs]);
+  }, [selectedUserInputId, deleteInputMutation]);
 
   return (
     <>

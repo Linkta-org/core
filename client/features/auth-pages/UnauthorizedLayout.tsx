@@ -13,11 +13,11 @@ const UnauthorizedLayout: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    navigate('/userLogin');
+    navigate('/login');
   };
 
   const handleSignUp = () => {
-    navigate('/userSignup');
+    navigate('/signup');
   };
 
   return (

@@ -8,6 +8,7 @@ import '@styles/MainLayout.css';
 import useDrawerStore from '@stores/userDrawerStore';
 import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
+import { getAuth, signOut } from 'firebase/auth';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -30,7 +31,6 @@ const MainLayout: React.FC = () => {
     }
 
     const { _id: linktaFlowId, nodes, edges } = currentLinktaFlow;
-
     updateLinktaFlow({ linktaFlowId, updatedLinktaFlow: { nodes, edges } });
   };
 
@@ -41,6 +41,19 @@ const MainLayout: React.FC = () => {
   useEffect(() => {
     matching && setDrawerOpen(false);
   }, [matching, setDrawerOpen]);
+
+  const auth = getAuth();
+  const handleSignout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log('User signed in successfully!');
+      })
+      .catch((error): void => {
+        // An error happened.
+        console.error('Failed to sign user out!', error);
+      });
+  };
 
   return (
     <>
@@ -96,6 +109,20 @@ const MainLayout: React.FC = () => {
               <ArrowDropDown />
             </Button>
           </ButtonGroup>
+          <Button
+            className='sign-out-button'
+            variant='contained'
+            color='secondary'
+            disableElevation
+            sx={{
+              borderRadius: '13px',
+              height: '26px',
+              marginLeft: '20px',
+            }}
+            onClick={handleSignout}
+          >
+            <Typography variant='button'>Sign Out</Typography>
+          </Button>
         </Box>
 
         <SideNavDrawer

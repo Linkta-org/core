@@ -1,0 +1,30 @@
+.homeContainer {
+  margin-top: 10rem;
+  display: flex;
+  gap: 50px;
+  height: 50dvh;
+  align-content: center;
+}
+
+.copyContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  gap: 5rem;
+  max-width: 400px;
+}
+
+.bodyText {
+  grid-column-start: 1;
+}
+
+.homeImage {
+  align-content: center;
+
+  & img {
+    width: 100%;
+    min-width: 280px;
+    max-width: 550px;
+    height: auto;
+  }
+}

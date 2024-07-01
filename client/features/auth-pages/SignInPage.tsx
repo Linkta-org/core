@@ -1,13 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
-
 import styles from '@styles/layout/AuthStyles.module.css';
 import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 
 const SignInPage = () => {
-  useDocumentTitle('Sign in');
+  useDocumentTitle('Sign In');
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
 
@@ -15,7 +14,7 @@ const SignInPage = () => {
     googleAuthMutation.mutate(undefined, {
       onSuccess: (data) => {
         console.log('Signed in with GOOGLE AUTH SUCCESSFULLY', data);
-        navigate('/generate');
+        navigate('/home-page');
       },
     });
   };
@@ -75,18 +74,35 @@ const SignInPage = () => {
         </Button>
       </form>
 
-      <Typography variant='body2'>
-        Forgot your password?
-        <Link>Reset</Link>
-      </Typography>
+      <Box className={`${styles.finePrintContainer}`}>
+        <Typography variant='body2'>
+          Need to create an account?
+          <Link
+            component={RouterLink}
+            to='/signup'
+          >
+            Sign Up
+          </Link>
+        </Typography>
 
-      <Typography
-        variant='body2'
-        className={`${styles.termsAndConditions}`}
-      >
-        By continuing, you are indicating that you have read and accept our
-        <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
-      </Typography>
+        <Typography variant='body2'>
+          Update your password?
+          <Link
+            component={RouterLink}
+            to='/update-password'
+          >
+            Update
+          </Link>
+        </Typography>
+
+        <Typography
+          variant='body2'
+          className={`${styles.termsAndConditions}`}
+        >
+          By continuing, you are indicating that you have read and accept our
+          <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+        </Typography>
+      </Box>
     </Box>
   );
 };

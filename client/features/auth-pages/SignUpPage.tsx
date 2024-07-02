@@ -38,7 +38,7 @@ const SignUpPage = () => {
           onClick={handleGoogleAuthClick}
         >
           <img
-            src='../assets/google-icon.png'
+            src='/google-icon.png'
             className={`${styles.buttonIcon}`}
             alt='A Google "G" icon on the button to sign up with Google.'
           ></img>
@@ -50,7 +50,7 @@ const SignUpPage = () => {
           className={`${styles.authButton}`}
         >
           <img
-            src='../assets/github-icon.png'
+            src='/github-icon.png'
             className={`${styles.buttonIcon}`}
             alt='A GitHub octocat icon on the button to sign up with GitHub.'
           ></img>

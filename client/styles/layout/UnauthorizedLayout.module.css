@@ -5,7 +5,7 @@
 }
 
 .backgroundImage {
-  background-image: url(../assets/tree-night.webp);
+  background-image: url(/tree-night.webp);
   background-size: cover;
   background-position: center;
   opacity: 0.1;

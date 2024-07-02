@@ -23,7 +23,7 @@ const HomePage = () => {
       <img
         className={`${styles.homeImage}`}
         alt='A 3D model showing various gadgets and widgets.'
-        src='../../assets/Linkta-Landing.png'
+        src='/Linkta-Landing.png'
       ></img>
     </Box>
   );

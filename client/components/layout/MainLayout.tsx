@@ -17,6 +17,7 @@ import { getAuth, signOut } from 'firebase/auth';
  */
 const MainLayout: React.FC = () => {
   const breakpoint = 768;
+  const auth = getAuth();
   const matching = useMatchMedia(breakpoint);
   const { drawerOpen, setDrawerOpen } = useDrawerStore();
   const { mutate: updateLinktaFlow } = useUpdateLinktaFlowMutation();
@@ -42,17 +43,13 @@ const MainLayout: React.FC = () => {
     matching && setDrawerOpen(false);
   }, [matching, setDrawerOpen]);
 
-  const auth = getAuth();
-  const handleSignout = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        console.log('User signed in successfully!');
-      })
-      .catch((error): void => {
-        // An error happened.
-        console.error('Failed to sign user out!', error);
-      });
+  const handleSignout = async () => {
+    try {
+      await signOut(auth);
+      console.log('User signed in successfully!');
+    } catch (error) {
+      console.error('Failed to sign user out!', error);
+    }
   };
 
   return (

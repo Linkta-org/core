@@ -57,41 +57,41 @@ UserInput Controller [color: green, icon: lock] {
 
 UserInput Service [color: green, icon: settings]{
   Create UserInput [icon: worker]
-  Find UserInputs by User ID [icon: worker]
-  Update UserInput [icon: worker]
-  Delete UserInput and Associated Data [icon: worker]
+  fetch Input History [icon: worker]
+  Update Input Title [icon: worker]
+  delete User Input [icon: worker]
 }
 
 // Generate LinktaFlow from UserInput Flow
 UserInput Authenticated User > Generate LinktaFlow From UserInput: POST /v1/inputs
 Generate LinktaFlow From UserInput > Validation Middleware
-Validation Middleware > Create UserInput: validation passes
+Validation Middleware > Create UserInput
 Create UserInput > Database [color: blue, icon: database, shape: cylinder]
-Create UserInput  > Create LinktaFlow From Input: validation passes
-Create LinktaFlow From Input > Generate Initial Response
-Generate Initial Response > Start Generation
+Create UserInput  > Generate Initial Response
+Generate Initial Response  > Start Generation
 Start Generation <> LLM [color: yellow, icon: ai, shape: hexagon]
-Create LinktaFlow From Input <> Validate LinktaFlow
-Create LinktaFlow From Input > Database: validation passes
-Create LinktaFlow From Input > Generate LinktaFlow From UserInput
+Generate Initial Response > Create LinktaFlow
+Create LinktaFlow > Database
 
 // Fetch Input History Flow
 UserInput Authenticated User > Fetch Input History: GET /v1/inputs
 Fetch Input History > Validation Middleware
-Fetch Input History > Find UserInputs by User ID
-Find UserInputs by User ID <> Database
+Validation Middleware > fetch Input History
+fetch Input History > Database
 
 // Update UserInput Title
 UserInput Authenticated User > Update UserInput Title: PUT /v1/inputs/:userInputId
 Update UserInput Title > Validation Middleware
-Validation Middleware > Update UserInput
-Update UserInput > Database
+Validation Middleware > Update Input Title
+Update Input Title > Database
 
 // Delete UserInput
 UserInput Authenticated User > Delete UserInput: DELETE /v1/inputs/:userInputId
 Delete UserInput > Validation Middleware
-Validation Middleware > Delete UserInput and Associated Data
-Delete UserInput and Associated Data > Database
+Validation Middleware > delete User Input
+Validation Middleware > delete LinktaFlow by UserInput ID
+delete User Input > Database
+delete LinktaFlow by UserInput ID > Database
 
 // LinktaFlow
 LinktaFlow Controller [color: yellow, icon: lock] {
@@ -102,17 +102,17 @@ LinktaFlow Controller [color: yellow, icon: lock] {
 }
 
 LinktaFlow Service [color: yellow, icon: settings]{
-  Create LinktaFlow From Input [icon: worker]
-  Create LinktaFlow From Object [icon: worker]
-  Find LinktaFlow by ID [icon: worker]
+  Create LinktaFlow [icon: worker]
+  Fetch LinktaFlow by UserInput ID [icon: worker]
   Update LinktaFlow by ID [icon: worker]
+  delete LinktaFlow by UserInput ID [icon: worker]
 }
 
 // Fetch LinktaFlow Flow
-LinktaFlow Authenticated User > Fetch LinktaFlow: GET /v1/flows/:linkaFlowId
+LinktaFlow Authenticated User > Fetch LinktaFlow: GET /v1/flows/:userInputId
 Fetch LinktaFlow > Validation Middleware
-Validation Middleware > Find LinktaFlow by ID
-Find LinktaFlow by ID > Database
+Validation Middleware > Fetch LinktaFlow by UserInput ID
+Fetch LinktaFlow by UserInput ID > Database
 
 // Update LinktaFlow Flow
 LinktaFlow Authenticated User > Update LinktaFlow: PUT /v1/flows/:linkaFlowId
@@ -123,8 +123,8 @@ Update LinktaFlow by ID > Database
 // Save LinktaFlow As A Copy
 LinktaFlow Authenticated User > Save LinktaFlow As A Copy: /v1/flows/save-as
 Save LinktaFlow As A Copy > Validation Middleware
-Validation Middleware > Create LinktaFlow From Object
-Create LinktaFlow From Object > Database
+Validation Middleware > Create LinktaFlow
+Create LinktaFlow > Database
 Validation Middleware > Create UserInput
 Create UserInput > Database
 
@@ -168,12 +168,12 @@ Submit Bug Report > Create Bug Report
 Create Bug Report > Database
 
 // AI
-AI Middleware [color: orange, icon: lock] {
+AI Service [color: orange, icon: lock] {
   Generate Initial Response [icon: play-circle]
   Generate Response with History [icon: play-circle]
 }
 
-AI Service [color: orange, icon: settings] {
+AI Model [color: orange, icon: settings] {
   Start Generation  [icon: worker]
 }
 

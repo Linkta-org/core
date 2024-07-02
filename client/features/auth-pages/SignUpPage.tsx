@@ -12,12 +12,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const schema = z.object({
+const userSignUpSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(1, { message: 'Please enter a password' }),
 });
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof userSignUpSchema>;
 
 const SignUpPage = () => {
   useDocumentTitle('Sign in');
@@ -32,13 +32,13 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(userSignUpSchema),
   });
 
   const handleGoogleAuthClick = () => {
     googleAuthMutation.mutate(undefined, {
       onSuccess: () => {
-        navigate('/generate');
+        navigate('/home-page');
       },
       onError: (error) => {
         console.error('something went wrong', error.message);
@@ -49,8 +49,8 @@ const SignUpPage = () => {
   const handleGithubAuthClick = () => {
     githubAuthMutation.mutate(undefined, {
       onSuccess: (data) => {
-        console.log('Signed in with GOOGLE AUTH SUCCESSFULLY', data);
-        navigate('/generate');
+        console.log('Signed in with GitHub', data);
+        navigate('/home-page');
       },
     });
   };

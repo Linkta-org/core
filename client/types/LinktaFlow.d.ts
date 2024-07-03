@@ -4,7 +4,6 @@ type LinktaFlow = {
   id: string;
   userInputId?: string;
   userId?: string;
-  userInputId?: string;
   nodes: Node[];
   edges: Edge[];
 };

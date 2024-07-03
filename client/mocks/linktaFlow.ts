@@ -1,5 +1,5 @@
 export const MOCK_LINKTAFLOW = {
-  _id: '666dc2092898269e695afc32',
+  id: '666dc2092898269e695afc32',
   userInputId: '666dc2012898269e695afc2e',
   nodes: [
     {
@@ -15,7 +15,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc33',
+      id: '666dc2092898269e695afc33',
     },
     {
       data: {
@@ -30,7 +30,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc34',
+      id: '666dc2092898269e695afc34',
     },
     {
       data: {
@@ -45,7 +45,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc35',
+      id: '666dc2092898269e695afc35',
     },
     {
       data: {
@@ -60,7 +60,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc36',
+      id: '666dc2092898269e695afc36',
     },
     {
       data: {
@@ -75,7 +75,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc37',
+      id: '666dc2092898269e695afc37',
     },
     {
       data: {
@@ -90,7 +90,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc38',
+      id: '666dc2092898269e695afc38',
     },
     {
       data: {
@@ -105,7 +105,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc39',
+      id: '666dc2092898269e695afc39',
     },
     {
       data: {
@@ -120,7 +120,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc3a',
+      id: '666dc2092898269e695afc3a',
     },
     {
       data: {
@@ -135,7 +135,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc3b',
+      id: '666dc2092898269e695afc3b',
     },
     {
       data: {
@@ -150,7 +150,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc3c',
+      id: '666dc2092898269e695afc3c',
     },
     {
       data: {
@@ -165,7 +165,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc3d',
+      id: '666dc2092898269e695afc3d',
     },
     {
       data: {
@@ -180,7 +180,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc3e',
+      id: '666dc2092898269e695afc3e',
     },
     {
       data: {
@@ -195,7 +195,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc3f',
+      id: '666dc2092898269e695afc3f',
     },
     {
       data: {
@@ -210,7 +210,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc40',
+      id: '666dc2092898269e695afc40',
     },
     {
       data: {
@@ -225,7 +225,7 @@ export const MOCK_LINKTAFLOW = {
       deletable: true,
       focusable: true,
       resizing: false,
-      _id: '666dc2092898269e695afc41',
+      id: '666dc2092898269e695afc41',
     },
   ],
   edges: [
@@ -239,7 +239,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc42',
+      id: '666dc2092898269e695afc42',
     },
     {
       source: '1',
@@ -251,7 +251,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc43',
+      id: '666dc2092898269e695afc43',
     },
     {
       source: '1.1',
@@ -263,7 +263,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc44',
+      id: '666dc2092898269e695afc44',
     },
     {
       source: '1.1',
@@ -275,7 +275,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc45',
+      id: '666dc2092898269e695afc45',
     },
     {
       source: '1.2',
@@ -287,7 +287,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc46',
+      id: '666dc2092898269e695afc46',
     },
     {
       source: '1.2',
@@ -299,7 +299,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc47',
+      id: '666dc2092898269e695afc47',
     },
     {
       source: '1.1.1',
@@ -311,7 +311,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc48',
+      id: '666dc2092898269e695afc48',
     },
     {
       source: '1.1.1',
@@ -323,7 +323,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc49',
+      id: '666dc2092898269e695afc49',
     },
     {
       source: '1.1.2',
@@ -335,7 +335,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc4a',
+      id: '666dc2092898269e695afc4a',
     },
     {
       source: '1.1.2',
@@ -347,7 +347,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc4b',
+      id: '666dc2092898269e695afc4b',
     },
     {
       source: '1.2.1',
@@ -359,7 +359,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc4c',
+      id: '666dc2092898269e695afc4c',
     },
     {
       source: '1.2.1',
@@ -371,7 +371,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc4d',
+      id: '666dc2092898269e695afc4d',
     },
     {
       source: '1.2.2',
@@ -383,7 +383,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc4e',
+      id: '666dc2092898269e695afc4e',
     },
     {
       source: '1.2.2',
@@ -395,7 +395,7 @@ export const MOCK_LINKTAFLOW = {
       focusable: true,
       labelShowBg: true,
       labelBgPadding: [],
-      _id: '666dc2092898269e695afc4f',
+      id: '666dc2092898269e695afc4f',
     },
   ],
 };

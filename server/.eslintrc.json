@@ -21,7 +21,8 @@
     "dist",
     "package*.json",
     "*.config.js",
-    "*.html"
+    "*.html",
+    "*/path-alias.js"
   ],
   "overrides": [
     {

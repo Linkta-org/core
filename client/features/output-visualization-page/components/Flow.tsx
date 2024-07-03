@@ -15,6 +15,7 @@ import LinktaFlowEdge from '@features/output-visualization-page/components/Linkt
 import LinktaNode from '@features/output-visualization-page/components/LinktaNode';
 import ConnectionLine from '@features/output-visualization-page/components/ConnectionLine';
 import useFetchLinktaFlow from '@hooks/useFetchLinktaFlow';
+import useLinktaFlowStore from '@stores/LinktaFlowStore';
 
 const nodeTypes = { linktaNode: LinktaNode };
 
@@ -61,13 +62,15 @@ function Flow({ userInputId }: { userInputId: string }) {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const { data: linktaFlow } = useFetchLinktaFlow(userInputId);
+  const setCurrentFlow = useLinktaFlowStore((state) => state.setCurrentFlow);
 
   useEffect(() => {
     if (linktaFlow) {
       setNodes(linktaFlow.nodes);
       setEdges(linktaFlow.edges);
+      setCurrentFlow(linktaFlow);
     }
-  }, [linktaFlow]);
+  }, [linktaFlow, setCurrentFlow]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>

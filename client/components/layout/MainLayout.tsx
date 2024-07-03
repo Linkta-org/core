@@ -6,6 +6,8 @@ import SideNavDrawer from '@components/common/SideNavDrawer';
 import useMatchMedia from '@hooks/useMatchMedia';
 import '@styles/MainLayout.css';
 import useDrawerStore from '@stores/userDrawerStore';
+import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
+import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import useSignOut from '@hooks/useSignOut';
 import useAuth from '@hooks/useAuth';
 
@@ -18,6 +20,21 @@ const MainLayout: React.FC = () => {
   const breakpoint = 768;
   const matching = useMatchMedia(breakpoint);
   const { drawerOpen, setDrawerOpen } = useDrawerStore();
+  const { mutate: updateLinktaFlow } = useUpdateLinktaFlowMutation();
+  const currentLinktaFlow = useLinktaFlowStore((state) =>
+    state.getCurrentFlow(),
+  );
+
+  const handleSave = () => {
+    if (!currentLinktaFlow) {
+      console.error('No linktaFlow selected');
+      return;
+    }
+
+    const { _id: linktaFlowId, nodes, edges } = currentLinktaFlow;
+
+    updateLinktaFlow({ linktaFlowId, updatedLinktaFlow: { nodes, edges } });
+  };
   const signOutMutation = useSignOut();
   const { isAuthenticated } = useAuth();
 
@@ -78,6 +95,7 @@ const MainLayout: React.FC = () => {
                 borderBottomLeftRadius: 50,
                 paddingBottom: '4px',
               }}
+              onClick={handleSave}
             >
               <Typography variant='button'>Save</Typography>
             </Button>

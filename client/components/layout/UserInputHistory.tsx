@@ -4,7 +4,7 @@ import UserInputList from './UserInputList';
 import PaginationControls from './PaginationControls';
 import { ITEMS_PER_PAGE } from '@utils/constants';
 import styles from '@styles/layout/UserInputHistory.module.css';
-import SkeletonList from './SkeletonList';
+import UserInputHistorySkeleton from './UserInputHistorySkeleton';
 import useInputHistory from '@hooks/useInputHistory';
 
 const UserInputHistory: React.FC = () => {
@@ -20,23 +20,23 @@ const UserInputHistory: React.FC = () => {
 
   return (
     <Box className={styles.userInputHistory}>
-      <Typography
-        id='user-input-history-heading'
-        variant='body2'
-        gutterBottom
-        className={styles.userInputHistory__heading}
-      >
-        Recent
-      </Typography>
-      <Box
-        aria-labelledby='user-input-history-heading'
-        role='region'
-        className={styles.userInputHistory__scrollable}
-      >
-        {loading && !isFetchingNextPage ? (
-          <SkeletonList length={ITEMS_PER_PAGE} />
-        ) : (
-          <>
+      {loading && !isFetchingNextPage ? (
+        <UserInputHistorySkeleton length={ITEMS_PER_PAGE} />
+      ) : (
+        <>
+          <Typography
+            id='user-input-history-heading'
+            variant='body2'
+            gutterBottom
+            className={styles.userInputHistory__heading}
+          >
+            Recent
+          </Typography>
+          <Box
+            aria-labelledby='user-input-history-heading'
+            role='region'
+            className={styles.userInputHistory__scrollable}
+          >
             <UserInputList
               inputHistory={inputHistory}
               visibleItems={visibleItems}
@@ -48,9 +48,9 @@ const UserInputHistory: React.FC = () => {
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
             />
-          </>
-        )}
-      </Box>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

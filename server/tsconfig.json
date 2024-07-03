@@ -12,7 +12,7 @@
       "./routes",
       "./types",
       "./utils",
-      "./zod"
+      "./validators"
     ] /* Specify the root folder within your source files. */,
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
@@ -24,7 +24,7 @@
       "@routes/*": ["routes/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"],
-      "@zod/*": ["zod/*"]
+      "@zod/*": ["validators/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
@@ -51,9 +51,10 @@
     "routes/**/*",
     "types/**/*",
     "utils/**/*",
-    "zod/**/*"
+    "validators/**/*",
+    "tests/**/*"
   ],
-  "exclude": ["dist", "node_modules"],
+  "exclude": ["dist", "node_modules", "./utils/path-alias.js"],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   }

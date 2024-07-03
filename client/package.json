@@ -9,7 +9,9 @@
     "build": "vite build --config vite.config.js",
     "start": "vite preview --config vite.config.js",
     "lint": "eslint . && prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "keywords": [
     "education"
@@ -33,6 +35,7 @@
     "eslint-plugin-react": "^7.34.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "jsdoc": "^4.0.2",
+    "jsdom": "^24.1.0",
     "prettier": "^3.2.5",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.2",
@@ -40,7 +43,8 @@
     "unplugin-turbo-console": "^1.8.6",
     "vite": "^5.1.6",
     "vite-plugin-checker": "^0.6.4",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.2",

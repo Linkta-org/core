@@ -22,7 +22,7 @@ getEnv();
 const { getLogger, configure, isConfigured } = log4js;
 log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
 configure(log4jsConfig);
-const logger = getLogger('[Linkta Server]');
+const logger = getLogger('[SERVER]');
 isConfigured() && logger.info('Log4JS is configured!');
 
 const uri = process.env.MONGO_DB_URI;

@@ -3,7 +3,7 @@ import type { RouteObject } from 'react-router-dom';
 import HomePage from '@features/home-page/HomePage';
 import SignInPage from '@features/auth-pages/SignInPage';
 import SignUpPage from '@features/auth-pages/SignUpPage';
-import ForgotPasswordPage from '@features/auth-pages/ForgotPasswordPage';
+import ForgotPasswordPage from '@features/auth-pages/PasswordRecoverPage';
 import PasswordUpdatePage from '@features/auth-pages/PasswordUpdatePage';
 
 /**
@@ -11,10 +11,11 @@ import PasswordUpdatePage from '@features/auth-pages/PasswordUpdatePage';
  */
 const publicRoutes: RouteObject[] = [
   { index: true, element: <HomePage /> },
+  { path: 'home-page', element: <HomePage /> },
   { path: 'login', element: <SignInPage /> },
   { path: 'signup', element: <SignUpPage /> },
-  { path: 'forgot-password', element: <ForgotPasswordPage /> },
-  { path: 'reset-password', element: <PasswordUpdatePage /> },
+  { path: 'recover-password', element: <ForgotPasswordPage /> },
+  { path: 'update-password', element: <PasswordUpdatePage /> },
 ];
 
 export default publicRoutes;

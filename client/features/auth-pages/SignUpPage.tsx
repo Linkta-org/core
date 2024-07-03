@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import styles from '@styles/layout/AuthStyles.module.css';
 import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
@@ -20,7 +19,7 @@ const userSignUpSchema = z.object({
 type FormData = z.infer<typeof userSignUpSchema>;
 
 const SignUpPage = () => {
-  useDocumentTitle('Sign in');
+  useDocumentTitle('Sign Up');
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMutation = useGithubAuthMutation();
@@ -147,23 +146,35 @@ const SignUpPage = () => {
         </Button>
       </form>
 
-      <Typography variant='body2'>
-        Already have an account?
-        <Link
-          component={RouterLink}
-          to='/userLogin'
-        >
-          Sign In
-        </Link>
-      </Typography>
+      <Box className={`${styles.finePrintContainer}`}>
+        <Typography variant='body2'>
+          Already have an account?
+          <Link
+            component={RouterLink}
+            to='/login'
+          >
+            Sign In
+          </Link>
+        </Typography>
 
-      <Typography
-        variant='body2'
-        className={`${styles.termsAndConditions}`}
-      >
-        By continuing, you are indicating that you have read and accept our
-        <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
-      </Typography>
+        <Typography variant='body2'>
+          Forgot your password?
+          <Link
+            component={RouterLink}
+            to='/recover-password'
+          >
+            Recover
+          </Link>
+        </Typography>
+
+        <Typography
+          variant='body2'
+          className={`${styles.termsAndConditions}`}
+        >
+          By continuing, you are indicating that you have read and accept our
+          <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+        </Typography>
+      </Box>
     </Box>
   );
 };

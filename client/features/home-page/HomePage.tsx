@@ -1,7 +1,7 @@
 import React from 'react';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { Box, Typography } from '@mui/material';
-import styles from '@features/home-page/Homepage.module.css';
+import styles from '@styles/Homepage.module.css';
 
 const HomePage = () => {
   useDocumentTitle();
@@ -20,11 +20,12 @@ const HomePage = () => {
           both intuitive and accessible.
         </Typography>
       </Box>
-      <img
-        className={`${styles.homeImage}`}
-        alt='A 3D model showing various gadgets and widgets.'
-        src='../../assets/Linkta-Landing.png'
-      ></img>
+      <Box className={`${styles.homeImage}`}>
+        <img
+          alt='A 3D model showing various gadgets and widgets.'
+          src='../../assets/Linkta-Landing.png'
+        ></img>
+      </Box>
     </Box>
   );
 };

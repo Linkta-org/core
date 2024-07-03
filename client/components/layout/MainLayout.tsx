@@ -125,6 +125,20 @@ const MainLayout: React.FC = () => {
               <ArrowDropDown />
             </Button>
           </ButtonGroup>
+          <Button
+            className='sign-out-button'
+            variant='contained'
+            color='secondary'
+            disableElevation
+            sx={{
+              borderRadius: '13px',
+              height: '26px',
+              marginLeft: '20px',
+            }}
+            onClick={handleSignOut}
+          >
+            <Typography variant='button'>Sign Out</Typography>
+          </Button>
         </Box>
 
         <SideNavDrawer

@@ -18,7 +18,7 @@ const userSignInSchema = z.object({
 type FormData = z.infer<typeof userSignInSchema>;
 
 const SignInPage = () => {
-  useDocumentTitle('Sign in');
+  useDocumentTitle('Sign In');
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMuation = useGithubAuthMutation();
@@ -134,23 +134,35 @@ const SignInPage = () => {
         </Button>
       </form>
 
-      <Typography variant='body2'>
-        Need to create an account?
-        <Link
-          component={RouterLink}
-          to='/userSignup'
-        >
-          Sign Up
-        </Link>
-      </Typography>
+      <Box className={`${styles.finePrintContainer}`}>
+        <Typography variant='body2'>
+          Need to create an account?
+          <Link
+            component={RouterLink}
+            to='/signup'
+          >
+            Sign Up
+          </Link>
+        </Typography>
 
-      <Typography
-        variant='body2'
-        className={`${styles.termsAndConditions}`}
-      >
-        By continuing, you are indicating that you have read and accept our
-        <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
-      </Typography>
+        <Typography variant='body2'>
+          Update your password?
+          <Link
+            component={RouterLink}
+            to='/update-password'
+          >
+            Update
+          </Link>
+        </Typography>
+
+        <Typography
+          variant='body2'
+          className={`${styles.termsAndConditions}`}
+        >
+          By continuing, you are indicating that you have read and accept our
+          <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+        </Typography>
+      </Box>
     </Box>
   );
 };

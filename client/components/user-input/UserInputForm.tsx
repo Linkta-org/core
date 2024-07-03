@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
@@ -14,9 +14,10 @@ import {
 } from '@mui/material';
 
 import styles from '@styles/UserInputView.module.css';
-import { auth } from '@/firebase/firebaseConfig';
-import type { UserInputPayload } from '../UserInput';
-import { useNewUserInputMutation } from '@/hooks/newUserInputMutation';
+import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
+import SnackBarNotification from '../common/SnackBarNotification';
+import type LinktaFlow from '@/types/LinktaFlow';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface CustomFormData {
   input: string;
@@ -40,33 +41,40 @@ const UserInputForm = () => {
     },
   });
   const navigate = useNavigate();
-  const newUserInputMutation = useNewUserInputMutation();
+  const createLinktaFlowMutation = useCreateLinktaFlowMutation();
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'error' | 'warning' | 'info' | 'success',
+  });
+  const queryClient = useQueryClient();
+
   const isChecked = watch('isChecked');
 
-  const onSubmit: SubmitHandler<CustomFormData> = async (data) => {
-    try {
-      const idToken = await auth.currentUser?.getIdToken();
-      if (!idToken) throw new Error('No ID token available');
-
-      const userInput: UserInputPayload = {
-        input: data.input,
-        headers: {
-          Authorization: `${idToken}`,
-        },
-      };
-
-      newUserInputMutation.mutate(userInput, {
-        onSuccess: () => {
+  const onSubmit: SubmitHandler<CustomFormData> = (data) => {
+    createLinktaFlowMutation.mutate(
+      { input: data.input },
+      {
+        onSuccess: async (response: LinktaFlow) => {
+          await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
           reset();
-          navigate('/output');
+          navigate(`/output/${response.userInputId}`);
+          setSnackbar({
+            open: true,
+            message: 'LinktaFlow created successfully!',
+            severity: 'success',
+          });
         },
-        onError: (error) => {
+        onError: (error: Error) => {
           console.error('Error sending prompt: ', error);
+          setSnackbar({
+            open: true,
+            message: 'Failed to create LinktaFlow. Please try again.',
+            severity: 'error',
+          });
         },
-      });
-    } catch (error) {
-      console.error('Error fetching ID token', error);
-    }
+      },
+    );
   };
 
   return (
@@ -124,9 +132,17 @@ const UserInputForm = () => {
           type='submit'
           disabled={!isChecked}
         >
-          {newUserInputMutation.status === 'pending' ? 'Loading' : 'Generate'}
+          {createLinktaFlowMutation.status === 'pending'
+            ? 'Loading'
+            : 'Generate'}
         </Button>
       </form>
+      <SnackBarNotification
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        callerUpdater={() => setSnackbar({ ...snackbar, open: false })}
+      />
     </>
   );
 };

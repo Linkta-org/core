@@ -89,7 +89,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
     ```json
     {
     "linktaFlow": {
-        "_id": "string",
+        "id": "string",
         "userInputId": "string",
         "nodes": [
         {

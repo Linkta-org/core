@@ -8,8 +8,11 @@ import styles from '@styles/layout/UnauthorizedLayout.module.css';
  * UnauthorizedLayout provides a simple layout and Router Outlet for the Auth Views.
  * It presents a consistent header featuring the LinktaLogo, with no side navigation bar
  * The `Outlet` component handles rendering of route-specific content in the main section.
+ * Optional 'children' prop added so that ErrorPage will render with consistent styling.
  */
-const UnauthorizedLayout: React.FC = () => {
+const UnauthorizedLayout: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
@@ -57,7 +60,7 @@ const UnauthorizedLayout: React.FC = () => {
         </Box>
 
         <Box className={`${styles.routerOutlet}`}>
-          <Outlet />
+          {children ? children : <Outlet />}
         </Box>
 
         <Box className={`${styles.footerBar}`}>

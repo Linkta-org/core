@@ -7,6 +7,7 @@ const fetchLinktaFlowFromApi = async (
 ): Promise<LinktaFlow> => {
   try {
     const response = await axiosClient.get(`/v1/flows/${userInputId}`);
+
     return response.data.linktaFlow;
   } catch (error) {
     throw new Error('Error fetching LinktaFlow');

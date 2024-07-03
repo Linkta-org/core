@@ -31,7 +31,7 @@ const MainLayout: React.FC = () => {
       return;
     }
 
-    const { _id: linktaFlowId, nodes, edges } = currentLinktaFlow;
+    const { id: linktaFlowId, nodes, edges } = currentLinktaFlow;
 
     updateLinktaFlow({ linktaFlowId, updatedLinktaFlow: { nodes, edges } });
   };

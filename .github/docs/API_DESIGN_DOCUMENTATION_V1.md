@@ -78,15 +78,39 @@ The base URL for the Linkta API is: `https://api.linkta.io`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
 
 ### LinktaFlow Management
->_Work in progress_
 
 #### Fetch LinktaFlow
-- **Endpoint:** `GET /v1/flows/:linktaFlowId `
+- **Endpoint:** `GET /v1/flows/:userInputId `
 - **Description:** Retrieves a specific LinktaFlow object based on the user input id.
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken": "<Firebase ID Token>`
 - **Responses:**
-    - `200 OK`  :` { "linktaFlow": <LinktaFlow Object> }`
+    - `200 OK`  :
+    ```json
+    {
+    "linktaFlow": {
+        "_id": "string",
+        "userInputId": "string",
+        "nodes": [
+        {
+            "id": "unique node identifier",
+            "type": "node type",
+            "position": { "x": "position x", "y": "position y" },
+            "data": { "label": "node label" }
+        },
+        // More nodes...
+        ],
+        "edges": [
+        {
+            "id": "unique edge identifier",
+            "source": "source node identifier",
+            "target": "target node identifier"
+        },
+        // More edges...
+        ]
+    }
+    }
+    ```
     - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
     - `404 Not Found`  : `{ "message": "The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect." } `
     - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
@@ -94,11 +118,34 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 #### Update LinktaFlow
 - **Endpoint:** `PUT /v1/flows/:linktaFlowId`
 - **Description:** Updates a specific LinktaFlow.
-- **Payload:** `{ "updatedLinktaFlow": <Updated LinktaFlow Object> }  `
+- **Payload:**
+    ```json
+    {
+    "updatedLinktaFlow": {
+        "nodes": [
+        {
+            "id": "unique node identifier",
+            "type": "node type",
+            "position": { "x": "position x", "y": "position y" },
+            "data": { "label": "node label" }
+        },
+        // More nodes...
+        ],
+        "edges": [
+        {
+            "id": "unique edge identifier",
+            "source": "source node identifier",
+            "target": "target node identifier"
+        },
+        // More edges...
+        ]
+    }
+    }
+    ```
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken": "<Firebase ID Token>`
 - **Responses:**
-    - `200 OK`  : `{ "message": "Linkta Flow updated successfully on [timestamp]." } `
+    - `200 OK`  : `{ "message": "Linkta Flow updated successfully." } `
     - `400 Bad Request`  :` { "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." } `
     - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
     - `404 Not Found  : { "message": "The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect." }  `
@@ -136,7 +183,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
   }
   ```
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken": "<Firebase ID Token>`
     - `x-request-id: <unique request ID>`
 - **Responses:**
     - `201 Created` : `{ "message": "Your new input and Linkta Flow have been created successfully." }`
@@ -217,13 +264,10 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 - `deleteUserInputAndAssociatedData` : Deletes a specific user input and its associated LinktaFlow data from the database.
 
 #### LinktaFlow Service
->  _Work in progress_
-- `createLinktaFlowFromInput` : Creates a new LinktaFlow record in the database based on the given UserInput.
-- `createLinktaFlowFromObject` : Creates a new LinktaFlow record in the database based on the given LinktaFlow object.
-- `findLinktaFlowById` : Retrieves a specific LinktaFlow object based on its unique identifier.
+- `createLinktaFlow` : Creates a new LinktaFlow record in the database based on the given LinktaFlow object.
+- `fetchLinktaFlowByUserInputId` : Retrieves a specific LinktaFlow object based on a UserInputId.
 - `updateLinktaFlowById` : Updates the properties of a specific LinktaFlow.
 - `deleteLinktaFlowByUserInputId`: Delete a LinktaFlow based on a UserInputId
-
 
 #### User Account and Settings Service
 >  _Work in progress_

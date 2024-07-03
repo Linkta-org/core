@@ -6,6 +6,7 @@ import type createUserInputService from '@/services/userInputService';
 import type createLinktaFlowService from '@/services/linktaFlowService';
 import type createAIService from '@/services/aiService';
 import log4js from 'log4js';
+import type { CustomNode, CustomEdge } from '@/types';
 
 const logger = log4js.getLogger('[Input Controller]');
 
@@ -44,18 +45,18 @@ const createUserInputController = (
       // convert userId string to object id
       const userObjectId = new mongoose.Types.ObjectId(userId);
 
-      // Create a new user input document in DB
-      const newUserInput = await privateUserInputService.createUserInput(
-        userObjectId,
-        userInput,
-      );
-
       // Generate initial response from AI service based on user input
       const aiResponse =
         await privateAIService.generateInitialResponse(userInput);
       logger.debug(aiResponse);
       const parsedAiResponse = JSON.parse(aiResponse);
       logger.debug(parsedAiResponse);
+
+      // Create a new user input document in DB
+      const newUserInput = await privateUserInputService.createUserInput(
+        userObjectId,
+        userInput,
+      );
 
       // Create a new Linkta flow based on AI response
       const newLinktaFlow = await privateLinktaFlowService.createLinktaFlow(
@@ -65,15 +66,29 @@ const createUserInputController = (
         parsedAiResponse.edges,
       );
 
-      const { _id, userInputId, nodes, edges } = newLinktaFlow;
+      // Map _id to id to be used in React Flow
+      if (newLinktaFlow) {
+        const { _id, userInputId, nodes, edges } = newLinktaFlow;
 
-      // Store the new Linkta flow in response local variables
-      res.locals.linktaFlow = {
-        _id,
-        userInputId,
-        nodes,
-        edges,
-      };
+        const mappedNodes = nodes.map((node: CustomNode) => ({
+          ...node._doc,
+          id: node._id,
+          _id: undefined,
+        }));
+
+        const mappedEdges = edges.map((edge: CustomEdge) => ({
+          ...edge._doc,
+          id: edge._id,
+          _id: undefined,
+        }));
+
+        res.locals.linktaFlow = {
+          id: _id,
+          userInputId,
+          nodes: mappedNodes,
+          edges: mappedEdges,
+        };
+      }
 
       next();
     } catch (error) {

@@ -47,10 +47,6 @@ const useUpdateInputTitleMutation = (): UseMutationResult<
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
     },
-
-    onError: (error: Error) => {
-      console.error('Error updating input title:', error);
-    },
   });
 };
 

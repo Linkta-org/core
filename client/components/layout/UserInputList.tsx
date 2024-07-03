@@ -7,19 +7,22 @@ import useDrawerStore from '@stores/userDrawerStore';
 import { useNavigate } from 'react-router-dom';
 import useUpdateInputTitleMutation from '@hooks/useUpdateInputTitleMutation';
 import useDeleteInputMutation from '@hooks/useDeleteInputMutation';
-
 import type { UserInput } from '../../types';
+import RenameDialog from './RenameDialog';
+import { extractUserInputId } from '@utils/helpers';
 
 interface UserInputListProps {
   inputHistory: UserInput[];
   visibleItems: number;
 }
-// TODO: event handlers for regenerate and delete to be implemented
+
 const UserInputList: React.FC<UserInputListProps> = ({
   inputHistory,
   visibleItems,
 }) => {
   const [menuAnchorElement, setMenuAnchorElement] =
+    useState<null | HTMLElement>(null);
+  const [renameAnchorElement, setRenameAnchorElement] =
     useState<null | HTMLElement>(null);
   const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
     null,
@@ -34,7 +37,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
     (event: React.MouseEvent<HTMLElement>, id: string) => {
       setMenuAnchorElement(event.currentTarget);
       setSelectedUserInputId(id);
-      const userInputId = id.split('-')[0];
+      const userInputId = extractUserInputId(id);
       navigate(`/output/${userInputId}`);
     },
     [navigate],
@@ -42,7 +45,6 @@ const UserInputList: React.FC<UserInputListProps> = ({
 
   const handleMenuClose = useCallback(() => {
     setMenuAnchorElement(null);
-    setSelectedUserInputId(null);
   }, []);
 
   useEffect(() => {
@@ -57,22 +59,37 @@ const UserInputList: React.FC<UserInputListProps> = ({
    */
   const handleRename = useCallback(() => {
     if (selectedUserInputId) {
-      // Extract the actual userInputId
-      const userInputId = selectedUserInputId.split('-')[0];
-      const newTitle = prompt('Enter new title:', ''); //TODO: to remove after UI is implemented
-      if (newTitle) {
-        updateInputTitleMutation.mutate({ userInputId, newTitle });
-      }
+      setRenameAnchorElement(menuAnchorElement);
     }
-  }, [selectedUserInputId, updateInputTitleMutation]);
+  }, [selectedUserInputId, menuAnchorElement]);
+
+  const handleRenameSave = useCallback(
+    (newTitle: string) => {
+      if (selectedUserInputId) {
+        const userInputId = extractUserInputId(selectedUserInputId);
+        updateInputTitleMutation.mutate(
+          { userInputId, newTitle },
+          {
+            onSuccess: () => console.log('Mutation succeeded'),
+            onError: (error: Error) => console.error('Mutation failed:', error),
+          },
+        );
+        setRenameAnchorElement(null);
+      }
+    },
+    [selectedUserInputId, updateInputTitleMutation],
+  );
+
+  const handleRenameCancel = useCallback(() => {
+    setRenameAnchorElement(null);
+  }, []);
 
   /**
    * Handles the delete action for a selected user input.
    */
   const handleDelete = useCallback(() => {
     if (selectedUserInputId) {
-      // Extract the actual userInputId
-      const userInputId = selectedUserInputId.split('-')[0];
+      const userInputId = extractUserInputId(selectedUserInputId);
       deleteInputMutation.mutate(userInputId);
     }
   }, [selectedUserInputId, deleteInputMutation]);
@@ -127,6 +144,17 @@ const UserInputList: React.FC<UserInputListProps> = ({
           handleMenuClose();
         }}
         onDelete={handleDelete}
+      />
+      <RenameDialog
+        isOpen={Boolean(renameAnchorElement)}
+        currentTitle={
+          inputHistory.find(
+            (input) =>
+              input._id === extractUserInputId(selectedUserInputId || ''),
+          )?.title || ''
+        }
+        onSave={handleRenameSave}
+        onCancel={handleRenameCancel}
       />
     </>
   );

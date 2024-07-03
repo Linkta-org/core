@@ -1,0 +1,37 @@
+.dialog {
+  max-width: 500px;
+  width: 70%;
+  background-color: var(--background-default);
+}
+
+.dialogTitle {
+  font-size: medium;
+}
+
+.textField {
+  width: 100%;
+  box-shadow: var(--hover-box-shadow);
+  background-color: var(--hover-background-color);
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelButton,
+.saveButton {
+  border: solid 1px;
+}
+
+.cancelButton {
+  border-color: var(--text-secondary);
+  color: white;
+}
+
+.saveButton {
+  border-color: white;
+  color: var(--background-default);
+  background-color: var(--text-secondary);
+}

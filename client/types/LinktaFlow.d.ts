@@ -1,7 +1,8 @@
 import type { Node, Edge } from 'reactflow';
 
 type LinktaFlow = {
-  _id: string;
+  id: string;
+  userInputId?: string;
   userId?: string;
   userInputId?: string;
   nodes: Node[];

@@ -1,142 +1,120 @@
 import type { Request, Response, NextFunction } from 'express';
-import LinktaFlow from '@models/LinktaFlowModel';
 import { createError } from '@middleware/errorHandling';
+import log4js from 'log4js';
+import mongoose from 'mongoose';
+import type createLinktaFlowService from '@/services/linktaFlowService';
+import type { CustomNode, CustomEdge } from '@/types';
 
-// Until authentication is implemented, user id will be stored in a single variable
-import { MOCK_USER_ID } from '@/mocks';
+const logger = log4js.getLogger('[LinktaFlow Controller]');
 
-// Fetch all LinktaFlows associated with the authenticated user
-export const fetchLinktaFlows = async (
-  _req: Request,
-  res: Response,
-  next: NextFunction,
+/**
+ * Creates the LinktaFlow controller.
+ * @param {ReturnType<typeof createLinktaFlowService>} linktaFlowService - The LinktaFlow service instance.
+ * @returns {object} The LinktaFlow controller with methods to fetch and update LinktaFlows.
+ */
+const createLinktaFlowController = (
+  linktaFlowService: ReturnType<typeof createLinktaFlowService>,
 ) => {
-  try {
-    if (!MOCK_USER_ID)
-      return res.status(401).json({
-        message:
-          'You need to log in to access this resource. Please ensure you are logged in and try again.',
-      });
-    const linktaFlows = await LinktaFlow.find({ userId: MOCK_USER_ID });
-    return res.status(200).json({ linktaFlows });
-  } catch (err: unknown) {
-    const error = createError(
-      'fetchLinktaFlows',
-      'linktaFlowController',
-      'Failed to fetch LinktaFlows',
-      err,
-    );
-    return next(error);
-  }
+  const privateLinktaFlowService = linktaFlowService;
+  /**
+   * Fetches a specific LinktaFlow by userInputId.
+   */
+  const fetchLinktaFlow = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      logger.debug(
+        'Fetching LinktaFlow for userInputId:',
+        req.params.userInputId,
+      );
+
+      const userInputId = req.params.userInputId;
+
+      const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
+
+      const linktaFlow =
+        await privateLinktaFlowService.fetchLinktaFlowByUserInputId(
+          userInputObjectId,
+        );
+
+      if (linktaFlow) {
+        const { _id, nodes, edges } = linktaFlow;
+
+        const mappedNodes = nodes.map((node: CustomNode) => ({
+          ...node._doc,
+          id: node._id,
+          _id: undefined,
+        }));
+
+        const mappedEdges = edges.map((edge: CustomEdge) => ({
+          ...edge._doc,
+          id: edge._id,
+          _id: undefined,
+        }));
+
+        res.locals.linktaFlow = {
+          id: _id,
+          userInputId,
+          nodes: mappedNodes,
+          edges: mappedEdges,
+        };
+      }
+
+      next();
+    } catch (error) {
+      logger.error('Error fetching LinktaFlow for userInputId', error);
+      const methodError = createError(
+        'fetchLinktaFlow',
+        'linktaFlowController',
+        'Failed to fetch LinktaFlow',
+        error,
+      );
+      return next(methodError);
+    }
+  };
+
+  /**
+   * Updates a specific LinktaFlow.
+   */
+  const updateLinktaFlow = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      logger.debug(
+        'Updating LinktaFlow for linktaFlowId:',
+        req.params.linktaFlowId,
+      );
+
+      const linktaFlowId = req.params.linktaFlowId;
+      const { updatedLinktaFlow } = req.body;
+
+      const linktaFlowObjectId = new mongoose.Types.ObjectId(linktaFlowId);
+      await privateLinktaFlowService.updateLinktaFlowById(
+        linktaFlowObjectId,
+        updatedLinktaFlow,
+      );
+
+      res.locals.message = 'Linkta Flow updated successfully.';
+
+      next();
+    } catch (error) {
+      logger.error('Error updating LinktaFlow for linktaFlowId', error);
+
+      const methodError = createError(
+        'updateLinktaFlow',
+        'linktaFlowController',
+        'Failed to update LinktaFlow',
+        error,
+      );
+      return next(methodError);
+    }
+  };
+
+  return { fetchLinktaFlow, updateLinktaFlow };
 };
 
-// Fetch a specific LinktaFlow by ID
-export const fetchLinktaFlow = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    if (!MOCK_USER_ID)
-      return res.status(401).json({
-        message:
-          'You need to log in to access this resource. Please ensure you are logged in and try again.',
-      });
-    const linktaFlow = await LinktaFlow.findById(
-      req.params.linktaFlowId,
-    ).populate('nodes edges');
-    if (!linktaFlow)
-      return res.status(404).json({
-        message:
-          'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.',
-      });
-    return res.status(200).json({ linktaFlow });
-  } catch (err: unknown) {
-    const error = createError(
-      'fetchLinktaFlow',
-      'linktaFlowController',
-      'Failed to fetch LinktaFlow',
-      err,
-    );
-    return next(error);
-  }
-};
-
-// Update a specific LinktaFlow
-export const updateLinktaFlow = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    if (!MOCK_USER_ID)
-      return res.status(401).json({
-        message:
-          'You need to log in to access this resource. Please ensure you are logged in and try again.',
-      });
-    const updatedLinktaFlow = await LinktaFlow.findByIdAndUpdate(
-      req.params.linktaFlowId,
-      req.body.updatedLinktaFlow,
-      { new: true },
-    );
-    if (!updatedLinktaFlow)
-      return res.status(404).json({
-        message:
-          'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.',
-      });
-    return res.status(200).json({
-      message: `Linkta Flow updated successfully on ${new Date().toISOString()}.`,
-    });
-  } catch (err: unknown) {
-    if (err instanceof Error && err.name === 'ValidationError')
-      return res.status(400).json({
-        message:
-          'Your request could not be processed as it contains invalid data. Please check your input and try again.',
-      });
-    const error = createError(
-      'updateLinktaFlow',
-      'linktaFlowController',
-      'Failed to update LinktaFlow',
-      err,
-    );
-    return next(error);
-  }
-};
-
-// Delete a specific LinktaFlow
-export const deleteLinktaFlow = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    if (!MOCK_USER_ID)
-      return res.status(401).json({
-        message:
-          'You need to log in to access this resource. Please ensure you are logged in and try again.',
-      });
-    const linktaFlow = await LinktaFlow.findById(req.params.linktaFlowId);
-    if (!linktaFlow)
-      return res.status(404).json({
-        message:
-          'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.',
-      });
-    if (linktaFlow.userId.toString() !== MOCK_USER_ID)
-      return res.status(403).json({
-        message:
-          'You do not have permission to perform this action. If you believe this is an error, please contact support.',
-      });
-    await LinktaFlow.findByIdAndDelete(req.params.linktaFlowId);
-    return res.status(200).json({
-      message: `Linkta Flow with ID ${req.params.linktaFlowId} has been successfully deleted.`,
-    });
-  } catch (err: unknown) {
-    const error = createError(
-      'deleteLinktaFlow',
-      'linktaFlowController',
-      'Failed to delete LinktaFlow',
-      err,
-    );
-    return next(error);
-  }
-};
+export default createLinktaFlowController;

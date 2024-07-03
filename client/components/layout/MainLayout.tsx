@@ -8,7 +8,8 @@ import '@styles/MainLayout.css';
 import useDrawerStore from '@stores/userDrawerStore';
 import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
-import { getAuth, signOut } from 'firebase/auth';
+import useSignOut from '@hooks/useSignOut';
+import useAuth from '@hooks/useAuth';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -17,7 +18,6 @@ import { getAuth, signOut } from 'firebase/auth';
  */
 const MainLayout: React.FC = () => {
   const breakpoint = 768;
-  const auth = getAuth();
   const matching = useMatchMedia(breakpoint);
   const { drawerOpen, setDrawerOpen } = useDrawerStore();
   const { mutate: updateLinktaFlow } = useUpdateLinktaFlowMutation();
@@ -31,9 +31,12 @@ const MainLayout: React.FC = () => {
       return;
     }
 
-    const { _id: linktaFlowId, nodes, edges } = currentLinktaFlow;
+    const { id: linktaFlowId, nodes, edges } = currentLinktaFlow;
+
     updateLinktaFlow({ linktaFlowId, updatedLinktaFlow: { nodes, edges } });
   };
+  const signOutMutation = useSignOut();
+  const { isAuthenticated } = useAuth();
 
   const toggleDrawer = () => {
     !matching && setDrawerOpen(!drawerOpen);
@@ -43,13 +46,15 @@ const MainLayout: React.FC = () => {
     matching && setDrawerOpen(false);
   }, [matching, setDrawerOpen]);
 
-  const handleSignout = async () => {
-    try {
-      await signOut(auth);
-      console.log('User signed in successfully!');
-    } catch (error) {
-      console.error('Failed to sign user out!', error);
-    }
+  const handleSignOut = () => {
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        console.log('Signed out successfully');
+      },
+      onError: (error) => {
+        console.error('Error signing out:', error);
+      },
+    });
   };
 
   return (
@@ -95,6 +100,20 @@ const MainLayout: React.FC = () => {
               <Typography variant='button'>Save</Typography>
             </Button>
 
+            {isAuthenticated && (
+              <Button
+                className='save-button-group-item'
+                sx={{
+                  borderTopLeftRadius: 50,
+                  borderBottomLeftRadius: 50,
+                  paddingBottom: '4px',
+                }}
+                onClick={handleSignOut}
+              >
+                <Typography variant='button'>Sign Out</Typography>
+              </Button>
+            )}
+
             <Button
               className='save-button-group-item'
               sx={{
@@ -116,7 +135,7 @@ const MainLayout: React.FC = () => {
               height: '26px',
               marginLeft: '20px',
             }}
-            onClick={handleSignout}
+            onClick={handleSignOut}
           >
             <Typography variant='button'>Sign Out</Typography>
           </Button>

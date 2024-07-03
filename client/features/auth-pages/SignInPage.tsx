@@ -4,19 +4,68 @@ import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import styles from '@styles/layout/AuthStyles.module.css';
 import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
 import useDocumentTitle from '@hooks/useDocumentTitle';
+import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
+import { useSignInWithEmailAndPasswordMutation } from '@/hooks/useSignInWithEmailAndPassword';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const userSignInSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(1, { message: 'Please enter a password' }),
+});
+
+type FormData = z.infer<typeof userSignInSchema>;
 
 const SignInPage = () => {
   useDocumentTitle('Sign In');
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
+  const githubAuthMuation = useGithubAuthMutation();
+  const signInWithEmailAndPasswordMutation =
+    useSignInWithEmailAndPasswordMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(userSignInSchema),
+  });
 
   const handleGoogleAuthClick = () => {
     googleAuthMutation.mutate(undefined, {
-      onSuccess: (data) => {
-        console.log('Signed in with GOOGLE AUTH SUCCESSFULLY', data);
+      onSuccess: () => {
+        console.log('Signed in with Google');
         navigate('/home-page');
       },
     });
+  };
+
+  const handleGithubAuthClick = () => {
+    githubAuthMuation.mutate(undefined, {
+      onSuccess: () => {
+        console.log('Signed in with GitHub');
+        navigate('/home-page');
+      },
+    });
+  };
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const { email, password } = data;
+
+    signInWithEmailAndPasswordMutation.mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          navigate('/home-page');
+        },
+        onError: (error) => {
+          // TODO: implement the snackbar alert component
+          console.error('Failed to sign in to Linkta.', error.message);
+        },
+      },
+    );
   };
 
   return (
@@ -45,6 +94,7 @@ const SignInPage = () => {
         <Button
           variant='contained'
           className={`${styles.authButton}`}
+          onClick={handleGithubAuthClick}
         >
           <img
             src='../assets/github-icon.png'
@@ -57,20 +107,30 @@ const SignInPage = () => {
 
       <Typography variant='h6'>- OR -</Typography>
 
-      <form className={`${styles.authViewForm}`}>
+      <form
+        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+        className={`${styles.authViewForm}`}
+      >
         <TextField
-          placeholder='email address'
+          label='email address'
           variant='standard'
+          type='email'
+          {...register('email')}
+          error={!!errors.email}
+          helperText={errors.email?.message}
         ></TextField>
         <TextField
-          placeholder='password'
+          label='password'
+          type='password'
           variant='standard'
+          {...register('password')}
         ></TextField>
         <Button
+          type='submit'
           variant='contained'
           className={`${styles.formSubmitButton}`}
         >
-          Sign In
+          Sign In to Linkta
         </Button>
       </form>
 

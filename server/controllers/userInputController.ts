@@ -129,7 +129,14 @@ const createUserInputController = (
         limit,
       );
 
-      res.locals.inputHistory = inputHistory;
+      // Map _id to id
+      const inputHistoryWithId = inputHistory.map((input) => ({
+        ...input,
+        id: input._id,
+        _id: undefined,
+      }));
+
+      res.locals.inputHistory = inputHistoryWithId;
       next();
     } catch (error) {
       logger.error('Error fetching input history for user', error);

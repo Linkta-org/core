@@ -5,10 +5,10 @@ import type {
   Response,
   NextFunction,
 } from 'express';
-import { getServiceAccountEnv } from '@utils/environment';
+import { getEnv } from '@utils/environment';
 import log4js from 'log4js';
 
-getServiceAccountEnv();
+getEnv();
 
 const { getLogger } = log4js;
 const logger = getLogger('[USER AUTH]');

@@ -7,12 +7,14 @@ import useDrawerStore from '@stores/userDrawerStore';
 import { useNavigate } from 'react-router-dom';
 import useUpdateInputTitleMutation from '@hooks/useUpdateInputTitleMutation';
 import useDeleteInputMutation from '@hooks/useDeleteInputMutation';
-import type { UserInput } from '../../types';
-import { useCreateLinktaFlowMutation } from '../../hooks/useCreateLinktaFlowMutation';
-import { extractUserInputId } from '../../utils/helpers';
+import type { UserInput } from '@/types/UserInput';
+import { useCreateLinktaFlowMutation } from '@hooks/useCreateLinktaFlowMutation';
+import { extractUserInputId } from '@utils/helpers';
 import SnackBarNotification from '../common/SnackBarNotification';
 import type LinktaFlow from '@/types/LinktaFlow';
 import { useQueryClient } from '@tanstack/react-query';
+import RenameDialog from './RenameDialog';
+import type { UpdateInputTitleResponse } from '@/types/UserInput';
 
 interface UserInputListProps {
   inputHistory: UserInput[];
@@ -40,6 +42,8 @@ const UserInputList: React.FC<UserInputListProps> = ({
     severity: 'success' as 'error' | 'warning' | 'info' | 'success',
   });
   const queryClient = useQueryClient();
+  const [renameAnchorElement, setRenameAnchorElement] =
+    useState<null | HTMLElement>(null);
 
   const handleItemClick = useCallback(
     (event: React.MouseEvent<HTMLElement>, userInput: UserInput) => {
@@ -53,7 +57,6 @@ const UserInputList: React.FC<UserInputListProps> = ({
 
   const handleMenuClose = useCallback(() => {
     setMenuAnchorElement(null);
-    setSelectedUserInput(null);
   }, []);
 
   useEffect(() => {
@@ -63,22 +66,49 @@ const UserInputList: React.FC<UserInputListProps> = ({
     }
   }, [drawerOpen]);
 
-  /**
-   * Handles the rename action for a selected user input.
-   */
   const handleRename = useCallback(() => {
     if (selectedUserInput) {
-      const userInputId = extractUserInputId(selectedUserInput.id);
-      const newTitle = prompt('Enter new title:', ''); //TODO: to remove after UI is implemented
-      if (newTitle) {
-        updateInputTitleMutation.mutate({ userInputId, newTitle });
-      }
+      setRenameAnchorElement(menuAnchorElement);
     }
-  }, [selectedUserInput, updateInputTitleMutation]);
+  }, [selectedUserInput, menuAnchorElement]);
 
-  /**
-   * Handles the delete action for a selected user input.
-   */
+  const handleRenameSave = useCallback(
+    (newTitle: string) => {
+      if (selectedUserInput) {
+        const userInputId = extractUserInputId(selectedUserInput.id);
+        updateInputTitleMutation.mutate(
+          { userInputId, newTitle },
+          {
+            onSuccess: async (data: UpdateInputTitleResponse) => {
+              await queryClient.invalidateQueries({
+                queryKey: ['inputHistory'],
+              });
+              setSnackbar({
+                open: true,
+                message: data.message,
+                severity: 'success',
+              });
+            },
+            onError: (error: Error) => {
+              console.error('Error updating input title: ', error);
+              setSnackbar({
+                open: true,
+                message: 'Failed to update input title. Please try again.',
+                severity: 'error',
+              });
+            },
+          },
+        );
+        setRenameAnchorElement(null);
+      }
+    },
+    [selectedUserInput, updateInputTitleMutation],
+  );
+
+  const handleRenameCancel = useCallback(() => {
+    setRenameAnchorElement(null);
+  }, []);
+
   const handleDelete = useCallback(() => {
     if (selectedUserInput) {
       const userInputId = extractUserInputId(selectedUserInput.id);
@@ -86,9 +116,6 @@ const UserInputList: React.FC<UserInputListProps> = ({
     }
   }, [selectedUserInput, deleteInputMutation]);
 
-  /**
-   * Handles the regenerate action of a new linktaflow with the selected user input.
-   */
   const handleRegenerate = useCallback(async () => {
     if (selectedUserInput) {
       createLinktaFlowMutation.mutate(
@@ -157,6 +184,17 @@ const UserInputList: React.FC<UserInputListProps> = ({
         onRename={handleRename}
         onRegenerate={handleRegenerate}
         onDelete={handleDelete}
+      />
+      <RenameDialog
+        isOpen={Boolean(renameAnchorElement)}
+        currentTitle={
+          inputHistory.find(
+            (input) =>
+              input.id === extractUserInputId(selectedUserInput?.id || ''),
+          )?.title || ''
+        }
+        onSave={handleRenameSave}
+        onCancel={handleRenameCancel}
       />
       <SnackBarNotification
         open={snackbar.open}

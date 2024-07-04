@@ -5,7 +5,9 @@ const hasHtmlChars = (val: string) => {
   const specialCharsRegex = /[<>]/;
   return !specialCharsRegex.test(val);
 };
-const userInputValidationSchema = z.object({
+
+// Validation schema for user input
+export const userInputInputSchema = z.object({
   input: z
     .string()
     .trim()
@@ -19,5 +21,16 @@ const userInputValidationSchema = z.object({
     }),
 });
 
-export type UserInputValidation = z.infer<typeof userInputValidationSchema>;
-export default userInputValidationSchema;
+// Validation schema for input title
+export const userInputTitleSchema = z.object({
+  title: z
+    .string()
+    .min(1, 'Input title is required')
+    .max(15, {
+      message: 'Title must be less than 15 characters in length!',
+    })
+    .refine((val) => hasHtmlChars(val), {
+      message:
+        'Input must not include special HTML characters such as "<" or ">" !',
+    }),
+});

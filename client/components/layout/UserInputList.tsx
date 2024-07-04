@@ -5,8 +5,8 @@ import OptionsMenu from './OptionsMenu';
 import styles from '@styles/layout/UserInputList.module.css';
 import useDrawerStore from '@stores/userDrawerStore';
 import { useNavigate } from 'react-router-dom';
-import useUpdateInputTitleMutation from '../../hooks/useUpdateInputTitleMutation';
-import useDeleteInputMutation from '../../hooks/useDeleteInputMutation';
+import useUpdateInputTitleMutation from '@hooks/useUpdateInputTitleMutation';
+import useDeleteInputMutation from '@hooks/useDeleteInputMutation';
 import type { UserInput } from '../../types';
 
 interface UserInputListProps {

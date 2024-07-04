@@ -1,7 +1,7 @@
 import React from 'react';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { Box, Typography } from '@mui/material';
-import styles from '@features/home-page/Homepage.module.css';
+import styles from '@styles/Homepage.module.css';
 
 const HomePage = () => {
   useDocumentTitle();

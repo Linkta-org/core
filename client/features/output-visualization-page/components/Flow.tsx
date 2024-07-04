@@ -16,6 +16,7 @@ import LinktaNode from '@features/output-visualization-page/components/LinktaNod
 import ConnectionLine from '@features/output-visualization-page/components/ConnectionLine';
 import useFetchLinktaFlow from '@hooks/useFetchLinktaFlow';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
+import dagreAutoLayout from '@/utils/dagreAutoLayout';
 
 const nodeTypes = { linktaNode: LinktaNode };
 
@@ -66,9 +67,19 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   useEffect(() => {
     if (linktaFlow) {
-      setNodes(linktaFlow.nodes);
-      setEdges(linktaFlow.edges);
-      setCurrentFlow(linktaFlow);
+      // Use dagreAutoLayout to compute positions
+      const { nodes: layoutNodes, edges: layoutEdges } = dagreAutoLayout(
+        linktaFlow.nodes,
+        linktaFlow.edges,
+      );
+
+      setNodes(layoutNodes);
+      setEdges(layoutEdges);
+      setCurrentFlow({
+        id: linktaFlow.id,
+        nodes: layoutNodes,
+        edges: layoutEdges,
+      });
     }
   }, [linktaFlow, setCurrentFlow]);
 
@@ -103,6 +114,8 @@ function Flow({ userInputId }: { userInputId: string }) {
       ),
     [],
   );
+
+  if (!linktaFlow) return <>Loading...</>;
 
   return (
     <ReactFlow

@@ -8,6 +8,8 @@ import '@styles/MainLayout.css';
 import useDrawerStore from '@stores/userDrawerStore';
 import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
+import useSignOut from '@hooks/useSignOut';
+import useAuth from '@hooks/useAuth';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -29,10 +31,12 @@ const MainLayout: React.FC = () => {
       return;
     }
 
-    const { _id: linktaFlowId, nodes, edges } = currentLinktaFlow;
+    const { id: linktaFlowId, nodes, edges } = currentLinktaFlow;
 
     updateLinktaFlow({ linktaFlowId, updatedLinktaFlow: { nodes, edges } });
   };
+  const signOutMutation = useSignOut();
+  const { isAuthenticated } = useAuth();
 
   const toggleDrawer = () => {
     !matching && setDrawerOpen(!drawerOpen);
@@ -41,6 +45,17 @@ const MainLayout: React.FC = () => {
   useEffect(() => {
     matching && setDrawerOpen(false);
   }, [matching, setDrawerOpen]);
+
+  const handleSignOut = () => {
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        console.log('Signed out successfully');
+      },
+      onError: (error) => {
+        console.error('Error signing out:', error);
+      },
+    });
+  };
 
   return (
     <>
@@ -85,6 +100,20 @@ const MainLayout: React.FC = () => {
               <Typography variant='button'>Save</Typography>
             </Button>
 
+            {isAuthenticated && (
+              <Button
+                className='save-button-group-item'
+                sx={{
+                  borderTopLeftRadius: 50,
+                  borderBottomLeftRadius: 50,
+                  paddingBottom: '4px',
+                }}
+                onClick={handleSignOut}
+              >
+                <Typography variant='button'>Sign Out</Typography>
+              </Button>
+            )}
+
             <Button
               className='save-button-group-item'
               sx={{
@@ -96,6 +125,20 @@ const MainLayout: React.FC = () => {
               <ArrowDropDown />
             </Button>
           </ButtonGroup>
+          <Button
+            className='sign-out-button'
+            variant='contained'
+            color='secondary'
+            disableElevation
+            sx={{
+              borderRadius: '13px',
+              height: '26px',
+              marginLeft: '20px',
+            }}
+            onClick={handleSignOut}
+          >
+            <Typography variant='button'>Sign Out</Typography>
+          </Button>
         </Box>
 
         <SideNavDrawer

@@ -39,8 +39,6 @@ const isAuthorized = async (
   next: NextFunction,
 ) => {
   const idToken = req.headers.authorization;
-  logger.debug('AUTH REQUEST HEADER: ', idToken);
-  logger.debug('REQ.HEADERS: ', req.headers);
 
   /**
    * If the idToken is valid, the verifyIdToken() method will return a decoded token object.
@@ -48,12 +46,16 @@ const isAuthorized = async (
    */
   try {
     const verification = await admin.auth().verifyIdToken(idToken as string);
-    logger.info("User's ID Token successfully verified!");
 
     req.user = {
       userId: verification.uid,
     };
 
+    logger.info(
+      "User's ID Token successfully verified!",
+      'UID:',
+      verification.uid,
+    );
     next();
   } catch (err) {
     logger.error(err);

@@ -18,7 +18,7 @@
       "./styles",
       "./types",
       "./utils",
-      "./zod"
+      "./validators"
     ] /* Specify the root folder within your source files. */,
     "jsx": "react",
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
@@ -37,7 +37,7 @@
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"],
-      "@zod/*": ["zod/*"]
+      "@validators/*": ["validators/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
@@ -69,7 +69,7 @@
     "stores/**/*",
     "types/**/*",
     "utils/**/*",
-    "zod/**/*",
+    "validators/**/*",
     "*.tsx",
     "tests/**/*.ts*",
     "**/*.d.ts"

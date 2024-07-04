@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import userInputValidationSchema from '@zod/validateUserInput';
+import { userInputInputSchema } from '@validators/userInputSchemas';
 import {
   TextField,
   Button,
@@ -34,7 +34,7 @@ const UserInputForm = () => {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(userInputValidationSchema),
+    resolver: zodResolver(userInputInputSchema),
     defaultValues: {
       input: '',
       isChecked: JSON.parse('true' || 'false'),

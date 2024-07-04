@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
@@ -31,25 +31,17 @@ const UserInputForm = () => {
     reset,
     control,
     watch,
-    formState: { errors, isSubmitted },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(userInputValidationSchema),
     defaultValues: {
       input: '',
-      isChecked: JSON.parse(localStorage.getItem('isChecked') || 'false'),
+      isChecked: JSON.parse('true' || 'false'),
     },
   });
   const navigate = useNavigate();
   const newUserInputMutation = useNewUserInputMutation();
-  // Here we utilize the watch function to subscribe to checkbox state changes and save those changes to our localStorage.
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name === 'isChecked') {
-        localStorage.setItem('isChecked', value.isChecked);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  const isChecked = watch('isChecked');
 
   const onSubmit: SubmitHandler<CustomFormData> = async (data) => {
     try {
@@ -130,7 +122,7 @@ const UserInputForm = () => {
           variant='contained'
           className={`${styles.userInputSubmitButton}`}
           type='submit'
-          disabled={isSubmitted || !control._formValues.isChecked}
+          disabled={!isChecked}
         >
           {newUserInputMutation.status === 'pending' ? 'Loading' : 'Generate'}
         </Button>

@@ -20,12 +20,11 @@ const HomePage = () => {
           both intuitive and accessible.
         </Typography>
       </Box>
-      <Box className={`${styles.homeImage}`}>
-        <img
-          alt='A 3D model showing various gadgets and widgets.'
-          src='../../assets/Linkta-Landing.png'
-        ></img>
-      </Box>
+      <img
+        className={`${styles.homeImage}`}
+        alt='A 3D model showing various gadgets and widgets.'
+        src='/Linkta-Landing.png'
+      ></img>
     </Box>
   );
 };

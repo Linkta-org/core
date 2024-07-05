@@ -38,7 +38,7 @@ const createLinktaFlowController = (
         await privateLinktaFlowService.fetchLinktaFlowByUserInputId(
           userInputObjectId,
         );
-
+      console.log('linktaflow', linktaFlow);
       if (linktaFlow) {
         const { nodes, edges } = linktaFlow;
 
@@ -56,6 +56,12 @@ const createLinktaFlowController = (
           nodes: mappedNodes,
           edges: mappedEdges,
         };
+      } else {
+        res
+          .status(404)
+          .send(
+            'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.',
+          );
       }
 
       next();

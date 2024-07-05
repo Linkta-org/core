@@ -5,7 +5,7 @@ import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@components/common/SideNavDrawer';
 import useMatchMedia from '@hooks/useMatchMedia';
 import '@styles/MainLayout.css';
-import useDrawerStore from '@stores/userDrawerStore';
+import useSideNavDrawerStore from '@stores/SideNavDrawerStore';
 import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import useSignOut from '@hooks/useSignOut';
@@ -19,7 +19,7 @@ import useAuth from '@hooks/useAuth';
 const MainLayout: React.FC = () => {
   const breakpoint = 768;
   const matching = useMatchMedia(breakpoint);
-  const { drawerOpen, setDrawerOpen } = useDrawerStore();
+  const { drawerOpen, setDrawerOpen } = useSideNavDrawerStore();
   const { mutate: updateLinktaFlow } = useUpdateLinktaFlowMutation();
   const currentLinktaFlow = useLinktaFlowStore((state) =>
     state.getCurrentFlow(),

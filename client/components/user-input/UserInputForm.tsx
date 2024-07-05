@@ -12,11 +12,10 @@ import {
   Typography,
   Checkbox,
 } from '@mui/material';
-
 import styles from '@styles/UserInputView.module.css';
 import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
 import SnackBarNotification from '../common/SnackBarNotification';
-import type LinktaFlow from '@/types/LinktaFlow';
+import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface CustomFormData {
@@ -25,8 +24,6 @@ interface CustomFormData {
 }
 
 const UserInputForm = () => {
-  // Here we utilize the useForm hook's properties to manage form state while also initializing default values and resolving our validation schema.
-  // The control object is used by react-hook-form's Controller to link our UserInputBar and UserInputCheckbox components to the form's state, handling any necessary state updates or validation checks.
   const {
     handleSubmit,
     reset,
@@ -42,39 +39,33 @@ const UserInputForm = () => {
   });
   const navigate = useNavigate();
   const createLinktaFlowMutation = useCreateLinktaFlowMutation();
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'success' as 'error' | 'warning' | 'info' | 'success',
-  });
   const queryClient = useQueryClient();
-
   const isChecked = watch('isChecked');
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] =
+    useState<SnackbarSeverity>('success');
 
-  const onSubmit: SubmitHandler<CustomFormData> = (data) => {
-    createLinktaFlowMutation.mutate(
-      { input: data.input },
-      {
-        onSuccess: async (response: LinktaFlow) => {
-          await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
-          reset();
-          navigate(`/output/${response.userInputId}`);
-          setSnackbar({
-            open: true,
-            message: 'LinktaFlow created successfully!',
-            severity: 'success',
-          });
-        },
-        onError: (error: Error) => {
-          console.error('Error sending prompt: ', error);
-          setSnackbar({
-            open: true,
-            message: 'Failed to create LinktaFlow. Please try again.',
-            severity: 'error',
-          });
-        },
-      },
-    );
+  const resetSnackbarStates = () => {
+    setIsSnackbarOpen(false);
+    setSnackbarMessage('');
+    setSnackbarSeverity('success');
+  };
+
+  const onSubmit: SubmitHandler<CustomFormData> = async (data) => {
+    try {
+      const response = await createLinktaFlowMutation.mutateAsync({
+        input: data.input,
+      });
+      await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+      reset();
+      navigate(`/output/${response.userInputId}`);
+    } catch (error) {
+      console.error('Error sending prompt: ', error);
+      setIsSnackbarOpen(true);
+      setSnackbarMessage('Failed to create LinktaFlow. Please try again.');
+      setSnackbarSeverity('error');
+    }
   };
 
   return (
@@ -138,10 +129,10 @@ const UserInputForm = () => {
         </Button>
       </form>
       <SnackBarNotification
-        open={snackbar.open}
-        message={snackbar.message}
-        severity={snackbar.severity}
-        callerUpdater={() => setSnackbar({ ...snackbar, open: false })}
+        open={isSnackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        callerUpdater={resetSnackbarStates}
       />
     </>
   );

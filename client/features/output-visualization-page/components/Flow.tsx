@@ -8,7 +8,7 @@ import ReactFlow, {
   applyEdgeChanges,
   MarkerType,
   ConnectionMode,
-  updateEdge,
+  reconnectEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from '@features/output-visualization-page/components/LinktaFlowEdge';
@@ -96,7 +96,7 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) =>
-      setEdges((els) => updateEdge(oldEdge, newConnection, els)),
+      setEdges((els) => reconnectEdge(oldEdge, newConnection, els)),
     [],
   );
 

@@ -16,7 +16,10 @@ if (!rootElement) {
 
 const root = createRoot(rootElement);
 
-const queryClient = new QueryClient();
+// Create a new QueryClient instance with default stale time of 5 minutes
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
+});
 
 root.render(
   <React.StrictMode>

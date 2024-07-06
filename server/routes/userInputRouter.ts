@@ -11,6 +11,7 @@ import {
   userInputInputSchema,
   userInputTitleSchema,
 } from '@/validators/userInputSchemas';
+import createUserService from '@/services/userService';
 
 const userInputRouter = Router();
 
@@ -18,6 +19,7 @@ const userInputRouter = Router();
 const userInputService = createUserInputService();
 const linktaFlowService = createLinktaFlowService();
 const aiService = createAIService();
+const userService = createUserService();
 
 // Instantiate the controller with the services
 const userInputController = createUserInputController(
@@ -26,6 +28,9 @@ const userInputController = createUserInputController(
   aiService,
 );
 
+// Apply the authorization middleware to all routes in this router.
+userInputRouter.use(isAuthorized(userService));
+
 /**
  * @route POST /v1/inputs
  * @description Generates a LinktaFlow and fetches updated input history.
@@ -33,7 +38,6 @@ const userInputController = createUserInputController(
  */
 userInputRouter.post(
   '/',
-  isAuthorized,
   validationMiddleware(userInputInputSchema, 'body'),
   userInputController.generateLinktaFlowFromInput,
   userInputController.fetchInputHistory,
@@ -53,7 +57,6 @@ userInputRouter.post(
  */
 userInputRouter.get(
   '/',
-  isAuthorized,
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
     return res.status(200).json({ inputHistory: res.locals.inputHistory });
@@ -67,7 +70,6 @@ userInputRouter.get(
  */
 userInputRouter.put(
   '/:userInputId',
-  isAuthorized,
   validationMiddleware(userInputIdSchema, 'params'),
   validationMiddleware(userInputTitleSchema, 'body'),
   userInputController.updateInputTitle,
@@ -87,7 +89,6 @@ userInputRouter.put(
 */
 userInputRouter.delete(
   '/:userInputId',
-  isAuthorized,
   validationMiddleware(userInputIdSchema, 'params'),
   userInputController.deleteUserInput,
   userInputController.fetchInputHistory,

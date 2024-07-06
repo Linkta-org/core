@@ -1,6 +1,9 @@
 import { startGeneration } from '@/models/GeminiModel';
 import type { Content } from '@google/generative-ai';
 import { createError } from '@/middleware/errorHandling';
+import log4js from 'log4js';
+
+const logger = log4js.getLogger('[AI Service]');
 
 /**
  * Creates AI service to interact with generative AI models.
@@ -15,15 +18,19 @@ const createAIService = () => {
   ): Promise<string> => {
     const history: Content[] = [];
     try {
+      logger.debug('Starting to generate initial response', userInput);
+
       if (!userInput) {
+        logger.error('Invalid user input');
         throw new Error('Invalid user input');
       }
 
       const response = await startGeneration(history, userInput);
-      // TODO: add linktaflow validation + retry mechanism
+      logger.debug('Generated initial response successfully', response);
 
       return response;
     } catch (error) {
+      logger.error('Error generating response from AI', error);
       const methodError = createError(
         'generateInitialResponse',
         'AIService',

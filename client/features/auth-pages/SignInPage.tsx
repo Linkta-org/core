@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import styles from '@styles/layout/AuthStyles.module.css';
@@ -9,6 +9,9 @@ import { useSignInWithEmailAndPasswordMutation } from '@/hooks/useSignInWithEmai
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import useFetchUserProfile from '@/hooks/useFetchUserProfile';
+import SnackBarNotification from '@components/common/SnackBarNotification';
+import type { SnackbarSeverity } from '@/types/snackBar';
 
 const userSignInSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -24,7 +27,7 @@ const SignInPage = () => {
   const githubAuthMuation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
     useSignInWithEmailAndPasswordMutation();
-
+  const { data: userProfile, refetch } = useFetchUserProfile();
   const {
     register,
     handleSubmit,
@@ -32,12 +35,36 @@ const SignInPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(userSignInSchema),
   });
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] =
+    useState<SnackbarSeverity>('success');
+
+  const resetSnackbarStates = () => {
+    setIsSnackbarOpen(false);
+    setSnackbarMessage('');
+    setSnackbarSeverity('success');
+  };
+
+  // Navigate to home page if user profile is fetched successfully
+  useEffect(() => {
+    if (userProfile) {
+      navigate('/generate');
+    }
+  }, [userProfile, navigate]);
 
   const handleGoogleAuthClick = () => {
     googleAuthMutation.mutate(undefined, {
       onSuccess: () => {
-        console.log('Signed in with Google');
-        navigate('/home-page');
+        void refetch();
+      },
+      onError: (error) => {
+        console.error('Failed to sign in through Google.', error.message);
+        setIsSnackbarOpen(true);
+        setSnackbarMessage(
+          'Failed to sign in through Google. Please try again.',
+        );
+        setSnackbarSeverity('error');
       },
     });
   };
@@ -45,8 +72,15 @@ const SignInPage = () => {
   const handleGithubAuthClick = () => {
     githubAuthMuation.mutate(undefined, {
       onSuccess: () => {
-        console.log('Signed in with GitHub');
-        navigate('/home-page');
+        void refetch();
+      },
+      onError: (error) => {
+        console.error('Failed to sign in through Github.', error.message);
+        setIsSnackbarOpen(true);
+        setSnackbarMessage(
+          'Failed to sign in through Github. Please try again.',
+        );
+        setSnackbarSeverity('error');
       },
     });
   };
@@ -58,112 +92,124 @@ const SignInPage = () => {
       { email, password },
       {
         onSuccess: () => {
-          navigate('/home-page');
+          void refetch();
         },
         onError: (error) => {
-          // TODO: implement the snackbar alert component
-          console.error('Failed to sign in to Linkta.', error.message);
+          console.error('Failed to sign in through email.', error.message);
+          setIsSnackbarOpen(true);
+          setSnackbarMessage(
+            'Failed to sign in through email. Please try again.',
+          );
+          setSnackbarSeverity('error');
         },
       },
     );
   };
 
   return (
-    <Box className={`${styles.signInPage}`}>
-      <Typography
-        variant='h3'
-        className={`${styles.headingText}`}
-      >
-        Sign In
-      </Typography>
-
-      <Box className={`${styles.buttonWrapper}`}>
-        <Button
-          variant='contained'
-          className={`${styles.authButton}`}
-          onClick={handleGoogleAuthClick}
-        >
-          <img
-            src='/google-icon.png'
-            className={`${styles.buttonIcon}`}
-            alt='A Google "G" icon on the button to sign in with Google.'
-          ></img>
-          Sign In with Google
-        </Button>
-
-        <Button
-          variant='contained'
-          className={`${styles.authButton}`}
-          onClick={handleGithubAuthClick}
-        >
-          <img
-            src='/github-icon.png'
-            className={`${styles.buttonIcon}`}
-            alt='A GitHub octocat icon on the button to sign in with GitHub.'
-          ></img>
-          Sign In with GitHub
-        </Button>
-      </Box>
-
-      <Typography variant='h6'>- OR -</Typography>
-
-      <form
-        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
-        className={`${styles.authViewForm}`}
-      >
-        <TextField
-          label='email address'
-          variant='standard'
-          type='email'
-          {...register('email')}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        ></TextField>
-        <TextField
-          label='password'
-          type='password'
-          variant='standard'
-          {...register('password')}
-        ></TextField>
-        <Button
-          type='submit'
-          variant='contained'
-          className={`${styles.formSubmitButton}`}
-        >
-          Sign In to Linkta
-        </Button>
-      </form>
-
-      <Box className={`${styles.finePrintContainer}`}>
-        <Typography variant='body2'>
-          Need to create an account?
-          <Link
-            component={RouterLink}
-            to='/signup'
-          >
-            Sign Up
-          </Link>
-        </Typography>
-
-        <Typography variant='body2'>
-          Update your password?
-          <Link
-            component={RouterLink}
-            to='/update-password'
-          >
-            Update
-          </Link>
-        </Typography>
-
+    <>
+      <Box className={`${styles.signInPage}`}>
         <Typography
-          variant='body2'
-          className={`${styles.termsAndConditions}`}
+          variant='h3'
+          className={`${styles.headingText}`}
         >
-          By continuing, you are indicating that you have read and accept our
-          <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+          Sign In
         </Typography>
+
+        <Box className={`${styles.buttonWrapper}`}>
+          <Button
+            variant='contained'
+            className={`${styles.authButton}`}
+            onClick={handleGoogleAuthClick}
+          >
+            <img
+              src='/google-icon.png'
+              className={`${styles.buttonIcon}`}
+              alt='A Google "G" icon on the button to sign in with Google.'
+            ></img>
+            Sign In with Google
+          </Button>
+
+          <Button
+            variant='contained'
+            className={`${styles.authButton}`}
+            onClick={handleGithubAuthClick}
+          >
+            <img
+              src='/github-icon.png'
+              className={`${styles.buttonIcon}`}
+              alt='A GitHub octocat icon on the button to sign in with GitHub.'
+            ></img>
+            Sign In with GitHub
+          </Button>
+        </Box>
+
+        <Typography variant='h6'>- OR -</Typography>
+
+        <form
+          onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+          className={`${styles.authViewForm}`}
+        >
+          <TextField
+            label='email address'
+            variant='standard'
+            type='email'
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          ></TextField>
+          <TextField
+            label='password'
+            type='password'
+            variant='standard'
+            {...register('password')}
+          ></TextField>
+          <Button
+            type='submit'
+            variant='contained'
+            className={`${styles.formSubmitButton}`}
+          >
+            Sign In to Linkta
+          </Button>
+        </form>
+
+        <Box className={`${styles.finePrintContainer}`}>
+          <Typography variant='body2'>
+            Need to create an account?
+            <Link
+              component={RouterLink}
+              to='/signup'
+            >
+              Sign Up
+            </Link>
+          </Typography>
+
+          <Typography variant='body2'>
+            Update your password?
+            <Link
+              component={RouterLink}
+              to='/update-password'
+            >
+              Update
+            </Link>
+          </Typography>
+
+          <Typography
+            variant='body2'
+            className={`${styles.termsAndConditions}`}
+          >
+            By continuing, you are indicating that you have read and accept our
+            <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+      <SnackBarNotification
+        open={isSnackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        callerUpdater={resetSnackbarStates}
+      />
+    </>
   );
 };
 

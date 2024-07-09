@@ -77,7 +77,7 @@ From the **Linkta Core** project page, find **Project Settings** at the gear ico
 
 Within **Project Settings**, on the **General** tab, scroll down to **My Apps** to find the **firebaseConfig** sample code block which contains all of the values for these environment variables.
 
-![A screenshot of the Firebase Console / General area](https://github.com/Linkta-org/core/blob/b98fd7fc93e1ba969b733bde560f8932b3df8257/.github/docs/assets/screenshot-firebase-config.png)
+![A screenshot of the Firebase Console / General area](https://github.com/Linkta-org/core/blob/d42a53fb77d6606573ff37bc07d90c502c1037b4/.github/docs/assets/screenshot-firebase-config.png)
 
 <br>
 

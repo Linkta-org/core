@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import type { EdgeChange, NodeChange, Edge, Node, Connection } from 'reactflow';
+import type { EdgeChange, NodeChange, Edge, Node, Connection, Viewport } from 'reactflow';
 import ReactFlow, {
   addEdge,
   Controls,
@@ -9,20 +9,18 @@ import ReactFlow, {
   MarkerType,
   ConnectionMode,
   updateEdge,
+  Panel,
+  useViewport,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from '@features/output-visualization-page/components/LinktaFlowEdge';
 import LinktaNode from '@features/output-visualization-page/components/LinktaNode';
 import ConnectionLine from '@features/output-visualization-page/components/ConnectionLine';
-import useFetchLinktaFlow from '@hooks/useFetchLinktaFlow';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
-import dagreAutoLayout from '@/utils/dagreAutoLayout';
+import UndoAndRedo from '@features/output-visualization-page/components/UndoAndRedo';
 
 const nodeTypes = { linktaNode: LinktaNode };
-
-const edgeTypes = {
-  linktaEdge: LinktaFlowEdge,
-};
+const edgeTypes = { linktaEdge: LinktaFlowEdge };
 
 const rfStyle = {
   backgroundColor: '#173336',
@@ -60,80 +58,98 @@ const initialEdges = [
 ];
 
 function Flow({ userInputId }: { userInputId: string }) {
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
-  const { data: linktaFlow } = useFetchLinktaFlow(userInputId);
-  const setCurrentFlow = useLinktaFlowStore((state) => state.setCurrentFlow);
+  const {
+    currentLinktaFlow,
+    setCurrentFlow,
+    setCurrentEdges,
+    setCurrentNodes,
+    setCurrentViewport,
+  } = useLinktaFlowStore();
+  const { x, y, zoom } = useViewport();
 
-  useEffect(() => {
-    if (linktaFlow) {
-      // Use dagreAutoLayout to compute positions
-      const { nodes: layoutNodes, edges: layoutEdges } = dagreAutoLayout(
-        linktaFlow.nodes,
-        linktaFlow.edges,
-      );
+  const nodesFromFlow = currentLinktaFlow?.nodes || initialNodes;
+  const edgesFromFlow = currentLinktaFlow?.edges || initialEdges;
 
-      setNodes(layoutNodes);
-      setEdges(layoutEdges);
-      setCurrentFlow({
-        id: linktaFlow.id,
-        nodes: layoutNodes,
-        edges: layoutEdges,
-      });
-    }
-  }, [linktaFlow, setCurrentFlow]);
+  const [nodes, setNodes] = useState<Node[]>(nodesFromFlow);
+  const [edges, setEdges] = useState<Edge[]>(edgesFromFlow);
+
+  const viewport = { x, y, zoom };
 
   const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds: Node[]) => applyNodeChanges(changes, nds)),
+    (changes: NodeChange[]) => {
+      setNodes((nds: Node[]) => applyNodeChanges(changes, nds));
+    },
     [setNodes],
   );
+
+  const onNodeDragStop = useCallback(() => {
+    setCurrentNodes(nodes);
+  }, [setCurrentNodes, nodes]);
+
+  const onEdgeUpdate = useCallback(
+    (oldEdge: Edge, newConnection: Connection) => {
+      setEdges((els) => updateEdge(oldEdge, newConnection, els));
+      setCurrentEdges(updateEdge(oldEdge, newConnection, edges));
+    },
+    [setCurrentEdges, edges],
+  );
+
+  const onEdgeUpdateEnd = useCallback(() => {
+    setCurrentEdges(edges);
+  }, [setCurrentEdges, edges]);
+
   const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
+    (changes: EdgeChange[]) => {
+      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds));
+    },
     [setEdges],
   );
 
-  const onEdgeUpdate = useCallback(
-    (oldEdge: Edge, newConnection: Connection) =>
-      setEdges((els) => updateEdge(oldEdge, newConnection, els)),
-    [],
+  const onMoveEnd = useCallback(
+    (_event: React.MouseEvent<Element, MouseEvent> | React.TouchEvent<Element> | null, data: Viewport) => {
+      setCurrentViewport(data);
+    },
+    [setCurrentViewport],
   );
 
   const onConnect = useCallback(
-    (params: Connection) =>
-      setEdges((eds) =>
-        addEdge(
-          {
-            ...params,
-            type: 'floating',
-            markerEnd: { type: MarkerType.Arrow },
-          },
-          eds,
-        ),
-      ),
-    [],
+    (params: Connection) => {
+      const newEdge = addEdge({ ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } }, edges);
+      setEdges(newEdge);
+      setCurrentEdges(newEdge);
+    },
+    [edges, setCurrentEdges],
   );
 
-  if (!linktaFlow) return <>Loading...</>;
+  useEffect(() => {
+    setNodes(nodesFromFlow);
+    setEdges(edgesFromFlow);
+  }, [nodesFromFlow, edgesFromFlow]);
 
   return (
     <ReactFlow
       nodes={nodes}
       onNodesChange={onNodesChange}
+      onNodeDragStop={onNodeDragStop}
       nodeTypes={nodeTypes}
       edges={edges}
       onEdgesChange={onEdgesChange}
       edgeTypes={edgeTypes}
       onEdgeUpdate={onEdgeUpdate}
+      onEdgeUpdateEnd={onEdgeUpdateEnd}
       onConnect={onConnect}
       fitView
       connectionMode={ConnectionMode.Loose}
       connectionLineComponent={ConnectionLine}
       style={rfStyle}
+      onMoveEnd={onMoveEnd}
+      viewport={viewport}
     >
       <Background />
-      <Controls />
+      <Controls position="bottom-left" />
+      <Panel position="bottom-left" style={{ bottom: 120 }}>
+        <UndoAndRedo />
+      </Panel>
     </ReactFlow>
   );
 }

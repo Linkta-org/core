@@ -146,10 +146,10 @@ const SignInPage = () => {
         </Typography>
 
         <Typography variant='body2'>
-          Update your password?
+          Forgot your password?
           <Link
             component={RouterLink}
-            to='/update-password'
+            to='/forgotten'
           >
             Update
           </Link>

@@ -6,7 +6,7 @@ import styles from '@styles/layout/AuthStyles.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { usePasswordResetMutation } from '@/hooks/usePasswordResetMutation';
+import { useGetPasswordResetLinkMutation } from '@/hooks/useGetPasswordResetLinkMutation';
 import { userEmailSchema } from '@/zod/validateUseremail';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 
@@ -25,7 +25,7 @@ const ForgotPasswordPage = () => {
     resolver: zodResolver(userEmailSchema),
   });
 
-  const { mutate, isPending, isIdle, isSuccess } = usePasswordResetMutation();
+  const { mutate, isPending, isSuccess } = useGetPasswordResetLinkMutation();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -46,7 +46,7 @@ const ForgotPasswordPage = () => {
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
       },
-      onError: (error) => {
+      onError: (error: Error) => {
         setSnackbarMessage('Failed to send password reset email');
         setSnackbarSeverity('error');
         setSnackbarOpen(true);
@@ -62,8 +62,7 @@ const ForgotPasswordPage = () => {
         mt={6}
         className={`${styles.headingText}`}
       >
-        {isSuccess && 'Check your email!'}
-        {isIdle && 'Forgot your password?'}
+        {isSuccess ? 'Check your email!' : 'Forgot your password?'}
       </Typography>
 
       <Typography

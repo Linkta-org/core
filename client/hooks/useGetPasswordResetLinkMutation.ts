@@ -5,7 +5,7 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 type FirebaseAuthResult = void;
 type FirebaseAuthVariables = string;
 
-export const usePasswordResetMutation = (): UseMutationResult<
+export const useGetPasswordResetLinkMutation = (): UseMutationResult<
   FirebaseAuthResult,
   Error,
   FirebaseAuthVariables,

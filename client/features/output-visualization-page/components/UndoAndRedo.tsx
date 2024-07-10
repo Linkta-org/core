@@ -11,20 +11,18 @@ import useLinktaFlowStore from '@/stores/LinktaFlowStore';
 
 const useTemporalStore = <T,>(
   selector: (state: TemporalState<LinktaFlowStore>) => T,
-  equality?: (a: T, b: T) => boolean
+  equality?: (a: T, b: T) => boolean,
 ) => useStoreWithEqualityFn(useLinktaFlowStore.temporal, selector, equality);
 
 const UndoAndRedo = () => {
-  const { undo, redo } = useTemporalStore(
-    (state) => state
-  );
+  const { undo, redo } = useTemporalStore((state) => state);
 
   return (
     <>
-      <ButtonGroup orientation="vertical">
+      <ButtonGroup orientation='vertical'>
         <IconButton
-          aria-label="undo"
-          size="small"
+          aria-label='undo'
+          size='small'
           sx={{
             color: 'black',
             backgroundColor: '#FFF',
@@ -36,11 +34,11 @@ const UndoAndRedo = () => {
           }}
           onClick={() => undo()}
         >
-          <UndoRoundedIcon fontSize="small" />
+          <UndoRoundedIcon fontSize='small' />
         </IconButton>
         <IconButton
-          aria-label="redo"
-          size="small"
+          aria-label='redo'
+          size='small'
           sx={{
             color: 'black',
             backgroundColor: '#FFF',
@@ -52,7 +50,7 @@ const UndoAndRedo = () => {
           }}
           onClick={() => redo()}
         >
-          <RedoRoundedIcon fontSize="small" />
+          <RedoRoundedIcon fontSize='small' />
         </IconButton>
       </ButtonGroup>
     </>

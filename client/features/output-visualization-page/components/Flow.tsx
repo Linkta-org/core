@@ -1,5 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import type { EdgeChange, NodeChange, Edge, Node, Connection, Viewport } from 'reactflow';
+import type {
+  EdgeChange,
+  NodeChange,
+  Edge,
+  Node,
+  Connection,
+  Viewport,
+} from 'reactflow';
 import ReactFlow, {
   addEdge,
   Controls,
@@ -106,7 +113,13 @@ function Flow({ userInputId }: { userInputId: string }) {
   );
 
   const onMoveEnd = useCallback(
-    (_event: React.MouseEvent<Element, MouseEvent> | React.TouchEvent<Element> | null, data: Viewport) => {
+    (
+      _event:
+        | React.MouseEvent<Element, MouseEvent>
+        | React.TouchEvent<Element>
+        | null,
+      data: Viewport,
+    ) => {
       setCurrentViewport(data);
     },
     [setCurrentViewport],
@@ -114,7 +127,10 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   const onConnect = useCallback(
     (params: Connection) => {
-      const newEdge = addEdge({ ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } }, edges);
+      const newEdge = addEdge(
+        { ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } },
+        edges,
+      );
       setEdges(newEdge);
       setCurrentEdges(newEdge);
     },
@@ -146,8 +162,11 @@ function Flow({ userInputId }: { userInputId: string }) {
       viewport={viewport}
     >
       <Background />
-      <Controls position="bottom-left" />
-      <Panel position="bottom-left" style={{ bottom: 120 }}>
+      <Controls position='bottom-left' />
+      <Panel
+        position='bottom-left'
+        style={{ bottom: 120 }}
+      >
         <UndoAndRedo />
       </Panel>
     </ReactFlow>

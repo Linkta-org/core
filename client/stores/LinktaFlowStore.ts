@@ -40,9 +40,9 @@ const useLinktaFlowStore = create<LinktaFlowStore>()(
         limit: 20,
         equality: isDeepEqual,
         onSave: (state) => console.log('saved', state),
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
 
 export default useLinktaFlowStore;

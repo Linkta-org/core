@@ -161,9 +161,9 @@ const SignUpPage = () => {
           Forgot your password?
           <Link
             component={RouterLink}
-            to='/recover-password'
+            to='/forgotten'
           >
-            Recover
+            Update
           </Link>
         </Typography>
 

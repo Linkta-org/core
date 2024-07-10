@@ -89,6 +89,7 @@ const ForgotPasswordPage = () => {
         <Button
           variant='contained'
           className={`${styles.formSubmitButton}`}
+          type='submit'
         >
           {isPending ? 'Sending Link...' : 'Send Link'}
         </Button>

@@ -37,7 +37,7 @@ const SignInPage = () => {
     googleAuthMutation.mutate(undefined, {
       onSuccess: () => {
         console.log('Signed in with Google');
-        navigate('/generate');
+        navigate('/home-page');
       },
     });
   };
@@ -46,7 +46,7 @@ const SignInPage = () => {
     githubAuthMuation.mutate(undefined, {
       onSuccess: () => {
         console.log('Signed in with GitHub');
-        navigate('/generate');
+        navigate('/home-page');
       },
     });
   };

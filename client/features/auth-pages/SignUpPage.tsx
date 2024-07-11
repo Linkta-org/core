@@ -64,7 +64,7 @@ const SignUpPage = () => {
       {
         onSuccess: (res) => {
           console.log('SIGNED UP with USER PASSWORD AUTH SUCCESSFULLY', res);
-          navigate('/generate');
+          navigate('/home-page');
         },
         onError: (error) => {
           console.error('something went wrong', error.message);

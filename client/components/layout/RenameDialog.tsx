@@ -74,53 +74,56 @@ const RenameDialog: React.FC<RenameDialogProps> = ({
         id='rename-dialog-description'
         className={styles.dialogContent}
       >
-        <FormControl
-          error={!!errors.title}
-          fullWidth
-        >
-          <Controller
-            name='title'
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                margin='none'
-                label=''
-                type='text'
-                fullWidth
-                variant='outlined'
-                className={styles.textField}
-                aria-required='true'
-                aria-invalid={!!errors.title}
-              />
+        <form onSubmit={handleSubmit(handleSaveClick)}>
+          <FormControl
+            error={!!errors.title}
+            fullWidth
+          >
+            <Controller
+              name='title'
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  margin='none'
+                  label=''
+                  type='text'
+                  fullWidth
+                  variant='outlined'
+                  className={styles.textField}
+                  aria-required='true'
+                  aria-invalid={!!errors.title}
+                />
+              )}
+            />
+            {errors.title && (
+              <FormHelperText
+                error
+                id='title-error-text'
+              >
+                {errors.title.message}
+              </FormHelperText>
             )}
-          />
-          {errors.title && (
-            <FormHelperText
-              error
-              id='title-error-text'
+          </FormControl>
+
+          <DialogActions className={styles.buttonGroup}>
+            <Button
+              onClick={handleCancelClick}
+              className={styles.cancelButton}
+              aria-label='Cancel renaming'
             >
-              {errors.title.message}
-            </FormHelperText>
-          )}
-        </FormControl>
+              <Typography variant='button'>Cancel</Typography>
+            </Button>
+            <Button
+              type='submit'
+              className={styles.saveButton}
+              aria-label='Save new title'
+            >
+              <Typography variant='button'>Save</Typography>
+            </Button>
+          </DialogActions>
+        </form>
       </DialogContent>
-      <DialogActions className={styles.buttonGroup}>
-        <Button
-          onClick={handleCancelClick}
-          className={styles.cancelButton}
-          aria-label='Cancel renaming'
-        >
-          <Typography variant='button'>Cancel</Typography>
-        </Button>
-        <Button
-          onClick={handleSubmit(handleSaveClick)}
-          className={styles.saveButton}
-          aria-label='Save new title'
-        >
-          <Typography variant='button'>Save</Typography>
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

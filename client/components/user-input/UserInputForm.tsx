@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import styles from '@styles/UserInputView.module.css';
 import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
-import SnackBarNotification from '../common/SnackBarNotification';
+import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 

@@ -1,6 +1,6 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import { axiosClient } from '@config/axios';
-import type { UpdateInputTitleResponse } from '../types';
+import type { UpdateInputTitleResponse } from '@/types/UserInput';
 
 // Deletes a user input via API call.
 const deleteUserInputFromApi = async (userInputId: string) => {

@@ -40,22 +40,18 @@ const createLinktaFlowController = (
         );
 
       if (linktaFlow) {
-        const { _id, nodes, edges } = linktaFlow;
+        const { nodes, edges } = linktaFlow;
 
         const mappedNodes = nodes.map((node: CustomNode) => ({
           ...node._doc,
-          id: node._id,
-          _id: undefined,
+          id: node.id,
         }));
 
         const mappedEdges = edges.map((edge: CustomEdge) => ({
           ...edge._doc,
-          id: edge._id,
-          _id: undefined,
         }));
 
         res.locals.linktaFlow = {
-          id: _id,
           userInputId,
           nodes: mappedNodes,
           edges: mappedEdges,

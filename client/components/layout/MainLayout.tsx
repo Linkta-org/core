@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@components/common/SideNavDrawer';
@@ -29,6 +29,7 @@ const MainLayout: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] =
     useState<SnackbarSeverity>('success');
+  const navigate = useNavigate();
 
   const resetSnackbarStates = () => {
     setIsSnackbarOpen(false);
@@ -61,6 +62,7 @@ const MainLayout: React.FC = () => {
     signOutMutation.mutate(undefined, {
       onSuccess: () => {
         console.log('Signed out successfully');
+        navigate('/');
       },
       onError: (error) => {
         console.error('Error signing out:', error);

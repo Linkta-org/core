@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import useDocumentTitle from '@hooks/useDocumentTitle';
@@ -13,8 +13,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
-import type { User } from '@/types/user';
 import { useQueryClient } from '@tanstack/react-query';
+import useAuth from '@/hooks/useAuth';
 
 const userSignUpSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -44,6 +44,7 @@ const SignUpPage = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] =
     useState<SnackbarSeverity>('success');
+  const { isAuthenticated } = useAuth();
 
   const resetSnackbarStates = () => {
     setIsSnackbarOpen(false);
@@ -51,15 +52,10 @@ const SignUpPage = () => {
     setSnackbarSeverity('success');
   };
 
-  // Set user profile in the query client cache
-  const setUserProfile = (newUserProfile: User) => {
-    queryClient.setQueryData(['userProfile'], newUserProfile);
-  };
-
   const handleAuthSuccess = async (name: string) => {
     try {
       const response = await createUserProfileMutation.mutateAsync({ name });
-      setUserProfile(response);
+      await queryClient.setQueryData(['userProfile'], response);
       navigate('/generate');
     } catch (error) {
       console.error('Failed to create user profile.', error);
@@ -109,6 +105,12 @@ const SignUpPage = () => {
       setSnackbarSeverity('error');
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/generate');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <>

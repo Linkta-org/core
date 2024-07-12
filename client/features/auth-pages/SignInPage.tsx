@@ -59,8 +59,10 @@ const SignInPage = () => {
 
   const handleAuthSuccess = async (name: string) => {
     try {
-      const response = await createUserProfileMutation.mutateAsync({ name });
-      await queryClient.setQueryData(['userProfile'], response);
+      if (!userProfile) {
+        const response = await createUserProfileMutation.mutateAsync({ name });
+        await queryClient.setQueryData(['userProfile'], response);
+      }
       navigate('/generate');
     } catch (error) {
       console.error('Failed to create user profile.', error);
@@ -73,7 +75,12 @@ const SignInPage = () => {
   const handleGoogleAuthClick = async () => {
     try {
       await googleAuthMutation.mutateAsync();
-      await handleAuthSuccess('');
+      const existingProfile = await refetch();
+      if (!existingProfile.data) {
+        await handleAuthSuccess('');
+      } else {
+        navigate('/generate');
+      }
     } catch (error) {
       console.error('Failed to sign in through Google.', error);
       setIsSnackbarOpen(true);
@@ -85,7 +92,12 @@ const SignInPage = () => {
   const handleGithubAuthClick = async () => {
     try {
       await githubAuthMuation.mutateAsync();
-      await handleAuthSuccess('');
+      const existingProfile = await refetch();
+      if (!existingProfile.data) {
+        await handleAuthSuccess('');
+      } else {
+        navigate('/generate');
+      }
     } catch (error) {
       console.error('Failed to sign in through GitHub', error);
       setIsSnackbarOpen(true);

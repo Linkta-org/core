@@ -1,13 +1,5 @@
 import type { Types } from 'mongoose';
 
-export type User = {
-  _id: Types.ObjectId;
-  firstName: string;
-  lastName: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 export type UserInput = {
   _id: Types.ObjectId;
   userId: Types.ObjectId;

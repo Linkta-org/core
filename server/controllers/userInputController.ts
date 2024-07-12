@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from 'express';
-import { MOCK_USER_ID } from '@/mocks';
 import mongoose from 'mongoose';
 import { createError } from '@/middleware/errorHandling';
 import type createUserInputService from '@/services/userInputService';
@@ -12,7 +11,6 @@ const logger = log4js.getLogger('[Input Controller]');
 
 /**
  * Creates user input controller with the provided services.
- *
  * @param {ReturnType<typeof createUserInputService>} userInputService - Service to handle user inputs.
  * @param {ReturnType<typeof createLinktaFlowService>} linktaFlowService - Service to handle Linkta flows.
  * @param {ReturnType<typeof createAIService>} aiService - Service to handle AI interactions.
@@ -37,36 +35,38 @@ const createUserInputController = (
     next: NextFunction,
   ) => {
     try {
-      // TODO: replace with auth middleware
-      const userId = MOCK_USER_ID;
+      const userId = res.locals.userId;
 
       const userInput = req.body.input;
 
-      // convert userId string to object id
-      const userObjectId = new mongoose.Types.ObjectId(userId);
+      logger.debug('Generating Linkta flow for user:', { userId, userInput });
 
       // Generate initial response from AI service based on user input
       const aiResponse =
         await privateAIService.generateInitialResponse(userInput);
-      logger.debug(aiResponse);
+
+      logger.info('AI response:', aiResponse);
+
       const parsedAiResponse = JSON.parse(aiResponse);
-      logger.debug(parsedAiResponse);
+
+      logger.info('Parsed AI response:', parsedAiResponse);
 
       // Create a new user input document in DB
       const newUserInput = await privateUserInputService.createUserInput(
-        userObjectId,
+        userId,
         userInput,
       );
 
       // Create a new Linkta flow based on AI response
       const newLinktaFlow = await privateLinktaFlowService.createLinktaFlow(
-        userObjectId,
+        userId,
         newUserInput._id,
         parsedAiResponse.nodes,
         parsedAiResponse.edges,
       );
 
-      // Map _id to id to be used in React Flow
+      logger.debug('New Linkta flow created:', newLinktaFlow);
+
       if (newLinktaFlow) {
         const { _id, userInputId, nodes, edges } = newLinktaFlow;
 
@@ -113,21 +113,21 @@ const createUserInputController = (
     next: NextFunction,
   ) => {
     try {
-      // TODO: replace with auth middleware
-      const userId = MOCK_USER_ID;
+      const userId = res.locals.userId;
+
+      logger.debug('Fetching input history for user:', userId);
 
       // Parse pagination parameters from the query string with default values
       const page = parseInt(req.query.page as string, 10) || 1;
       const limit = parseInt(req.query.limit as string, 10) || 10;
 
-      const userObjectId = new mongoose.Types.ObjectId(userId);
-
-      // Fetch user inputs from the database with pagination and sorting (desc order)
       const inputHistory = await privateUserInputService.fetchInputHistory(
-        userObjectId,
+        userId,
         page,
         limit,
       );
+
+      logger.debug('Fetched input history:', inputHistory);
 
       // Map _id to id
       const inputHistoryWithId = inputHistory.map((input) => ({
@@ -163,6 +163,8 @@ const createUserInputController = (
       const { title } = req.body;
       const { userInputId } = req.params;
 
+      logger.debug('Updating title for userInput:', { userInputId, title });
+
       const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
 
       await privateUserInputService.updateInputTitle(userInputObjectId, title);
@@ -190,6 +192,8 @@ const createUserInputController = (
   ) => {
     try {
       const { userInputId } = req.params;
+
+      logger.debug('Deleting user input:', userInputId);
 
       const userInputObjectId = new mongoose.Types.ObjectId(userInputId);
 

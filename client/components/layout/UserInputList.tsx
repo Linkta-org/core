@@ -3,37 +3,59 @@ import { List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
 import styles from '@styles/layout/UserInputList.module.css';
-import useDrawerStore from '@stores/userDrawerStore';
+import useSideNavDrawerStore from '@stores/SideNavDrawerStore';
 import { useNavigate } from 'react-router-dom';
 import useUpdateInputTitleMutation from '@hooks/useUpdateInputTitleMutation';
 import useDeleteInputMutation from '@hooks/useDeleteInputMutation';
-import type { UserInput } from '../../types';
+import type { UserInput } from '@/types/UserInput';
+import { useCreateLinktaFlowMutation } from '@hooks/useCreateLinktaFlowMutation';
+import { extractUserInputId } from '@utils/helpers';
+import SnackBarNotification from '@components/common/SnackBarNotification';
+import type { SnackbarSeverity } from '@/types/snackBar';
+import { useQueryClient } from '@tanstack/react-query';
+import RenameDialog from './RenameDialog';
+import DeleteDialog from './DeleteDialog';
 
 interface UserInputListProps {
   inputHistory: UserInput[];
   visibleItems: number;
 }
-// TODO: event handlers for regenerate and delete to be implemented
+
 const UserInputList: React.FC<UserInputListProps> = ({
   inputHistory,
   visibleItems,
 }) => {
   const [menuAnchorElement, setMenuAnchorElement] =
     useState<null | HTMLElement>(null);
-  const [selectedUserInputId, setSelectedUserInputId] = useState<string | null>(
+  const [selectedUserInput, setSelectedUserInput] = useState<UserInput | null>(
     null,
   );
-  const { drawerOpen } = useDrawerStore();
+  const { drawerOpen } = useSideNavDrawerStore();
   const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
   const updateInputTitleMutation = useUpdateInputTitleMutation();
   const deleteInputMutation = useDeleteInputMutation();
+  const createLinktaFlowMutation = useCreateLinktaFlowMutation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [renameAnchorElement, setRenameAnchorElement] =
+    useState<null | HTMLElement>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] =
+    useState<SnackbarSeverity>('success');
+
+  const resetSnackbarStates = () => {
+    setIsSnackbarOpen(false);
+    setSnackbarMessage('');
+    setSnackbarSeverity('success');
+  };
 
   const handleItemClick = useCallback(
-    (event: React.MouseEvent<HTMLElement>, id: string) => {
+    (event: React.MouseEvent<HTMLElement>, userInput: UserInput) => {
       setMenuAnchorElement(event.currentTarget);
-      setSelectedUserInputId(id);
-      const userInputId = id.split('-')[0];
+      setSelectedUserInput(userInput);
+      const userInputId = extractUserInputId(userInput.id);
       navigate(`/output/${userInputId}`);
     },
     [navigate],
@@ -41,40 +63,91 @@ const UserInputList: React.FC<UserInputListProps> = ({
 
   const handleMenuClose = useCallback(() => {
     setMenuAnchorElement(null);
-    setSelectedUserInputId(null);
   }, []);
 
   useEffect(() => {
     if (!drawerOpen) {
       setMenuAnchorElement(null);
-      setSelectedUserInputId(null);
+      setSelectedUserInput(null);
     }
   }, [drawerOpen]);
 
-  /**
-   * Handles the rename action for a selected user input.
-   */
   const handleRename = useCallback(() => {
-    if (selectedUserInputId) {
-      // Extract the actual userInputId
-      const userInputId = selectedUserInputId.split('-')[0];
-      const newTitle = prompt('Enter new title:', ''); //TODO: to remove after UI is implemented
-      if (newTitle) {
-        updateInputTitleMutation.mutate({ userInputId, newTitle });
+    if (selectedUserInput) {
+      setRenameAnchorElement(menuAnchorElement);
+    }
+  }, [selectedUserInput, menuAnchorElement]);
+
+  const handleRenameSave = useCallback(
+    async (newTitle: string) => {
+      if (selectedUserInput) {
+        const userInputId = extractUserInputId(selectedUserInput.id);
+        try {
+          const data = await updateInputTitleMutation.mutateAsync({
+            userInputId,
+            newTitle,
+          });
+          await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+          setIsSnackbarOpen(true);
+          setSnackbarMessage(`${data.message}`);
+        } catch (error) {
+          console.error('Error updating input title: ', error);
+          setIsSnackbarOpen(true);
+          setSnackbarMessage('Failed to update input title. Please try again.');
+          setSnackbarSeverity('error');
+        }
+        setRenameAnchorElement(null);
+      }
+    },
+    [selectedUserInput, updateInputTitleMutation, queryClient],
+  );
+
+  const handleRenameCancel = useCallback(() => {
+    setRenameAnchorElement(null);
+  }, []);
+
+  const handleRegenerate = useCallback(async () => {
+    if (selectedUserInput) {
+      try {
+        const response = await createLinktaFlowMutation.mutateAsync({
+          input: selectedUserInput.input,
+        });
+        await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+        navigate(`/output/${response.userInputId}`);
+      } catch (error) {
+        console.error('Error regenerating flow: ', error);
+        setIsSnackbarOpen(true);
+        setSnackbarMessage('Failed to create LinktaFlow. Please try again.');
+        setSnackbarSeverity('error');
       }
     }
-  }, [selectedUserInputId, updateInputTitleMutation]);
+  }, [selectedUserInput, navigate, createLinktaFlowMutation, queryClient]);
 
-  /**
-   * Handles the delete action for a selected user input.
-   */
   const handleDelete = useCallback(() => {
-    if (selectedUserInputId) {
-      // Extract the actual userInputId
-      const userInputId = selectedUserInputId.split('-')[0];
-      deleteInputMutation.mutate(userInputId);
+    setDeleteDialogOpen(true);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (selectedUserInput) {
+      const userInputId = extractUserInputId(selectedUserInput.id);
+      try {
+        await deleteInputMutation.mutateAsync(userInputId);
+        await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+        navigate('/generate');
+      } catch (error) {
+        console.error('Error deleting input: ', error);
+        setIsSnackbarOpen(true);
+        setSnackbarMessage('Failed to delete input. Please try again.');
+        setSnackbarSeverity('error');
+      }
+      setDeleteDialogOpen(false);
+      setSelectedUserInput(null);
     }
-  }, [selectedUserInputId, deleteInputMutation]);
+  }, [selectedUserInput, deleteInputMutation, queryClient, navigate]);
+
+  const handleDeleteCancel = useCallback(() => {
+    setDeleteDialogOpen(false);
+  }, []);
 
   return (
     <>
@@ -83,16 +156,16 @@ const UserInputList: React.FC<UserInputListProps> = ({
         role='list'
       >
         {inputHistory.slice(0, visibleItems).map((userInput, index) => {
-          const uniqueId = `${userInput._id}-${index}`;
+          const uniqueId = `${userInput.id}-${index}`;
           return (
             <ListItemButton
               id={uniqueId}
               key={uniqueId}
-              onClick={(event) => handleItemClick(event, uniqueId)}
+              onClick={(event) => handleItemClick(event, userInput)}
               role='listitem'
-              aria-labelledby={`user-input-${userInput._id}`}
+              aria-labelledby={`user-input-${userInput.id}`}
               className={`${styles.userInputList__itemButton} ${
-                selectedUserInputId === uniqueId
+                selectedUserInput?.id === userInput.id
                   ? styles.userInputList__itemButtonSelected
                   : ''
               }`}
@@ -101,7 +174,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
                 primary={
                   <Typography variant='caption'>{userInput.title}</Typography>
                 }
-                id={`user-input-${userInput._id}`}
+                id={`user-input-${userInput.id}`}
                 aria-label={`Details for ${userInput.title}`}
                 className={styles.userInputList__text}
               />
@@ -111,21 +184,35 @@ const UserInputList: React.FC<UserInputListProps> = ({
         })}
       </List>
       <OptionsMenu
-        arialabelledby={`user-input-button-${selectedUserInputId}`}
+        arialabelledby={`user-input-button-${selectedUserInput?.id}`}
         anchorEl={menuAnchorElement}
         isOpen={isMenuOpen}
         onClose={handleMenuClose}
         onRename={handleRename}
-        onRegenerate={() => {
-          if (selectedUserInputId) {
-            // console.log(
-            //   'Regenerate Event Handler Placeholder:',
-            //   selectedUserInputId
-            // );
-          }
-          handleMenuClose();
-        }}
+        onRegenerate={handleRegenerate}
         onDelete={handleDelete}
+      />
+      <RenameDialog
+        isOpen={Boolean(renameAnchorElement)}
+        currentTitle={
+          inputHistory.find(
+            (input) =>
+              input.id === extractUserInputId(selectedUserInput?.id || ''),
+          )?.title || ''
+        }
+        onSave={handleRenameSave}
+        onCancel={handleRenameCancel}
+      />
+      <DeleteDialog
+        isOpen={deleteDialogOpen}
+        onDelete={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+      />
+      <SnackBarNotification
+        open={isSnackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        callerUpdater={resetSnackbarStates}
       />
     </>
   );

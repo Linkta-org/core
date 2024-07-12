@@ -12,6 +12,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
+import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
+import { useQueryClient } from '@tanstack/react-query';
 
 const userSignInSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -39,6 +41,8 @@ const SignInPage = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] =
     useState<SnackbarSeverity>('success');
+  const createUserProfileMutation = useCreateUserProfileMutation();
+  const queryClient = useQueryClient();
 
   const resetSnackbarStates = () => {
     setIsSnackbarOpen(false);
@@ -53,36 +57,41 @@ const SignInPage = () => {
     }
   }, [userProfile, navigate]);
 
-  const handleGoogleAuthClick = () => {
-    googleAuthMutation.mutate(undefined, {
-      onSuccess: () => {
-        void refetch();
-      },
-      onError: (error) => {
-        console.error('Failed to sign in through Google.', error.message);
-        setIsSnackbarOpen(true);
-        setSnackbarMessage(
-          'Failed to sign in through Google. Please try again.',
-        );
-        setSnackbarSeverity('error');
-      },
-    });
+  const handleAuthSuccess = async (name: string) => {
+    try {
+      const response = await createUserProfileMutation.mutateAsync({ name });
+      await queryClient.setQueryData(['userProfile'], response);
+      navigate('/generate');
+    } catch (error) {
+      console.error('Failed to create user profile.', error);
+      setIsSnackbarOpen(true);
+      setSnackbarMessage('Failed to create user profile. Please try again.');
+      setSnackbarSeverity('error');
+    }
   };
 
-  const handleGithubAuthClick = () => {
-    githubAuthMuation.mutate(undefined, {
-      onSuccess: () => {
-        void refetch();
-      },
-      onError: (error) => {
-        console.error('Failed to sign in through Github.', error.message);
-        setIsSnackbarOpen(true);
-        setSnackbarMessage(
-          'Failed to sign in through Github. Please try again.',
-        );
-        setSnackbarSeverity('error');
-      },
-    });
+  const handleGoogleAuthClick = async () => {
+    try {
+      await googleAuthMutation.mutateAsync();
+      await handleAuthSuccess('');
+    } catch (error) {
+      console.error('Failed to sign in through Google.', error);
+      setIsSnackbarOpen(true);
+      setSnackbarMessage('Failed to sign in through Google. Please try again.');
+      setSnackbarSeverity('error');
+    }
+  };
+
+  const handleGithubAuthClick = async () => {
+    try {
+      await githubAuthMuation.mutateAsync();
+      await handleAuthSuccess('');
+    } catch (error) {
+      console.error('Failed to sign in through GitHub', error);
+      setIsSnackbarOpen(true);
+      setSnackbarMessage('Failed to sign in through GitHub. Please try again.');
+      setSnackbarSeverity('error');
+    }
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {

@@ -14,6 +14,7 @@ import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
 import { useQueryClient } from '@tanstack/react-query';
+import useAuth from '@/hooks/useAuth';
 
 const userSignInSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -43,19 +44,13 @@ const SignInPage = () => {
     useState<SnackbarSeverity>('success');
   const createUserProfileMutation = useCreateUserProfileMutation();
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
 
   const resetSnackbarStates = () => {
     setIsSnackbarOpen(false);
     setSnackbarMessage('');
     setSnackbarSeverity('success');
   };
-
-  // Navigate to home page if user profile is fetched successfully
-  useEffect(() => {
-    if (userProfile) {
-      navigate('/generate');
-    }
-  }, [userProfile, navigate]);
 
   const handleAuthSuccess = async (name: string) => {
     try {
@@ -126,6 +121,12 @@ const SignInPage = () => {
       },
     );
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/generate');
+    }
+  }, [userProfile, navigate]);
 
   return (
     <>

@@ -1,6 +1,5 @@
 export interface UserInput {
-  _id: string;
-  id;
+  id: string;
   title: string;
   input: string;
 }
@@ -13,16 +12,4 @@ export interface UpdateInputTitleParams {
 export interface UpdateInputTitleResponse {
   message: string;
   inputHistory: UserInput[];
-}
-
-export interface UserInputPayload {
-  input: string;
-
-  headers?: {
-    Authorization: string;
-  };
-}
-
-export interface UserInputResponse {
-  input: string;
 }

@@ -99,9 +99,7 @@ const createLinktaFlowService = () => {
 
       if (!linktaFlow) {
         logger.warn('LinktaFlow not found.');
-        throw new Error(
-          'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.',
-        );
+        return null;
       }
 
       return linktaFlow;

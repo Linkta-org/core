@@ -1,0 +1,119 @@
+.dialog {
+  max-width: 500px;
+  width: 70%;
+  background-color: var(--secondary-contrastText);
+  border: solid 1px #ff1b1b;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dialog-content {
+  padding: 0;
+  margin: 0 10px;
+}
+
+.dialogTitle {
+  color: var(--light-gray);
+  font-size: medium;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  color: red;
+  font-size: 2.5rem;
+  margin-right: 5px;
+  opacity: 0.9;
+}
+
+.titleText {
+  color: var(--light-gray);
+  font-size: 1.5rem;
+}
+
+.textField {
+  width: 100%;
+  background-color: var(--hover-background-color);
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.boxText {
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 5px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 25px 10px;
+}
+
+.cancelButton,
+.deleteButton {
+  border-radius: 50px;
+  border: solid 1px var(--secondary-main);
+  width: 100px;
+}
+
+.cancelButton {
+  color: var(--text-primary);
+}
+
+.cancelButton:hover {
+  background-color: var(--secondary-main);
+  color: var(--primary-dark);
+}
+
+.deleteButton {
+  color: var(--primary-dark);
+  background-color: var(--secondary-main);
+}
+
+.deleteButton:hover {
+  background-color: var(--primary-dark);
+  color: var(--secondary-main);
+}
+
+@media (max-width: 1200px) {
+  .dialog {
+    width: 60%;
+  }
+}
+
+@media (max-width: 900px) {
+  .dialog {
+    width: 70%;
+  }
+}
+
+@media (max-width: 600px) {
+  .dialog {
+    width: 80%;
+  }
+}
+
+@media (max-width: 400px) {
+  .dialog {
+    width: 90%;
+  }
+}
+
+@media (max-width: 350px) {
+  .dialog {
+    display: none;
+  }
+}

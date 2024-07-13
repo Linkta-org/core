@@ -4,6 +4,7 @@ import type { Node, Edge } from 'reactflow';
 
 // Define the Node schema
 const nodeSchema = new Schema<Node>({
+  id: { type: String },
   type: { type: String },
   position: {
     x: { type: Number },

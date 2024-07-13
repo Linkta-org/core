@@ -9,6 +9,7 @@ import type { Express, Response } from 'express';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
 import log4jsConfig from '@/utils/log4js.config.json' with { type: 'json' };
 import userInputRouter from '@routes/userInputRouter';
+import userRouter from '@routes/userRouter';
 import RateLimiter from '@middleware/rateLimiterMiddleware';
 import { getEnv } from '@utils/environment';
 import type { Server } from 'http';
@@ -31,12 +32,7 @@ mongoose.set('strictQuery', false);
 const corsOptions = {
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'x-user-id',
-    'x-request-id',
-  ],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-request-id'],
 };
 
 /**
@@ -77,6 +73,10 @@ function startServer() {
 
   app.use('/v1/flows', linktaFlowRouter, () => {
     logger.debug('HIT v1/flows handler');
+  });
+
+  app.use('/v1/users', userRouter, () => {
+    logger.debug('HIT v1/users handler');
   });
 
   /**

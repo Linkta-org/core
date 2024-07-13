@@ -10,7 +10,7 @@ import styles from '@styles/layout/AuthStyles.module.css';
 import type { SubmitHandler } from 'react-hook-form';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 import { useUpdatePasswordMutation } from '@/hooks/useUpdatePasswordMutation';
-import { userPasswordSchema } from '@/zod/validateUserPassword';
+import { userPasswordSchema } from '@validators/validateUserPassword';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 

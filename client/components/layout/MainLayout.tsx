@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@components/common/SideNavDrawer';
 import useMatchMedia from '@hooks/useMatchMedia';
 import '@styles/MainLayout.css';
-import useDrawerStore from '@stores/userDrawerStore';
+import useSideNavDrawerStore from '@stores/SideNavDrawerStore';
 import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import useSignOut from '@hooks/useSignOut';
-import useAuth from '@hooks/useAuth';
+import type { SnackbarSeverity } from '@/types/snackBar';
+import SnackBarNotification from '@components/common/SnackBarNotification';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -19,11 +20,22 @@ import useAuth from '@hooks/useAuth';
 const MainLayout: React.FC = () => {
   const breakpoint = 768;
   const matching = useMatchMedia(breakpoint);
-  const { drawerOpen, setDrawerOpen } = useDrawerStore();
+  const { drawerOpen, setDrawerOpen } = useSideNavDrawerStore();
   const { mutate: updateLinktaFlow } = useUpdateLinktaFlowMutation();
   const currentLinktaFlow = useLinktaFlowStore((state) =>
     state.getCurrentFlow(),
   );
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] =
+    useState<SnackbarSeverity>('success');
+  const navigate = useNavigate();
+
+  const resetSnackbarStates = () => {
+    setIsSnackbarOpen(false);
+    setSnackbarMessage('');
+    setSnackbarSeverity('success');
+  };
 
   const handleSave = () => {
     if (!currentLinktaFlow) {
@@ -35,8 +47,8 @@ const MainLayout: React.FC = () => {
 
     updateLinktaFlow({ linktaFlowId, updatedLinktaFlow: { nodes, edges } });
   };
+
   const signOutMutation = useSignOut();
-  const { isAuthenticated } = useAuth();
 
   const toggleDrawer = () => {
     !matching && setDrawerOpen(!drawerOpen);
@@ -50,9 +62,13 @@ const MainLayout: React.FC = () => {
     signOutMutation.mutate(undefined, {
       onSuccess: () => {
         console.log('Signed out successfully');
+        navigate('/');
       },
       onError: (error) => {
         console.error('Error signing out:', error);
+        setIsSnackbarOpen(true);
+        setSnackbarMessage('Error signing out. Please try again.');
+        setSnackbarSeverity('error');
       },
     });
   };
@@ -99,21 +115,6 @@ const MainLayout: React.FC = () => {
             >
               <Typography variant='button'>Save</Typography>
             </Button>
-
-            {isAuthenticated && (
-              <Button
-                className='save-button-group-item'
-                sx={{
-                  borderTopLeftRadius: 50,
-                  borderBottomLeftRadius: 50,
-                  paddingBottom: '4px',
-                }}
-                onClick={handleSignOut}
-              >
-                <Typography variant='button'>Sign Out</Typography>
-              </Button>
-            )}
-
             <Button
               className='save-button-group-item'
               sx={{
@@ -151,6 +152,12 @@ const MainLayout: React.FC = () => {
           <Outlet />
         </Box>
       </Box>
+      <SnackBarNotification
+        open={isSnackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        callerUpdater={resetSnackbarStates}
+      />
     </>
   );
 };

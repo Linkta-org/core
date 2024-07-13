@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-type DrawerState = {
+type SideNavDrawerStore = {
   drawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;
 };
 
-const useDrawerStore = create<DrawerState>()(
+const useSideNavDrawerStore = create<SideNavDrawerStore>()(
   devtools((set) => ({
     drawerOpen: true,
     setDrawerOpen: (open: boolean) => set({ drawerOpen: open }),
   })),
 );
 
-export default useDrawerStore;
+export default useSideNavDrawerStore;

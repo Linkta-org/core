@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useGetPasswordResetLinkMutation } from '@/hooks/useGetPasswordResetLinkMutation';
-import { userEmailSchema } from '@/zod/validateUseremail';
+import { userEmailSchema } from '@validators/validateUseremail';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 
 interface FormData {

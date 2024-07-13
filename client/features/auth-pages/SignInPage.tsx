@@ -14,6 +14,7 @@ import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
 import { useQueryClient } from '@tanstack/react-query';
+import useAuth from '@/hooks/useAuth';
 
 const userSignInSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -43,6 +44,7 @@ const SignInPage = () => {
     useState<SnackbarSeverity>('success');
   const createUserProfileMutation = useCreateUserProfileMutation();
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
 
   const resetSnackbarStates = () => {
     setIsSnackbarOpen(false);
@@ -50,17 +52,12 @@ const SignInPage = () => {
     setSnackbarSeverity('success');
   };
 
-  // Navigate to home page if user profile is fetched successfully
-  useEffect(() => {
-    if (userProfile) {
-      navigate('/generate');
-    }
-  }, [userProfile, navigate]);
-
   const handleAuthSuccess = async (name: string) => {
     try {
-      const response = await createUserProfileMutation.mutateAsync({ name });
-      await queryClient.setQueryData(['userProfile'], response);
+      if (!userProfile) {
+        const response = await createUserProfileMutation.mutateAsync({ name });
+        await queryClient.setQueryData(['userProfile'], response);
+      }
       navigate('/generate');
     } catch (error) {
       console.error('Failed to create user profile.', error);
@@ -73,7 +70,12 @@ const SignInPage = () => {
   const handleGoogleAuthClick = async () => {
     try {
       await googleAuthMutation.mutateAsync();
-      await handleAuthSuccess('');
+      const existingProfile = await refetch();
+      if (!existingProfile.data) {
+        await handleAuthSuccess('');
+      } else {
+        navigate('/generate');
+      }
     } catch (error) {
       console.error('Failed to sign in through Google.', error);
       setIsSnackbarOpen(true);
@@ -85,7 +87,12 @@ const SignInPage = () => {
   const handleGithubAuthClick = async () => {
     try {
       await githubAuthMuation.mutateAsync();
-      await handleAuthSuccess('');
+      const existingProfile = await refetch();
+      if (!existingProfile.data) {
+        await handleAuthSuccess('');
+      } else {
+        navigate('/generate');
+      }
     } catch (error) {
       console.error('Failed to sign in through GitHub', error);
       setIsSnackbarOpen(true);
@@ -114,6 +121,12 @@ const SignInPage = () => {
       },
     );
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/generate');
+    }
+  }, [userProfile, navigate]);
 
   return (
     <>

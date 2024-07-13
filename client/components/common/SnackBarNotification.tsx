@@ -5,7 +5,7 @@ import Alert from '@mui/material/Alert';
 /**
  * A functional component that displays a notification using MUI Snackbar and Alert components.
  * The Snackbar has 3 ways to close:
- * 1. It will auto close after {duration} miliseconds - default is 4000ms
+ * 1. It will auto close after {duration} milliseconds - default is 4000ms
  * 2. By clicking the X icon
  * 3. By pressing the ESC key.
  *

@@ -13,11 +13,11 @@ const UnauthorizedLayout: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    navigate('/userLogin');
+    navigate('/login');
   };
 
   const handleSignUp = () => {
-    navigate('/userSignup');
+    navigate('/signup');
   };
 
   return (
@@ -36,7 +36,7 @@ const UnauthorizedLayout: React.FC = () => {
         <Box className={`${styles.headerBar}`}>
           <img
             className={`${styles.logoImage}`}
-            src='../assets/linkta-logo-amber.png'
+            src='/linkta-logo-amber.png'
             alt='The Linkta.io logo at approximately 50 pixels square, located in the upper-left corner of the page.'
           />
           <Typography variant='h6'>Linkta</Typography>

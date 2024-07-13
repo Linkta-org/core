@@ -2,6 +2,9 @@ import UserInputModel from '@/models/UserInputModel';
 import type { UserInput } from '@/types';
 import type { Types } from 'mongoose';
 import { createError } from '@/middleware/errorHandling';
+import log4js from 'log4js';
+
+const logger = log4js.getLogger('[UserInput Service]');
 
 /**
  * Creates a service for managing user inputs.
@@ -20,6 +23,8 @@ const createUserInputService = () => {
       // Set the title to the input value if not provided
       const finalTitle = title || input;
 
+      logger.debug('Creating new user input', { userId, input, finalTitle });
+
       // Creates a new user input in DB
       const newUserInput = new UserInputModel({
         userId,
@@ -29,6 +34,7 @@ const createUserInputService = () => {
       await newUserInput.save();
       return newUserInput;
     } catch (error) {
+      logger.error('Error creating user input', error);
       const methodError = createError(
         'createUserInput',
         'UserInputService',
@@ -51,6 +57,8 @@ const createUserInputService = () => {
       // Calculate the number of items to skip for pagination
       const skip = (page - 1) * limit;
 
+      logger.debug('Fetching input history', { userId, page, limit, skip });
+
       // Fetch the input history from DB
       const inputHistory = await UserInputModel.find({ userId })
         .sort({ createdAt: -1 })
@@ -61,6 +69,7 @@ const createUserInputService = () => {
 
       return inputHistory;
     } catch (error) {
+      logger.error('Error fetching input history', error);
       const methodError = createError(
         'fetchInputHistory',
         'UserInputService',
@@ -79,6 +88,8 @@ const createUserInputService = () => {
     newTitle: string,
   ): Promise<UserInput> => {
     try {
+      logger.debug('Updating user input title', { userInputId, newTitle });
+
       // Update the title of the specified user input in DB
       const updatedUserInput = await UserInputModel.findByIdAndUpdate(
         userInputId,
@@ -87,11 +98,13 @@ const createUserInputService = () => {
       );
 
       if (!updatedUserInput) {
+        logger.error(`UserInput with id ${userInputId} not found.`);
         throw new Error(`UserInput with id ${userInputId} not found.`);
       }
 
       return updatedUserInput;
     } catch (error) {
+      logger.error('Error updating user input title', error);
       const methodError = createError(
         'updateInputTitle',
         'UserInputService',
@@ -109,16 +122,19 @@ const createUserInputService = () => {
     userInputId: Types.ObjectId,
   ): Promise<UserInput | null> => {
     try {
+      logger.debug('Deleting user input', userInputId);
+
       // Delete the user input document in DB
       const deletedUserInput =
         await UserInputModel.findByIdAndDelete(userInputId);
 
       return deletedUserInput;
     } catch (error) {
+      logger.error('Error deleting user input', error);
       const methodError = createError(
-        'deleteInputAndAssociatedData',
+        'deleteUserInput',
         'UserInputService',
-        'Error deleting input and associated data.',
+        'Error deleting input.',
         error,
       );
       throw methodError;

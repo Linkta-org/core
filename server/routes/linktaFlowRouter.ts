@@ -3,16 +3,19 @@ import type { Request, Response } from 'express';
 import createLinktaFlowController from '@/controllers/linktaFlowController';
 import createLinktaFlowService from '@/services/linktaFlowService';
 import isAuthorized from '@middleware/firebaseAuthMiddleware';
+import createUserService from '@/services/userService';
 
 const linktaFlowRouter = Router();
 
-linktaFlowRouter.use(isAuthorized);
-
 // Instantiate the services
 const linktaFlowService = createLinktaFlowService();
+const userService = createUserService();
 
 // Instantiate the controller with the services
 const linktaFlowController = createLinktaFlowController(linktaFlowService);
+
+// Apply the authorization middleware to all routes in this router.
+linktaFlowRouter.use(isAuthorized(userService));
 
 /**
  * @route GET /v1/flows/:userInputId

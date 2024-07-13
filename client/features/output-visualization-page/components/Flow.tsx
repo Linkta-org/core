@@ -8,7 +8,7 @@ import ReactFlow, {
   applyEdgeChanges,
   MarkerType,
   ConnectionMode,
-  updateEdge,
+  reconnectEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from '@features/output-visualization-page/components/LinktaFlowEdge';
@@ -17,6 +17,8 @@ import ConnectionLine from '@features/output-visualization-page/components/Conne
 import useFetchLinktaFlow from '@hooks/useFetchLinktaFlow';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import dagreAutoLayout from '@/utils/dagreAutoLayout';
+import { useNavigate } from 'react-router-dom';
+import Loader from '@/components/common/Loader';
 
 const nodeTypes = { linktaNode: LinktaNode };
 
@@ -62,8 +64,13 @@ const initialEdges = [
 function Flow({ userInputId }: { userInputId: string }) {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
-  const { data: linktaFlow } = useFetchLinktaFlow(userInputId);
+  const {
+    data: linktaFlow,
+    isLoading,
+    isError,
+  } = useFetchLinktaFlow(userInputId);
   const setCurrentFlow = useLinktaFlowStore((state) => state.setCurrentFlow);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (linktaFlow) {
@@ -96,7 +103,7 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) =>
-      setEdges((els) => updateEdge(oldEdge, newConnection, els)),
+      setEdges((els) => reconnectEdge(oldEdge, newConnection, els)),
     [],
   );
 
@@ -115,7 +122,14 @@ function Flow({ userInputId }: { userInputId: string }) {
     [],
   );
 
-  if (!linktaFlow) return <>Loading...</>;
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  //TODO: implement better error handling
+  if (isError) {
+    navigate('/generate');
+  }
 
   return (
     <ReactFlow

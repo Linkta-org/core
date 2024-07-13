@@ -77,7 +77,7 @@ From the **Linkta Core** project page, find **Project Settings** at the gear ico
 
 Within **Project Settings**, on the **General** tab, scroll down to **My Apps** to find the **firebaseConfig** sample code block which contains all of the values for these environment variables.
 
-![A screenshot of the Firebase Console / General area](image permalink when available)
+![A screenshot of the Firebase Console / General area](https://github.com/Linkta-org/core/blob/d42a53fb77d6606573ff37bc07d90c502c1037b4/.github/docs/assets/screenshot-firebase-config.png)
 
 <br>
 
@@ -137,7 +137,7 @@ Click 'Generate Key' to immediately download a JSON file containing the three va
 Note: Do not add this JSON file to the VS Code project! If you open the file using VS Code, ensure that the file is located outside of the project and is not added to the Git repository.
 ```
 
-![A screenshot of the Firebase Console / Service Accounts area](image permalink when available)
+![A screenshot of the Firebase Console / Service Accounts area](https://github.com/Linkta-org/core/blob/b98fd7fc93e1ba969b733bde560f8932b3df8257/.github/docs/assets/screenshot-firebase-key.png)
 
 <br>
 

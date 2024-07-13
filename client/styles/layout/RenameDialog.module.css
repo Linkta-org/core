@@ -1,0 +1,104 @@
+.dialog {
+  max-width: 500px;
+  width: 70%;
+  background-color: var(--secondary-contrastText);
+  border-radius: 10px;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dialog-content {
+  padding: 0;
+  margin: 10px;
+}
+
+.dialogTitle {
+  color: var(--light-gray);
+  font-size: medium;
+  padding: 10px 10px 0 10px;
+}
+
+.textField {
+  width: 100%;
+  background-color: var(--hover-background-color);
+  border-radius: 10px;
+  align-items: center;
+}
+
+.textField :global(.MuiFormHelperText-root) {
+  color: red;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-top: 5px;
+}
+
+.textField:hover
+  :global(.MuiOutlinedInput-root)
+  :global(.MuiOutlinedInput-notchedOutline) {
+  border: solid 1px var(--secondary-main);
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 25px 10px;
+}
+
+.cancelButton,
+.saveButton {
+  border-radius: 50px;
+  border: solid 1px var(--secondary-main);
+  width: 100px;
+}
+
+.cancelButton {
+  color: var(--text-primary);
+}
+
+.cancelButton:hover {
+  background-color: var(--secondary-main);
+  color: var(--primary-dark);
+}
+
+.saveButton {
+  color: var(--primary-dark);
+  background-color: var(--secondary-main);
+}
+
+.saveButton:hover {
+  background-color: var(--primary-dark);
+  color: var(--secondary-main);
+}
+
+@media (max-width: 1200px) {
+  .dialog {
+    width: 60%;
+  }
+}
+
+@media (max-width: 900px) {
+  .dialog {
+    width: 70%;
+  }
+}
+
+@media (max-width: 600px) {
+  .dialog {
+    width: 80%;
+  }
+}
+
+@media (max-width: 400px) {
+  .dialog {
+    width: 90%;
+  }
+}
+
+@media (max-width: 350px) {
+  .dialog {
+    display: none;
+  }
+}

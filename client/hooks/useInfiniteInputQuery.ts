@@ -20,7 +20,6 @@ const fetchInputHistoryFromApi = async (
     const response = await axiosClient.get(`/v1/inputs`, {
       params: { page, limit },
     });
-
     return response.data.inputHistory || [];
   } catch (error) {
     console.error('Error fetching user inputs:', error);

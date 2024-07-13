@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import userInputValidationSchema from '@zod/validateUserInput';
+import { userInputInputSchema } from '@validators/userInputSchemas';
 import {
   TextField,
   Button,
@@ -12,11 +12,11 @@ import {
   Typography,
   Checkbox,
 } from '@mui/material';
-
 import styles from '@styles/UserInputView.module.css';
-import { auth } from '@/firebase/firebaseConfig';
-import type { UserInputPayload } from '../UserInput';
-import { useNewUserInputMutation } from '@/hooks/newUserInputMutation';
+import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
+import SnackBarNotification from '@components/common/SnackBarNotification';
+import type { SnackbarSeverity } from '@/types/snackBar';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface CustomFormData {
   input: string;
@@ -24,56 +24,47 @@ interface CustomFormData {
 }
 
 const UserInputForm = () => {
-  // Here we utilize the useForm hook's properties to manage form state while also initializing default values and resolving our validation schema.
-  // The control object is used by react-hook-form's Controller to link our UserInputBar and UserInputCheckbox components to the form's state, handling any necessary state updates or validation checks.
   const {
     handleSubmit,
     reset,
     control,
     watch,
-    formState: { errors, isSubmitted },
+    formState: { errors },
   } = useForm({
-    resolver: zodResolver(userInputValidationSchema),
+    resolver: zodResolver(userInputInputSchema),
     defaultValues: {
       input: '',
-      isChecked: JSON.parse(localStorage.getItem('isChecked') || 'false'),
+      isChecked: JSON.parse('true' || 'false'),
     },
   });
   const navigate = useNavigate();
-  const newUserInputMutation = useNewUserInputMutation();
-  // Here we utilize the watch function to subscribe to checkbox state changes and save those changes to our localStorage.
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name === 'isChecked') {
-        localStorage.setItem('isChecked', value.isChecked);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  const createLinktaFlowMutation = useCreateLinktaFlowMutation();
+  const queryClient = useQueryClient();
+  const isChecked = watch('isChecked');
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] =
+    useState<SnackbarSeverity>('success');
+
+  const resetSnackbarStates = () => {
+    setIsSnackbarOpen(false);
+    setSnackbarMessage('');
+    setSnackbarSeverity('success');
+  };
 
   const onSubmit: SubmitHandler<CustomFormData> = async (data) => {
     try {
-      const idToken = await auth.currentUser?.getIdToken();
-      if (!idToken) throw new Error('No ID token available');
-
-      const userInput: UserInputPayload = {
+      const response = await createLinktaFlowMutation.mutateAsync({
         input: data.input,
-        headers: {
-          Authorization: `${idToken}`,
-        },
-      };
-
-      newUserInputMutation.mutate(userInput, {
-        onSuccess: () => {
-          reset();
-          navigate('/output');
-        },
-        onError: (error) => {
-          console.error('Error sending prompt: ', error);
-        },
       });
+      await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+      reset();
+      navigate(`/output/${response.userInputId}`);
     } catch (error) {
-      console.error('Error fetching ID token', error);
+      console.error('Error sending prompt: ', error);
+      setIsSnackbarOpen(true);
+      setSnackbarMessage('Failed to create LinktaFlow. Please try again.');
+      setSnackbarSeverity('error');
     }
   };
 
@@ -130,11 +121,19 @@ const UserInputForm = () => {
           variant='contained'
           className={`${styles.userInputSubmitButton}`}
           type='submit'
-          disabled={isSubmitted || !control._formValues.isChecked}
+          disabled={!isChecked}
         >
-          {newUserInputMutation.status === 'pending' ? 'Loading' : 'Generate'}
+          {createLinktaFlowMutation.status === 'pending'
+            ? 'Loading'
+            : 'Generate'}
         </Button>
       </form>
+      <SnackBarNotification
+        open={isSnackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        callerUpdater={resetSnackbarStates}
+      />
     </>
   );
 };

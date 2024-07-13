@@ -11,10 +11,11 @@ import PasswordUpdatePage from '@features/auth-pages/PasswordUpdatePage';
  */
 const publicRoutes: RouteObject[] = [
   { index: true, element: <HomePage /> },
+  { path: 'home-page', element: <HomePage /> },
   { path: 'login', element: <SignInPage /> },
   { path: 'signup', element: <SignUpPage /> },
-  { path: 'forgot-password', element: <ForgotPasswordPage /> },
-  { path: 'reset-password', element: <PasswordUpdatePage /> },
+  { path: 'forgotten', element: <ForgotPasswordPage /> },
+  { path: 'update-password', element: <PasswordUpdatePage /> },
 ];
 
 export default publicRoutes;

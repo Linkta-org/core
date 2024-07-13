@@ -6,7 +6,7 @@
 }
 
 .background-image {
-  background-image: url(../assets/white-tree.png);
+  background-image: url(/white-tree.png);
   background-size: cover;
   background-position: center;
   opacity: 0.1;

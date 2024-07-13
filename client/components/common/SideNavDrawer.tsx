@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AccountCircleOutlined,
   AddCircleOutline,
@@ -11,6 +11,9 @@ import { Box, Typography, Button, Drawer, Link } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 import '@styles/SideNavDrawer.css';
 import UserInputHistory from '@components/layout/UserInputHistory';
+import useFetchUserProfile from '@/hooks/useFetchUserProfile';
+import SnackBarNotification from './SnackBarNotification';
+import type { SnackbarSeverity } from '@/types/snackBar';
 
 type sideNavProps = {
   drawerOpen: boolean;
@@ -28,6 +31,26 @@ export default function SideNavDrawer({
     animation: 'opacity-out 200ms ease-in',
     animationFillMode: 'forwards',
   };
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] =
+    useState<SnackbarSeverity>('success');
+
+  const { data: userProfile, error, isError } = useFetchUserProfile();
+
+  const resetSnackbarStates = () => {
+    setIsSnackbarOpen(false);
+    setSnackbarMessage('');
+    setSnackbarSeverity('success');
+  };
+
+  useEffect(() => {
+    if (isError && error) {
+      setIsSnackbarOpen(true);
+      setSnackbarMessage('Failed to fetch user profile');
+      setSnackbarSeverity('error');
+    }
+  }, [isError, error]);
 
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
@@ -36,10 +59,10 @@ export default function SideNavDrawer({
         underline='none'
         mt={9}
         component={RouterLink}
-        to='/userLogin'
+        to='/login'
       >
         <AccountCircleOutlined />
-        <Typography variant='caption'>test-2.user@linkta.org</Typography>
+        <Typography variant='caption'>{userProfile?.name}</Typography>
       </Link>
 
       <Link
@@ -94,7 +117,7 @@ export default function SideNavDrawer({
             mt={3}
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
-            to='/userLogin'
+            to='/login'
           >
             <AccountCircleOutlined />
           </Link>
@@ -147,6 +170,12 @@ export default function SideNavDrawer({
       >
         {DrawerListExpanded}
       </Drawer>
+      <SnackBarNotification
+        open={isSnackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        callerUpdater={resetSnackbarStates}
+      />
     </>
   );
 }

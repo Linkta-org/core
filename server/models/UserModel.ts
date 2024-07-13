@@ -1,17 +1,46 @@
+import type { Model } from 'mongoose';
 import { Schema, model } from 'mongoose';
-import type { User } from '@/types/datamodels';
+import type User from '@/types/user';
 
-const userSchema = new Schema<User>({
-  firstName: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 30,
-    trim: true,
-  },
-  lastName: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+interface Settings {
+  theme?: 'light' | 'dark';
+}
+
+const authProviders = ['password', 'google.com', 'github.com'] as const;
+
+const settingsSchema = new Schema<Settings>({
+  theme: { type: String, enum: ['light', 'dark'], default: 'light' },
 });
 
-export default model<User>('User', userSchema);
+const userSchema = new Schema<User>(
+  {
+    uid: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      unique: true,
+    },
+    name: {
+      type: String,
+    },
+    profilePicture: {
+      type: String,
+    },
+    authProvider: {
+      type: String,
+      enum: authProviders,
+      required: true,
+    },
+    settings: settingsSchema,
+  },
+  {
+    timestamps: true, // This automatically adds `createdAt` and `updatedAt` fields
+  },
+);
+
+const UserModel: Model<User> = model<User>('User', userSchema);
+
+export default UserModel;

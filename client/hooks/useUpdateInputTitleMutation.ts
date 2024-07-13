@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQueryClient,
-  type UseMutationResult,
-} from '@tanstack/react-query';
+import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import { axiosClient } from '@config/axios';
 import type {
   UpdateInputTitleParams,
@@ -34,8 +30,6 @@ const useUpdateInputTitleMutation = (): UseMutationResult<
   UpdateInputTitleParams,
   unknown
 > => {
-  const queryClient = useQueryClient();
-
   return useMutation<
     UpdateInputTitleResponse,
     Error,
@@ -43,14 +37,6 @@ const useUpdateInputTitleMutation = (): UseMutationResult<
     unknown
   >({
     mutationFn: updateInputTitleInApi,
-
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
-    },
-
-    onError: (error: Error) => {
-      console.error('Error updating input title:', error);
-    },
   });
 };
 

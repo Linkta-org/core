@@ -30,7 +30,7 @@ const uri = process.env.MONGO_DB_URI;
 mongoose.set('strictQuery', false);
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: process.env.CLIENT_BASE_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-request-id'],
 };
@@ -97,7 +97,7 @@ function startServer() {
    */
   const server: Server = app.listen(PORT, () => {
     logger.info(
-      `Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`,
+      `Server is running on ${process.env.SERVER_BASE_URL}:${PORT} in ${process.env.NODE_ENV} mode.`,
     );
   });
 
@@ -119,11 +119,8 @@ function startServer() {
 function stopServer(server: Server) {
   server.close(() => {
     logger.warn('Server stopped.');
-    logger.warn('Server stopped.');
-    logger.warn('Server stopped.');
 
     // disconnect from the database
-
     process.exit(0);
   });
 }

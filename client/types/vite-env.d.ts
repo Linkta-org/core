@@ -1,11 +1,13 @@
 /// <reference types="vite/client" />
 
 type ImportMetaEnv = {
-  readonly VITE_TEST_VAR0: string;
-  readonly VITE_TEST_VAR1: string;
-  readonly VITE_TEST_VAR2: string;
-  readonly VITE_TEST_VAR3: string;
-  // more env variables...
+  readonly VITE_FIREBASE_API_KEY: string;
+  readonly VITE_FIREBASE_AUTH_DOMAIN: string;
+  readonly VITE_FIREBASE_PROJECT_ID: string;
+  readonly VITE_FIREBASE_STORAGE_BUCKET: string;
+  readonly VITE_FIRE_BASE_MESSAGING_SENDER_ID: string;
+  readonly VITE_FIREBASE_APP_ID: string;
+  readonly VITE_SERVER_BASE_URL: string;
 };
 
 interface ImportMeta {

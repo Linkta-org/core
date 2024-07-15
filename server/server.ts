@@ -4,7 +4,7 @@ import log4js from 'log4js';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import { globalErrorHandler } from '@middleware/errorHandling';
+import { errorHandlerMiddleware } from '@middleware/errorHandling';
 import type { Express, Response } from 'express';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
 import log4jsConfig from '@/utils/log4js.config.json' with { type: 'json' };
@@ -90,7 +90,7 @@ function startServer() {
   /**
    * Global Error Handler. Place this at the end to catch all errors.
    */
-  app.use(globalErrorHandler);
+  app.use(errorHandlerMiddleware);
 
   /**
    * Start the server.

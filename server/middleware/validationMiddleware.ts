@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import type { ZodSchema } from 'zod';
 import { ZodError } from 'zod';
 import { formatZodErrorMessages } from '@utils/helpers';
+import { ValidationError } from '@/utils/customErrors';
 
 type ValidationTarget = 'body' | 'query' | 'params' | 'headers';
 
@@ -21,21 +22,17 @@ const validationMiddleware = (
   schema: ZodSchema<RequestPart>,
   target: ValidationTarget,
 ) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     try {
       schema.parse(req[target]);
       next();
     } catch (err) {
       if (err instanceof ZodError) {
         const errorMessage = formatZodErrorMessages(err);
-        return res
-          .status(400)
-          .json({ message: `Validation Error: ${errorMessage}` });
+        next(new ValidationError(`Validation Error: ${errorMessage}`));
+      } else {
+        next(new ValidationError());
       }
-      return res.status(400).json({
-        message:
-          'Invalid input provided. Please ensure your request meets the required format and constraints.',
-      });
     }
   };
 };

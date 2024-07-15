@@ -1,10 +1,10 @@
 import UserInputModel from '@/models/UserInputModel';
 import type { UserInput } from '@/types';
 import type { Types } from 'mongoose';
-import { createError } from '@/middleware/errorHandling';
+import { InternalServerError, NotFoundError } from '@/utils/customErrors';
 import log4js from 'log4js';
 
-const logger = log4js.getLogger('[UserInput Service]');
+const logger = log4js.getLogger('[UserInputService]');
 
 /**
  * Creates a service for managing user inputs.
@@ -34,14 +34,9 @@ const createUserInputService = () => {
       await newUserInput.save();
       return newUserInput;
     } catch (error) {
-      logger.error('Error creating user input', error);
-      const methodError = createError(
-        'createUserInput',
-        'UserInputService',
-        'Error creating user input.',
-        error,
-      );
-      throw methodError;
+      logger.error('Error creating user input.', error);
+
+      throw new InternalServerError('Error creating user input.');
     }
   };
 
@@ -69,14 +64,9 @@ const createUserInputService = () => {
 
       return inputHistory;
     } catch (error) {
-      logger.error('Error fetching input history', error);
-      const methodError = createError(
-        'fetchInputHistory',
-        'UserInputService',
-        'Error fetching input history.',
-        error,
-      );
-      throw methodError;
+      logger.error('Error fetching input history.', error);
+
+      throw new InternalServerError('Error fetching input history.');
     }
   };
 
@@ -99,19 +89,14 @@ const createUserInputService = () => {
 
       if (!updatedUserInput) {
         logger.error(`UserInput with id ${userInputId} not found.`);
-        throw new Error(`UserInput with id ${userInputId} not found.`);
+        throw new NotFoundError(`UserInput with id ${userInputId} not found.`);
       }
 
       return updatedUserInput;
     } catch (error) {
-      logger.error('Error updating user input title', error);
-      const methodError = createError(
-        'updateInputTitle',
-        'UserInputService',
-        'Error updating input title.',
-        error,
-      );
-      throw methodError;
+      logger.error('Error updating input title.', error);
+
+      throw new InternalServerError('Error updating input title.');
     }
   };
 
@@ -130,14 +115,11 @@ const createUserInputService = () => {
 
       return deletedUserInput;
     } catch (error) {
-      logger.error('Error deleting user input', error);
-      const methodError = createError(
-        'deleteUserInput',
-        'UserInputService',
-        'Error deleting input.',
-        error,
+      logger.error('Error deleting input and associated data.', error);
+
+      throw new InternalServerError(
+        'Error deleting input and associated data.',
       );
-      throw methodError;
     }
   };
 

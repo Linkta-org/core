@@ -7,13 +7,9 @@ import bodyParser from 'body-parser';
 import userRouter from '@routes/userRouter';
 import type { Express, NextFunction, Response } from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import userInputRouter from '@routes/userInputRouter';
+import { errorHandlerMiddleware } from '@middleware/errorHandling';
+import type { Express, Response } from 'express';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
-import RateLimiter from '@middleware/rateLimiterMiddleware';
-import { globalErrorHandler } from '@middleware/errorHandling';
-import verifyOrigin, {
-  corsOptions,
-} from '@middleware/dynamicOriginsMiddleware';
 import log4jsConfig from '@/utils/log4js.config.json' with { type: 'json' };
 import { getEnv } from '@utils/environment';
 
@@ -94,7 +90,7 @@ function startServer() {
   /**
    * Global Error Handler. Place this at the end to catch all errors.
    */
-  app.use(globalErrorHandler);
+  app.use(errorHandlerMiddleware);
 
   /**
    * Start the server.

@@ -1,9 +1,9 @@
 import { startGeneration } from '@/models/GeminiModel';
 import type { Content } from '@google/generative-ai';
-import { createError } from '@/middleware/errorHandling';
+import { InternalServerErrorGenAI } from '@utils/customErrors';
 import log4js from 'log4js';
 
-const logger = log4js.getLogger('[AI Service]');
+const logger = log4js.getLogger('[aiService]');
 
 /**
  * Creates AI service to interact with generative AI models.
@@ -30,14 +30,9 @@ const createAIService = () => {
 
       return response;
     } catch (error) {
-      logger.error('Error generating response from AI', error);
-      const methodError = createError(
-        'generateInitialResponse',
-        'AIService',
-        'Error generating response from AI.',
-        error,
-      );
-      throw methodError;
+      logger.error('Error generating initial response from aiService.', error);
+
+      throw new InternalServerErrorGenAI();
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import styles from '@styles/layout/AuthStyles.module.css';
-import { useGoogleAuthMutation } from '@/hooks/googleAuthMutation';
+import { useGoogleAuthMutation } from '@hooks/useSignInWithGoogle';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useSignInWithEmailAndPasswordMutation } from '@/hooks/useSignInWithEmailAndPassword';

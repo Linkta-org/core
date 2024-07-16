@@ -25,12 +25,6 @@ export default defineConfig({
       localsConvention: 'camelCase', // Configure CSS modules
     },
   },
-  server: {
-    proxy: {
-      // Proxy configuration for API calls
-      '/api': 'http://localhost:3000',
-    },
-  },
   test: {
     include: ['**/*.unit.test.[jt]s?(x)'],
     environment: 'jsdom',

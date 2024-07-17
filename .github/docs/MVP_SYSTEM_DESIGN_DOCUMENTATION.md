@@ -91,16 +91,16 @@ The frontend is developed using React, incorporating various libraries to enhanc
 User authentication and authorization are managed through Firebase Authentication. The entire system is hosted on Google Cloud Platform (GCP) with Firebase Hosting.
 
 ### Architecture Diagram
->_Work in progress_
+![MVP System Design Diagram](./assets/mvp-system-design-diagram.png "MVP system design diagram")
 
 ## Technology Stack
 - **Programming Language:** TypeScript
-- **Frontend:** React, Zustand, React Query, React Flow,  Material UI, React Hook Form, Axios
-- **Backend:** Node.js, Express, Redis, MongoDB, Mongoose
-- **LLM Provider**: Gemini (version TBD)
+- **Frontend:** React, Zustand, React Query (Tanstack Query), React Router, React Flow,  Material UI, React Hook Form, Axios, zundo
+- **Backend:** Node.js, Express, Redis, MongoDB (with Mongoose ORM), express-rate-limit
+- **LLM Provider**: Gemini
 - **Auth Provider:** Firebase Authentication
-- **DevOps/Infrastructure:** GCP, Firebase Hosting, GitHub Actions, Git
-- **Testing:** Jest, React Testing Library, Cypress
+- **DevOps/Infrastructure:** GCP, Firebase Hosting, GitHub Actions, Git, Vite, Husky, Eslint, Prettier
+- **Testing:** Vitest, React Testing Library, Cypress
 - **Others:** Zod, log4js, Turbo Console Log
 
 ## Data Design
@@ -109,182 +109,41 @@ The detailed field-level information for each entity can be found in the "Data D
 ## API Design
 The detailed API endpoints, request/response formats, and authentication requirements can be found in the [API Design documentation](./API_DESIGN_DOCUMENTATION_V1.md).
 
-## Module Design
-### User Interface Design:
-The detailed view of the application's user interface, including wireframes and interactive prototypes can be found in the [Figma](https://www.figma.com/file/9QKsvDQ9jivgA9XfS0oqPd/Design-System---Linkta?type=design&node-id=691-3754&mode=design&t=kUnZmiidrbvSyFQ0-0).
-
-🔈**Note: The below epics and tasks are for sprint planning only, refer to the [Linkta Core MVP Project](https://github.com/orgs/Linkta-org/projects/6) for the most up to date tasks**.
-
-### Epics
-#### UserInput Submission and Processing
-Story: As a user, I want to easily submit my input through an intuitive interface and have it processed securely into a structured LinktaFlow.
-
-Design:
-API & Data Design
-- Design API for UserInput submission.
-- Improve Data models for UserInput Model and LinktaFlow Model.
-- Update API design documentation for UserInput submission and updated data design.
-
-UI Design
-- Update mockups for UserInput submission UI on Figma.
-
-Frontend Design
-- Update frontend design for UserInput submission.
-    -  Estimated Effort: 2 hours.
-    - Acceptance Criteria:
-        - Frontend architecture and components are defined according to the mockups.
-        - Data flow and state management are considered.
-        - Frontend design is reviewed and approved by the team.
-
-Frontend:
-1. Provide UI for UserInput submission.
-   - Estimated Effort: 6 hours.
-   - Acceptance Criteria:
-        - UI is implemented according to the mockups.
-        - UI components are functional.
-        - UserInput is captured and sent to the backend.
-2. Implement loading state UI for user feedback during LLM processing.
-   - Estimated Effort:6 hours.
-   - Acceptance Criteria:
-        - Loading state UI is displayed while waiting for LLM response.
-        - User is informed about the processing status.
-        - Loading state UI is dismissed when the response is received.
-        - The design of the loading state UI aligns with Linkta's branding and visual style.
-        - Colors, fonts, and iconography should match Linkta's design guidelines.
-        - The loading state UI should be visually consistent with other UI components in the application.
-        - The design should provide a seamless and intuitive user experience.
-3. Implement toast notification component for user feedback.
-   - Estimated Effort: 4 hours.
-   - Acceptance Criteria:
-        - Toast notification component is created.
-        - Notifications are displayed for success and error states.
-        - Notifications are dismissed automatically or on user interaction.
-        - If toast notification library is used:
-            - Ensure it is lightweight and easy to use.
-            - Toast library is reviewed and approved by the team.
-4. Implement client-side input validation and sanitization (*Implement with server-side input sanitization is highly recommended).
-   - Estimated Hours: 4 hours.
-   - Acceptance Criteria:
-        - UserInput is validated before submission.
-        - Invalid UserInput is prevented and appropriate error messages are displayed.
-        - UserInput is sanitized to prevent security vulnerabilities with Zod.
-
-Backend:
-1. Improve API endpoint for receiving UserInput.
-   - Estimated Effort: 2 hours.
-   - Acceptance Criteria:
-        - API endpoint is updated according to the design [Linkta API Design Documentation].
-        - UserInput is received and validated.
-        - Appropriate responses are returned based on the UserInput.
-2. Implement server-side input sanitization for UserInput (*Implement with server-side input sanitization is highly recommended).
-   - Estimated Effort: 2 hours.
-   - Acceptance Criteria:
-        - UserInput is sanitized on the server-side.
-3. Handle sanitized UserInput storage in the database
-    - Estimated Effort: 2 hours
-    - Acceptance Criteria:
-        - UserInput is stored securely in the database
-        - Data integrity is maintained
-        - Retrieval and querying of stored data are efficient
-
-#### LinktaFlow Visualization and Interaction
->_Work in progress_
-
-Story: As a user, I want to interactively visualize, update, and regenerate my LinktaFlows and perform CRUD operations on nodes.
-
-Frontend:
-1. Provide UI for users to visualize a LinktaFlow
-2. Provide UI for users to update (name only) and delete a LinktaFlow
-3. (TBD) Provide UI for users to view current UserInput and regenerate a new LinktaFlow
-4. Provide UI for CRUD operations on nodes (Create, Update, Delete)
-5. Implement basic drag-and-drop functionality for node movement
-6. Implement visual feedback (node highlighting) on hover or selection
-7. Implement undo/redo functionality to allow users to revert or re-apply changes made to LinktaFlow
-
-Backend:
-1. Improve pre-processing (add context, reformat) mechanism of UserInput
-    - Estimated Effort: 8 hours
-    - Acceptance Criteria:
-        - Pre-processing mechanisms are improved
-        - User input is enriched with relevant context
-        - Input is reformatted to ensure compatibility with LLM
-2. Improve LLM interaction mechanism to process UserInput and generate a LinktaFLow
-    - Implement a mechanism to ensure the generated LinktaFlow adheres to the desired format
-        - Estimated Effort: 4 hours
-        - Acceptance Criteria:
-            - Generated LinktaFlow is validated against the desired format
-            - Validation errors are handled gracefully
-            - LinktaFlow is formatted correctly before storage
-3. Handle LinktaFlow data manipulation and storage in the database
-4. (TBD) Implement LinktaFlow versioning and history tracking
-
-#### User Authentication and Authorization
->_Work in progress_
-
-Story: As a user, I want a secure and user-friendly authentication system to access my account and protected features.
-Frontend:
-1. Provide UI for user signup, login, password reset, and logout
-2. Provide UI for OAuth Components
-3. Provide UI for auth status indicators (loading spinner, toast for success or failure of auth actions)
-4. Implement nav guard for protected routes and components
-5. Setup and initialize Firebase auth
-6. (TBD) Implement email verification
-
-Backend:
-1. Setup Firebase Admin SDK
-2. Handle token verification
-3. Implement auth-guard for API endpoints
-4. (TBD) Implement API endpoint for authentication
-5. (TBD) Implement API endpoint for session login and logout
-6. (TBD) Handle session management
-
-#### User Management and Settings
-> Work in progress
-
-Story: As a user, I want to manage my LinktaFlows, update my profile, and customize settings in a dedicated management area
-
-Frontend:
-1. Provide UI to display all LinktaFlows associated with a specific user
-2. Provide UI for users to update (name only) and delete a LinktaFlow
-3. Provide UI for user settings
-4. Provide UI for updating user information and resetting the password
-
-Backend:
-1. Implement API endpoint for retrieving all LinktaFlows associated with a user
-2. Implement API endpoints for retrieving, updating, and deleting user profile
-3. Integrate with Firebase Authentication for password reset functionality
-4. Handle user data manipulation and storage in MongoDB
-5. (TBD) Implement LinktaFlow versioning and history tracking within the user model
-
-#### Bug Reporting
-> Work in progress
-
-Story: As a user, I want a simple way to report bugs or issues to contribute to the continuous improvement of the platform
-
-Frontend:
-1. Provide UI for bug report submission
-
-Backend:
-1. Implement API endpoint for receiving bug reports
-2. Implement functionality to automatically create bug tickets in the Linkta core repository
-
-#### Infrastructure and DevOps
-1. Continuous Integration and Deployment (CI/CD) Pipeline: Automates the build, testing, and deployment processes using GitHub Actions and Firebase Hosting.
-2. Monitoring and Alerting: Implements monitoring and alerting solutions to track application performance, error rates, and system health.
-3. Cloud Infrastructure: Provisions and manages the necessary cloud resources (e.g., virtual machines, load balancers, databases) on Google Cloud Platform (GCP).
-
-#### Cross-Cutting Concerns
-1. Logging and Error Handling: Implements a centralized logging system and robust error-handling mechanisms.
-2. Performance Optimization: Employs techniques like caching, load balancing, and database indexing to ensure optimal performance.
-3. Security and Compliance: Implements security best practices, such as input validation, rate limiting, and adherence to data privacy regulations (GDPR, CCPA).
-
 ## Caching and Performance Optimization
 >_Work in progress_
 
 ## Error Handling and Logging
->_Work in progress_
 
-Linkta utilizes the `log4js` library for centralized logging. The logging configuration is defined in `log4js.config.json`, specifying log categories, appenders, and levels. The `log4js` library is used throughout the application to log errors, warnings, and informational messages.
+### Error Handling Strategy
+1. **Custom Error Hierarchy:** Implement a `CustomError` base class extended by specific error types (e.g., `ValidationError`, `UnauthorizedError`, `InternalServerError`).
+2. **Standardized Error Properties:** Each custom error includes:
+   - `status`: HTTP status code
+   - `message`: User-friendly error description
+   - `log`: Detailed error information for server-side logging
+3. **Global Error Handler:** Centralized middleware (`globalErrorHandler`) to process all errors uniformly.
+4. **Consistent Error Response:**
+   ```json
+   {
+     "error": {
+       "message": "User-friendly error description"
+     }
+   }
+   ```
+
+### Logging Implementation
+- Utilize `log4js` for structured logging.
+- Configure logger instances for different modules (e.g., `[ErrorHandler]`).
+- Log detailed error information, including custom properties.
+
+### Error Types
+Implement specific error classes for common scenarios:
+- `ValidationError` (400)
+- `UnauthorizedError` (401)
+- `ForbiddenError` (403)
+- `LinktaFlowNotFoundError` (404)
+- `TooManyRequestsError` (429)
+- `InternalServerError` (500)
+- `ServiceUnavailableError` (503)
 
 ## Security Considerations
 - **Authentication and Authorization:** Firebase Authentication is used for user authentication and authorization. API endpoints are protected and require valid session tokens for access.
@@ -293,42 +152,12 @@ Linkta utilizes the `log4js` library for centralized logging. The logging config
 - **Secure Communication:** HTTPS will be used for all client-server communications to ensure data confidentiality and integrity.
 
 ## Testing Strategy
-- **Unit Testing:** Individual components and modules will be tested using Jest, React Testing Library to ensure they function as expected in isolation.
+- **Unit Testing:** Individual components and modules will be tested using Vitest, React Testing Library to ensure they function as expected in isolation.
 - **Integration Testing:** Integration tests will be performed to verify the proper functioning of component interactions and workflows.
 - **End-to-End Testing:** Cypress will be used for end-to-end testing to simulate user interactions and validate the system's behavior from the user's perspective.
-> To be decided:
-**Performance and Load Testing:** Performance and load testing will be conducted to identify performance bottlenecks, optimize code, and ensure the application can handle expected user traffic.
-**Accessibility Testing:** Accessibility testing will be performed to ensure the application adheres to WCAG accessibility guidelines, including testing for keyboard navigation, color contrast, and screen reader compatibility.
-**Security Testing:** Security testing, including penetration testing and vulnerability scanning, will be conducted to identify and mitigate security risks. Security best practices, such as input validation, rate limiting, and secure headers, will be implemented.
-
-**Key Component Testing**
->_Work in progress_
-
-**User Authentication and Authorization**
-- Test user authentication flow (signup, login, logout, password reset) with Firebase Authentication
-- Test OAuth integration with Firebase Authentication
-- Test Firebase ID token verification for securing API endpoints
-- Test authorization mechanisms and access to protected routes/components
-
-**UserInput Submission and Processing**
-- Test server-side input sanitization
-- Test LLM integration for processing UserInput and generating LinktaFlow
-- Test the mechanism to ensure the generated LinktaFlow adheres to the desired format
-- Test storage and retrieval of UserInput and generated LinktaFlow
-- End-to-end testing of UserInput submission, processing, and LinktaFlow generation flow
-
-**LinktaFlow Visualization and Interaction**
-- Test CRUD operations for nodes (Create, Update, Delete)
-- Test drag-and-drop functionality for node movement
-- Test visual feedback (node highlighting) on hover or selection
-- Test integration between frontend and backend for LinktaFlow visualization and interaction
-- End-to-end testing of user interactions with LinktaFlow visualization (node creation, update, deletion, drag-and-drop)
-
-**User Management and Settings**
-- Test retrieval of LinktaFlows associated with a user
-- Test updating user profile information with Firebase Authentication
-- Test integration between frontend and backend for retrieving and updating user information and LinktaFlows
-- End-to-end testing of user flows for managing LinktaFlows and updating profile
+- **Performance and Load Testing:** Performance and load testing will be conducted to identify performance bottlenecks, optimize code, and ensure the application can handle expected user traffic.
+- **Accessibility Testing:** Accessibility testing will be performed to ensure the application adheres to WCAG accessibility guidelines, including testing for keyboard navigation, color contrast, and screen reader compatibility.
+- **Security Testing:** Security testing, including penetration testing and vulnerability scanning, will be conducted to identify and mitigate security risks. Security best practices, such as input validation, rate limiting, and secure headers, will be implemented.
 
 ## Deployment and DevOps
 - **Deployment:** Linkta will be deployed on Google Cloud Platform (GCP) using Firebase Hosting.

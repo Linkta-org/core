@@ -42,7 +42,7 @@ userInputRouter.post(
   userInputController.generateLinktaFlowFromInput,
   userInputController.fetchInputHistory,
   (_: Request, res: Response) => {
-    return res.status(200).json({
+    return res.status(201).json({
       linktaFlow: res.locals.linktaFlow,
       inputHistory: res.locals.inputHistory,
     });

@@ -8,15 +8,14 @@
 5. [Technology Stack](#technology-stack)
 6. [Data Design](#data-design)
 7. [API Design](#api-design)
-8. [Module Design](#module-design)
-9. [Caching and Performance Optimization](#caching-and-performance-optimization)
-10. [Error Handling and Logging](#error-handling-and-logging)
-11. [Security Considerations](#security-considerations)
-12. [Testing Strategy](#testing-strategy)
-13. [Deployment and DevOps](#deployment-and-devops)
-14. [Scalability and Performance](#scalability-and-performance)
-15. [Maintenance and Support](#maintenance-and-support)
-16. [Future Enhancements and Roadmap](#future-enhancements-and-roadmap)
+8. [Caching and Performance Optimization](#caching-and-performance-optimization)
+9. [Error Handling and Logging](#error-handling-and-logging)
+10. [Security Considerations](#security-considerations)
+11. [Testing Strategy](#testing-strategy)
+12. [Deployment and DevOps](#deployment-and-devops)
+13. [Scalability and Performance](#scalability-and-performance)
+14. [Maintenance and Support](#maintenance-and-support)
+15. [Future Enhancements and Roadmap](#future-enhancements-and-roadmap)
 
 ## Introduction
 ### Overview
@@ -115,20 +114,12 @@ The detailed API endpoints, request/response formats, and authentication require
 ## Error Handling and Logging
 
 ### Error Handling Strategy
-1. **Custom Error Hierarchy:** Implement a `CustomError` base class extended by specific error types (e.g., `ValidationError`, `UnauthorizedError`, `InternalServerError`).
-2. **Standardized Error Properties:** Each custom error includes:
+- **Custom Error Hierarchy:** Implement a `CustomError` base class extended by specific error types (e.g., `ValidationError`, `UnauthorizedError`, `InternalServerError`).
+- **Standardized Error Properties:** Each custom error includes:
    - `status`: HTTP status code
    - `message`: User-friendly error description
    - `log`: Detailed error information for server-side logging
-3. **Global Error Handler:** Centralized middleware (`globalErrorHandler`) to process all errors uniformly.
-4. **Consistent Error Response:**
-   ```json
-   {
-     "error": {
-       "message": "User-friendly error description"
-     }
-   }
-   ```
+- **Global Error Handler:** Centralized middleware (`globalErrorHandler`) to process all errors uniformly.
 
 ### Logging Implementation
 - Utilize `log4js` for structured logging.

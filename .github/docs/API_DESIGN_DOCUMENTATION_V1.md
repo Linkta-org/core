@@ -10,72 +10,66 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 ![API Design Flowchart](./assets/api-design-flowchart.png "api design flowchart")
 
 ## Endpoints
-### User Authentication and Authorization
->_Work in progress_
-
-#### Session Login
-- **Endpoint:** `POST /v1/auth/login`
-- **Description:** Authenticates a user using Firebase Authentication and generates a session token.
-- **Payload:** `{ "idToken": "<Firebase ID Token>" }`
-- **Responses:**
-    - `200 OK`  : `{ "sessionToken": "<Newly Generated Session Token>" , "message": "Welcome, [name]! You are now logged in."}`
-    - `400 Bad Request`  : `{ "message": "The login token provided is incorrect or expired. Please log in again to obtain a valid token." } `
-
-#### Session Logout
-- **Endpoint:** `POST /v1/auth/logout`
-- **Description:** Invalidates the session token, effectively logging out the user.
-- **Payload:** `{ "sessionToken": "<Session Token to Invalidate>" }`
-- **Responses:**
-    - `200 OK`  : `{ "message": "Logout successful." }`
-    - `400 Bad Request`  : `{ "message": "Your session has expired. Please log in again to continue." } `
-
 ### UserInput Submission and Processing
 
 #### Generate LinktaFlow from UserInput
 - **Endpoint:** `POST /v1/inputs`
 - **Description:** Receives a UserInput and begins processing it to generate a LinktaFlow.
-- **Payload:** `{ "input": "User's Initial Input" }`
+- **Payload:** `{ "input": "User's Input" }`
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken: <Firebase ID Token>`
     - `x-request-id: <unique request ID>`
 - **Responses:**
-    - `200 OK` : `{ "linktaFlow": <LinktaFlow Object>, "inputHistory": [/*Array of userInput Objects*/] }`
+    - `201 Created` : `{ "linktaFlow": <LinktaFlow Object>, "inputHistory": [/*Array of userInput Objects*/] }`
     - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to perform this action." }`
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 #### Fetch Input History
 - **Endpoint:** `GET /v1/inputs`
 - **Description:** Retrieves a list of UserInputs associated with a user.
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken: <Firebase ID Token>`
 - **Responses:**
     - `200 OK` : `{ "inputHistory": [/*Array of userInput Objects*/] }`
+    - `400 Bad Request` : `{ "message": "Invalid request parameters." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to access this resource." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 #### Update UserInput Title
 - **Endpoint:** `PUT /v1/inputs/:userInputId`
-- **Description:** Add/update title of a specific user input(refelcting the 'Rename' feature on UI design).
+- **Description:** Add/update title of a specific user input (reflecting the 'Rename' feature on UI design).
 - **Payload:** `{ "title": "Updated title" }`
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken: <Firebase ID Token>`
 - **Responses:**
     - `200 OK` : `{ "message": "Input Title updated successfully.", "inputHistory": [/*Array of userInput Objects*/] }`
+    - `400 Bad Request` : `{ "message": "Invalid input. Please provide a valid title." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to update this input." }`
+    - `404 Not Found` : `{ "message": "The specified user input could not be found." }`
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 #### Delete UserInput
 - **Endpoint:** `DELETE /v1/inputs/:userInputId`
 - **Description:** Deletes a specific userInput and its associated LinktaFlow.
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken: <Firebase ID Token>`
 - **Responses:**
     - `200 OK` : `{ "message": "Input has been successfully deleted.", "inputHistory": [/*Array of userInput Objects*/] }`
+    - `400 Bad Request` : `{ "message": "Invalid request parameters." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to delete this input." }`
+    - `404 Not Found` : `{ "message": "The specified user input could not be found." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 ### LinktaFlow Management
 
@@ -83,21 +77,26 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 - **Endpoint:** `GET /v1/flows/:userInputId `
 - **Description:** Retrieves a specific LinktaFlow object based on the user input id.
 - **Headers:**
-    - `Authorization: idToken": "<Firebase ID Token>`
+    - `Authorization: idToken: <Firebase ID Token>`
 - **Responses:**
     - `200 OK`  :
     ```json
     {
     "linktaFlow": {
-        "id": "string",
-        "userInputId": "string",
+        "id": "unique linktaflow identifier",
+        "userInputId": "unique user input identifier",
         "nodes": [
         {
             "id": "unique node identifier",
             "type": "node type",
-            "position": { "x": "position x", "y": "position y" },
-            "data": { "label": "node label" }
-        },
+            "position": {
+            "x": "position x",
+            "y": "position y"
+            },
+            "data": {
+            "label": "node label"
+            }
+        }
         // More nodes...
         ],
         "edges": [
@@ -105,15 +104,18 @@ The base URL for the Linkta API is: `https://api.linkta.io`
             "id": "unique edge identifier",
             "source": "source node identifier",
             "target": "target node identifier"
-        },
+        }
         // More edges...
         ]
     }
     }
     ```
-    - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
-    - `404 Not Found`  : `{ "message": "The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect." } `
-    - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
+    - `400 Bad Request` : `{ "message": "Invalid request parameters." }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to access this LinktaFlow." }`
+    - `404 Not Found` : `{ "message": "The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 #### Update LinktaFlow
 - **Endpoint:** `PUT /v1/flows/:linktaFlowId`
@@ -126,9 +128,14 @@ The base URL for the Linkta API is: `https://api.linkta.io`
         {
             "id": "unique node identifier",
             "type": "node type",
-            "position": { "x": "position x", "y": "position y" },
-            "data": { "label": "node label" }
-        },
+            "position": {
+            "x": "position x",
+            "y": "position y"
+            },
+            "data": {
+            "label": "node label"
+            }
+        }
         // More nodes...
         ],
         "edges": [
@@ -136,90 +143,148 @@ The base URL for the Linkta API is: `https://api.linkta.io`
             "id": "unique edge identifier",
             "source": "source node identifier",
             "target": "target node identifier"
-        },
+        }
         // More edges...
         ]
     }
     }
     ```
 - **Headers:**
-    - `Authorization: idToken": "<Firebase ID Token>`
+    - `Authorization: idToken: <Firebase ID Token>`
 - **Responses:**
-    - `200 OK`  : `{ "message": "Linkta Flow updated successfully." } `
-    - `400 Bad Request`  :` { "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." } `
-    - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
-    - `404 Not Found  : { "message": "The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect." }  `
+    - `200 OK` : `{ "message": "Linkta Flow updated successfully." }`
+    - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to update this LinktaFlow." }`
+    - `404 Not Found` : `{ "message": "The requested Linkta Flow could not be found." }`
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
-    - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 #### Save LinktaFlow As A Copy
+>  _Work in progress_
 - **Endpoint:** `POST /v1/flows/save-as`
 - **Description:** Creates new UserInput and LinktaFlow documents with the provided user input, custom title, and LinktaFlow object.
 - **Payload:**
-  ```json
-  {
-    "input": "User's New Input",
-    "title": "Custom Title",
-    "linktaFlow": {
-      "nodes": [
+    ```json
+    {
+    "newLinktaFlow": {
+        "input": "new input",
+        "title": "new title",
+        "nodes": [
         {
-          "id": "node1",
-          "type": "input",
-          "data": {
-            "label": "Start"
-          }
-        },
-        ...
-      ],
-      "edges": [
+            "id": "unique node identifier",
+            "type": "node type",
+            "position": {
+            "x": "position x",
+            "y": "position y"
+            },
+            "data": {
+            "label": "node label"
+            }
+        }
+        // More nodes...
+        ],
+        "edges": [
         {
-          "id": "edge1",
-          "source": "node1",
-          "target": "node2"
-        },
-        ...
-      ]
+            "id": "unique edge identifier",
+            "source": "source node identifier",
+            "target": "target node identifier"
+        }
+        // More edges...
+        ]
     }
-  }
-  ```
+    }
+    ```
 - **Headers:**
-    - `Authorization: idToken": "<Firebase ID Token>`
+    - `Authorization: idToken: <Firebase ID Token>`
     - `x-request-id: <unique request ID>`
 - **Responses:**
     - `201 Created` : `{ "message": "Your new input and Linkta Flow have been created successfully." }`
     - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to perform this action." }`
     - `429 Too Many Requests` : `{ "message": "You have made too many requests in a short period. Please wait a while before trying again." }`
     - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 ### User Management and Settings
->_Work in progress_
+
+#### Create User Profile
+- **Endpoint:** `POST /v1/users`
+- **Description:** Generates a new user profile.
+- **Payload:** `{ "name": "User's Name" }`
+- **Headers:**
+    - `Authorization: idToken: <Firebase ID Token>`
+- **Responses:**
+    - `201 Created` : `{ "newUserProfile": { "email": "user@example.com", "name": "User's Name", "profilePicture": "url", "settings": {} } }`
+    - `400 Bad Request` : `{ "message": "Invalid input. Please ensure the name is provided and is between 2 and 50 characters long." }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `409 Conflict` : `{ "message": "A user profile already exists for this account." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
+
+#### Fetch User Profile
+- **Endpoint:** `GET /v1/users`
+- **Description:** Fetches the user profile.
+- **Headers:**
+    - `Authorization: idToken: <Firebase ID Token>`
+- **Responses:**
+    - `200 OK` : `{ "userProfile": { "email": "user@example.com", "name": "User's Name", "profilePicture": "url", "settings": {} } }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `404 Not Found` : `{ "message": "User profile not found. Please create a profile first." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 #### Update User Settings
-- **Endpoint:** `PUT /v1/users/settings`
-- **Description:** Updates user settings.
-- **Payload:** `{ "theme": "dark" }`
+>  _Work in progress_
+- **Endpoint:** `PUT /v1/users`
+- **Description:** Updates user settings. At least one of updatedName, updatedEmail, or updatedSettings must be provided.
+- **Payload:**
+    ```json
+    {
+    "updatedName": "updated user name",
+    "updatedEmail": "updated user email",
+    "updatedSettings": {
+        "theme": "dark"
+    }
+    }
+    ```
 - **Headers:**
-    - `Authorization: Bearer <session_token>`
+    - `Authorization: idToken: <Firebase ID Token>`
 - **Responses:**
-    - `200 OK`  : `{ "message": "Your settings has been updated successfully." }`
-    - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
-    - `403 Forbidden`  : `{ "message": "You do not have permission to perform this action. If you believe this is an error, please contact support." } `
-    - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
-
-#### Delete User Account
-- **Endpoint:** `DELETE /v1/users `
-- **Description:** Deletes the user account.
-- **Headers:**
-    - `Authorization: Bearer <session_token>`
-- **Responses:**
-    - `200 OK`  :` { "message": "User account with ID [userId] has been successfully deleted." } `
-    - `401 Unauthorized`  : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." } `
-    - `403 Forbidden`  : `{ "message": "You do not have permission to perform this action. If you believe this is an error, please contact support." } `
-    - `500 Internal Server Error`  : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." } `
+    - `200 OK` : `{ "message": "Your settings have been updated successfully." }`
+    - `400 Bad Request` : `{ "message": "Invalid input. Please provide at least one valid field to update (name, email, or settings)." }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `403 Forbidden` : `{ "message": "You don't have permission to update this user profile." }`
+    - `404 Not Found` : `{ "message": "User profile not found. Please create a profile first." }`
+    - `409 Conflict` : `{ "message": "The provided email is already associated with another account." }`
+    - `422 Unprocessable Entity` : `{ "message": "The provided data is invalid. Please check the format of your input." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 ### Bug Reporting
 >_Work in progress_
+#### Submit Bug Report
+- **Endpoint:** `POST /v1/bug-reports`
+- **Description:** Submit a new bug report. This can be done by both authenticated and unauthenticated users.
+- **Payload:**
+    ```json
+    {
+    "title": "Brief bug description",
+    "description": "Detailed bug explanation",
+    "environment": "Browser/OS info"
+    }
+    ```
+- **Headers:**
+    - `Authorization: <Firebase ID Token>`
+- **Responses:**
+    - `201 Created` : `{ "message": "Bug report submitted successfully", "reportId": "unique_report_id" }`
+    - `400 Bad Request` : `{ "message": "Invalid input. Please check your data and try again." }`
+    - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
+    - `429 Too Many Requests` : `{ "message": "You have submitted too many bug reports recently. Please try again later." }`
+    - `500 Internal Server Error` : `{ "message": "A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later." }`
+    - `503 Service Unavailable` : `{ "message": "The service is temporarily unavailable. Please try again later." }`
 
 ## Controllers, Middlewares and Services
 
@@ -234,12 +299,16 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 #### LinktaFlow Controller
 - `fetchLinktaFlow` : Retrieves a specific LinktaFlow object based on the LinktaFlow's unique identifier.
 - `updateLinktaFlow` : Updates a specific LinktaFlow.
-- `saveLinktaFlowAsACopy`: Creates a new LinktaFlow object and UserInput based on the provided input, title, and LinktaFlow object.
+- `saveLinktaFlowAsACopy`:
+>  _Work in progress_
+Creates a new LinktaFlow object and UserInput based on the provided input, title, and LinktaFlow object.
 
 #### User Account and Settings Controller
+- `createUserProfile` : Generates a new user profile based on the provided user data.
+- `fetchUserProfile` : Retrieves the user profile for the authenticated user.
+- `updateUserSettings` :
 >  _Work in progress_
-- `updateUserSettings` : Updates user settings.
-- `deleteUserAccount` : Deletes the user account and associated data.
+Updates user settings including name, email, and other preferences.
 
 #### Bug Report Controller
 >  _Work in progress_
@@ -247,15 +316,8 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 
 ### Services
 
-#### Authentication Service
->  _Work in progress_
-- `generateSessionToken` : Generates a custom session token for the client upon successful Firebase Authentication.
-- `verifySessionToken` : Validates the session token for any subsequent requests that require authentication.
-- `validateFirebaseToken` : Validates the Firebase ID Token using the Firebase Admin SDK.
-- `invalidateSessionToken` : Clears the session token when the user logs out or when the token expires.
-
 #### AI Service
-- `startGeneration` : Generates a response with a prompt(userInput) and optional chat history.
+- `generateInitialResponse` : Handles generating initial response from AI.
 
 #### UserInput Service
 - `createUserInput` : Creates a new user input record in the database.
@@ -270,123 +332,141 @@ The base URL for the Linkta API is: `https://api.linkta.io`
 - `deleteLinktaFlowByUserInputId`: Delete a LinktaFlow based on a UserInputId
 
 #### User Account and Settings Service
->  _Work in progress_
-- `createUser` : Creates a new user record in the database upon successful authentication, if the user doesn't already exist.
-- `updateUserSettingsByUserId` : Updates the user's settings based on the provided payload.
-- `deleteUserAndAssociatedData` : Deletes the user's account and associated data, including user inputs and LinktaFlows.
+- `findUserByUid` : Finds a user in the database by their Firebase UID.
+- `findUserById` : Finds a user in the database by their MongoDB ObjectId.
+- `createUserProfileById` : Creates a new user record in the database with the provided user data.
+- `updateUserProfile` : Updates the user's settings in the database based on the provided payload, which may include name, email, and other settings.
 
 #### Bug Report Service
->  _Work in progress_
 - `createBugReport` : Creates a new bug report record in the database, optionally associating it with a user ID if the user is authenticated.
 
 ### Middlewares
 
-#### Authentication Middleware
->  _Work in progress_
-- `login` : Authenticates a user using Firebase Authentication and generates a session token.
-- `logout` : Invalidates the session token, effectively logging out the user.
-
-#### AI Middleware
-- `generateInitialResponse`: Handles generating initial response from AI.
-- `generateResponseWithHistory`: Handles LLM response generation after the initial request and response cycle under the same userInput(**generateResponseWithHistory will be a stretch feature, as it provides context for LLM to continuosly generate enahnced responses under the same input)
+#### Firebase Authentication Middleware
+- `isAuthorized` : Verifies Firebase ID token, finds or prepares user data, and attaches it to the request. It handles token validation, user lookup, and sets up data for potential new user creation.
 
 #### Validation Middleware
 - The validation middleware function validates different parts of an incoming request (body, query, params, headers) using Zod schemas. If the validation fails, it responds with a 400 Bad Request status and an appropriate error message.
 
+#### Rate Limiting Middleware
+- `RateLimiter` : Limits requests to 60 per IP address every 15 minutes. Uses draft-7 standard headers for rate limit information. Logs rate limit hits server-side and returns a custom error message ("Rate limit reached. You have sent too many requests!") when the limit is exceeded.
+#### Error Handling Middleware
+- `globalErrorHandler`  : Processes all errors uniformly, providing consistent error responses. It handles both custom and standard errors, logs error details, and returns a standardized JSON response with appropriate HTTP status codes and user-friendly error messages.
+
 ## Data Design
 ### Diagram
-![Data ERD](./assets/data-ERD.png "data erd")
+```mermaid
+erDiagram
+User ||--o{ UserInput : "creates"
+User ||--o{ LinktaFlow : "owns"
+User ||--o{ BugReport : "submits"
+UserInput ||--|| LinktaFlow : "generates"
+
+User {
+    ObjectId _id PK
+    string uid UK "Firebase UID"
+    string email UK
+    string name
+    string profilePicture
+    string authProvider "Enum"
+    object settings
+    timestamp createdAt
+    timestamp updatedAt
+}
+
+UserInput {
+    ObjectId _id PK
+    ObjectId userId FK
+    string input "User's input"
+    string title
+    ObjectId linktaFlowId FK
+    timestamp createdAt
+    timestamp updatedAt
+}
+
+LinktaFlow {
+    ObjectId _id PK
+    ObjectId userInputId FK
+    ObjectId userId FK
+    array nodes "React Flow nodes"
+    array edges "React Flow edges"
+    timestamp createdAt
+    timestamp updatedAt
+}
+
+BugReport {
+    ObjectId _id PK
+    string title
+    string description
+    string environment
+    ObjectId userId FK
+    string status "Enum"
+    timestamp createdAt
+    timestamp updatedAt
+}
+```
 
 ### Data Entities
->_Work in progress_
 
 #### User
-- id (string)
-- firstName (string, required, minLength: 3, maxLength: 30, trimmed)
-- lastName (string, required)
+- _id (ObjectId, auto-generated)
+- uid (string, required, unique, indexed)
+- email (string, unique)
+- name (string)
+- profilePicture (string)
+- authProvider (string, enum: ['password', 'google.com', 'github.com'], required)
+- settings (object)
+    - theme (string, enum: ['light', 'dark'], default: 'light')
 - createdAt (timestamp)
 - updatedAt (timestamp)
 
 #### UserInput
-- id (string)
-- userId (string, required, index:true, reference User)
+- _id (ObjectId, auto-generated)
+- userId (ObjectId, required, indexed, reference to User)
 - input (string, required)
 - title (string, required)
-- linktaFlowId (string)
+- linktaFlowId (ObjectId, reference to LinktaFlow)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 
 #### LinktaFlow
-- id (string)
-- userInputId (UserInput reference)
-- userId (User reference)
-- nodes (array of Node objects)
-    - Node
-        - id (string)
-        - type (string)
-        - position
-            - x (number)
-            - y (number)
-        - data
-            - label (string)
-        - style (object)
-        - className (string)
-        - hidden (boolean)
-        - selected (boolean)
-        - draggable (boolean)
-        - dragging (boolean)
-        - selectable (boolean)
-        - connectable (boolean)
-        - deletable (boolean)
-        - dragHandle (string)
-        - width (number, optional)
-        - height (number, optional)
-        - parentId (string, optional)
-        - zIndex (number)
-        - extent (string, enum: ['parent', null], optional)
-        - expandParent (boolean)
-        - sourcePosition (string, enum: ['left', 'right', 'top', 'bottom'], optional)
-        - targetPosition (string, enum: ['left', 'right', 'top', 'bottom'], optional)
-        - ariaLabel (string)
-        - focusable (boolean)
-        - resizing (boolean)
-- edges (array of Edge objects)
-    - Edge
-        - id (string)
-        - source (string)
-        - target (string)
-        - type (string, optional)
-        - sourceHandle (string, optional)
-        - targetHandle (string, optional)
-        - style (object)
-        - animated (boolean)
-        - hidden (boolean)
-        - deletable (boolean)
-        - className (string)
-        - selected (boolean)
-        - zIndex (number)
-        - ariaLabel (string)
-        - focusable (boolean)
-        - label (string, optional)
-        - labelStyle (object)
-        - labelShowBg (boolean)
-        - labelBgStyle (object)
-        - labelBgPadding (array of numbers, optional)
-        - labelBgBorderRadius (number)
-        - pathOptions (map of PathOption objects)
-            - PathOption
-                - offset (number, optional)
-                - borderRadius (number, optional)
-                - curvature (number, optional)
+>_Work in progress_
+- _id (ObjectId, auto-generated)
+- userInputId (ObjectId, required, reference to UserInput)
+- userId (ObjectId, required, reference to User)
+- nodes (array of Node objects from React Flow)
+- edges (array of Edge objects from React Flow)
+- createdAt (timestamp)
+- updatedAt (timestamp)
 
 #### Bug Report
 >_Work in progress_
+- _id (ObjectId, auto-generated)
+- title (string, required)
+- description (string, required)
+- environment (string)
+- userId (ObjectId, reference to User)
+- status (string, enum: ['new', 'in-progress', 'resolved', 'closed'], default: 'new')
+- createdAt (timestamp)
+- updatedAt (timestamp)
 
 ## Error Handling
-> _Work in progress_
+See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
 
 ## Rate Limiting
-> _Work in progress_
+
+### Purpose:
+To ensure fair usage and protect the API from abuse by limiting the number of requests a user can make within a specified time frame.
+
+### Configuration:
+- **Requests per window:** 60
+- **Window duration:** 15 minutes
+- **Headers:** Uses `draft-7` standard for rate limit information.
+- **Message:** "Rate limit reached. You have sent too many requests!"
+- **Logging:** Logs rate limit hits server-side.
+
+### Implementation:
+Rate limiting middleware is applied to all API routes. When the limit is exceeded, a `429 Too Many Requests` response is returned with a custom message.
 
 ## Caching and Performance
 > _Work in progress_
@@ -402,4 +482,4 @@ See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
 
 ## API Versioning and Lifecycle
 **Versioning Strategy**
-Linkta API adheres to semantic versioning (SemVer). Major versions (`**v1**`, `**v2**`, etc.) indicate potential backward-incompatible changes, while minor and patch updates (`**v1.1**`, `**v1.2**`, `**v1.2.1**`, etc.) introduce backward-compatible improvements and bug fixes.
+Linkta API adheres to semantic versioning (SemVer). Major versions (`**v1**`, `**v2**`, etc.) indicate potential backward-incompatible changes, while minor and patch updates (`**v1.1**`, `**v1.2**`, `**v1.2.1**`, etc.) introduce backward-compatible improvement and bug fixes.

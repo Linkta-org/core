@@ -1,5 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 import log4js from 'log4js';
+import { getEnv } from '@utils/environment';
+
+getEnv();
 
 type CorsOptions = {
   origin: string | undefined;
@@ -9,11 +12,7 @@ type CorsOptions = {
 
 const logger = log4js.getLogger('[CORS Middleware]');
 
-const originsWhitelist = [
-  'http://localhost:5173',
-  'https://linkta.io',
-  'https://linkta-core.netlify.app',
-];
+const originsWhitelist = process.env.ALLOWED_ORIGINS!.split(', ');
 
 export const corsOptions: CorsOptions = {
   origin: undefined,

@@ -1,0 +1,40 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 783px;
+  height: 85dvh;
+}
+
+.h1 {
+  font-size: 4rem;
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.subheadings {
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.link {
+  color: white;
+  text-decoration: underline;
+  &:hover {
+    color: var(--secondary-dark);
+  }
+}
+
+.button {
+  margin-top: 15px;
+  background-color: var(--secondary-main);
+  height: 50px;
+  border-radius: 25px;
+  color: var(--primary-dark);
+  font-size: 1.2rem;
+  opacity: 0.7;
+  &:hover {
+    background-color: var(--secondary-dark);
+  }
+}

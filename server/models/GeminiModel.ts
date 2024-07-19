@@ -1,5 +1,6 @@
 import { getEnv } from '@utils/environment';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { NotFoundError } from '@/utils/customErrors';
 
 import type {
   GenerationConfig,
@@ -13,7 +14,8 @@ getEnv();
 const apiKey = process.env.GEMINI_API_KEY;
 
 if (!apiKey) {
-  throw new Error('Gemini API key not found');
+  // throw new Error('Gemini API key not found');
+  throw new NotFoundError('Gemini API key not found');
 }
 
 const generate_config: GenerationConfig = {
@@ -69,7 +71,8 @@ export const startGeneration = async (
   prompt: string,
 ): Promise<string> => {
   if (!model) {
-    throw new Error('Model not found');
+    // throw new Error('Model not found');
+    throw new NotFoundError('Model not found');
   }
   const chat = model.startChat({ history });
   const result = await chat.sendMessage(prompt);

@@ -1,10 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
-import { createError } from '@middleware/errorHandling';
 import log4js from 'log4js';
 import mongoose from 'mongoose';
 import type createLinktaFlowService from '@/services/linktaFlowService';
 import type { CustomNode, CustomEdge } from '@/types';
-
+import {
+  CustomError,
+  InternalServerError,
+  LinktaFlowNotFoundError,
+} from '@/utils/customErrors';
 const logger = log4js.getLogger('[LinktaFlow Controller]');
 
 /**
@@ -38,7 +41,7 @@ const createLinktaFlowController = (
         await privateLinktaFlowService.fetchLinktaFlowByUserInputId(
           userInputObjectId,
         );
-      console.log('linktaflow', linktaFlow);
+      logger.debug('linktaflow', linktaFlow);
       if (linktaFlow) {
         const { nodes, edges } = linktaFlow;
 
@@ -57,23 +60,18 @@ const createLinktaFlowController = (
           edges: mappedEdges,
         };
       } else {
-        res
-          .status(404)
-          .send(
-            'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.',
-          );
+        throw new LinktaFlowNotFoundError();
       }
 
       next();
     } catch (error) {
       logger.error('Error fetching LinktaFlow for userInputId', error);
-      const methodError = createError(
-        'fetchLinktaFlow',
-        'linktaFlowController',
-        'Failed to fetch LinktaFlow',
-        error,
-      );
-      return next(methodError);
+
+      if (error instanceof CustomError) {
+        next(error);
+      } else {
+        next(new InternalServerError());
+      }
     }
   };
 
@@ -106,13 +104,11 @@ const createLinktaFlowController = (
     } catch (error) {
       logger.error('Error updating LinktaFlow for linktaFlowId', error);
 
-      const methodError = createError(
-        'updateLinktaFlow',
-        'linktaFlowController',
-        'Failed to update LinktaFlow',
-        error,
-      );
-      return next(methodError);
+      if (error instanceof CustomError) {
+        next(error);
+      } else {
+        next(new InternalServerError());
+      }
     }
   };
 

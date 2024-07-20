@@ -73,6 +73,7 @@ const SignInPage = () => {
       const existingProfile = await refetch();
       if (!existingProfile.data) {
         await handleAuthSuccess('');
+        navigate('/home-page');
       } else {
         navigate('/generate');
       }

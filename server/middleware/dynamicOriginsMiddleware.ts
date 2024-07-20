@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-// import log4js from 'log4js';
+import log4js from 'log4js';
 import { getEnv } from '@utils/environment';
+import { ValidationError } from '@utils/customErrors';
 
 getEnv();
 
@@ -10,7 +11,7 @@ type CorsOptions = {
   allowedHeaders: string[];
 };
 
-// const logger = log4js.getLogger('[CORS Middleware]');
+const logger = log4js.getLogger('[CORS Middleware]');
 
 const originsWhitelist = process.env.ALLOWED_ORIGINS!.split(', ');
 
@@ -29,7 +30,9 @@ const verifyOrigin = (req: Request, _res: Response, next: NextFunction) => {
   if (validOrigin !== undefined) {
     corsOptions.origin = validOrigin;
   } else {
-    throw new Error();
+    const validationError = new ValidationError(`Origin not whitelisted.`);
+    logger.error(validationError, `Request Origin: ${requestOrigin}`);
+    throw validationError;
   }
   next();
 };

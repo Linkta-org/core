@@ -24,7 +24,7 @@ userRouter.post(
   '/',
   userController.createUserProfile,
   (_: Request, res: Response) => {
-    return res.status(200).json({
+    return res.status(201).json({
       newUserProfile: res.locals.newUserProfile,
     });
   },

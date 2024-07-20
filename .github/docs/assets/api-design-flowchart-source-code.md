@@ -14,37 +14,17 @@ colorMode pastel
 typeface clean
 
 // Authentication
-Client [color: white, shape: oval, icon: monitor]
+Client [color: yellow, shape: oval, icon: monitor]
 Firebase Auth[shape: circle, icon: firebase, color: orange]
 
-Authentication Middleware [color: blue] {
-  User [icon: user]
-  Logged In User [icon: user-check]
-  Login [icon: log-in]
-  Logout [icon: log-out]
+Firebase Authentication Middleware [color: blue]{
+  isAuthorized [icon: play-circle]
 }
 
-Authentication Service [color: blue, icon: settings]{
-  Generate Session Token [icon: worker]
-  Verify Session Token [icon: worker]
-  Validate Firebase Token [icon: worker]
-  Invalidate Session Token [icon: worker]
-}
-
-// session login flow
-User > Login: POST /v1/auth/login
-Login > Validate Firebase Token: Initial request
-Validate Firebase Token <> Firebase Auth: validate token through Firebase Admin SDK
-Validate Firebase Token > Generate Session Token
-Generate Session Token  > Authenticated [icon: check-circle, shape: diamond, color: green]
-Login > Create User: once authenticated
-Login > Verify Session Token: Subsequent requests
-Verify Session Token > Authenticated
-
-// session logout flow
-Logged In User > Logout: POST /v1/auth/logout
-Logout > Invalidate Session Token
-Invalidate Session Token > Session Ended [shape: oval, icon: user-x]
+// Auth flow
+isAuthorized <> Firebase Auth: Verifies Firebase ID Token
+isAuthorized > Authenticated [color: green, shape: diamond]
+Authenticated <> Find User Profile By UID
 
 // UserInput
 UserInput Controller [color: green, icon: lock] {
@@ -57,13 +37,13 @@ UserInput Controller [color: green, icon: lock] {
 
 UserInput Service [color: green, icon: settings]{
   Create UserInput [icon: worker]
-  fetch Input History [icon: worker]
+  Fetch Input History By ID [icon: worker]
   Update Input Title [icon: worker]
-  delete User Input [icon: worker]
+  Delete User Input By ID[icon: worker]
 }
 
 // Generate LinktaFlow from UserInput Flow
-UserInput Authenticated User > Generate LinktaFlow From UserInput: POST /v1/inputs
+UserInput Authenticated User > Generate LinktaFlow From UserInput :POST /v1/inputs
 Generate LinktaFlow From UserInput > Validation Middleware
 Validation Middleware > Create UserInput
 Create UserInput > Database [color: blue, icon: database, shape: cylinder]
@@ -76,8 +56,8 @@ Create LinktaFlow > Database
 // Fetch Input History Flow
 UserInput Authenticated User > Fetch Input History: GET /v1/inputs
 Fetch Input History > Validation Middleware
-Validation Middleware > fetch Input History
-fetch Input History > Database
+Validation Middleware > Fetch Input History By ID
+Fetch Input History By ID > Database
 
 // Update UserInput Title
 UserInput Authenticated User > Update UserInput Title: PUT /v1/inputs/:userInputId
@@ -88,10 +68,10 @@ Update Input Title > Database
 // Delete UserInput
 UserInput Authenticated User > Delete UserInput: DELETE /v1/inputs/:userInputId
 Delete UserInput > Validation Middleware
-Validation Middleware > delete User Input
-Validation Middleware > delete LinktaFlow by UserInput ID
-delete User Input > Database
-delete LinktaFlow by UserInput ID > Database
+Validation Middleware > Delete User Input By ID
+Validation Middleware > Delete LinktaFlow by UserInput ID
+Delete User Input By ID > Database
+Delete LinktaFlow by UserInput ID > Database
 
 // LinktaFlow
 LinktaFlow Controller [color: yellow, icon: lock] {
@@ -105,7 +85,7 @@ LinktaFlow Service [color: yellow, icon: settings]{
   Create LinktaFlow [icon: worker]
   Fetch LinktaFlow by UserInput ID [icon: worker]
   Update LinktaFlow by ID [icon: worker]
-  delete LinktaFlow by UserInput ID [icon: worker]
+  Delete LinktaFlow by UserInput ID [icon: worker]
 }
 
 // Fetch LinktaFlow Flow
@@ -121,40 +101,49 @@ Validation Middleware > Update LinktaFlow by ID
 Update LinktaFlow by ID > Database
 
 // Save LinktaFlow As A Copy
-LinktaFlow Authenticated User > Save LinktaFlow As A Copy: /v1/flows/save-as
+LinktaFlow Authenticated User > Save LinktaFlow As A Copy: POST /v1/flows/save-as
 Save LinktaFlow As A Copy > Validation Middleware
 Validation Middleware > Create LinktaFlow
 Create LinktaFlow > Database
 Validation Middleware > Create UserInput
 Create UserInput > Database
 
-// User Account and Settings
-User Account and Settings Controller [color: red, icon: lock] {
-  User Account Authenticated User [icon: user-check, shape: oval]
+// User Profile
+User Controller [color: red, icon: lock] {
+  User Settings Authenticated User [icon: user-check, shape: oval]
+  Fetch User Profile [icon: play-circle]
+  Create User Profile [icon: play-circle]
   Update User Settings [icon: play-circle]
-  Delete User Account [icon: play-circle]
 }
 
-User Account and Settings Service [color: red, icon: settings]{
-  Create User [icon: worker]
-  Update User Settings by User ID [icon: worker]
-  Delete User and Associated Data [icon: worker]
+User Service [color: red, icon: settings]{
+  Find User Profile By UID [icon: worker]
+  Find User Profile By ID [icon: worker]
+  Create User Profile By ID[icon: worker]
+  Update User Profile [icon: worker]
 }
 
-// Update User Settings Flow
-User Account Authenticated User > Update User Settings: PUT /v1/users/settings
+// Fetch User Profile Flow
+User Settings Authenticated User > Fetch User Profile: GET v1/users
+Fetch User Profile > Validation Middleware
+Validation Middleware > Find User Profile By ID
+Find User Profile By ID > Database
+
+// Create User Profile
+User Settings Authenticated User > Create User Profile: POST v1/users
+Create User Profile > Validation Middleware
+Validation Middleware > Create User Profile By ID
+Create User Profile By ID > Database
+
+// Update User Settings
+User Settings Authenticated User > Update User Settings: PUT v1/users
 Update User Settings > Validation Middleware
-Validation Middleware > Update User Settings by User ID
-Update User Settings by User ID > Database
+Validation Middleware > Update User Profile
+Update User Profile > Database
 
-// Delete User Account Flow
-User Account Authenticated User > Delete User Account: DELETE /v1/users
-Delete User Account > Delete User and Associated Data
-Delete User and Associated Data > Database
-
-// Bug Report
+// Bug Report (design in progress)
 Bug Report Controller [color: purple, icon: unlock] {
-  Bug Report User [icon: user]
+  Bug Report Authenticated User [icon: user-check]
   Submit Bug Report [icon: worker]
 }
 
@@ -163,30 +152,29 @@ Bug Report Service [color: purple, icon: settings]{
 }
 
 // Submit Bug Report Flow
-Bug Report User > Submit Bug Report: POST /v1/bug-reports
+Bug Report Authenticated User > Submit Bug Report: POST /v1/bug-reports
 Submit Bug Report > Create Bug Report
 Create Bug Report > Database
 
-// AI
+// AI Service
 AI Service [color: orange, icon: lock] {
   Generate Initial Response [icon: play-circle]
-  Generate Response with History [icon: play-circle]
 }
 
-AI Model [color: orange, icon: settings] {
+Gemini Model [color: orange, icon: settings] {
   Start Generation  [icon: worker]
 }
 
-// Validation
+// Validation Middleware
 Validation Middleware [color: pink, icon: lock]
 
 // Connections from Client to other processes
 Client <> Firebase Auth: Retrieves Firebase ID token
-Client > Authentication Middleware
-Client > Bug Report Controller
+Client > Firebase Authentication Middleware
 
 // Connections from Authenticated User to other processes
 Authenticated > UserInput Controller
 Authenticated > LinktaFlow Controller
-Authenticated > User Account and Settings Controller
+Authenticated > User Controller
+Authenticated > Bug Report Controller
 ```

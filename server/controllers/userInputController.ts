@@ -1,12 +1,12 @@
 import type { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { createError } from '@/middleware/errorHandling';
+import { CustomError, InternalServerError } from '@/utils/customErrors';
 import type createUserInputService from '@/services/userInputService';
 import type createLinktaFlowService from '@/services/linktaFlowService';
 import type createAIService from '@/services/aiService';
-import log4js from 'log4js';
 import type { CustomNode, CustomEdge } from '@/types';
 
+import log4js from 'log4js';
 const logger = log4js.getLogger('[Input Controller]');
 
 /**
@@ -89,18 +89,15 @@ const createUserInputController = (
           edges: mappedEdges,
         };
       }
-
       next();
     } catch (error) {
       logger.error('Error generating Linkta flow from user input', error);
 
-      const methodError = createError(
-        'generateLinktaFlowFromInput',
-        'UserInputController',
-        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error,
-      );
-      return next(methodError);
+      if (error instanceof CustomError) {
+        next(error);
+      } else {
+        next(new InternalServerError());
+      }
     }
   };
 
@@ -141,13 +138,11 @@ const createUserInputController = (
     } catch (error) {
       logger.error('Error fetching input history for user', error);
 
-      const methodError = createError(
-        'fetchInputHistory',
-        'UserInputController',
-        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error,
-      );
-      return next(methodError);
+      if (error instanceof CustomError) {
+        next(error);
+      } else {
+        next(new InternalServerError());
+      }
     }
   };
 
@@ -172,13 +167,12 @@ const createUserInputController = (
       next();
     } catch (error) {
       logger.error('Error updating user input title', error);
-      const methodError = createError(
-        'updateInputTitle',
-        'UserInputController',
-        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error,
-      );
-      return next(methodError);
+
+      if (error instanceof CustomError) {
+        next(error);
+      } else {
+        next(new InternalServerError());
+      }
     }
   };
 
@@ -210,13 +204,12 @@ const createUserInputController = (
         'Error deleting user input and associated Linkta flow',
         error,
       );
-      const methodError = createError(
-        'deleteUserInput',
-        'UserInputController',
-        'A problem occurred on our server while processing your request. Our team has been notified, and we are working on a solution. Please try again later.',
-        error,
-      );
-      return next(methodError);
+
+      if (error instanceof CustomError) {
+        next(error);
+      } else {
+        next(new InternalServerError());
+      }
     }
   };
 

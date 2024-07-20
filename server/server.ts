@@ -10,7 +10,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import userInputRouter from '@routes/userInputRouter';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
 import RateLimiter from '@middleware/rateLimiterMiddleware';
-import { globalErrorHandler } from '@middleware/errorHandling';
+import { errorHandlerMiddleware } from '@middleware/errorHandling';
 import verifyOrigin, {
   corsOptions,
 } from '@middleware/dynamicOriginsMiddleware';
@@ -94,7 +94,7 @@ function startServer() {
   /**
    * Global Error Handler. Place this at the end to catch all errors.
    */
-  app.use(globalErrorHandler);
+  app.use(errorHandlerMiddleware);
 
   /**
    * Start the server.

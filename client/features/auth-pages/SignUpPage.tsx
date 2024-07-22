@@ -20,6 +20,9 @@ const userSignUpSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(1, { message: 'Please enter a password' }),
   name: z.string().min(1, { message: 'Please enter your name' }),
+  confirmPassword: z
+    .string()
+    .min(1, { message: 'Please confirm your password' }),
 });
 
 type FormData = z.infer<typeof userSignUpSchema>;
@@ -90,7 +93,15 @@ const SignUpPage = () => {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { email, password, name } = data;
+    const { email, password, name, confirmPassword } = data;
+
+    if (password !== confirmPassword) {
+      setIsSnackbarOpen(true);
+      setSnackbarMessage("Passwords don't match. Please try again.");
+      setSnackbarSeverity('error');
+
+      return;
+    }
 
     try {
       await createUserWithEmailAndPasswordMutation.mutateAsync({
@@ -177,6 +188,12 @@ const SignUpPage = () => {
             type='password'
             variant='standard'
             {...register('password')}
+          ></TextField>
+          <TextField
+            label='confirm password'
+            type='password'
+            variant='standard'
+            {...register('confirmPassword')}
           ></TextField>
           <Button
             type='submit'

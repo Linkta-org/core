@@ -8,7 +8,7 @@ import '@styles/MainLayout.css';
 import useSideNavDrawerStore from '@stores/SideNavDrawerStore';
 import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
-import useSignOut from '@hooks/useSignOut';
+import useAuth from '@hooks/useAuth';
 import type { SnackbarSeverity } from '@/types/snackBar';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 
@@ -49,7 +49,7 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     updateLinktaFlow({ linktaFlowId, updatedLinktaFlow: { nodes, edges } });
   };
 
-  const signOutMutation = useSignOut();
+  const { signOut } = useAuth();
 
   const toggleDrawer = () => {
     !matching && setDrawerOpen(!drawerOpen);
@@ -60,7 +60,7 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   }, [matching, setDrawerOpen]);
 
   const handleSignOut = () => {
-    signOutMutation.mutate(undefined, {
+    signOut(undefined, {
       onSuccess: () => {
         console.log('Signed out successfully');
         navigate('/');

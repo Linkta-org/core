@@ -97,7 +97,6 @@ const SignUpPage = () => {
       setIsSnackbarOpen(true);
       setSnackbarMessage("Passwords don't match. Please try again.");
       setSnackbarSeverity('error');
-      console.log('errors.confirmPassword', errors.confirmPassword);
       return;
     }
 

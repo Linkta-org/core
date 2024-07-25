@@ -32,4 +32,4 @@ TKDodo, the maintainer of React Query doesn't seem to think [so](https://x.com/T
 ## Decision
 While not every query or mutation needs to be encapsulated in a custom hook, writing a custom hook is recommended when logic is complex, is likely to be reused, or has a clear benefit from abstraction.
 
-This custom hook audit will focus on making changes that clearly need improve maintainability and consistency.
+This custom hook audit will focus on making changes that clearly need improve functionality, maintainability, and consistency.

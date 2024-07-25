@@ -8,24 +8,21 @@ import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useCreateUserWithEmailAndPasswordMutation } from '@/hooks/useCreateUserWithEmailAndPassword';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+// import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuth from '@/hooks/useAuth';
+import { userPasswordSchema } from '@validators/validateUserPassword';
 
-const userSignUpSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(1, { message: 'Please enter a password' }),
-  name: z.string().min(1, { message: 'Please enter your name' }),
-  confirmPassword: z
-    .string()
-    .min(1, { message: 'Please confirm your password' }),
-});
-
-type FormData = z.infer<typeof userSignUpSchema>;
+interface FormData {
+  email: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const SignUpPage = () => {
   useDocumentTitle('Sign Up');
@@ -41,7 +38,8 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(userSignUpSchema),
+    resolver: zodResolver(userPasswordSchema),
+    // resolver: zodResolver(userSignUpSchema),
   });
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -99,7 +97,7 @@ const SignUpPage = () => {
       setIsSnackbarOpen(true);
       setSnackbarMessage("Passwords don't match. Please try again.");
       setSnackbarSeverity('error');
-
+      console.log('errors.confirmPassword', errors.confirmPassword);
       return;
     }
 
@@ -188,12 +186,16 @@ const SignUpPage = () => {
             type='password'
             variant='standard'
             {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           ></TextField>
           <TextField
             label='confirm password'
             type='password'
             variant='standard'
             {...register('confirmPassword')}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
           ></TextField>
           <Button
             type='submit'
@@ -203,6 +205,13 @@ const SignUpPage = () => {
             Create an Account
           </Button>
         </form>
+
+        <SnackBarNotification
+          open={isSnackbarOpen}
+          message={snackbarMessage}
+          severity={snackbarSeverity}
+          callerUpdater={resetSnackbarStates}
+        />
 
         <Box className={`${styles.finePrintContainer}`}>
           <Typography variant='body2'>
@@ -234,12 +243,12 @@ const SignUpPage = () => {
           </Typography>
         </Box>
       </Box>
-      <SnackBarNotification
+      {/* <SnackBarNotification
         open={isSnackbarOpen}
         message={snackbarMessage}
         severity={snackbarSeverity}
         callerUpdater={resetSnackbarStates}
-      />
+      /> */}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import UserModel from '@models/UserModel';
-import { createError } from '@middleware/errorHandling';
 import log4js from 'log4js';
 import type { Types } from 'mongoose';
+import { InternalServerError } from '@/utils/customErrors';
 
 const logger = log4js.getLogger('[UserService]');
 
@@ -27,13 +27,8 @@ const createUserService = () => {
       return user;
     } catch (error) {
       logger.error('Error finding user by UID', error);
-      const methodError = createError(
-        'findUserByUid',
-        'UserService',
-        'Error finding user by UID.',
-        error,
-      );
-      throw methodError;
+
+      throw new InternalServerError('Error finding user by UID.');
     }
   };
 
@@ -54,13 +49,8 @@ const createUserService = () => {
       return user;
     } catch (error) {
       logger.error('Error finding user by ID', error);
-      const methodError = createError(
-        'findUserById',
-        'UserService',
-        'Error finding user by ID.',
-        error,
-      );
-      throw methodError;
+
+      throw new InternalServerError('Error finding user by ID.');
     }
   };
 
@@ -93,13 +83,8 @@ const createUserService = () => {
       return newUser;
     } catch (error) {
       logger.error('Error creating new user', error);
-      const methodError = createError(
-        'createNewUser',
-        'UserService',
-        'Error creating new user.',
-        error,
-      );
-      throw methodError;
+
+      throw new InternalServerError('Error creating new user.');
     }
   };
 

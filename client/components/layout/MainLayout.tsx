@@ -16,8 +16,9 @@ import SnackBarNotification from '@components/common/SnackBarNotification';
  * MainLayout provides the app's global UI layout and the Router Outlet.
  * It presents a consistent header featuring the LinktaLogo, with the side navigation bar rendered as open or compact conditionally based on screen width.
  * The `Outlet` component handles rendering of route-specific content in the main section.
+ * Optional 'children' prop added so that ErrorPage will render with consistent styling.
  */
-const MainLayout: React.FC = () => {
+const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const breakpoint = 768;
   const matching = useMatchMedia(breakpoint);
   const { drawerOpen, setDrawerOpen } = useSideNavDrawerStore();
@@ -148,9 +149,7 @@ const MainLayout: React.FC = () => {
           toggleDrawer={toggleDrawer}
         />
 
-        <Box className='router-outlet'>
-          <Outlet />
-        </Box>
+        <Box className='router-outlet'>{children ? children : <Outlet />}</Box>
       </Box>
       <SnackBarNotification
         open={isSnackbarOpen}

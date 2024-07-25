@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { createError } from '@middleware/errorHandling';
 import log4js from 'log4js';
 import type createUserService from '@/services/userService';
+import { InternalServerError } from '@/utils/customErrors';
 
 const logger = log4js.getLogger('[User Controller]');
 
@@ -41,13 +41,8 @@ const createUserController = (
       next();
     } catch (error) {
       logger.error('Error fetching user profile for userId', error);
-      const methodError = createError(
-        'fetchUserProfile',
-        'UserController',
-        'Failed to fetch user profile',
-        error,
-      );
-      return next(methodError);
+
+      next(new InternalServerError('Failed to fetch user profile'));
     }
   };
 
@@ -86,13 +81,8 @@ const createUserController = (
       next();
     } catch (error) {
       logger.error('Error creating or updating user profile', error);
-      const methodError = createError(
-        'createUserProfile',
-        'UserController',
-        'Failed to create or update user profile',
-        error,
-      );
-      return next(methodError);
+
+      next(new InternalServerError('Failed to create or update user profile'));
     }
   };
 

@@ -1,9 +1,12 @@
 import LinktaFlowModel from '@/models/LinktaFlowModel';
-import { createError } from '@/middleware/errorHandling';
 import type { Types } from 'mongoose';
 import UserInputModel from '@/models/UserInputModel';
 import type { LinktaFlow } from '@/types';
 import type { Node, Edge } from 'reactflow';
+import {
+  InternalServerError,
+  LinktaFlowNotFoundError,
+} from '@/utils/customErrors';
 import log4js from 'log4js';
 
 const logger = log4js.getLogger('[LinktaFlow Service]');
@@ -48,13 +51,8 @@ const createLinktaFlowService = () => {
       return newLinktaFlow;
     } catch (error) {
       logger.error('Error creating LinktaFlow', error);
-      const methodError = createError(
-        'createLinktaFlow',
-        'LinktaFlowService',
-        'Error creating LinktaFlow.',
-        error,
-      );
-      throw methodError;
+
+      throw new InternalServerError('Error creating LinktaFlow');
     }
   };
 
@@ -74,13 +72,8 @@ const createLinktaFlowService = () => {
       return deletedLinktaFlow;
     } catch (error) {
       logger.error('Error deleting LinktaFlow', error);
-      const methodError = createError(
-        'deleteLinktaFlowByUserInputId',
-        'LinktaFlowService',
-        'Error deleting LinktaFlow data.',
-        error,
-      );
-      throw methodError;
+
+      throw new InternalServerError('Error deleting LinktaFlow');
     }
   };
 
@@ -105,12 +98,8 @@ const createLinktaFlowService = () => {
       return linktaFlow;
     } catch (error) {
       logger.error('Error fetching LinktaFlow', error);
-      throw createError(
-        'fetchLinktaFlow',
-        'LinktaFlowService',
-        'Error fetching LinktaFlow',
-        error,
-      );
+
+      throw new InternalServerError('Error fetching LinktaFlow');
     }
   };
 
@@ -132,20 +121,14 @@ const createLinktaFlowService = () => {
 
       if (!linktaFlow) {
         logger.warn(`LinktaFlow not found`);
-        throw new Error(
-          'The requested Linkta Flow could not be found. It may have been deleted or the ID might be incorrect.',
-        );
+        throw new LinktaFlowNotFoundError();
       }
 
       return linktaFlow;
     } catch (error) {
       logger.error('Error updating LinktaFlow', error);
-      throw createError(
-        'updateLinktaFlow',
-        'LinktaFlowService',
-        'Error updating LinktaFlow',
-        error,
-      );
+
+      throw new InternalServerError('Error updating LinktaFlow');
     }
   };
 

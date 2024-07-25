@@ -1,5 +1,6 @@
 import { rateLimit } from 'express-rate-limit';
 import log4js from 'log4js';
+import { TooManyRequestsError } from '@/utils/customErrors';
 
 const { getLogger } = log4js;
 const logger = getLogger('[RATE LIMITER]');
@@ -13,10 +14,11 @@ const limiter = rateLimit({
   standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
   message: 'Rate limit reached. You have sent too many requests!', // The message sent in the response to the client
-  handler: (_req, res, _next, options) => {
+
+  handler: (_req, _res, next) => {
     // override the default handler to add the server-side log
     logger.error('Rate Limiter Hit!');
-    res.status(options.statusCode).send(options.message);
+    next(new TooManyRequestsError());
   },
 });
 

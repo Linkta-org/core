@@ -2,17 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import log4js from 'log4js';
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-import { MongoClient, ServerApiVersion } from 'mongodb';
-import { globalErrorHandler } from '@middleware/errorHandling';
-import type { Express, Response } from 'express';
-import linktaFlowRouter from '@routes/linktaFlowRouter';
-import log4jsConfig from '@/utils/log4js.config.json' with { type: 'json' };
-import userInputRouter from '@routes/userInputRouter';
-import userRouter from '@routes/userRouter';
-import RateLimiter from '@middleware/rateLimiterMiddleware';
-import { getEnv } from '@utils/environment';
 import type { Server } from 'http';
+import bodyParser from 'body-parser';
+import userRouter from '@routes/userRouter';
+import type { Express, NextFunction, Response } from 'express';
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import userInputRouter from '@routes/userInputRouter';
+import linktaFlowRouter from '@routes/linktaFlowRouter';
+import RateLimiter from '@middleware/rateLimiterMiddleware';
+import { errorHandlerMiddleware } from '@middleware/errorHandling';
+import verifyOrigin, {
+  corsOptions,
+} from '@middleware/dynamicOriginsMiddleware';
+import log4jsConfig from '@/utils/log4js.config.json' with { type: 'json' };
+import { getEnv } from '@utils/environment';
 
 getEnv();
 
@@ -28,12 +31,6 @@ isConfigured() && logger.info('Log4JS is configured!');
 
 const uri = process.env.MONGO_DB_URI;
 mongoose.set('strictQuery', false);
-
-const corsOptions = {
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-request-id'],
-};
 
 /**
  * Start the server.
@@ -54,7 +51,14 @@ function startServer() {
 
   app.use(bodyParser.json());
 
-  app.use(cors(corsOptions));
+  app.use(
+    verifyOrigin,
+    cors(corsOptions),
+    (_req, res: Response, next: NextFunction) => {
+      logger.debug('RESPONSE HEADERS: ', res.getHeaders());
+      next();
+    },
+  );
 
   /**
    * Server health check route handler
@@ -90,14 +94,14 @@ function startServer() {
   /**
    * Global Error Handler. Place this at the end to catch all errors.
    */
-  app.use(globalErrorHandler);
+  app.use(errorHandlerMiddleware);
 
   /**
    * Start the server.
    */
   const server: Server = app.listen(PORT, () => {
     logger.info(
-      `Server is running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode.`,
+      `Server is running on ${process.env.SERVER_BASE_URL}:${PORT} in ${process.env.NODE_ENV} mode.`,
     );
   });
 
@@ -119,11 +123,8 @@ function startServer() {
 function stopServer(server: Server) {
   server.close(() => {
     logger.warn('Server stopped.');
-    logger.warn('Server stopped.');
-    logger.warn('Server stopped.');
 
     // disconnect from the database
-
     process.exit(0);
   });
 }

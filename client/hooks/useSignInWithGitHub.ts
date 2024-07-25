@@ -4,23 +4,23 @@ import { signInWithPopup, GithubAuthProvider } from 'firebase/auth';
 
 import { auth } from '@/firebase/firebaseConfig';
 
-type GoogleAuthResult = {
+type GitHubAuthResult = {
   token: string | undefined;
 };
 
 export const useGithubAuthMutation = (): UseMutationResult<
-  GoogleAuthResult,
+  GitHubAuthResult,
   Error,
   void,
   unknown
 > => {
-  return useMutation<GoogleAuthResult, Error, void>({
+  return useMutation<GitHubAuthResult, Error, void>({
     mutationFn: async () => {
       const provider = new GithubAuthProvider();
       const result = await signInWithPopup(auth, provider);
+      const credential = GithubAuthProvider.credentialFromResult(result);
+      const token = await credential?.accessToken;
       const user = result.user;
-      const token = await result.user.getIdToken();
-
       return { user, token };
     },
   });

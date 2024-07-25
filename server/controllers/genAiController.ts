@@ -1,7 +1,10 @@
 import type { Request, Response, NextFunction } from 'express';
 import { startGeneration } from '@models/GeminiModel';
 import type { Content } from '@google/generative-ai';
-import { createError } from '@middleware/errorHandling';
+import { InternalServerErrorGenAI } from './customErrors';
+import log4js from 'log4js';
+
+const logger = log4js.getLogger('[genAI Controller]');
 
 //in initial response generation, there is no chat history, so using []
 export const generateInitialResponse = async (
@@ -24,13 +27,9 @@ export const generateInitialResponse = async (
       return next();
     }
   } catch (err: unknown) {
-    const methodError = createError(
-      'generateInitialResponse',
-      'genAIController',
-      'Error generating response from AI.',
-      err,
-    );
-    return next(methodError);
+    logger.error('Error generating response from AI.', err);
+
+    next(new InternalServerErrorGenAI());
   }
 };
 
@@ -60,12 +59,8 @@ export const generateResponseWithHistory = async (
     const response = await startGeneration(customizedHistory, userInput);
     res.locals.linktaFlow = response;
   } catch (err) {
-    const methodError = createError(
-      'generateResponseWithContext',
-      'genAIservice',
-      'Error generating response from AI',
-      err,
-    );
-    return next(methodError);
+    logger.error('Error generating response from AI.', err);
+
+    next(new InternalServerErrorGenAI());
   }
 };

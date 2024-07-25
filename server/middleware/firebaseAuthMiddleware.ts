@@ -4,6 +4,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { getEnv } from '@utils/environment';
 import log4js from 'log4js';
 import type createUserService from '@/services/userService';
+import { UnauthorizedError } from '@/utils/customErrors';
 
 getEnv();
 
@@ -36,9 +37,8 @@ const isAuthorized = (userService: ReturnType<typeof createUserService>) => {
 
     if (!idToken) {
       logger.warn('Authorization header is missing or improperly formatted');
-      return res
-        .status(401)
-        .send('Authorization header is missing or improperly formatted');
+
+      return next(new UnauthorizedError());
     }
 
     /**
@@ -75,7 +75,7 @@ const isAuthorized = (userService: ReturnType<typeof createUserService>) => {
         'Failed to verify user token or handle user authentication',
         error,
       );
-      res.status(401).send('Failed to authenticate the user.');
+      next(new UnauthorizedError('Failed to authenticate the user.'));
     }
   };
 };

@@ -9,6 +9,7 @@ import ReactFlow, {
   MarkerType,
   ConnectionMode,
   reconnectEdge,
+  Panel,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from '@features/output-visualization-page/components/LinktaFlowEdge';
@@ -19,12 +20,10 @@ import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import dagreAutoLayout from '@/utils/dagreAutoLayout';
 import { useNavigate } from 'react-router-dom';
 import Loader from '@/components/common/Loader';
+import UndoAndRedo from '@features/output-visualization-page/components/UndoAndRedo';
 
 const nodeTypes = { linktaNode: LinktaNode };
-
-const edgeTypes = {
-  linktaEdge: LinktaFlowEdge,
-};
+const edgeTypes = { linktaEdge: LinktaFlowEdge };
 
 const rfStyle = {
   backgroundColor: '#173336',
@@ -62,19 +61,27 @@ const initialEdges = [
 ];
 
 function Flow({ userInputId }: { userInputId: string }) {
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const {
+    currentLinktaFlow,
+    setCurrentFlow,
+    setCurrentEdges,
+    setCurrentNodes,
+  } = useLinktaFlowStore();
   const {
     data: linktaFlow,
     isLoading,
     isError,
   } = useFetchLinktaFlow(userInputId);
-  const setCurrentFlow = useLinktaFlowStore((state) => state.setCurrentFlow);
+
+  const nodesFromFlow = currentLinktaFlow?.nodes || initialNodes;
+  const edgesFromFlow = currentLinktaFlow?.edges || initialEdges;
+
+  const [nodes, setNodes] = useState<Node[]>(nodesFromFlow);
+  const [edges, setEdges] = useState<Edge[]>(edgesFromFlow);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (linktaFlow) {
-      // Use dagreAutoLayout to compute positions
       const { nodes: layoutNodes, edges: layoutEdges } = dagreAutoLayout(
         linktaFlow.nodes,
         linktaFlow.edges,
@@ -91,15 +98,15 @@ function Flow({ userInputId }: { userInputId: string }) {
   }, [linktaFlow, setCurrentFlow]);
 
   const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds: Node[]) => applyNodeChanges(changes, nds)),
+    (changes: NodeChange[]) => {
+      setNodes((nds: Node[]) => applyNodeChanges(changes, nds));
+    },
     [setNodes],
   );
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
-    [setEdges],
-  );
+
+  const onNodeDragStop = useCallback(() => {
+    setCurrentNodes(nodes);
+  }, [setCurrentNodes, nodes]);
 
   const onEdgeUpdate = useCallback(
     (oldEdge: Edge, newConnection: Connection) =>
@@ -107,20 +114,33 @@ function Flow({ userInputId }: { userInputId: string }) {
     [],
   );
 
-  const onConnect = useCallback(
-    (params: Connection) =>
-      setEdges((eds) =>
-        addEdge(
-          {
-            ...params,
-            type: 'floating',
-            markerEnd: { type: MarkerType.Arrow },
-          },
-          eds,
-        ),
-      ),
-    [],
+  const onEdgeUpdateEnd = useCallback(() => {
+    setCurrentEdges(edges);
+  }, [setCurrentEdges, edges]);
+
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange[]) => {
+      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds));
+    },
+    [setEdges],
   );
+
+  const onConnect = useCallback(
+    (params: Connection) => {
+      const newEdge = addEdge(
+        { ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } },
+        edges,
+      );
+      setEdges(newEdge);
+      setCurrentEdges(newEdge);
+    },
+    [edges, setCurrentEdges],
+  );
+
+  useEffect(() => {
+    setNodes(nodesFromFlow);
+    setEdges(edgesFromFlow);
+  }, [nodesFromFlow, edgesFromFlow]);
 
   if (isLoading) {
     return <Loader />;
@@ -135,11 +155,13 @@ function Flow({ userInputId }: { userInputId: string }) {
     <ReactFlow
       nodes={nodes}
       onNodesChange={onNodesChange}
+      onNodeDragStop={onNodeDragStop}
       nodeTypes={nodeTypes}
       edges={edges}
       onEdgesChange={onEdgesChange}
       edgeTypes={edgeTypes}
       onEdgeUpdate={onEdgeUpdate}
+      onEdgeUpdateEnd={onEdgeUpdateEnd}
       onConnect={onConnect}
       fitView
       connectionMode={ConnectionMode.Loose}
@@ -147,7 +169,13 @@ function Flow({ userInputId }: { userInputId: string }) {
       style={rfStyle}
     >
       <Background />
-      <Controls />
+      <Controls position='bottom-left' />
+      <Panel
+        position='bottom-left'
+        style={{ bottom: 120 }}
+      >
+        <UndoAndRedo />
+      </Panel>
     </ReactFlow>
   );
 }

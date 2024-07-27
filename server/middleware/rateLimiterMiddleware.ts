@@ -10,7 +10,7 @@ const logger = getLogger('[RATE LIMITER]');
  */
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 60, // Limit each IP to 60 requests per `window` (here, per 15 minutes).
+  limit: process.env.NODE_ENV === 'development' ? 500 : 60, // Limit each IP to 500 requests for development and 60 for production per `window` (here, per 15 minutes).
   standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
   message: 'Rate limit reached. You have sent too many requests!', // The message sent in the response to the client

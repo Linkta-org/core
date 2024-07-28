@@ -6,6 +6,7 @@ import type createLinktaFlowService from '@/services/linktaFlowService';
 import type createAIService from '@/services/aiService';
 
 import log4js from 'log4js';
+
 const logger = log4js.getLogger('[Input Controller]');
 
 /**
@@ -55,6 +56,11 @@ const createUserInputController = (
         userId,
         userInput,
       );
+
+      if (!newUserInput._id) {
+        logger.error('Error finding userInput _id');
+        throw new InternalServerError();
+      }
 
       // Create a new Linkta flow based on AI response
       const newLinktaFlow = await privateLinktaFlowService.createLinktaFlow(
@@ -108,14 +114,7 @@ const createUserInputController = (
 
       logger.debug('Fetched input history:', inputHistory);
 
-      // Map _id to id
-      const inputHistoryWithId = inputHistory.map((input) => ({
-        ...input,
-        id: input._id,
-        _id: undefined,
-      }));
-
-      res.locals.inputHistory = inputHistoryWithId;
+      res.locals.inputHistory = inputHistory;
       next();
     } catch (error) {
       logger.error('Error fetching input history for user', error);

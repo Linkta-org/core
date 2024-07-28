@@ -62,7 +62,11 @@ const createUserInputService = () => {
         .lean()
         .select('title input');
 
-      return inputHistory;
+      return inputHistory.map((input) => ({
+        ...input,
+        id: input._id,
+        _id: undefined,
+      }));
     } catch (error) {
       logger.error('Error fetching input history.', error);
 

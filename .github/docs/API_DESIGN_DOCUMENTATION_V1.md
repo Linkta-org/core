@@ -362,7 +362,7 @@ Updates user settings including name, email, and other preferences.
 - `createIdempotencyMiddleware`: Creates a middleware that ensures idempotent behavior for API requests. It checks for an existing idempotency record, and if found, returns the stored response. Otherwise, it sets up the necessary context for creating a new idempotency record after the request is processed.
 
 ## Data Design
-### Diagram
+### ER Diagram
 ```mermaid
 erDiagram
 User ||--o{ UserInput : "creates"
@@ -396,8 +396,8 @@ LinktaFlow {
     ObjectId _id PK
     ObjectId userInputId FK
     ObjectId userId FK
-    array nodes "React Flow nodes"
-    array edges "React Flow edges"
+    array nodes "Array of Node objects"
+    array edges "Array of Edge objects"
     timestamp createdAt
     timestamp updatedAt
 }
@@ -442,8 +442,14 @@ BugReport {
 - _id (ObjectId, auto-generated)
 - userInputId (ObjectId, required, reference to UserInput)
 - userId (ObjectId, required, reference to User)
-- nodes (array of Node objects from React Flow)
-- edges (array of Edge objects from React Flow)
+- nodes (array of Node objects)
+  - id (string, required)
+  - data (object)
+     - label (string, required)
+- edges (array of Edge objects)
+  - id (string, required)
+  - source (string, required)
+  - target (string, required)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 

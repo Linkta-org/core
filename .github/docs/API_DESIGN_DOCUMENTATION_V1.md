@@ -354,7 +354,7 @@ Updates user settings including name, email, and other preferences.
 - `globalErrorHandler`  : Processes all errors uniformly, providing consistent error responses. It handles both custom and standard errors, logs error details, and returns a standardized JSON response with appropriate HTTP status codes and user-friendly error messages.
 
 ## Data Design
-### Diagram
+### ER Diagram
 ```mermaid
 erDiagram
 User ||--o{ UserInput : "creates"
@@ -388,8 +388,8 @@ LinktaFlow {
     ObjectId _id PK
     ObjectId userInputId FK
     ObjectId userId FK
-    array nodes "React Flow nodes"
-    array edges "React Flow edges"
+    array nodes "Array of Node objects"
+    array edges "Array of Edge objects"
     timestamp createdAt
     timestamp updatedAt
 }
@@ -434,8 +434,14 @@ BugReport {
 - _id (ObjectId, auto-generated)
 - userInputId (ObjectId, required, reference to UserInput)
 - userId (ObjectId, required, reference to User)
-- nodes (array of Node objects from React Flow)
-- edges (array of Edge objects from React Flow)
+- nodes (array of Node objects)
+  - id (string, required)
+  - data (object)
+     - label (string, required)
+- edges (array of Edge objects)
+  - id (string, required)
+  - source (string, required)
+  - target (string, required)
 - createdAt (timestamp)
 - updatedAt (timestamp)
 

@@ -45,12 +45,6 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
       }}
       className='linkta-node'
     >
-      <Handle
-        type='source'
-        position={Position.Top}
-        id='a'
-        isConnectable={isConnectable}
-      />
       <Box
         sx={{
           borderRadius: '5px 0 0 5px',
@@ -104,18 +98,6 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
           }}
         />
       </Box>
-      <Handle
-        type='source'
-        position={Position.Right}
-        id='b'
-        isConnectable={isConnectable}
-      />
-      <Handle
-        type='source'
-        position={Position.Left}
-        id='c'
-        isConnectable={isConnectable}
-      />
       <Handle
         type='source'
         position={Position.Bottom}

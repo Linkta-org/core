@@ -53,7 +53,7 @@ const initialEdges = [
     id: '1-2',
     source: '1',
     target: '2',
-    sourceHandle: 'c',
+    sourceHandle: 'a',
     targetHandle: 'a',
     type: 'linktaEdge',
     markerEnd: { type: MarkerType.Arrow },
@@ -128,7 +128,13 @@ function Flow({ userInputId }: { userInputId: string }) {
   const onConnect = useCallback(
     (params: Connection) => {
       const newEdge = addEdge(
-        { ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } },
+        {
+          ...params,
+          type: 'floating',
+          sourceHandle: 'a',
+          targetHandle: 'a',
+          markerEnd: { type: MarkerType.Arrow },
+        },
         edges,
       );
       setEdges(newEdge);

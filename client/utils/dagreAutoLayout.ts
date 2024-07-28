@@ -44,6 +44,7 @@ function dagreAutoLayout(initialNodes: Node[], initialEdges: Edge[]) {
   });
 
   initialEdges.forEach((edge) => {
+    edge.type = 'linktaEdge';
     dagreGraph.setEdge(edge.source, edge.target);
   });
 
@@ -51,6 +52,7 @@ function dagreAutoLayout(initialNodes: Node[], initialEdges: Edge[]) {
   dagre.layout(dagreGraph);
 
   initialNodes.forEach((node) => {
+    node.type = 'linktaNode';
     const nodeWithPosition = dagreGraph.node(node.id);
 
     if (node.parentId) {

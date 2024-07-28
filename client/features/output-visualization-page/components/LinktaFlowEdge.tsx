@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { useStore, getBezierPath } from 'reactflow';
-import type { EdgeProps, Position } from 'reactflow';
+import { useStore, getBezierPath, Position } from 'reactflow';
+import type { EdgeProps } from 'reactflow';
 import { getEdgeParams } from '@utils/getEdgeParams';
 
 function LinktaFlowEdge({ id, source, target, markerEnd, style }: EdgeProps) {
@@ -15,16 +15,13 @@ function LinktaFlowEdge({ id, source, target, markerEnd, style }: EdgeProps) {
     return null;
   }
 
-  const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
-    sourceNode,
-    targetNode,
-  );
+  const { sx, sy, tx, ty } = getEdgeParams(sourceNode, targetNode);
 
   const [edgePath] = getBezierPath({
     sourceX: sx as number,
     sourceY: sy as number,
-    sourcePosition: sourcePos as Position,
-    targetPosition: targetPos as Position,
+    sourcePosition: Position.Bottom,
+    targetPosition: Position.Top,
     targetX: tx as number,
     targetY: ty as number,
   });

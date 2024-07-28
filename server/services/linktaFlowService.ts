@@ -1,7 +1,7 @@
 import LinktaFlowModel from '@/models/LinktaFlowModel';
 import type { Types } from 'mongoose';
 import UserInputModel from '@/models/UserInputModel';
-import type { LinktaFlow } from '@/types';
+import type { LinktaFlow } from '@/types/linktaFlow';
 import type { Node, Edge } from 'reactflow';
 import {
   InternalServerError,

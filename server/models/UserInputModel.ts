@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import type { UserInput } from '@/types/datamodels';
+import type { UserInput } from '@/types/userInput';
 
 const userInputSchema = new Schema<UserInput>({
   userId: {

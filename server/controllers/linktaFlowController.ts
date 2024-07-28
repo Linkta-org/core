@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction } from 'express';
 import log4js from 'log4js';
 import mongoose from 'mongoose';
 import type createLinktaFlowService from '@/services/linktaFlowService';
-import type { CustomNode, CustomEdge } from '@/types';
 import {
   CustomError,
   InternalServerError,
@@ -41,23 +40,16 @@ const createLinktaFlowController = (
         await privateLinktaFlowService.fetchLinktaFlowByUserInputId(
           userInputObjectId,
         );
+
       logger.debug('linktaflow', linktaFlow);
+
       if (linktaFlow) {
         const { nodes, edges } = linktaFlow;
 
-        const mappedNodes = nodes.map((node: CustomNode) => ({
-          ...node._doc,
-          id: node.id,
-        }));
-
-        const mappedEdges = edges.map((edge: CustomEdge) => ({
-          ...edge._doc,
-        }));
-
         res.locals.linktaFlow = {
           userInputId,
-          nodes: mappedNodes,
-          edges: mappedEdges,
+          nodes,
+          edges,
         };
       } else {
         throw new LinktaFlowNotFoundError();

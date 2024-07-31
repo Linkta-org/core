@@ -1,16 +1,12 @@
 import dagre from '@dagrejs/dagre';
 // Placeholder for initial nodes and edges types
-import type { Node, Edge } from 'reactflow';
+import { type Node, type Edge } from 'reactflow';
 /**
  * @constant {number} DEFAULT_NODE_WIDTH - The default width of a node.
  * @constant {number} DEFAULT_NODE_HEIGHT - The default height of a node.
  * @constant {number} ADJUST_PARAMS_NODES_WITH_PARENT_ID  - The default adjustment parameter for nodes with a parent ID.
  */
-import {
-  DEFAULT_NODE_WIDTH,
-  DEFAULT_NODE_HEIGHT,
-  ADJUST_PARAMS_NODES_WITH_PARENT_ID,
-} from '@utils/constants';
+import { DEFAULT_NODE_WIDTH, DEFAULT_NODE_HEIGHT } from '@utils/constants';
 
 /**
  * Sets up the Dagre flow.
@@ -53,25 +49,13 @@ function dagreAutoLayout(initialNodes: Node[], initialEdges: Edge[]) {
 
   initialNodes.forEach((node) => {
     node.type = 'linktaNode';
-    const nodeWithPosition = dagreGraph.node(node.id);
-    node.type = 'linktaNode';
 
-    if (node.parentId) {
-      const parentNodeWithPosition = dagreGraph.node(node.parentId);
-      node.position = {
-        x:
-          nodeWithPosition.x -
-          parentNodeWithPosition.x +
-          parentNodeWithPosition.width -
-          DEFAULT_NODE_WIDTH * ADJUST_PARAMS_NODES_WITH_PARENT_ID,
-        y: nodeWithPosition.y - parentNodeWithPosition.y,
-      };
-    } else {
-      node.position = {
-        x: nodeWithPosition.x - nodeWithPosition.width / 2,
-        y: nodeWithPosition.y - nodeWithPosition.height / 2,
-      };
-    }
+    const nodeWithPosition = dagreGraph.node(node.id);
+
+    node.position = {
+      x: nodeWithPosition.x - nodeWithPosition.width / 2,
+      y: nodeWithPosition.y - nodeWithPosition.height / 2,
+    };
   });
 
   return { nodes: initialNodes, edges: initialEdges };

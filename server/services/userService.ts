@@ -11,7 +11,7 @@ const logger = log4js.getLogger('[UserService]');
  */
 const createUserService = () => {
   /**
-   * Finds a user by UID.
+   * Finds and returns a user by Firebase UID.
    */
   const findUserByUid = async (uid: string) => {
     try {
@@ -33,7 +33,7 @@ const createUserService = () => {
   };
 
   /**
-   * Finds a user by ID.
+   * Finds and returns a user by MongoDB ObjectId.
    */
   const findUserById = async (userId: Types.ObjectId) => {
     try {
@@ -59,7 +59,6 @@ const createUserService = () => {
    */
   const createNewUser = async (userData: {
     uid: string;
-    email?: string;
     name?: string;
     profilePicture?: string;
     authProvider: string;

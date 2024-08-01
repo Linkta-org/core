@@ -13,7 +13,7 @@ const userService = createUserService();
 const userController = createUserController(userService);
 
 // Apply the authorization middleware to all routes in this router.
-userRouter.use(isAuthorized(userService));
+userRouter.use(isAuthorized());
 
 /**
  * @route POST /v1/users

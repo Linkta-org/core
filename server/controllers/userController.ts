@@ -15,23 +15,22 @@ const createUserController = (
   const privateUserService = userService;
 
   /**
-   * Fetches a user profile by user ID.
+   * Fetches a user profile by Firebase UID.
    */
-  const fetchUserProfile = async (
+  const getUserByUid = async (
     _: Request,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const userId = res.locals.userId;
+      const uid = res.locals.verifiedToken.uid;
 
-      logger.debug('Fetching user profile for userId:', userId);
+      logger.debug('Fetching user profile for userId:', uid);
 
-      const user = await privateUserService.findUserById(userId);
+      const user = await privateUserService.findUserByUid(uid);
 
       if (user) {
         res.locals.userProfile = {
-          email: user.email,
           name: user.name,
           profilePicture: user.profilePicture,
           settings: user.settings,
@@ -47,6 +46,37 @@ const createUserController = (
   };
 
   /**
+   * Fetches a user profile by MongoDB ObjectId.
+   */
+  // const getUserById = async (
+  //   _: Request,
+  //   res: Response,
+  //   next: NextFunction,
+  // ) => {
+  //   try {
+  //     const uid = res.locals.verifiedToken.uid;
+
+  //     logger.debug('Fetching user profile for userId:', uid);
+
+  //     const user = await privateUserService.findUserById(uid);
+
+  //     if (user) {
+  //       res.locals.userProfile = {
+  //         name: user.name,
+  //         profilePicture: user.profilePicture,
+  //         settings: user.settings,
+  //       };
+  //     }
+
+  //     next();
+  //   } catch (error) {
+  //     logger.error('Error fetching user profile for userId', error);
+
+  //     next(new InternalServerError('Failed to fetch user profile'));
+  //   }
+  // };
+
+  /**
    * Creates a user profile.
    */
   const createUserProfile = async (
@@ -55,24 +85,20 @@ const createUserController = (
     next: NextFunction,
   ) => {
     try {
-      const userData = res.locals.userData;
-
+      const userData = res.locals.verifiedToken;
       const userName = req.body.name;
-
-      const { uid, email, name, profilePicture, authProvider } = userData;
+      const { uid, name, profilePicture, authProvider } = userData;
 
       logger.debug('Creating or updating user profile for UID:', uid);
 
       const newUser = await privateUserService.createNewUser({
         uid,
-        email,
         name: userName || name,
         profilePicture,
         authProvider,
       });
 
       res.locals.newUserProfile = {
-        email: newUser.email,
         name: newUser.name,
         profilePicture: newUser.profilePicture,
         settings: newUser.settings,
@@ -86,7 +112,7 @@ const createUserController = (
     }
   };
 
-  return { fetchUserProfile, createUserProfile };
+  return { fetchUserProfile: getUserByUid, createUserProfile };
 };
 
 export default createUserController;

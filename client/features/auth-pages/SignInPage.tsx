@@ -69,8 +69,14 @@ const SignInPage = () => {
 
   const handleGithubAuthClick = async () => {
     try {
-      await githubAuthMutation.mutateAsync();
-      await handleAuthSuccess('');
+      await githubAuthMuation.mutateAsync();
+      const existingProfile = await refetch();
+      if (!existingProfile.data) {
+        await handleAuthSuccess('');
+        navigate('/home-page');
+      } else {
+        navigate('/generate');
+      }
     } catch (error) {
       console.error('Failed to sign in through GitHub', error);
       showNotification(

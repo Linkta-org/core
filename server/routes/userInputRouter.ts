@@ -35,7 +35,7 @@ const userInputController = createUserInputController(
 const idempotencyMiddleware = createIdempotencyMiddleware(idempotencyService);
 
 // Apply the authorization middleware to all routes in this router.
-userInputRouter.use(isAuthorized(userService));
+userInputRouter.use(isAuthorized());
 
 /**
  * @route POST /v1/inputs

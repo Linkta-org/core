@@ -1,7 +1,6 @@
 import type { UseMutationResult } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-
 import { auth } from '@/firebase/firebaseConfig';
 
 type GoogleAuthResult = {
@@ -18,8 +17,8 @@ export const useGoogleAuthMutation = (): UseMutationResult<
     mutationFn: async () => {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
       const token = await result.user.getIdToken();
+      const user = result.user;
       return { token, user };
     },
   });

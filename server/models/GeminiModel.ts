@@ -20,7 +20,7 @@ if (!apiKey) {
 
 const generate_config: GenerationConfig = {
   temperature: 0.5,
-  maxOutputTokens: 1500,
+  maxOutputTokens: 3000,
   responseMimeType: 'application/json',
 };
 

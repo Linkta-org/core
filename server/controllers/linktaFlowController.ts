@@ -44,9 +44,10 @@ const createLinktaFlowController = (
       logger.debug('linktaflow', linktaFlow);
 
       if (linktaFlow) {
-        const { nodes, edges } = linktaFlow;
+        const { _id, nodes, edges } = linktaFlow;
 
         res.locals.linktaFlow = {
+          id: _id,
           userInputId,
           nodes,
           edges,

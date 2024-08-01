@@ -7,42 +7,56 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import userEvent from '@testing-library/user-event';
 import CssBaseline from '@mui/material/CssBaseline';
 import Theme from './customTheme';
-import { RouterProvider } from 'react-router-dom';
-import { createRouter } from '@routes/index';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import HomePage from '@features/home-page/HomePage';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
 });
-
-const AllTheProviders = ({
-  router,
-}: {
-  router: ReturnType<typeof createRouter>;
-}) => (
+const AllTheProviders = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider theme={Theme}>
       <CssBaseline />
-      <RouterProvider router={router} />
+      {children}
     </ThemeProvider>
   </QueryClientProvider>
 );
 
+export default AllTheProviders;
 const customRender = (
   ui: ReactElement,
   {
-    isAuthenticated = false,
+    routeConfig = [
+      { path: '/', element: <HomePage /> },
+      { path: '*', element: ui },
+    ],
+    initialEntries = ['/'],
     ...options
-  }: { isAuthenticated?: boolean } & Omit<RenderOptions, 'wrapper'> = {},
+  }: {
+    routeConfig?: Array<{ path: string; element: ReactElement }>;
+    initialEntries?: string[];
+  } & Omit<RenderOptions, 'wrapper'> = {},
 ) => {
-  const router = createRouter(isAuthenticated);
   const user = userEvent.setup();
 
   return {
     user,
-    ...render(<AllTheProviders router={router} />, {
-      wrapper: ({ children }) => (children ? <>{children}</> : <>{ui}</>),
-      ...options,
-    }),
+    ...render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <AllTheProviders>
+          <Routes>
+            {routeConfig.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
+          </Routes>
+        </AllTheProviders>
+      </MemoryRouter>,
+      options,
+    ),
   };
 };
 

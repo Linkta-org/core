@@ -22,7 +22,7 @@ const NotFoundPage = () => {
         variant='h5'
         className={styles.headings}
       >
-        Oppsie! Looks like the page got lost.{' '}
+        Oopsie! Looks like the page got lost.{' '}
         <RouterLink
           to='/help'
           className={styles.link}
@@ -35,6 +35,7 @@ const NotFoundPage = () => {
           className={styles.button}
           variant='contained'
           color='primary'
+          aria-label='return to homepage'
         >
           Return to Homepage
         </Button>

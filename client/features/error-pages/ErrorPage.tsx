@@ -10,7 +10,7 @@ const ErrorPage = () => {
         variant='h1'
         className={styles.h1}
       >
-        Oppsie!
+        Oopsie!
       </Typography>
       <Typography
         variant='h2'

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["vitest/globals"],
     /* Visit https://aka.ms/tsconfig to read more about this file */
     "lib": ["DOM"],
     "target": "ES6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,

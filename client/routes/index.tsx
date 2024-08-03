@@ -1,4 +1,3 @@
-// routes/index.ts
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
 import NotFoundPage from '@features/error-pages/NotFoundPage';

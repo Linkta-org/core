@@ -1,4 +1,3 @@
-// App.unit.test.tsx
 import React from 'react';
 import { render, screen, act } from '@utils/testUtils';
 import App from '@/App';

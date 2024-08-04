@@ -8,7 +8,6 @@ import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useCreateUserWithEmailAndPasswordMutation } from '@/hooks/useCreateUserWithEmailAndPassword';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-// import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
 import SnackBarNotification from '@components/common/SnackBarNotification';
@@ -16,6 +15,8 @@ import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuth from '@/hooks/useAuth';
 import { userPasswordSchema } from '@validators/validateUserPassword';
+import { userEmailSchema } from '@validators/validateUseremail';
+import { z } from 'zod';
 
 interface FormData {
   email: string;
@@ -23,6 +24,26 @@ interface FormData {
   password: string;
   confirmPassword: string;
 }
+
+const passwordSchema = userPasswordSchema._def.schema as z.ZodObject<{
+  password: z.ZodString;
+  confirmPassword: z.ZodString;
+}>;
+
+const baseSchema = z.object({
+  name: z.string().min(1, { message: `Name is Required` }),
+  email: userEmailSchema.shape.email,
+});
+
+const combinedSchema = baseSchema.merge(passwordSchema);
+
+const finalSchema = combinedSchema.refine(
+  (data) => data.password === data.confirmPassword,
+  {
+    message: `Passwords do not match`,
+    path: ['confirmPassword'],
+  },
+);
 
 const SignUpPage = () => {
   useDocumentTitle('Sign Up');
@@ -38,8 +59,7 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(userPasswordSchema),
-    // resolver: zodResolver(userSignUpSchema),
+    resolver: zodResolver(finalSchema), // this is where I want to put the combined Schema to handle password and email validation
   });
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -204,14 +224,6 @@ const SignUpPage = () => {
             Create an Account
           </Button>
         </form>
-
-        <SnackBarNotification
-          open={isSnackbarOpen}
-          message={snackbarMessage}
-          severity={snackbarSeverity}
-          callerUpdater={resetSnackbarStates}
-        />
-
         <Box className={`${styles.finePrintContainer}`}>
           <Typography variant='body2'>
             Already have an account?
@@ -242,12 +254,12 @@ const SignUpPage = () => {
           </Typography>
         </Box>
       </Box>
-      {/* <SnackBarNotification
+      <SnackBarNotification
         open={isSnackbarOpen}
         message={snackbarMessage}
         severity={snackbarSeverity}
         callerUpdater={resetSnackbarStates}
-      /> */}
+      />
     </>
   );
 };

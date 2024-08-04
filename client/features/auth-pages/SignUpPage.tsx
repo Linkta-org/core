@@ -59,7 +59,7 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(finalSchema), // this is where I want to put the combined Schema to handle password and email validation
+    resolver: zodResolver(finalSchema),
   });
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');

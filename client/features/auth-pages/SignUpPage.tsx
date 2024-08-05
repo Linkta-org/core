@@ -30,20 +30,17 @@ const passwordSchema = userPasswordSchema._def.schema as z.ZodObject<{
   confirmPassword: z.ZodString;
 }>;
 
-const baseSchema = z.object({
+const nameAndEmailSchema = z.object({
   name: z.string().min(1, { message: `Name is Required` }),
   email: userEmailSchema.shape.email,
 });
 
-const combinedSchema = baseSchema.merge(passwordSchema);
-
-const finalSchema = combinedSchema.refine(
-  (data) => data.password === data.confirmPassword,
-  {
+const signUpInputSchema = nameAndEmailSchema
+  .merge(passwordSchema)
+  .refine((data) => data.password === data.confirmPassword, {
     message: `Passwords do not match`,
     path: ['confirmPassword'],
-  },
-);
+  });
 
 const SignUpPage = () => {
   useDocumentTitle('Sign Up');
@@ -59,7 +56,7 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(finalSchema),
+    resolver: zodResolver(signUpInputSchema),
   });
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -111,14 +108,7 @@ const SignUpPage = () => {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { email, password, name, confirmPassword } = data;
-
-    if (password !== confirmPassword) {
-      setIsSnackbarOpen(true);
-      setSnackbarMessage("Passwords don't match. Please try again.");
-      setSnackbarSeverity('error');
-      return;
-    }
+    const { email, password, name } = data;
 
     try {
       await createUserWithEmailAndPasswordMutation.mutateAsync({

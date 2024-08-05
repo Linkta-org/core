@@ -4,7 +4,6 @@ import { CustomError, InternalServerError } from '@/utils/customErrors';
 import type createUserInputService from '@/services/userInputService';
 import type createLinktaFlowService from '@/services/linktaFlowService';
 import type createAIService from '@/services/aiService';
-import type { CustomNode, CustomEdge } from '@/types';
 
 import log4js from 'log4js';
 const logger = log4js.getLogger('[Input Controller]');
@@ -68,27 +67,10 @@ const createUserInputController = (
       logger.debug('New Linkta flow created:', newLinktaFlow);
 
       if (newLinktaFlow) {
-        const { _id, userInputId, nodes, edges } = newLinktaFlow;
-
-        const mappedNodes = nodes.map((node: CustomNode) => ({
-          ...node._doc,
-          id: node._id,
-          _id: undefined,
-        }));
-
-        const mappedEdges = edges.map((edge: CustomEdge) => ({
-          ...edge._doc,
-          id: edge._id,
-          _id: undefined,
-        }));
-
-        res.locals.linktaFlow = {
-          id: _id,
-          userInputId,
-          nodes: mappedNodes,
-          edges: mappedEdges,
-        };
+        res.locals.linktaFlowId = newLinktaFlow._id;
+        res.locals.userInputId = newLinktaFlow.userInputId;
       }
+
       next();
     } catch (error) {
       logger.error('Error generating Linkta flow from user input', error);

@@ -11,6 +11,14 @@ class CustomError extends Error {
   }
 }
 
+class BadRequestError extends CustomError {
+  constructor(
+    message: string = 'The request was invalid or cannot be served. Please check your input and try again.',
+  ) {
+    super(message, 400, 'BadRequestError occurred');
+  }
+}
+
 class ValidationError extends CustomError {
   constructor(
     message: string = 'Invalid input provided. Please ensure your request meets the required format and constraints.',
@@ -104,4 +112,5 @@ export {
   InternalServerErrorGenAI,
   ValidationError,
   ServiceUnavailableError,
+  BadRequestError,
 };

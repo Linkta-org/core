@@ -1,0 +1,76 @@
+.nodeBox {
+  background-color: #183636;
+  height: '44px';
+  width: '168px';
+  display: 'flex';
+  border-radius: 5px;
+  display: flex;
+  border: 0.2px solid #000;
+  box-shadow: 2px 4px 8px hsl(0deg 0% 0% / 0.25);
+  transition: 'box-shadow 0.3s, border 0.3s';
+  height: 44px;
+  width: 168px;
+  &:hover {
+    background-color: #1a3e37;
+    border: '0.2px solid #FFA51B';
+    border-left: 0.2px solid #ffa51b;
+    box-shadow: 0px 0px 4px 1px #ffa51b96;
+  }
+}
+
+.nodeHandle {
+  border-radius: 5px 0 0 5px;
+  width: 5%;
+  background-color: #0442e1;
+  height: 100%;
+  border: none;
+}
+
+.nodeTextBox {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: 'center';
+  width: 160px;
+}
+
+.nodeTextField {
+  background: transparent;
+  border: none;
+  border-radius: 1px;
+  color: inherit;
+  font-family: 'Roboto';
+  font-weight: 500;
+  padding: 0 2px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.nodeTypography {
+  background: transparent;
+  border: none;
+  border-radius: 1px;
+  color: inherit;
+  font-family: 'Roboto';
+  font-weight: 500;
+  padding: 0 2px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.nodeTypography > .MuiTypography-root {
+  font-size: 20px;
+}
+
+
+.nodeTextField > .MuiOutlinedInput-root fieldset {
+  border: none;
+}
+.nodeTextField > .Mui-focused fieldset {
+  border: none;
+}
+
+.linktaNode_text.input {
+  text-align: center;
+  font-size: 11px;
+}

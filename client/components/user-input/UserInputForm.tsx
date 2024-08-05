@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userInputInputSchema } from '@validators/userInputSchemas';
@@ -17,6 +16,8 @@ import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation
 import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
+import useThrottle from '@hooks/useThrottle';
+import { AxiosError } from 'axios';
 
 interface CustomFormData {
   input: string;
@@ -52,7 +53,7 @@ const UserInputForm = () => {
     setSnackbarSeverity('success');
   };
 
-  const onSubmit: SubmitHandler<CustomFormData> = async (data) => {
+  const throttledSubmit = useThrottle(async (data: CustomFormData) => {
     try {
       const response = await createLinktaFlowMutation.mutateAsync({
         input: data.input,
@@ -61,17 +62,25 @@ const UserInputForm = () => {
       reset();
       navigate(`/output/${response.userInputId}`);
     } catch (error) {
-      console.error('Error sending prompt: ', error);
+      console.error('Failed to create LinktaFlow: ', error);
+      let errorMessage = 'Failed to create LinktaFlow. Please try again.';
+
+      if (error instanceof AxiosError && error.response) {
+        errorMessage = error.response.data || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
       setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to create LinktaFlow. Please try again.');
+      setSnackbarMessage(errorMessage);
       setSnackbarSeverity('error');
     }
-  };
+  }, 1000);
 
   return (
     <>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(throttledSubmit)}
         className={`${styles.userInputForm}`}
       >
         <Typography
@@ -121,10 +130,10 @@ const UserInputForm = () => {
           variant='contained'
           className={`${styles.userInputSubmitButton}`}
           type='submit'
-          disabled={!isChecked}
+          disabled={!isChecked || createLinktaFlowMutation.status === 'pending'}
         >
           {createLinktaFlowMutation.status === 'pending'
-            ? 'Loading'
+            ? 'Processing...'
             : 'Generate'}
         </Button>
       </form>

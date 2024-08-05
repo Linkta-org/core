@@ -20,7 +20,7 @@ The base URL for the Linkta API is: `https://api.linkta.io`
     - `Authorization: idToken: <Firebase ID Token>`
     - `x-request-id: <unique request ID>`
 - **Responses:**
-    - `201 Created` : `{ "linktaFlow": <LinktaFlow Object>, "inputHistory": [/*Array of userInput Objects*/] }`
+    - `201 Created` : `{ "message": "LinktaFlow id <linktaFlowId> created successfully", "userInputId": <userInputId>}`
     - `400 Bad Request` : `{ "message": "Your request could not be processed as it contains invalid data. Please check your input and try again." }`
     - `401 Unauthorized` : `{ "message": "You need to log in to access this resource. Please ensure you are logged in and try again." }`
     - `403 Forbidden` : `{ "message": "You don't have permission to perform this action." }`
@@ -340,6 +340,10 @@ Updates user settings including name, email, and other preferences.
 #### Bug Report Service
 - `createBugReport` : Creates a new bug report record in the database, optionally associating it with a user ID if the user is authenticated.
 
+#### Idempotency Service
+- `findIdempotencyRecord`: Finds an idempotency record by key in the database.
+- `createIdempotencyRecord`: Creates a new idempotency record in the database with the given key and response.
+
 ### Middlewares
 
 #### Firebase Authentication Middleware
@@ -350,8 +354,12 @@ Updates user settings including name, email, and other preferences.
 
 #### Rate Limiting Middleware
 - `RateLimiter` : Limits requests to 60 per IP address every 15 minutes. Uses draft-7 standard headers for rate limit information. Logs rate limit hits server-side and returns a custom error message ("Rate limit reached. You have sent too many requests!") when the limit is exceeded.
+
 #### Error Handling Middleware
 - `globalErrorHandler`  : Processes all errors uniformly, providing consistent error responses. It handles both custom and standard errors, logs error details, and returns a standardized JSON response with appropriate HTTP status codes and user-friendly error messages.
+
+#### Idempotency Middleware
+- `createIdempotencyMiddleware`: Creates a middleware that ensures idempotent behavior for API requests. It checks for an existing idempotency record, and if found, returns the stored response. Otherwise, it sets up the necessary context for creating a new idempotency record after the request is processed.
 
 ## Data Design
 ### Diagram

@@ -12,6 +12,8 @@ import {
   userInputTitleSchema,
 } from '@/validators/userInputSchemas';
 import createUserService from '@/services/userService';
+import createIdempotencyService from '@/services/idempotencyService';
+import createIdempotencyMiddleware from '@/middleware/IdempotencyMiddleware';
 
 const userInputRouter = Router();
 
@@ -20,6 +22,7 @@ const userInputService = createUserInputService();
 const linktaFlowService = createLinktaFlowService();
 const aiService = createAIService();
 const userService = createUserService();
+const idempotencyService = createIdempotencyService();
 
 // Instantiate the controller with the services
 const userInputController = createUserInputController(
@@ -28,24 +31,35 @@ const userInputController = createUserInputController(
   aiService,
 );
 
+// Instantiate the middleware with the services
+const idempotencyMiddleware = createIdempotencyMiddleware(idempotencyService);
+
 // Apply the authorization middleware to all routes in this router.
 userInputRouter.use(isAuthorized(userService));
 
 /**
  * @route POST /v1/inputs
- * @description Generates a LinktaFlow and fetches updated input history.
- * @returns {Object} 200 - { linktaFlow, inputHistory }
+ * @description Generates a LinktaFlow and return a success message
+ * @returns {Object} 201 - {message, userInputId}
  */
 userInputRouter.post(
   '/',
   validationMiddleware(userInputInputSchema, 'body'),
+  idempotencyMiddleware,
   userInputController.generateLinktaFlowFromInput,
-  userInputController.fetchInputHistory,
-  (_: Request, res: Response) => {
-    return res.status(201).json({
-      linktaFlow: res.locals.linktaFlow,
-      inputHistory: res.locals.inputHistory,
-    });
+  async (_: Request, res: Response) => {
+    const responseMessage = `LinktaFlow id ${res.locals.linktaFlowId} created successfully`;
+
+    const response = {
+      message: responseMessage,
+      userInputId: res.locals.userInputId,
+    };
+
+    if (res.locals.finalizeIdempotencyRecord) {
+      await res.locals.finalizeIdempotencyRecord(response);
+    }
+
+    return res.status(201).json(response);
   },
 );
 

@@ -92,7 +92,7 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         >
           <img
             className={`linkta-logo-image ${drawerOpen ? 'layout-open' : 'layout-closed'}`}
-            src='/linkta-logo-web.png'
+            src='/linkta-logo-cropped.png'
             alt='The Linkta.io logo at approximately 50 pixels square, located in the upper-left corner of the page.'
           />
         </Box>

@@ -23,7 +23,7 @@ const createLinktaFlowInApi = async (
     },
   );
 
-  return response.data.linktaFlow;
+  return response.data;
 };
 
 /**

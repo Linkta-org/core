@@ -26,7 +26,13 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['**/*.unit.test.[jt]s?(x)'],
+    coverage: {
+      reporter: ['text', 'lcov'],
+      exclude: ['node_modules/', 'dist/'],
+    },
     environment: 'jsdom',
+    globals: true,
+    include: ['**/*.unit.test.[jt]s?(x)'],
+    setupFiles: ['./tests/unit/vitest.setup.ts'],
   },
 });

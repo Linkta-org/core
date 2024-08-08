@@ -1,5 +1,4 @@
-import React from 'react';
-import { type RouteObject, createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
 import NotFoundPage from '@features/error-pages/NotFoundPage';
 import ErrorPage from '@features/error-pages/ErrorPage';
@@ -7,6 +6,7 @@ import MainLayout from '@components/layout/MainLayout';
 import privateRoutes from '@routes/privateRoutes';
 import publicRoutes from '@routes/publicRoutes';
 import useAuth from '@hooks/useAuth';
+import React from 'react';
 
 /**
  * Initializes the application's router using createBrowserRouter, combining various routes under one of two static layouts.
@@ -16,29 +16,35 @@ import useAuth from '@hooks/useAuth';
  * - errorElement does not directly support dynamic inline re-rendering and must hav its own ternary to apply layouts
  * - the two static layouts are: MainLayout for logged in users / UnauthorizedLayout for logged out users
  */
+
+const getRoutes = (isAuthenticated: boolean): RouteObject[] => [
+  {
+    path: '/',
+    element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
+    children: [
+      ...publicRoutes,
+      ...privateRoutes,
+      { path: '*', element: <NotFoundPage /> },
+    ],
+    errorElement: isAuthenticated ? (
+      <MainLayout>
+        <ErrorPage />
+      </MainLayout>
+    ) : (
+      <UnauthorizedLayout>
+        <ErrorPage />
+      </UnauthorizedLayout>
+    ),
+  },
+];
+
+const createRouter = (isAuthenticated: boolean) =>
+  createBrowserRouter(getRoutes(isAuthenticated));
+
 const IndexRouter = () => {
   const { isAuthenticated } = useAuth();
-
-  return createBrowserRouter([
-    {
-      path: '/',
-      element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
-      children: [
-        ...publicRoutes,
-        ...privateRoutes,
-        { path: '*', element: <NotFoundPage /> },
-      ] as RouteObject[],
-      errorElement: isAuthenticated ? (
-        <MainLayout>
-          <ErrorPage />
-        </MainLayout>
-      ) : (
-        <UnauthorizedLayout>
-          <ErrorPage />
-        </UnauthorizedLayout>
-      ),
-    },
-  ] as RouteObject[]);
+  return createRouter(isAuthenticated);
 };
 
 export default IndexRouter;
+export { createRouter, getRoutes };

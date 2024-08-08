@@ -8,21 +8,39 @@ import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useCreateUserWithEmailAndPasswordMutation } from '@/hooks/useCreateUserWithEmailAndPassword';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuth from '@/hooks/useAuth';
+import { userPasswordSchema } from '@validators/validateUserPassword';
+import { userEmailSchema } from '@validators/validateUseremail';
+import { z } from 'zod';
 
-const userSignUpSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(1, { message: 'Please enter a password' }),
-  name: z.string().min(1, { message: 'Please enter your name' }),
+interface FormData {
+  email: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+}
+
+const passwordSchema = userPasswordSchema._def.schema as z.ZodObject<{
+  password: z.ZodString;
+  confirmPassword: z.ZodString;
+}>;
+
+const nameAndEmailSchema = z.object({
+  name: z.string().min(1, { message: `Name is Required` }),
+  email: userEmailSchema.shape.email,
 });
 
-type FormData = z.infer<typeof userSignUpSchema>;
+const signUpInputSchema = nameAndEmailSchema
+  .merge(passwordSchema)
+  .refine((data) => data.password === data.confirmPassword, {
+    message: `Passwords do not match`,
+    path: ['confirmPassword'],
+  });
 
 const SignUpPage = () => {
   useDocumentTitle('Sign Up');
@@ -38,7 +56,7 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(userSignUpSchema),
+    resolver: zodResolver(signUpInputSchema),
   });
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -177,6 +195,16 @@ const SignUpPage = () => {
             type='password'
             variant='standard'
             {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          ></TextField>
+          <TextField
+            label='confirm password'
+            type='password'
+            variant='standard'
+            {...register('confirmPassword')}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
           ></TextField>
           <Button
             type='submit'
@@ -186,7 +214,6 @@ const SignUpPage = () => {
             Create an Account
           </Button>
         </form>
-
         <Box className={`${styles.finePrintContainer}`}>
           <Typography variant='body2'>
             Already have an account?

@@ -21,7 +21,7 @@ const LinktaFlowNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
     id: data.id,
     type: 'linktaNode',
     position: { x: 0, y: 0 },
-    data: { label: 'TCP/IP Model' },
+    data: { label: data.label },
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -133,7 +133,7 @@ const LinktaFlowNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
             //   },
             // }}
           >
-            {data.label}
+            {placeholderData.data.label}
           </Typography>
         )}
       </Box>

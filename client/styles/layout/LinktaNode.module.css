@@ -43,28 +43,20 @@
   font-weight: 500;
   padding: 0 2px;
   text-align: center;
-  font-size: 20px;
+  font-size: 11px;
 }
 
 .nodeTypography {
   background: transparent;
-  border: none;
-  border-radius: 1px;
   color: inherit;
-  font-family: 'Roboto';
-  font-weight: 500;
   padding: 0 2px;
   text-align: center;
-  font-size: 10px;
 }
-
-.nodeTypography > .MuiTypography-root {
-  font-size: 20px;
-}
-
 
 .nodeTextField > .MuiOutlinedInput-root fieldset {
   border: none;
+  font-size: 11px;
+  size: small;
 }
 .nodeTextField > .Mui-focused fieldset {
   border: none;

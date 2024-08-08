@@ -68,6 +68,7 @@ const LinktaFlowNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
       >
         {isEditing && (
           <TextField
+            onSubmit={onBlur}
             hiddenLabel
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPlaceholderData({
@@ -75,7 +76,7 @@ const LinktaFlowNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
                 data: { ...data, label: e.target.value },
               })
             }
-            value={data.label}
+            defaultValue={data.label}
             id='filled-hidden-label-small'
             size='small'
             // sx={{
@@ -105,7 +106,7 @@ const LinktaFlowNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
         )}
         {!isEditing && (
           <Typography
-            variant='body1'
+            variant='flowNode'
             id='filled-hidden-label-small'
             className={styles.nodeTypography}
             // size='small'

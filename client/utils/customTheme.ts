@@ -30,8 +30,23 @@ const themeOptions: ThemeOptions = {
     button: {
       textTransform: 'none',
     },
+    flowNode: {
+      fontFamily: 'Roboto',
+      fontWeight: 500,
+      fontSize: '11px',
+      padding: '0 2px',
+      border: 'none',
+      borderRadius: '1px',
+    },
   },
   components: {
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          flowNode: 'h6',
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
         ':root': {

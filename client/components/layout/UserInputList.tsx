@@ -15,6 +15,7 @@ import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 import RenameDialog from './RenameDialog';
 import DeleteDialog from './DeleteDialog';
+import useLoadingStore from '@stores/LoadingStore';
 
 interface UserInputListProps {
   inputHistory: UserInput[];
@@ -37,6 +38,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const createLinktaFlowMutation = useCreateLinktaFlowMutation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { setLoading } = useLoadingStore();
   const [renameAnchorElement, setRenameAnchorElement] =
     useState<null | HTMLElement>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -108,20 +110,29 @@ const UserInputList: React.FC<UserInputListProps> = ({
 
   const handleRegenerate = useCallback(async () => {
     if (selectedUserInput) {
+      setLoading(true);
       try {
         const response = await createLinktaFlowMutation.mutateAsync({
           input: selectedUserInput.input,
         });
         await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
         navigate(`/output/${response.userInputId}`);
+        setLoading(false);
       } catch (error) {
         console.error('Error regenerating flow: ', error);
         setIsSnackbarOpen(true);
         setSnackbarMessage('Failed to create LinktaFlow. Please try again.');
         setSnackbarSeverity('error');
+        setLoading(false);
       }
     }
-  }, [selectedUserInput, navigate, createLinktaFlowMutation, queryClient]);
+  }, [
+    selectedUserInput,
+    navigate,
+    createLinktaFlowMutation,
+    queryClient,
+    setLoading,
+  ]);
 
   const handleDelete = useCallback(() => {
     setDeleteDialogOpen(true);

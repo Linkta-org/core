@@ -13,7 +13,7 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import LinktaFlowEdge from '@features/output-visualization-page/components/LinktaFlowEdge';
-import LinktaNode from '@features/output-visualization-page/components/LinktaNode';
+import LinktaFlowNode from '@features/output-visualization-page/components/LinktaFlowNode';
 import ConnectionLine from '@features/output-visualization-page/components/ConnectionLine';
 import useFetchLinktaFlow from '@hooks/useFetchLinktaFlow';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '@/components/common/Loader';
 import UndoAndRedo from '@features/output-visualization-page/components/UndoAndRedo';
 
-const nodeTypes = { linktaNode: LinktaNode };
+const nodeTypes = { linktaNode: LinktaFlowNode };
 const edgeTypes = { linktaEdge: LinktaFlowEdge };
 
 const rfStyle = {
@@ -53,7 +53,7 @@ const initialEdges = [
     id: '1-2',
     source: '1',
     target: '2',
-    sourceHandle: 'c',
+    sourceHandle: 'a',
     targetHandle: 'a',
     type: 'linktaEdge',
     markerEnd: { type: MarkerType.Arrow },
@@ -128,7 +128,13 @@ function Flow({ userInputId }: { userInputId: string }) {
   const onConnect = useCallback(
     (params: Connection) => {
       const newEdge = addEdge(
-        { ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } },
+        {
+          ...params,
+          type: 'floating',
+          sourceHandle: 'a',
+          targetHandle: 'a',
+          markerEnd: { type: MarkerType.Arrow },
+        },
         edges,
       );
       setEdges(newEdge);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
@@ -9,8 +9,7 @@ import useSideNavDrawerStore from '@stores/SideNavDrawerStore';
 import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import useSignOut from '@hooks/useSignOut';
-import type { SnackbarSeverity } from '@/types/snackBar';
-import SnackBarNotification from '@components/common/SnackBarNotification';
+import { useNotification } from '@hooks/useNotification';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -26,17 +25,8 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const currentLinktaFlow = useLinktaFlowStore((state) =>
     state.getCurrentFlow(),
   );
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] =
-    useState<SnackbarSeverity>('success');
   const navigate = useNavigate();
-
-  const resetSnackbarStates = () => {
-    setIsSnackbarOpen(false);
-    setSnackbarMessage('');
-    setSnackbarSeverity('success');
-  };
+  const { showNotification } = useNotification();
 
   const handleSave = () => {
     if (!currentLinktaFlow) {
@@ -62,14 +52,21 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const handleSignOut = () => {
     signOutMutation.mutate(undefined, {
       onSuccess: () => {
-        console.log('Signed out successfully');
+        showNotification(
+          "You've been successfully signed out of Linkta.",
+          'success',
+        );
         navigate('/');
       },
       onError: (error) => {
         console.error('Error signing out:', error);
-        setIsSnackbarOpen(true);
-        setSnackbarMessage('Error signing out. Please try again.');
-        setSnackbarSeverity('error');
+        showNotification(
+          'Sign-out unsuccessful. Please try again or refresh the page.',
+          'error',
+          {
+            duration: 6000,
+          },
+        );
       },
     });
   };
@@ -151,12 +148,6 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
         <Box className='router-outlet'>{children ? children : <Outlet />}</Box>
       </Box>
-      <SnackBarNotification
-        open={isSnackbarOpen}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        callerUpdater={resetSnackbarStates}
-      />
     </>
   );
 };

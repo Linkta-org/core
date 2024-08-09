@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,14 +13,13 @@ import {
 } from '@mui/material';
 import styles from '@styles/UserInputView.module.css';
 import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
-import SnackBarNotification from '@components/common/SnackBarNotification';
-import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 import useThrottle from '@hooks/useThrottle';
 import { AxiosError } from 'axios';
 import Loader from '@/components/common/Loader';
 import useUserInputStore from '@/stores/UserInputStore';
 import useLoadingStore from '@/stores/LoadingStore';
+import { useNotification } from '@hooks/useNotification';
 
 interface CustomFormData {
   input: string;
@@ -41,16 +40,7 @@ const UserInputForm = () => {
   const navigate = useNavigate();
   const createLinktaFlowMutation = useCreateLinktaFlowMutation();
   const queryClient = useQueryClient();
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] =
-    useState<SnackbarSeverity>('success');
-
-  const resetSnackbarStates = () => {
-    setIsSnackbarOpen(false);
-    setSnackbarMessage('');
-    setSnackbarSeverity('success');
-  };
+  const { showNotification } = useNotification();
 
   const isChecked = useUserInputStore((state) => state.isChecked);
   const setIsChecked = useUserInputStore((state) => state.setIsChecked);
@@ -68,10 +58,15 @@ const UserInputForm = () => {
       reset();
       navigate(`/output/${response.userInputId}`);
       setLoading(false);
+      showNotification(
+        'LinktaFlow created successfully. You can now view and edit it.',
+        'success',
+      );
     } catch (error) {
       setLoading(false);
       console.error('Failed to create LinktaFlow: ', error);
-      let errorMessage = 'Failed to create LinktaFlow. Please try again.';
+      let errorMessage =
+        'Unable to create LinktaFlow. Please check your input and try again.';
 
       if (error instanceof AxiosError && error.response) {
         errorMessage = error.response.data || errorMessage;
@@ -79,9 +74,13 @@ const UserInputForm = () => {
         errorMessage = error.message;
       }
 
-      setIsSnackbarOpen(true);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity('error');
+      showNotification(errorMessage, 'error', {
+        duration: 6000,
+        action: {
+          label: 'Retry',
+          onClick: () => handleSubmit(throttledSubmit)(),
+        },
+      });
     }
   }, 1000);
 
@@ -141,12 +140,6 @@ const UserInputForm = () => {
           </Button>
         </form>
       )}
-      <SnackBarNotification
-        open={isSnackbarOpen}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        callerUpdater={resetSnackbarStates}
-      />
     </>
   );
 };

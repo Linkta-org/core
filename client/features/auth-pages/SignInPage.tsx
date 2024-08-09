@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import styles from '@styles/layout/AuthStyles.module.css';
@@ -10,11 +10,10 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useFetchUserProfile from '@/hooks/useFetchUserProfile';
-import SnackBarNotification from '@components/common/SnackBarNotification';
-import type { SnackbarSeverity } from '@/types/snackBar';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuth from '@/hooks/useAuth';
+import { useNotification } from '@hooks/useNotification';
 
 const userSignInSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -38,19 +37,10 @@ const SignInPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(userSignInSchema),
   });
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] =
-    useState<SnackbarSeverity>('success');
   const createUserProfileMutation = useCreateUserProfileMutation();
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
-
-  const resetSnackbarStates = () => {
-    setIsSnackbarOpen(false);
-    setSnackbarMessage('');
-    setSnackbarSeverity('success');
-  };
+  const { showNotification } = useNotification();
 
   const handleAuthSuccess = async (name: string) => {
     try {
@@ -58,12 +48,17 @@ const SignInPage = () => {
         const response = await createUserProfileMutation.mutateAsync({ name });
         await queryClient.setQueryData(['userProfile'], response);
       }
+      showNotification("Welcome back! You're now signed in.", 'success');
       navigate('/generate');
     } catch (error) {
       console.error('Failed to create user profile.', error);
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to create user profile. Please try again.');
-      setSnackbarSeverity('error');
+      showNotification(
+        "We could't set up your profile. Please try again or contact support if the issue persists.",
+        'error',
+        {
+          duration: 6000,
+        },
+      );
     }
   };
 
@@ -79,9 +74,13 @@ const SignInPage = () => {
       }
     } catch (error) {
       console.error('Failed to sign in through Google.', error);
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to sign in through Google. Please try again.');
-      setSnackbarSeverity('error');
+      showNotification(
+        'Google sign-in unsuccessful. Please try again or use another sign-in method.',
+        'error',
+        {
+          duration: 6000,
+        },
+      );
     }
   };
 
@@ -96,9 +95,13 @@ const SignInPage = () => {
       }
     } catch (error) {
       console.error('Failed to sign in through GitHub', error);
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to sign in through GitHub. Please try again.');
-      setSnackbarSeverity('error');
+      showNotification(
+        'Github sign-in unsuccessful. Please try again or use another sign-in method.',
+        'error',
+        {
+          duration: 6000,
+        },
+      );
     }
   };
 
@@ -113,11 +116,13 @@ const SignInPage = () => {
         },
         onError: (error) => {
           console.error('Failed to sign in through email.', error.message);
-          setIsSnackbarOpen(true);
-          setSnackbarMessage(
-            'Failed to sign in through email. Please try again.',
+          showNotification(
+            'Email sign-in unsuccessful. Please try again or use another sign-in method.',
+            'error',
+            {
+              duration: 6000,
+            },
           );
-          setSnackbarSeverity('error');
         },
       },
     );
@@ -226,12 +231,6 @@ const SignInPage = () => {
           </Typography>
         </Box>
       </Box>
-      <SnackBarNotification
-        open={isSnackbarOpen}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        callerUpdater={resetSnackbarStates}
-      />
     </>
   );
 };

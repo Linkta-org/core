@@ -58,10 +58,7 @@ const UserInputForm = () => {
       reset();
       navigate(`/output/${response.userInputId}`);
       setLoading(false);
-      showNotification(
-        'LinktaFlow created successfully. You can now view and edit it.',
-        'success',
-      );
+      showNotification('LinktaFlow created successfully.', 'success');
     } catch (error) {
       setLoading(false);
       console.error('Failed to create LinktaFlow: ', error);

@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
+import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuth from '@/hooks/useAuth';
 import { useNotification } from '@hooks/useNotification';
@@ -32,49 +33,52 @@ const SignUpPage = () => {
     useCreateUserWithEmailAndPasswordMutation();
   const createUserProfileMutation = useCreateUserProfileMutation();
   const queryClient = useQueryClient();
+  const { data: userProfile } = useFetchUserProfile();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(userSignUpSchema),
-  });
+  } = useForm<FormData>({ resolver: zodResolver(userSignUpSchema) });
   const { isAuthenticated } = useAuth();
   const { showNotification } = useNotification();
 
   const handleAuthSuccess = async (name: string) => {
-    try {
-      const response = await createUserProfileMutation.mutateAsync({ name });
-      await queryClient.setQueryData(['userProfile'], response);
-      showNotification(
-        'Welcome to Linkta! Your account has been created successfully.',
-        'success',
-      );
-      navigate('/generate');
-    } catch (error) {
-      console.error('Failed to create user profile.', error);
-      showNotification(
-        "We could't set up your profile. Please try again or contact support if the issue persists.",
-        'error',
-        {
-          duration: 6000,
-        },
-      );
+    if (!userProfile) {
+      try {
+        console.log('Creating user profile...');
+        const response = await createUserProfileMutation.mutateAsync({ name });
+        await queryClient.setQueryData(['userProfile'], response);
+        console.log('User profile created:', response);
+        showNotification(
+          'Welcome to Linkta! Your account has been created successfully.',
+          'success',
+        );
+        console.log('Notification shown, navigating to /generate...');
+        navigate('/generate');
+      } catch (error) {
+        console.error('Failed to create user profile:', error);
+        showNotification(
+          "We could't set up your profile. Please try again or contact support if the issue persists.",
+          'error',
+          {
+            duration: 6000,
+          },
+        );
+      }
     }
   };
 
   const handleGoogleAuthClick = async () => {
     try {
       await googleAuthMutation.mutateAsync();
+      console.log('Google authentication successful');
       await handleAuthSuccess('');
     } catch (error) {
-      console.error('Failed to sign up through Google.', error);
+      console.error('Failed to sign up through Google:', error);
       showNotification(
         'Google sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
-        {
-          duration: 6000,
-        },
+        { duration: 6000 },
       );
     }
   };
@@ -82,15 +86,14 @@ const SignUpPage = () => {
   const handleGithubAuthClick = async () => {
     try {
       await githubAuthMutation.mutateAsync();
+      console.log('GitHub authentication successful');
       await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign up through GitHub', error);
       showNotification(
-        'Github sign-in unsuccessful. Please try again or use another sign-in method.',
+        'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
-        {
-          duration: 6000,
-        },
+        { duration: 6000 },
       );
     }
   };
@@ -103,24 +106,26 @@ const SignUpPage = () => {
         email,
         password,
       });
+      console.log('Email and password authentication successful');
       await handleAuthSuccess(name);
     } catch (error) {
-      console.error('Failed to sign up through email', error);
+      console.error('Failed to sign up through email:', error);
       showNotification(
         'Email sign-up unsuccessful. Please try again or use another sign-up method.',
         'error',
-        {
-          duration: 6000,
-        },
+        { duration: 6000 },
       );
     }
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && userProfile) {
+      console.log(
+        'User is authenticated and profile exists, navigating to /generate',
+      );
       navigate('/generate');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, userProfile, navigate]);
 
   return (
     <>

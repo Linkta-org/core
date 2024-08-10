@@ -26,81 +26,69 @@ const SignInPage = () => {
   useDocumentTitle('Sign In');
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
-  const githubAuthMuation = useGithubAuthMutation();
+  const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
     useSignInWithEmailAndPasswordMutation();
-  const { data: userProfile, refetch } = useFetchUserProfile();
+  const { data: userProfile } = useFetchUserProfile();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(userSignInSchema),
-  });
+  } = useForm<FormData>({ resolver: zodResolver(userSignInSchema) });
   const createUserProfileMutation = useCreateUserProfileMutation();
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
   const { showNotification } = useNotification();
 
   const handleAuthSuccess = async (name: string) => {
-    try {
-      if (!userProfile) {
+    if (!userProfile) {
+      try {
+        console.log('Creating user profile...');
         const response = await createUserProfileMutation.mutateAsync({ name });
         await queryClient.setQueryData(['userProfile'], response);
+        console.log('User profile created:', response);
+        showNotification("Welcome back! You're now signed in.", 'success');
+        console.log('Notification shown, navigating to /generate...');
+        navigate('/generate');
+      } catch (error) {
+        console.error('Failed to create user profile:', error);
+        showNotification(
+          "We could't set up your profile. Please try again or contact support if the issue persists.",
+          'error',
+          {
+            duration: 6000,
+          },
+        );
       }
-      showNotification("Welcome back! You're now signed in.", 'success');
-      navigate('/generate');
-    } catch (error) {
-      console.error('Failed to create user profile.', error);
-      showNotification(
-        "We could't set up your profile. Please try again or contact support if the issue persists.",
-        'error',
-        {
-          duration: 6000,
-        },
-      );
     }
   };
 
   const handleGoogleAuthClick = async () => {
     try {
       await googleAuthMutation.mutateAsync();
-      const existingProfile = await refetch();
-      if (!existingProfile.data) {
-        await handleAuthSuccess('');
-        navigate('/home-page');
-      } else {
-        navigate('/generate');
-      }
+      console.log('Google authentication successful');
+      await handleAuthSuccess('');
     } catch (error) {
-      console.error('Failed to sign in through Google.', error);
+      console.error('Failed to sign in through Google:', error);
       showNotification(
         'Google sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
-        {
-          duration: 6000,
-        },
+        { duration: 6000 },
       );
     }
   };
 
   const handleGithubAuthClick = async () => {
     try {
-      await githubAuthMuation.mutateAsync();
-      const existingProfile = await refetch();
-      if (!existingProfile.data) {
-        await handleAuthSuccess('');
-      } else {
-        navigate('/generate');
-      }
+      await githubAuthMutation.mutateAsync();
+      console.log('GitHub authentication successful');
+      await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign in through GitHub', error);
       showNotification(
-        'Github sign-in unsuccessful. Please try again or use another sign-in method.',
+        'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
-        {
-          duration: 6000,
-        },
+        { duration: 6000 },
       );
     }
   };
@@ -108,31 +96,28 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const { email, password } = data;
 
-    signInWithEmailAndPasswordMutation.mutate(
-      { email, password },
-      {
-        onSuccess: () => {
-          void refetch();
-        },
-        onError: (error) => {
-          console.error('Failed to sign in through email.', error.message);
-          showNotification(
-            'Email sign-in unsuccessful. Please try again or use another sign-in method.',
-            'error',
-            {
-              duration: 6000,
-            },
-          );
-        },
-      },
-    );
+    try {
+      await signInWithEmailAndPasswordMutation.mutateAsync({ email, password });
+      console.log('Email and password authentication successful');
+      await handleAuthSuccess('');
+    } catch (error) {
+      console.error('Failed to sign in through email:', error);
+      showNotification(
+        'Email sign-in unsuccessful. Please try again or use another sign-in method.',
+        'error',
+        { duration: 6000 },
+      );
+    }
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && userProfile) {
+      console.log(
+        'User is authenticated and profile exists, navigating to /generate',
+      );
       navigate('/generate');
     }
-  }, [userProfile, navigate]);
+  }, [isAuthenticated, userProfile, navigate]);
 
   return (
     <>

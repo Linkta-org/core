@@ -1,0 +1,39 @@
+:root {
+  --notification-z-index: 1;
+  --notification-spacing: -1rem;
+}
+
+.notificationContainer {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-height: calc(100vh - 4rem);
+  overflow-y: hidden;
+  padding: 1rem;
+}
+
+.dismissAllButton,
+.dismissAllButton:hover {
+  height: 1.5rem;
+  margin-bottom: 0.5rem;
+  z-index: calc(var(--notification-z-index) + 1);
+  background-color: var(--background-paper);
+  color: var(--background-default);
+}
+
+.dismissAllButton:hover,
+.dismissAllButton:focus {
+  color: var(--text-secondary);
+}
+
+.notificationItem {
+  position: relative;
+  z-index: var(--notification-z-index);
+}
+
+.notificationItemSpacing {
+  margin-top: var(--notification-spacing);
+}

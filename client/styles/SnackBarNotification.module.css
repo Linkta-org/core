@@ -1,0 +1,18 @@
+.snackbarNotification {
+  position: static;
+  transform: none;
+  min-width: 20rem;
+  max-width: 40rem;
+}
+
+.alert {
+  width: 100%;
+  background-color: var(--background-paper);
+  color: var(--background-default);
+  text-align: left;
+}
+
+.alert__actionButton {
+  color: inherit;
+  size: small;
+}

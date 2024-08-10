@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   AccountCircleOutlined,
   AddCircleOutline,
@@ -15,7 +15,7 @@ import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 import { useNotification } from '@hooks/useNotification';
 import { AxiosError } from 'axios';
 
-type sideNavProps = {
+type SideNavProps = {
   drawerOpen: boolean;
   matching: boolean;
   toggleDrawer: () => void;
@@ -25,7 +25,7 @@ export default function SideNavDrawer({
   drawerOpen,
   matching,
   toggleDrawer,
-}: sideNavProps) {
+}: SideNavProps) {
   const mountedStyle = { animation: 'opacity-in 300ms ease-in' };
   const unmountedStyle = {
     animation: 'opacity-out 200ms ease-in',
@@ -34,22 +34,18 @@ export default function SideNavDrawer({
   const { data: userProfile, isError, error } = useFetchUserProfile();
   const { showNotification } = useNotification();
 
-  useEffect(() => {
-    if (isError) {
-      console.error('Failed to fetch user profile: ', error);
-      let errorMessage = 'Failed to fetch user profile. Please try again.';
+  if (isError) {
+    console.error('Failed to fetch user profile: ', error);
+    let errorMessage = 'Failed to fetch user profile. Please try again.';
 
-      if (error instanceof AxiosError && error.response) {
-        errorMessage = error.response.data || errorMessage;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
-      showNotification(errorMessage, 'error', {
-        duration: 6000,
-      });
+    if (error instanceof AxiosError && error.response) {
+      errorMessage = error.response.data || errorMessage;
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
     }
-  }, [isError]);
+
+    showNotification(errorMessage, 'error', { duration: 6000 });
+  }
 
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>

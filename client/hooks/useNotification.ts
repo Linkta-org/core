@@ -1,7 +1,5 @@
-import {
-  useNotificationStore,
-  type NotificationConfig,
-} from '@stores/NotificationStore';
+import { useNotificationStore } from '@stores/NotificationStore';
+import type { NotificationConfig } from '@/types/notification';
 
 export const useNotification = () => {
   const { addNotification } = useNotificationStore();

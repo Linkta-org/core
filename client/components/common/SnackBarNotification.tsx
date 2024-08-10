@@ -2,7 +2,8 @@ import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import type { Notification } from '@stores/NotificationStore';
+import type { Notification } from '@/types/notification';
+import styles from '@styles/SnackBarNotification.module.css';
 
 type SnackBarNotificationProps = Omit<Notification, 'id'> & {
   onClose: () => void;
@@ -27,30 +28,20 @@ const SnackBarNotification: React.FC<SnackBarNotificationProps> = ({
       autoHideDuration={config?.duration}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      sx={{
-        position: 'static',
-        transform: 'none',
-        minWidth: 300,
-        maxWidth: 500,
-      }}
+      className={styles.snackbarNotification}
     >
       <Alert
         onClose={handleClose}
         severity={type}
         variant='outlined'
-        sx={{
-          width: '100%',
-          bgcolor: 'background.paper',
-          color: 'background.default',
-          textAlign: 'left',
-        }}
+        className={styles.alert}
         action={
           config?.action && (
             <Button
-              color='inherit'
               size='small'
               onClick={config.action.onClick}
               aria-label={`${config.action.label} for notification: ${message}`}
+              className={styles.alert__actionButton}
             >
               {config.action.label}
             </Button>

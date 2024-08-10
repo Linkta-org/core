@@ -1,50 +1,47 @@
 import { create } from 'zustand';
+import type { Notification, NotificationStore } from '@/types/notification';
+import { DEFAULT_DURATION, MAX_NOTIFICATIONS } from '@utils/constants';
+import { generateUniqueId } from '@utils/helpers';
 
-export type NotificationConfig = {
-  duration?: number;
-  action?: {
-    label: string;
-    onClick: () => void;
-  };
+// Helper function to create a new notification
+const createNotification = (
+  notification: Omit<Notification, 'id'>,
+): Notification => ({
+  ...notification,
+  id: generateUniqueId(),
+  config: {
+    duration: DEFAULT_DURATION,
+    ...notification.config,
+  },
+});
+
+// Helper function to set a timeout for a notification
+const setNotificationTimeout = (
+  id: string,
+  duration: number | undefined,
+  removeNotification: (id: string) => void,
+) => {
+  setTimeout(() => {
+    removeNotification(id);
+  }, duration ?? DEFAULT_DURATION);
 };
-
-export type Notification = {
-  id: string;
-  message: string;
-  type: 'success' | 'error' | 'info' | 'warning';
-  config?: NotificationConfig;
-};
-
-type NotificationStore = {
-  notifications: Notification[];
-  addNotification: (notification: Omit<Notification, 'id'>) => void;
-  removeNotification: (id: string) => void;
-  clearAllNotifications: () => void;
-};
-
-const DEFAULT_DURATION = 4000;
-const MAX_NOTIFICATIONS = 5;
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: [],
+
   addNotification: (notification) =>
     set((state) => {
-      const newNotification = {
-        ...notification,
-        id: Date.now().toString(),
-        config: {
-          duration: DEFAULT_DURATION,
-          ...notification.config,
-        },
-      };
-
-      setTimeout(() => {
-        set((currentState) => ({
-          notifications: currentState.notifications.filter(
-            (n) => n.id !== newNotification.id,
-          ),
-        }));
-      }, newNotification.config.duration);
+      const newNotification = createNotification(notification);
+      setNotificationTimeout(
+        newNotification.id,
+        newNotification.config?.duration,
+        (id) =>
+          set((currentState) => ({
+            notifications: currentState.notifications.filter(
+              (n) => n.id !== id,
+            ),
+          })),
+      );
 
       return {
         notifications: [newNotification, ...state.notifications].slice(
@@ -53,11 +50,13 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
         ),
       };
     }),
+
   removeNotification: (id) =>
     set((state) => ({
       notifications: state.notifications.filter(
         (notification) => notification.id !== id,
       ),
     })),
+
   clearAllNotifications: () => set({ notifications: [] }),
 }));

@@ -2,29 +2,19 @@ import React from 'react';
 import { useNotificationStore } from '@stores/NotificationStore';
 import SnackBarNotification from '@components/common/SnackBarNotification';
 import { Button, Box } from '@mui/material';
+import styles from '@styles/NotificationContainer.module.css';
 
 const NotificationContainer: React.FC = () => {
   const { notifications, removeNotification, clearAllNotifications } =
     useNotificationStore();
 
   return (
-    <Box
-      sx={{
-        position: 'fixed',
-        bottom: 24,
-        left: 24,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        maxHeight: 'calc(100vh - 48px)',
-        overflowY: 'hidden',
-      }}
-    >
+    <Box className={styles.notificationContainer}>
       {notifications.length > 1 && (
         <Button
           onClick={clearAllNotifications}
           variant='contained'
-          sx={{ mb: 2, zIndex: notifications.length + 1 }}
+          className={styles.dismissAllButton}
         >
           Dismiss All
         </Button>
@@ -33,11 +23,12 @@ const NotificationContainer: React.FC = () => {
         {notifications.map((notification, index) => (
           <Box
             key={notification.id}
-            sx={{
-              position: 'relative',
-              marginTop: index !== 0 ? '-15px' : 0,
-              zIndex: notifications.length - index,
-            }}
+            className={`${styles.notificationItem} ${index !== 0 ? styles.notificationItemSpacing : ''}`}
+            style={
+              {
+                '--notification-z-index': notifications.length - index,
+              } as React.CSSProperties
+            }
           >
             <SnackBarNotification
               {...notification}

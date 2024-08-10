@@ -3,7 +3,12 @@ import type { Notification, NotificationStore } from '@/types/notification';
 import { DEFAULT_DURATION, MAX_NOTIFICATIONS } from '@utils/constants';
 import { generateUniqueId } from '@utils/helpers';
 
-// Helper function to create a new notification
+/**
+ * Helper function to create a new notification with a unique ID and default configuration.
+ *
+ * @param {Omit<Notification, 'id'>} notification - The notification details excluding the ID.
+ * @returns {Notification} The newly created notification with a unique ID.
+ */
 const createNotification = (
   notification: Omit<Notification, 'id'>,
 ): Notification => ({
@@ -15,7 +20,13 @@ const createNotification = (
   },
 });
 
-// Helper function to set a timeout for a notification
+/**
+ * Helper function to set a timeout for a notification to be removed after a specified duration.
+ *
+ * @param {string} id - The ID of the notification.
+ * @param {number | undefined} duration - The duration after which the notification should be removed.
+ * @param {function} removeNotification - The function to remove the notification.
+ */
 const setNotificationTimeout = (
   id: string,
   duration: number | undefined,
@@ -26,9 +37,19 @@ const setNotificationTimeout = (
   }, duration ?? DEFAULT_DURATION);
 };
 
+/**
+ * Zustand store for managing notifications.
+ *
+ * @type {NotificationStore}
+ */
 export const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: [],
 
+  /**
+   * Add a new notification to the store.
+   *
+   * @param {Omit<Notification, 'id'>} notification - The notification details excluding the ID.
+   */
   addNotification: (notification) =>
     set((state) => {
       const newNotification = createNotification(notification);
@@ -51,6 +72,11 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       };
     }),
 
+  /**
+   * Remove a notification from the store by ID.
+   *
+   * @param {string} id - The ID of the notification to be removed.
+   */
   removeNotification: (id) =>
     set((state) => ({
       notifications: state.notifications.filter(
@@ -58,5 +84,6 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       ),
     })),
 
+  // Clear all notifications from the store.
   clearAllNotifications: () => set({ notifications: [] }),
 }));

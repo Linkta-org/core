@@ -4,6 +4,10 @@ import SnackBarNotification from '@components/common/SnackBarNotification';
 import { Button, Box } from '@mui/material';
 import styles from '@styles/NotificationContainer.module.css';
 
+/**
+ * Container for displaying notifications.
+ * Allows dismissing individual notifications or all at once.
+ */
 const NotificationContainer: React.FC = () => {
   const { notifications, removeNotification, clearAllNotifications } =
     useNotificationStore();

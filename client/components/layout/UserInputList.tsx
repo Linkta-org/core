@@ -104,7 +104,12 @@ const UserInputList: React.FC<UserInputListProps> = ({
         setRenameAnchorElement(null);
       }
     },
-    [selectedUserInput, updateInputTitleMutation, queryClient],
+    [
+      selectedUserInput,
+      updateInputTitleMutation,
+      queryClient,
+      showNotification,
+    ],
   );
 
   const handleRenameCancel = useCallback(() => {
@@ -145,6 +150,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
     createLinktaFlowMutation,
     queryClient,
     setLoading,
+    showNotification,
   ]);
 
   const handleDelete = useCallback(() => {
@@ -180,7 +186,13 @@ const UserInputList: React.FC<UserInputListProps> = ({
       setDeleteDialogOpen(false);
       setSelectedUserInput(null);
     }
-  }, [selectedUserInput, deleteInputMutation, queryClient, navigate]);
+  }, [
+    selectedUserInput,
+    deleteInputMutation,
+    queryClient,
+    navigate,
+    showNotification,
+  ]);
 
   const handleDeleteCancel = useCallback(() => {
     setDeleteDialogOpen(false);

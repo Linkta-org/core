@@ -43,12 +43,9 @@ const SignInPage = () => {
   const handleAuthSuccess = async (name: string) => {
     if (!userProfile) {
       try {
-        console.log('Creating user profile...');
         const response = await createUserProfileMutation.mutateAsync({ name });
         await queryClient.setQueryData(['userProfile'], response);
-        console.log('User profile created:', response);
         showNotification("Welcome back! You're now signed in.", 'success');
-        console.log('Notification shown, navigating to /generate...');
         navigate('/generate');
       } catch (error) {
         console.error('Failed to create user profile:', error);
@@ -66,7 +63,6 @@ const SignInPage = () => {
   const handleGoogleAuthClick = async () => {
     try {
       await googleAuthMutation.mutateAsync();
-      console.log('Google authentication successful');
       await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign in through Google:', error);
@@ -81,7 +77,6 @@ const SignInPage = () => {
   const handleGithubAuthClick = async () => {
     try {
       await githubAuthMutation.mutateAsync();
-      console.log('GitHub authentication successful');
       await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign in through GitHub', error);
@@ -98,7 +93,6 @@ const SignInPage = () => {
 
     try {
       await signInWithEmailAndPasswordMutation.mutateAsync({ email, password });
-      console.log('Email and password authentication successful');
       await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign in through email:', error);
@@ -112,9 +106,6 @@ const SignInPage = () => {
 
   useEffect(() => {
     if (isAuthenticated && userProfile) {
-      console.log(
-        'User is authenticated and profile exists, navigating to /generate',
-      );
       navigate('/generate');
     }
   }, [isAuthenticated, userProfile, navigate]);

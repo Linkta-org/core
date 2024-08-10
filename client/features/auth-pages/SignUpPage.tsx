@@ -45,15 +45,12 @@ const SignUpPage = () => {
   const handleAuthSuccess = async (name: string) => {
     if (!userProfile) {
       try {
-        console.log('Creating user profile...');
         const response = await createUserProfileMutation.mutateAsync({ name });
         await queryClient.setQueryData(['userProfile'], response);
-        console.log('User profile created:', response);
         showNotification(
           'Welcome to Linkta! Your account has been created successfully.',
           'success',
         );
-        console.log('Notification shown, navigating to /generate...');
         navigate('/generate');
       } catch (error) {
         console.error('Failed to create user profile:', error);
@@ -71,7 +68,6 @@ const SignUpPage = () => {
   const handleGoogleAuthClick = async () => {
     try {
       await googleAuthMutation.mutateAsync();
-      console.log('Google authentication successful');
       await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign up through Google:', error);
@@ -86,7 +82,6 @@ const SignUpPage = () => {
   const handleGithubAuthClick = async () => {
     try {
       await githubAuthMutation.mutateAsync();
-      console.log('GitHub authentication successful');
       await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign up through GitHub', error);
@@ -106,7 +101,6 @@ const SignUpPage = () => {
         email,
         password,
       });
-      console.log('Email and password authentication successful');
       await handleAuthSuccess(name);
     } catch (error) {
       console.error('Failed to sign up through email:', error);
@@ -120,9 +114,6 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (isAuthenticated && userProfile) {
-      console.log(
-        'User is authenticated and profile exists, navigating to /generate',
-      );
       navigate('/generate');
     }
   }, [isAuthenticated, userProfile, navigate]);

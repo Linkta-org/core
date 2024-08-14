@@ -1,6 +1,22 @@
 import { createTheme } from '@mui/material/styles';
 import type { ThemeOptions } from '@mui/material/styles/createTheme';
 
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    flowNode: React.CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    flowNode?: React.CSSProperties;
+  }
+}
+
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    flowNode: true;
+  }
+}
+
 // starter theme - modify as needed
 const themeOptions: ThemeOptions = {
   palette: {

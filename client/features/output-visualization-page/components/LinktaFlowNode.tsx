@@ -133,7 +133,7 @@ const LinktaFlowNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
             //   },
             // }}
           >
-            {placeholderData.data.label}
+            {data.label}
           </Typography>
         )}
       </Box>

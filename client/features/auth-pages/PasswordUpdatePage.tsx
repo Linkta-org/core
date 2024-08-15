@@ -8,11 +8,11 @@ import {
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import styles from '@styles/layout/AuthStyles.module.css';
 import type { SubmitHandler } from 'react-hook-form';
-import SnackBarNotification from '@components/common/SnackBarNotification';
 import { useUpdatePasswordMutation } from '@/hooks/useUpdatePasswordMutation';
 import { userPasswordSchema } from '@validators/validateUserPassword';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNotification } from '@hooks/useNotification';
 
 interface FormData {
   password: string;
@@ -25,6 +25,7 @@ const PasswordUpdatePage = () => {
   const [searchParams] = useSearchParams();
   const oobCode = searchParams.get('oobCode');
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const {
     register,
@@ -37,33 +38,16 @@ const PasswordUpdatePage = () => {
 
   const { mutate, isPending } = useUpdatePasswordMutation();
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'error' | 'warning' | 'info' | 'success'
-  >('info');
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
-
   const onSubmit: SubmitHandler<FormData> = async (data: {
     password: string;
     confirmPassword: string;
   }) => {
-    const { password, confirmPassword } = data;
-
-    if (password !== confirmPassword) {
-      setSnackbarMessage('Passwords do not match');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return;
-    }
+    const { password } = data;
 
     if (!oobCode) {
-      setSnackbarMessage('No oobCode found');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+      showNotification('No oobCode found.Please try again.', 'error', {
+        duration: 6000,
+      });
       return;
     }
 
@@ -71,16 +55,18 @@ const PasswordUpdatePage = () => {
       { oobCode, password },
       {
         onSuccess: () => {
-          setSnackbarMessage('Password updated successfully');
-          setSnackbarSeverity('success');
-          setSnackbarOpen(true);
+          showNotification('Password updated successfully', 'success');
           setShouldNavigate(true);
         },
         onError: (error: Error) => {
-          setSnackbarMessage('Failed to update password');
-          setSnackbarSeverity('error');
-          setSnackbarOpen(true);
           console.error('Failed to update password', error.message);
+          showNotification(
+            'Failed to update password. Please try again.',
+            'error',
+            {
+              duration: 6000,
+            },
+          );
         },
       },
     );
@@ -95,7 +81,6 @@ const PasswordUpdatePage = () => {
   useEffect(() => {
     if (shouldNavigate) {
       const timer = setTimeout(() => {
-        setSnackbarOpen(false);
         navigate('/login');
       }, 2500);
 
@@ -149,13 +134,6 @@ const PasswordUpdatePage = () => {
           {isPending ? 'Updating Password...' : 'Update Password'}
         </Button>
       </form>
-
-      <SnackBarNotification
-        callerUpdater={handleCloseSnackbar}
-        message={snackbarMessage}
-        open={snackbarOpen}
-        severity={snackbarSeverity}
-      />
 
       <Box className={`${styles.finePrintContainer}`}>
         <Typography variant='body2'>

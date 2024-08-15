@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import useDocumentTitle from '@hooks/useDocumentTitle';
@@ -11,10 +11,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
-import SnackBarNotification from '@components/common/SnackBarNotification';
-import type { SnackbarSeverity } from '@/types/snackBar';
+import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuth from '@/hooks/useAuth';
+import { useNotification } from '@hooks/useNotification';
 
 const userSignUpSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -33,35 +33,35 @@ const SignUpPage = () => {
     useCreateUserWithEmailAndPasswordMutation();
   const createUserProfileMutation = useCreateUserProfileMutation();
   const queryClient = useQueryClient();
+  const { data: userProfile } = useFetchUserProfile();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(userSignUpSchema),
-  });
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] =
-    useState<SnackbarSeverity>('success');
+  } = useForm<FormData>({ resolver: zodResolver(userSignUpSchema) });
   const { isAuthenticated } = useAuth();
-
-  const resetSnackbarStates = () => {
-    setIsSnackbarOpen(false);
-    setSnackbarMessage('');
-    setSnackbarSeverity('success');
-  };
+  const { showNotification } = useNotification();
 
   const handleAuthSuccess = async (name: string) => {
-    try {
-      const response = await createUserProfileMutation.mutateAsync({ name });
-      await queryClient.setQueryData(['userProfile'], response);
-      navigate('/generate');
-    } catch (error) {
-      console.error('Failed to create user profile.', error);
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to create user profile. Please try again.');
-      setSnackbarSeverity('error');
+    if (!userProfile) {
+      try {
+        const response = await createUserProfileMutation.mutateAsync({ name });
+        await queryClient.setQueryData(['userProfile'], response);
+        showNotification(
+          'Welcome to Linkta! Your account has been created successfully.',
+          'success',
+        );
+        navigate('/generate');
+      } catch (error) {
+        console.error('Failed to create user profile:', error);
+        showNotification(
+          "We could't set up your profile. Please try again or contact support if the issue persists.",
+          'error',
+          {
+            duration: 6000,
+          },
+        );
+      }
     }
   };
 
@@ -70,10 +70,12 @@ const SignUpPage = () => {
       await googleAuthMutation.mutateAsync();
       await handleAuthSuccess('');
     } catch (error) {
-      console.error('Failed to sign up through Google.', error);
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to sign up through Google. Please try again.');
-      setSnackbarSeverity('error');
+      console.error('Failed to sign up through Google:', error);
+      showNotification(
+        'Google sign-in unsuccessful. Please try again or use another sign-in method.',
+        'error',
+        { duration: 6000 },
+      );
     }
   };
 
@@ -83,9 +85,11 @@ const SignUpPage = () => {
       await handleAuthSuccess('');
     } catch (error) {
       console.error('Failed to sign up through GitHub', error);
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to sign up through GitHub. Please try again.');
-      setSnackbarSeverity('error');
+      showNotification(
+        'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
+        'error',
+        { duration: 6000 },
+      );
     }
   };
 
@@ -99,18 +103,20 @@ const SignUpPage = () => {
       });
       await handleAuthSuccess(name);
     } catch (error) {
-      console.error('Failed to sign up through email', error);
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to sign up through email. Please try again.');
-      setSnackbarSeverity('error');
+      console.error('Failed to sign up through email:', error);
+      showNotification(
+        'Email sign-up unsuccessful. Please try again or use another sign-up method.',
+        'error',
+        { duration: 6000 },
+      );
     }
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && userProfile) {
       navigate('/generate');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, userProfile, navigate]);
 
   return (
     <>
@@ -217,12 +223,6 @@ const SignUpPage = () => {
           </Typography>
         </Box>
       </Box>
-      <SnackBarNotification
-        open={isSnackbarOpen}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        callerUpdater={resetSnackbarStates}
-      />
     </>
   );
 };

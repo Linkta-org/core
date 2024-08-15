@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   AccountCircleOutlined,
   AddCircleOutline,
@@ -12,10 +12,10 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import '@styles/SideNavDrawer.css';
 import UserInputHistory from '@components/layout/UserInputHistory';
 import useFetchUserProfile from '@/hooks/useFetchUserProfile';
-import SnackBarNotification from './SnackBarNotification';
-import type { SnackbarSeverity } from '@/types/snackBar';
+import { useNotification } from '@hooks/useNotification';
+import { AxiosError } from 'axios';
 
-type sideNavProps = {
+type SideNavProps = {
   drawerOpen: boolean;
   matching: boolean;
   toggleDrawer: () => void;
@@ -25,32 +25,27 @@ export default function SideNavDrawer({
   drawerOpen,
   matching,
   toggleDrawer,
-}: sideNavProps) {
+}: SideNavProps) {
   const mountedStyle = { animation: 'opacity-in 300ms ease-in' };
   const unmountedStyle = {
     animation: 'opacity-out 200ms ease-in',
     animationFillMode: 'forwards',
   };
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] =
-    useState<SnackbarSeverity>('success');
+  const { data: userProfile, isError, error } = useFetchUserProfile();
+  const { showNotification } = useNotification();
 
-  const { data: userProfile, error, isError } = useFetchUserProfile();
+  if (isError) {
+    console.error('Failed to fetch user profile: ', error);
+    let errorMessage = 'Failed to fetch user profile. Please try again.';
 
-  const resetSnackbarStates = () => {
-    setIsSnackbarOpen(false);
-    setSnackbarMessage('');
-    setSnackbarSeverity('success');
-  };
-
-  useEffect(() => {
-    if (isError && error) {
-      setIsSnackbarOpen(true);
-      setSnackbarMessage('Failed to fetch user profile');
-      setSnackbarSeverity('error');
+    if (error instanceof AxiosError && error.response) {
+      errorMessage = error.response.data || errorMessage;
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
     }
-  }, [isError, error]);
+
+    showNotification(errorMessage, 'error', { duration: 6000 });
+  }
 
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
@@ -170,12 +165,6 @@ export default function SideNavDrawer({
       >
         {DrawerListExpanded}
       </Drawer>
-      <SnackBarNotification
-        open={isSnackbarOpen}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        callerUpdater={resetSnackbarStates}
-      />
     </>
   );
 }

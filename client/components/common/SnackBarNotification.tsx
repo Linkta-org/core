@@ -1,70 +1,79 @@
 import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import type { Notification } from '@/types/notification';
+import styles from '@styles/SnackBarNotification.module.css';
 
-/**
- * A functional component that displays a notification using MUI Snackbar and Alert components.
- * The Snackbar has 3 ways to close:
- * 1. It will auto close after {duration} milliseconds - default is 4000ms
- * 2. By clicking the X icon
- * 3. By pressing the ESC key.
- *
- * @param {object} props - The properties passed to the component.
- * @param {boolean} props.open - Indicates if the snackbar is open.
- * @param {string} props.message - The message to be displayed in the alert.
- * @param {'error' | 'warning' | 'info' | 'success'} props.severity - The severity level of the alert.
- * @param {number} props.duration - The time in miliseconds that the alert remains visible.
- * @param {function} props.callerUpdater - A callback passed from the caller, which updates the 'alert is open' state on the caller
- * @returns {JSX.Element} The rendered component.
- */
-
-type SnackBarNotificationProps = {
-  open: boolean;
-  message: string;
-  severity: 'error' | 'warning' | 'info' | 'success';
-  duration?: number;
-  callerUpdater: () => void;
+type SnackBarNotificationProps = Omit<Notification, 'id'> & {
+  onClose: () => void;
 };
 
-export default function SnackBarNotification({
-  open,
+/**
+ * Displays a snackbar notification with an optional action button.
+ *
+ * @param {object} props - Component props.
+ * @param {string} props.message - Notification message.
+ * @param {'success' | 'info' | 'warning' | 'error'} props.type - Notification type.
+ * @param {object} [props.config] - Additional configuration.
+ * @param {number} [props.config.duration] - Auto-hide duration in milliseconds.
+ * @param {object} [props.config.action] - Action button configuration.
+ * @param {string} props.config.action.label - Action button label.
+ * @param {function} props.config.action.onClick - Action button click handler.
+ * @param {function} props.onClose - Callback to handle notification close.
+ */
+const SnackBarNotification: React.FC<SnackBarNotificationProps> = ({
   message,
-  severity,
-  duration,
-  callerUpdater,
-}: SnackBarNotificationProps) {
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string,
-  ) => {
-    event?.preventDefault();
+  type,
+  config,
+  onClose,
+}) => {
+  /**
+   * Handles the close event of the Snackbar.
+   *
+   * @param {React.SyntheticEvent | Event} event - Event object.
+   * @param {string} [reason] - Reason for closing.
+   */
+  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
-    callerUpdater();
+    onClose();
   };
 
   return (
     <Snackbar
-      open={open}
-      autoHideDuration={duration || 4000}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      sx={{ minWidth: 500 }}
+      open={true}
+      autoHideDuration={config?.duration}
       onClose={handleClose}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      className={styles.snackbarNotification}
     >
       <Alert
         onClose={handleClose}
-        severity={severity}
+        severity={type}
         variant='outlined'
-        sx={{
-          width: '100%',
-          bgcolor: 'background.paper',
-          color: 'background.default',
-          textAlign: 'center',
-        }}
+        className={styles.alert}
+        action={
+          config?.action && (
+            <Button
+              size='small'
+              onClick={config.action.onClick}
+              aria-label={`${config.action.label} for notification: ${message}`}
+              className={styles.alert__actionButton}
+            >
+              {config.action.label}
+            </Button>
+          )
+        }
+        role='alert'
+        aria-live='polite'
+        tabIndex={0}
       >
         {message}
       </Alert>
     </Snackbar>
   );
-}
+};
+
+export default SnackBarNotification;

@@ -12,7 +12,6 @@ const createUserProfileInApi = async (
 ): Promise<User> => {
   try {
     const response = await axiosClient.post('/v1/users', data);
-    console.log('Response from create user profile from API: ', response.data);
     return response.data.newUserProfile;
   } catch (error) {
     throw new Error('Error creating user');

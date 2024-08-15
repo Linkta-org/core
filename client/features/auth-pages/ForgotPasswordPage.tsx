@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useDocumentTitle from '@hooks/useDocumentTitle';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
@@ -8,7 +8,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useGetPasswordResetLinkMutation } from '@/hooks/useGetPasswordResetLinkMutation';
 import { userEmailSchema } from '@validators/validateUseremail';
-import SnackBarNotification from '@components/common/SnackBarNotification';
+import { useNotification } from '@hooks/useNotification';
 
 interface FormData {
   email: string;
@@ -26,31 +26,28 @@ const ForgotPasswordPage = () => {
   });
 
   const { mutate, isPending, isSuccess } = useGetPasswordResetLinkMutation();
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'error' | 'warning' | 'info' | 'success'
-  >('info');
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  const { showNotification } = useNotification();
 
   const onSubmit: SubmitHandler<FormData> = async (data: { email: string }) => {
     const { email } = data;
 
     mutate(email, {
       onSuccess: () => {
-        setSnackbarMessage('Password reset email sent');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
+        showNotification(
+          'Password reset link sent to your email. Please check your inbox and spam folder.',
+          'success',
+        );
       },
       onError: (error: Error) => {
-        setSnackbarMessage('Failed to send password reset email');
-        setSnackbarSeverity('error');
-        setSnackbarOpen(true);
         console.error('Failed to send password reset email', error.message);
+
+        showNotification(
+          "FWe couldn't send the password reset email. Please verify your email address and try again.",
+          'error',
+          {
+            duration: 6000,
+          },
+        );
       },
     });
   };
@@ -94,13 +91,6 @@ const ForgotPasswordPage = () => {
           {isPending ? 'Sending Link...' : 'Send Link'}
         </Button>
       </form>
-
-      <SnackBarNotification
-        callerUpdater={handleCloseSnackbar}
-        message={snackbarMessage}
-        open={snackbarOpen}
-        severity={snackbarSeverity}
-      />
 
       <Box className={`${styles.finePrintContainer}`}>
         <Typography variant='body2'>

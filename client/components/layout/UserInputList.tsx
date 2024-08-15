@@ -10,12 +10,12 @@ import useDeleteInputMutation from '@hooks/useDeleteInputMutation';
 import type { UserInput } from '@/types/UserInput';
 import { useCreateLinktaFlowMutation } from '@hooks/useCreateLinktaFlowMutation';
 import { extractUserInputId } from '@utils/helpers';
-import SnackBarNotification from '@components/common/SnackBarNotification';
-import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 import RenameDialog from './RenameDialog';
 import DeleteDialog from './DeleteDialog';
 import useLoadingStore from '@stores/LoadingStore';
+import { useNotification } from '@hooks/useNotification';
+import { AxiosError } from 'axios';
 
 interface UserInputListProps {
   inputHistory: UserInput[];
@@ -42,16 +42,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
   const [renameAnchorElement, setRenameAnchorElement] =
     useState<null | HTMLElement>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] =
-    useState<SnackbarSeverity>('success');
-
-  const resetSnackbarStates = () => {
-    setIsSnackbarOpen(false);
-    setSnackbarMessage('');
-    setSnackbarSeverity('success');
-  };
+  const { showNotification } = useNotification();
 
   const handleItemClick = useCallback(
     (event: React.MouseEvent<HTMLElement>, userInput: UserInput) => {
@@ -85,23 +76,40 @@ const UserInputList: React.FC<UserInputListProps> = ({
       if (selectedUserInput) {
         const userInputId = extractUserInputId(selectedUserInput.id);
         try {
-          const data = await updateInputTitleMutation.mutateAsync({
+          await updateInputTitleMutation.mutateAsync({
             userInputId,
             newTitle,
           });
           await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
-          setIsSnackbarOpen(true);
-          setSnackbarMessage(`${data.message}`);
+
+          showNotification(
+            'Your LinktaFlow title has been updated successfully.',
+            'success',
+          );
         } catch (error) {
-          console.error('Error updating input title: ', error);
-          setIsSnackbarOpen(true);
-          setSnackbarMessage('Failed to update input title. Please try again.');
-          setSnackbarSeverity('error');
+          console.error('Error renaming input: ', error);
+          let errorMessage =
+            'Unable to update LinktaFlow title. Please try again or check your connection.';
+
+          if (error instanceof AxiosError && error.response) {
+            errorMessage = error.response.data || errorMessage;
+          } else if (error instanceof Error) {
+            errorMessage = error.message;
+          }
+
+          showNotification(errorMessage, 'error', {
+            duration: 6000,
+          });
         }
         setRenameAnchorElement(null);
       }
     },
-    [selectedUserInput, updateInputTitleMutation, queryClient],
+    [
+      selectedUserInput,
+      updateInputTitleMutation,
+      queryClient,
+      showNotification,
+    ],
   );
 
   const handleRenameCancel = useCallback(() => {
@@ -116,13 +124,23 @@ const UserInputList: React.FC<UserInputListProps> = ({
           input: selectedUserInput.input,
         });
         await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+        showNotification('LinktaFlow generated successfully', 'success');
         navigate(`/output/${response.userInputId}`);
         setLoading(false);
       } catch (error) {
-        console.error('Error regenerating flow: ', error);
-        setIsSnackbarOpen(true);
-        setSnackbarMessage('Failed to create LinktaFlow. Please try again.');
-        setSnackbarSeverity('error');
+        console.error('Error regenerating LinktaFlow: ', error);
+        let errorMessage = 'Failed to regenerate LinktaFlow. Please try again.';
+
+        if (error instanceof AxiosError && error.response) {
+          errorMessage = error.response.data || errorMessage;
+        } else if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+
+        showNotification(errorMessage, 'error', {
+          duration: 6000,
+        });
+
         setLoading(false);
       }
     }
@@ -132,6 +150,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
     createLinktaFlowMutation,
     queryClient,
     setLoading,
+    showNotification,
   ]);
 
   const handleDelete = useCallback(() => {
@@ -144,17 +163,36 @@ const UserInputList: React.FC<UserInputListProps> = ({
       try {
         await deleteInputMutation.mutateAsync(userInputId);
         await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+        showNotification(
+          'Your LinktaFlow and associated input have been deleted successfully.',
+          'success',
+        );
         navigate('/generate');
       } catch (error) {
         console.error('Error deleting input: ', error);
-        setIsSnackbarOpen(true);
-        setSnackbarMessage('Failed to delete input. Please try again.');
-        setSnackbarSeverity('error');
+        let errorMessage =
+          "We couldn't delete the LinktaFlow. Please try again or refresh the page.";
+
+        if (error instanceof AxiosError && error.response) {
+          errorMessage = error.response.data || errorMessage;
+        } else if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+
+        showNotification(errorMessage, 'error', {
+          duration: 6000,
+        });
       }
       setDeleteDialogOpen(false);
       setSelectedUserInput(null);
     }
-  }, [selectedUserInput, deleteInputMutation, queryClient, navigate]);
+  }, [
+    selectedUserInput,
+    deleteInputMutation,
+    queryClient,
+    navigate,
+    showNotification,
+  ]);
 
   const handleDeleteCancel = useCallback(() => {
     setDeleteDialogOpen(false);
@@ -218,12 +256,6 @@ const UserInputList: React.FC<UserInputListProps> = ({
         isOpen={deleteDialogOpen}
         onDelete={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
-      />
-      <SnackBarNotification
-        open={isSnackbarOpen}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        callerUpdater={resetSnackbarStates}
       />
     </>
   );

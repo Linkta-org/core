@@ -50,6 +50,7 @@ const UserInputForm = () => {
 
   const onSubmit = useCallback(
     async (data: CustomFormData) => {
+      setLoading(true);
       try {
         const response = await createLinktaFlowMutation.mutateAsync({
           input: data.input,
@@ -58,10 +59,10 @@ const UserInputForm = () => {
         reset();
         navigate(`/output/${response.userInputId}`);
         showNotification('LinktaFlow created successfully.', 'success');
-    } catch (error) {
+      } catch (error) {
         console.error('Failed to create LinktaFlow: ', error);
         let errorMessage =
-        'Unable to create LinktaFlow. Please check your input and try again.';
+          'Unable to create LinktaFlow. Please check your input and try again.';
 
         if (error instanceof AxiosError && error.response) {
           errorMessage = error.response.data || errorMessage;
@@ -69,21 +70,29 @@ const UserInputForm = () => {
           errorMessage = error.message;
         }
 
-      showNotification(errorMessage, 'error', {
-        duration: 6000,
-        action: {
-          label: 'Retry',
-          onClick: () => handleSubmit(throttledSubmit)(),
-        },
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
+        showNotification(errorMessage, 'error', {
+          duration: 6000,
+          action: {
+            label: 'Retry',
+            onClick: () => handleSubmit(debouncedSubmit)(),
+          },
+        });
+      } finally {
+        setLoading(false);
+      }
     },
+    [
+      createLinktaFlowMutation,
+      queryClient,
+      reset,
+      navigate,
+      showNotification,
+      setLoading,
+      handleSubmit,
+    ],
   );
 
-  const debouncedSubmit = useDebounce(onSubmit, 1000);
+  const debouncedSubmit = useDebounce(onSubmit, 500);
 
   return (
     <>

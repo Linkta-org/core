@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '@styles/UserInputView.module.css';
 import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
@@ -8,6 +8,7 @@ import { AxiosError } from 'axios';
 import useLoadingStore from '@/stores/LoadingStore';
 import useUserInputStore from '@/stores/UserInputStore';
 import { useNotification } from '@hooks/useNotification';
+import useDebounce from '@hooks/useDebounce';
 
 interface PopularTopicsProps {}
 
@@ -29,37 +30,49 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
   const setLoading = useLoadingStore((state) => state.setLoading);
   const isChecked = useUserInputStore((state) => state.isChecked);
 
-  const handleClickTopic = async (index: number) => {
-    try {
+  const handleClickTopic = useCallback(
+    async (index: number) => {
       setLoading(true);
-      const response = await createLinktaFlowMutation.mutateAsync({
-        input: topicsList[index],
-      });
-      await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
-      navigate(`/output/${response.userInputId}`);
-      showNotification('LinktaFlow created successfully.', 'success');
-    } catch (error) {
-      console.error('Failed to create LinktaFlow: ', error);
-      let errorMessage =
-        'Unable to create LinktaFlow. Please check your input and try again.';
+      try {
+        const response = await createLinktaFlowMutation.mutateAsync({
+          input: topicsList[index],
+        });
+        await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+        navigate(`/output/${response.userInputId}`);
+        showNotification('LinktaFlow created successfully.', 'success');
+      } catch (error) {
+        console.error('Failed to create LinktaFlow: ', error);
+        let errorMessage =
+          'Unable to create LinktaFlow. Please check your input and try again.';
 
-      if (error instanceof AxiosError && error.response) {
-        errorMessage = error.response.data || errorMessage;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
+        if (error instanceof AxiosError && error.response) {
+          errorMessage = error.response.data || errorMessage;
+        } else if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+
+        showNotification(errorMessage, 'error', {
+          duration: 6000,
+          action: {
+            label: 'Retry',
+            onClick: () => debouncedHandleClickTopic(index),
+          },
+        });
+      } finally {
+        setLoading(false);
       }
+    },
+    [
+      createLinktaFlowMutation,
+      queryClient,
+      navigate,
+      showNotification,
+      setLoading,
+      topicsList,
+    ],
+  );
 
-      showNotification(errorMessage, 'error', {
-        duration: 6000,
-        action: {
-          label: 'Retry',
-          onClick: () => handleClickTopic(index),
-        },
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const debouncedHandleClickTopic = useDebounce(handleClickTopic, 500);
 
   return (
     <Box className={`${styles.popularTopics}`}>
@@ -74,7 +87,7 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
           variant='outlined'
           className={`${styles.topicsButton}`}
           key={`topic-button-${i}`}
-          onClick={() => handleClickTopic(i)}
+          onClick={() => debouncedHandleClickTopic(i)}
           disabled={!isChecked || isLoading}
         >
           <Typography

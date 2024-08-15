@@ -78,6 +78,8 @@ const UserInputForm = () => {
           onClick: () => handleSubmit(throttledSubmit)(),
         },
       });
+    } finally {
+      setLoading(false);
     }
   }, 1000);
 

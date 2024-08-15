@@ -1,14 +1,14 @@
 import { Box, Button, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '@styles/UserInputView.module.css';
 import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
-import SnackBarNotification from '@components/common/SnackBarNotification';
-import type { SnackbarSeverity } from '@/types/snackBar';
 import { useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import useLoadingStore from '@/stores/LoadingStore';
 import useUserInputStore from '@/stores/UserInputStore';
+import { useNotification } from '@hooks/useNotification';
+
 interface PopularTopicsProps {}
 
 const PopularTopics: React.FC<PopularTopicsProps> = () => {
@@ -23,17 +23,9 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
   const navigate = useNavigate();
   const createLinktaFlowMutation = useCreateLinktaFlowMutation();
   const queryClient = useQueryClient();
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] =
-    useState<SnackbarSeverity>('success');
+  const { showNotification } = useNotification();
 
-  const resetSnackbarStates = () => {
-    setIsSnackbarOpen(false);
-    setSnackbarMessage('');
-    setSnackbarSeverity('success');
-  };
-
+  const isLoading = useLoadingStore((state) => state.isLoading);
   const setLoading = useLoadingStore((state) => state.setLoading);
   const isChecked = useUserInputStore((state) => state.isChecked);
 
@@ -45,10 +37,11 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
       });
       await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
       navigate(`/output/${response.userInputId}`);
-      setLoading(false);
+      showNotification('LinktaFlow created successfully.', 'success');
     } catch (error) {
       console.error('Failed to create LinktaFlow: ', error);
-      let errorMessage = 'Failed to create LinktaFlow. Please try again.';
+      let errorMessage =
+        'Unable to create LinktaFlow. Please check your input and try again.';
 
       if (error instanceof AxiosError && error.response) {
         errorMessage = error.response.data || errorMessage;
@@ -56,48 +49,45 @@ const PopularTopics: React.FC<PopularTopicsProps> = () => {
         errorMessage = error.message;
       }
 
-      setIsSnackbarOpen(true);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity('error');
+      showNotification(errorMessage, 'error', {
+        duration: 6000,
+        action: {
+          label: 'Retry',
+          onClick: () => handleClickTopic(index),
+        },
+      });
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <Box className={`${styles.popularTopics}`}>
-        <Typography
-          variant='h6'
-          className={`${styles.topicsHeading}`}
+    <Box className={`${styles.popularTopics}`}>
+      <Typography
+        variant='h6'
+        className={`${styles.topicsHeading}`}
+      >
+        Popular Topics
+      </Typography>
+      {topicsList.map((topic, i) => (
+        <Button
+          variant='outlined'
+          className={`${styles.topicsButton}`}
+          key={`topic-button-${i}`}
+          onClick={() => handleClickTopic(i)}
+          disabled={!isChecked || isLoading}
         >
-          Popular Topics
-        </Typography>
-        {topicsList.map((topic, i) => (
-          <Button
-            variant='outlined'
-            className={`${styles.topicsButton}`}
-            key={`topic-button-${i}`}
-            onClick={() => handleClickTopic(i)}
-            disabled={!isChecked}
+          <Typography
+            variant='body1'
+            color='textPrimary'
+            className='topic-data'
+            id={`topic-${i}`}
           >
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              className='topic-data'
-              id={`topic-${i}`}
-            >
-              {topic}
-            </Typography>
-          </Button>
-        ))}
-      </Box>
-      <SnackBarNotification
-        open={isSnackbarOpen}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        callerUpdater={resetSnackbarStates}
-      />
-    </>
+            {topic}
+          </Typography>
+        </Button>
+      ))}
+    </Box>
   );
 };
 

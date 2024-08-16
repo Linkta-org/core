@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   AccountCircleOutlined,
   AddCircleOutline,
@@ -31,22 +31,37 @@ export default function SideNavDrawer({
     animation: 'opacity-out 200ms ease-in',
     animationFillMode: 'forwards',
   };
-  const { data: userProfile, isError, error } = useFetchUserProfile();
+  const { data, status, error } = useFetchUserProfile();
   const { showNotification } = useNotification();
 
-  if (isError) {
-    console.error('Failed to fetch user profile: ', error);
-    let errorMessage = 'Failed to fetch user profile. Please try again.';
+  useEffect(() => {
+    if (status === 'error') {
+      console.error('Failed to fetch user profile: ', error);
+      let errorMessage = 'Failed to fetch user profile. Please try again.';
 
-    if (error instanceof AxiosError && error.response) {
-      errorMessage = error.response.data || errorMessage;
-    } else if (error instanceof Error) {
-      errorMessage = error.message;
+      if (error instanceof AxiosError && error.response) {
+        errorMessage = error.response.data || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      showNotification(errorMessage, 'error', { duration: 6000 });
     }
+  }, [status, error, showNotification]);
 
-    showNotification(errorMessage, 'error', { duration: 6000 });
-  }
-
+  const renderUserProfile = () => {
+    if (status === 'pending') {
+      return <Typography variant='caption'>Loading...</Typography>;
+    } else if (
+      status === 'success' &&
+      typeof data !== 'string' &&
+      data?.userProfile?.name
+    ) {
+      return <Typography variant='caption'>{data.userProfile.name}</Typography>;
+    } else {
+      return <Typography variant='caption'>Guest</Typography>;
+    }
+  };
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
       <Link
@@ -57,7 +72,7 @@ export default function SideNavDrawer({
         to='/login'
       >
         <AccountCircleOutlined />
-        <Typography variant='caption'>{userProfile?.name}</Typography>
+        {renderUserProfile()}
       </Link>
 
       <Link

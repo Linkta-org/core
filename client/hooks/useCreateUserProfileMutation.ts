@@ -1,6 +1,6 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import axiosClient from '@config/axios';
-import type { User } from '@/types/user';
+import type { UserProfile } from '@/types/user';
 
 interface CreateUserProfileParams {
   name: string;
@@ -9,7 +9,7 @@ interface CreateUserProfileParams {
 // API call for creating a new user profile
 const createUserProfileInApi = async (
   data: CreateUserProfileParams,
-): Promise<User> => {
+): Promise<UserProfile> => {
   try {
     const response = await axiosClient.post('/v1/users', data);
     return response.data.newUserProfile;
@@ -23,12 +23,12 @@ const createUserProfileInApi = async (
  * @returns {UseMutationResult<CreateUserResponse, Error, CreateUserProfileParams, unknown>} The mutation result.
  */
 const useCreateUserProfileMutation = (): UseMutationResult<
-  User,
+  UserProfile,
   Error,
   CreateUserProfileParams,
   unknown
 > => {
-  return useMutation<User, Error, CreateUserProfileParams, unknown>({
+  return useMutation<UserProfile, Error, CreateUserProfileParams, unknown>({
     mutationFn: createUserProfileInApi,
   });
 };

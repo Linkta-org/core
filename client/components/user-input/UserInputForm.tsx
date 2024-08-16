@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,7 +14,7 @@ import {
 import styles from '@styles/UserInputView.module.css';
 import { useCreateLinktaFlowMutation } from '@/hooks/useCreateLinktaFlowMutation';
 import { useQueryClient } from '@tanstack/react-query';
-import useThrottle from '@hooks/useThrottle';
+import useDebounce from '@hooks/useDebounce';
 import { AxiosError } from 'axios';
 import Loader from '@/components/common/Loader';
 import useUserInputStore from '@/stores/UserInputStore';
@@ -48,40 +48,51 @@ const UserInputForm = () => {
   const isLoading = useLoadingStore((state) => state.isLoading);
   const setLoading = useLoadingStore((state) => state.setLoading);
 
-  const throttledSubmit = useThrottle(async (data: CustomFormData) => {
-    setLoading(true);
-    try {
-      const response = await createLinktaFlowMutation.mutateAsync({
-        input: data.input,
-      });
-      await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
-      reset();
-      navigate(`/output/${response.userInputId}`);
-      setLoading(false);
-      showNotification('LinktaFlow created successfully.', 'success');
-    } catch (error) {
-      setLoading(false);
-      console.error('Failed to create LinktaFlow: ', error);
-      let errorMessage =
-        'Unable to create LinktaFlow. Please check your input and try again.';
+  const onSubmit = useCallback(
+    async (data: CustomFormData) => {
+      setLoading(true);
+      try {
+        const response = await createLinktaFlowMutation.mutateAsync({
+          input: data.input,
+        });
+        await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
+        reset();
+        navigate(`/output/${response.userInputId}`);
+        showNotification('LinktaFlow created successfully.', 'success');
+      } catch (error) {
+        console.error('Failed to create LinktaFlow: ', error);
+        let errorMessage =
+          'Unable to create LinktaFlow. Please check your input and try again.';
 
-      if (error instanceof AxiosError && error.response) {
-        errorMessage = error.response.data || errorMessage;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
+        if (error instanceof AxiosError && error.response) {
+          errorMessage = error.response.data || errorMessage;
+        } else if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+
+        showNotification(errorMessage, 'error', {
+          duration: 6000,
+          action: {
+            label: 'Retry',
+            onClick: () => handleSubmit(debouncedSubmit)(),
+          },
+        });
+      } finally {
+        setLoading(false);
       }
+    },
+    [
+      createLinktaFlowMutation,
+      queryClient,
+      reset,
+      navigate,
+      showNotification,
+      setLoading,
+      handleSubmit,
+    ],
+  );
 
-      showNotification(errorMessage, 'error', {
-        duration: 6000,
-        action: {
-          label: 'Retry',
-          onClick: () => handleSubmit(throttledSubmit)(),
-        },
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, 1000);
+  const debouncedSubmit = useDebounce(onSubmit, 500);
 
   return (
     <>
@@ -89,7 +100,7 @@ const UserInputForm = () => {
         <Loader />
       ) : (
         <form
-          onSubmit={handleSubmit(throttledSubmit)}
+          onSubmit={handleSubmit(debouncedSubmit)}
           className={`${styles.userInputForm}`}
         >
           <Typography

@@ -32,9 +32,11 @@ const setNotificationTimeout = (
   duration: number | undefined,
   removeNotification: (id: string) => void,
 ) => {
-  setTimeout(() => {
+  const timeoutId = setTimeout(() => {
     removeNotification(id);
   }, duration ?? DEFAULT_DURATION);
+
+  return () => clearTimeout(timeoutId);
 };
 
 /**
@@ -52,6 +54,10 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
    */
   addNotification: (notification) =>
     set((state) => {
+      if (state.notifications.length >= MAX_NOTIFICATIONS) {
+        return state;
+      }
+
       const newNotification = createNotification(notification);
       setNotificationTimeout(
         newNotification.id,
@@ -65,10 +71,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       );
 
       return {
-        notifications: [newNotification, ...state.notifications].slice(
-          0,
-          MAX_NOTIFICATIONS,
-        ),
+        notifications: [newNotification, ...state.notifications],
       };
     }),
 

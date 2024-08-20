@@ -12,8 +12,6 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import '@styles/SideNavDrawer.css';
 import UserInputHistory from '@components/layout/UserInputHistory';
 import useFetchUserProfile from '@/hooks/useFetchUserProfile';
-import { useNotification } from '@hooks/useNotification';
-import { AxiosError } from 'axios';
 
 type SideNavProps = {
   drawerOpen: boolean;
@@ -31,37 +29,23 @@ export default function SideNavDrawer({
     animation: 'opacity-out 200ms ease-in',
     animationFillMode: 'forwards',
   };
-  const { data, status, error } = useFetchUserProfile();
-  const { showNotification } = useNotification();
 
-  useEffect(() => {
-    if (status === 'error') {
-      console.error('Failed to fetch user profile: ', error);
-      let errorMessage = 'Failed to fetch user profile. Please try again.';
-
-      if (error instanceof AxiosError && error.response) {
-        errorMessage = error.response.data || errorMessage;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
-      showNotification(errorMessage, 'error', { duration: 6000 });
-    }
-  }, [status, error, showNotification]);
+  const { data: userProfile, status } = useFetchUserProfile();
 
   const renderUserProfile = () => {
     if (status === 'pending') {
       return <Typography variant='caption'>Loading...</Typography>;
     } else if (
       status === 'success' &&
-      typeof data !== 'string' &&
-      data?.userProfile?.name
+      typeof userProfile !== 'string' &&
+      userProfile?.name
     ) {
-      return <Typography variant='caption'>{data.userProfile.name}</Typography>;
+      return <Typography variant='caption'>{userProfile.name}</Typography>;
     } else {
       return <Typography variant='caption'>Guest</Typography>;
     }
   };
+
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
       <Link

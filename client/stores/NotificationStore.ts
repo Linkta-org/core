@@ -26,6 +26,7 @@ const createNotification = (
  * @param {string} id - The ID of the notification.
  * @param {number | undefined} duration - The duration after which the notification should be removed.
  * @param {function} removeNotification - The function to remove the notification.
+ * @returns {function} Cleanup function to clear the timeout.
  */
 const setNotificationTimeout = (
   id: string,
@@ -36,57 +37,93 @@ const setNotificationTimeout = (
     removeNotification(id);
   }, duration ?? DEFAULT_DURATION);
 
+  // Function to clear the timeout to prevent memory leaks
   return () => clearTimeout(timeoutId);
 };
 
 /**
- * Zustand store for managing notifications.
+ * Zustand store for managing notifications with automatic timeout handling.
  *
  * @type {NotificationStore}
  */
-export const useNotificationStore = create<NotificationStore>((set) => ({
-  notifications: [],
+export const useNotificationStore = create<NotificationStore>((set) => {
+  const notificationTimeouts = new Map<string, () => void>();
 
-  /**
-   * Add a new notification to the store.
-   *
-   * @param {Omit<Notification, 'id'>} notification - The notification details excluding the ID.
-   */
-  addNotification: (notification) =>
-    set((state) => {
-      if (state.notifications.length >= MAX_NOTIFICATIONS) {
-        return state;
-      }
+  return {
+    notifications: [],
 
-      const newNotification = createNotification(notification);
-      setNotificationTimeout(
-        newNotification.id,
-        newNotification.config?.duration,
-        (id) =>
-          set((currentState) => ({
-            notifications: currentState.notifications.filter(
-              (n) => n.id !== id,
-            ),
-          })),
-      );
+    /**
+     * Add a new notification to the store and schedules its removal.
+     *
+     * @param {Omit<Notification, 'id'>} notification - The notification details excluding the ID.
+     */
+    addNotification: (notification) =>
+      set((state) => {
+        if (state.notifications.length >= MAX_NOTIFICATIONS) {
+          return state;
+        }
 
-      return {
-        notifications: [newNotification, ...state.notifications],
-      };
-    }),
+        const newNotification = createNotification(notification);
 
-  /**
-   * Remove a notification from the store by ID.
-   *
-   * @param {string} id - The ID of the notification to be removed.
-   */
-  removeNotification: (id) =>
-    set((state) => ({
-      notifications: state.notifications.filter(
-        (notification) => notification.id !== id,
-      ),
-    })),
+        // Set a timeout to automatically remove the notification after its duration
+        const cleanup = setNotificationTimeout(
+          newNotification.id,
+          newNotification.config?.duration,
+          (id) => {
+            set((currentState) => ({
+              notifications: currentState.notifications.filter(
+                (n) => n.id !== id,
+              ),
+            }));
+            // Remove the timeout from the map after cleanup
+            notificationTimeouts.delete(id);
+          },
+        );
 
-  // Clear all notifications from the store.
-  clearAllNotifications: () => set({ notifications: [] }),
-}));
+        // Store the cleanup function for later use
+        notificationTimeouts.set(newNotification.id, cleanup);
+
+        // Add the new notification to the state
+        return {
+          notifications: [newNotification, ...state.notifications],
+        };
+      }),
+
+    /**
+     * Remove a notification by ID and clears its timeout.
+     *
+     * @param {string} id - Notification ID.
+     */
+    removeNotification: (id) =>
+      set((state) => {
+        const cleanup = notificationTimeouts.get(id);
+
+        if (cleanup) {
+          cleanup();
+          notificationTimeouts.delete(id);
+        } else {
+          console.warn(`No timeout found for notification with id ${id}`);
+        }
+
+        return {
+          notifications: state.notifications.filter(
+            (notification) => notification.id !== id,
+          ),
+        };
+      }),
+
+    /**
+     * Clears all notifications and their timeouts.
+     */
+    clearAllNotifications: () =>
+      set(() => {
+        // Iterate over all timeouts and clear them
+        notificationTimeouts.forEach((cleanup) => cleanup());
+        // Clear the entire map of timeouts
+        notificationTimeouts.clear();
+
+        // Clear all notifications from the state
+        return { notifications: [] };
+      }),
+  };
+});

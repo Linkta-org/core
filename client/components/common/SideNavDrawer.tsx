@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   AccountCircleOutlined,
   AddCircleOutline,
@@ -33,17 +33,19 @@ export default function SideNavDrawer({
   const { data: userProfile, status } = useFetchUserProfile();
 
   const renderUserProfile = () => {
+    let content;
+
     if (status === 'pending') {
-      return <Typography variant='caption'>Loading...</Typography>;
-    } else if (
-      status === 'success' &&
-      typeof userProfile !== 'string' &&
-      userProfile?.name
-    ) {
-      return <Typography variant='caption'>{userProfile.name}</Typography>;
+      content = 'Loading...';
+    } else if (status === 'success') {
+      content = userProfile?.name || 'Unnamed User';
+    } else if (status === 'error') {
+      content = 'Error loading profile';
     } else {
-      return <Typography variant='caption'>Guest</Typography>;
+      content = 'Guest'; // Fallback
     }
+
+    return <Typography variant='caption'>{content}</Typography>;
   };
 
   const DrawerListExpanded = (

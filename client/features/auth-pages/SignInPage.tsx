@@ -49,13 +49,6 @@ const SignInPage = () => {
         navigate('/generate');
       } catch (error) {
         console.error('Failed to create user profile:', error);
-        showNotification(
-          "We could't set up your profile. Please try again or contact support if the issue persists.",
-          'error',
-          {
-            duration: 6000,
-          },
-        );
       }
     }
   };

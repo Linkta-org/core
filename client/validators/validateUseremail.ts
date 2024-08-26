@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const disposableEmailDomains = [
   'mailinator.com',
-  'dispostable.com',
+  'dispostable.com', // is this a typo?
   '10minutemail.com',
 ];
 

@@ -7,7 +7,7 @@ import {
   ChevronLeftOutlined,
   ChevronRightOutlined,
 } from '@mui/icons-material';
-import { Box, Typography, Button, Drawer, Link } from '@mui/material';
+import { Box, Typography, Button, Drawer, Link, Skeleton } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 import '@styles/SideNavDrawer.css';
 import UserInputHistory from '@components/layout/UserInputHistory';
@@ -30,23 +30,11 @@ export default function SideNavDrawer({
     animationFillMode: 'forwards',
   };
 
-  const { data: userProfile, status } = useFetchUserProfile();
-
-  const renderUserProfile = () => {
-    let content;
-
-    if (status === 'pending') {
-      content = 'Loading...';
-    } else if (status === 'success') {
-      content = userProfile?.name || 'Unnamed User';
-    } else if (status === 'error') {
-      content = 'Error loading profile';
-    } else {
-      content = 'Guest'; // Fallback
-    }
-
-    return <Typography variant='caption'>{content}</Typography>;
-  };
+  const {
+    data: userProfile,
+    // error,
+    // isError,
+  } = useFetchUserProfile('Side Nav Drawer');
 
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
@@ -58,7 +46,15 @@ export default function SideNavDrawer({
         to='/login'
       >
         <AccountCircleOutlined />
-        {renderUserProfile()}
+        <Typography variant='caption'>
+          {userProfile ? (
+            userProfile?.name
+          ) : (
+            <Skeleton variant='text'>
+              <Typography variant='caption'>NAME PLACEHOLDER</Typography>
+            </Skeleton>
+          )}
+        </Typography>
       </Link>
 
       <Link

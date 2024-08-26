@@ -1,7 +1,7 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { createUserWithEmailAndPassword, User } from 'firebase/auth';
 
-import { auth } from '@/firebase/firebaseConfig';
+import { auth } from '@config/firebaseConfig';
 
 interface CreateUserResult {
   user: User;

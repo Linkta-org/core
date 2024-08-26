@@ -34,20 +34,15 @@ const createUserInputController = (
     next: NextFunction,
   ) => {
     try {
-      const userId = res.locals.userId;
-
+      const userId = res.locals.user.uid;
       const userInput = req.body.input;
-
       logger.debug('Generating Linkta flow for user:', { userId, userInput });
 
       // Generate initial response from AI service based on user input
       const aiResponse =
         await privateAIService.generateInitialResponse(userInput);
 
-      logger.info('AI response:', aiResponse);
-
       const parsedAiResponse = JSON.parse(aiResponse);
-
       logger.info('Parsed AI response:', parsedAiResponse);
 
       // Create a new user input document in DB
@@ -92,7 +87,7 @@ const createUserInputController = (
     next: NextFunction,
   ) => {
     try {
-      const userId = res.locals.userId;
+      const userId = res.locals.user.uid;
 
       logger.debug('Fetching input history for user:', userId);
 

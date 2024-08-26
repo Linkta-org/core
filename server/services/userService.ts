@@ -1,7 +1,8 @@
 import UserModel from '@models/UserModel';
 import log4js from 'log4js';
-import type { Types } from 'mongoose';
+// import type { Types } from 'mongoose';
 import { InternalServerError } from '@/utils/customErrors';
+// import type User from '@/types/user';
 
 const logger = log4js.getLogger('[UserService]');
 
@@ -15,19 +16,17 @@ const createUserService = () => {
    */
   const findUserByUid = async (uid: string) => {
     try {
-      logger.debug('Finding user with UID:', uid);
-
       const user = await UserModel.findOne({ uid });
 
       if (!user) {
-        logger.warn('User not found.');
+        logger.warn('User not found.', 'USER: ', user);
         return null;
       }
+      logger.debug('USER found in DB: ', user);
 
       return user;
     } catch (error) {
-      logger.error('Error finding user by UID', error);
-
+      logger.error(`Error finding user by UID: ${uid}`, error);
       throw new InternalServerError('Error finding user by UID.');
     }
   };
@@ -35,24 +34,24 @@ const createUserService = () => {
   /**
    * Finds and returns a user by MongoDB ObjectId.
    */
-  const findUserById = async (userId: Types.ObjectId) => {
-    try {
-      logger.debug('Finding user with userId:', userId);
+  // const findUserById = async (userId: Types.ObjectId) => {
+  //   try {
+  //     logger.debug('Finding user with userId:', userId);
 
-      const user = await UserModel.findById(userId);
+  //     const user = await UserModel.findById(userId);
 
-      if (!user) {
-        logger.warn('User not found.');
-        return null;
-      }
+  //     if (!user) {
+  //       logger.warn('User not found.');
+  //       return null;
+  //     }
 
-      return user;
-    } catch (error) {
-      logger.error('Error finding user by ID', error);
+  //     return user;
+  //   } catch (error) {
+  //     logger.error('Error finding user by ID', error);
 
-      throw new InternalServerError('Error finding user by ID.');
-    }
-  };
+  //     throw new InternalServerError('Error finding user by ID.');
+  //   }
+  // };
 
   /**
    * Creates a new user.
@@ -71,8 +70,6 @@ const createUserService = () => {
         settings: {
           theme: 'light',
         },
-        createdAt: new Date(),
-        updatedAt: new Date(),
       });
 
       await newUser.save();
@@ -89,7 +86,7 @@ const createUserService = () => {
 
   return {
     findUserByUid,
-    findUserById,
+    // findUserById,
     createNewUser,
   };
 };

@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
-import styles from '@styles/layout/AuthStyles.module.css';
-import { useGoogleAuthMutation } from '@hooks/useSignInWithGoogle';
 import useDocumentTitle from '@hooks/useDocumentTitle';
+import { useGoogleAuthMutation } from '@hooks/useSignInWithGoogle';
 import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useSignInWithEmailAndPasswordMutation } from '@/hooks/useSignInWithEmailAndPassword';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import useFetchUserProfile from '@/hooks/useFetchUserProfile';
-import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
-import { useQueryClient } from '@tanstack/react-query';
+// import SnackBarNotification from '@components/common/SnackBarNotification';
+// import type { SnackbarSeverity } from '@/types/snackBar';
+import styles from '@styles/layout/AuthStyles.module.css';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import useAuth from '@/hooks/useAuth';
 import { useNotification } from '@hooks/useNotification';
 
@@ -29,36 +29,30 @@ const SignInPage = () => {
   const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
     useSignInWithEmailAndPasswordMutation();
-  const { data: userProfile } = useFetchUserProfile();
+  const { refetch: userProfileRefetch } = useFetchUserProfile('Sign In Page');
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(userSignInSchema) });
-  const createUserProfileMutation = useCreateUserProfileMutation();
-  const queryClient = useQueryClient();
+  } = useForm<FormData>({
+    resolver: zodResolver(userSignInSchema),
+  });
   const { isAuthenticated } = useAuth();
   const { showNotification } = useNotification();
 
-  const handleAuthSuccess = async (name: string) => {
-    if (!userProfile) {
-      try {
-        const response = await createUserProfileMutation.mutateAsync({ name });
-        await queryClient.setQueryData(['userProfile'], response);
-        showNotification("Welcome back! You're now signed in.", 'success');
-        navigate('/generate');
-      } catch (error) {
-        console.error('Failed to create user profile:', error);
-      }
-    }
-  };
-
   const handleGoogleAuthClick = async () => {
     try {
-      await googleAuthMutation.mutateAsync();
-      await handleAuthSuccess('');
+      const googleAuthResult = await googleAuthMutation.mutateAsync();
+      console.log('RESULT: ', googleAuthResult.user);
+      const refetchResult = await userProfileRefetch();
+      if (!refetchResult.data) {
+        console.log('DISPLAY NAME: ', googleAuthResult.user);
+        navigate('/home-page');
+      } else {
+        navigate('/generate');
+      }
     } catch (error) {
-      console.error('Failed to sign in through Google:', error);
+      console.error('Failed to sign in via Google.', error);
       showNotification(
         'Google sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
@@ -69,16 +63,16 @@ const SignInPage = () => {
 
   const handleGithubAuthClick = async () => {
     try {
-      await githubAuthMuation.mutateAsync();
-      const existingProfile = await refetch();
-      if (!existingProfile.data) {
-        await handleAuthSuccess('');
+      const githubAuthResult = githubAuthMutation.mutateAsync();
+      console.log('RESULT: ', (await githubAuthResult).user);
+      const refetchResult = await userProfileRefetch();
+      if (!refetchResult.data) {
         navigate('/home-page');
       } else {
         navigate('/generate');
       }
     } catch (error) {
-      console.error('Failed to sign in through GitHub', error);
+      console.error('Failed to sign in via GitHub', error);
       showNotification(
         'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
@@ -90,24 +84,29 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const { email, password } = data;
 
-    try {
-      await signInWithEmailAndPasswordMutation.mutateAsync({ email, password });
-      await handleAuthSuccess('');
-    } catch (error) {
-      console.error('Failed to sign in through email:', error);
-      showNotification(
-        'Email sign-in unsuccessful. Please try again or use another sign-in method.',
-        'error',
-        { duration: 6000 },
-      );
-    }
+    signInWithEmailAndPasswordMutation.mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          void userProfileRefetch();
+        },
+        onError: (error) => {
+          console.error('Failed to sign in via email.', error.message);
+          showNotification(
+            'Email sign-in unsuccessful. Please try again or use another sign-in method.',
+            'error',
+            { duration: 6000 },
+          );
+        },
+      },
+    );
   };
 
   useEffect(() => {
-    if (isAuthenticated && userProfile) {
+    if (isAuthenticated) {
       navigate('/generate');
     }
-  }, [isAuthenticated, userProfile, navigate]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <>

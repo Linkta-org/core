@@ -66,15 +66,18 @@ const edgeSchema = new Schema<Edge>({
 });
 
 // Define the LinktaFlow schema
-const linktaFlowSchema = new Schema<LinktaFlow>({
-  nodes: { type: [nodeSchema], required: true },
-  edges: { type: [edgeSchema], required: true },
-  userInputId: {
-    type: Schema.Types.ObjectId,
-    ref: 'UserInput',
-    required: true,
+const linktaFlowSchema = new Schema<LinktaFlow>(
+  {
+    nodes: { type: [nodeSchema], required: true },
+    edges: { type: [edgeSchema], required: true },
+    userInputId: {
+      type: String,
+      ref: 'UserInput',
+      required: true,
+    },
+    userId: { type: String, ref: 'User', required: true },
   },
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-});
+  { timestamps: true },
+);
 
 export default model<LinktaFlow>('LinktaFlow', linktaFlowSchema);

@@ -5,7 +5,7 @@
  *   - `isLoading`: Boolean indicating if the authentication status check is in progress.
  */
 
-import { auth } from '@/firebase/firebaseConfig';
+import { auth } from '@config/firebaseConfig';
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 

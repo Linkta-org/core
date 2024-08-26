@@ -35,7 +35,6 @@ const isAuthorized = () => {
 
     if (!idToken) {
       logger.warn('Authorization header is missing or improperly formatted');
-
       return next(new UnauthorizedError());
     }
 
@@ -45,10 +44,17 @@ const isAuthorized = () => {
      */
     try {
       const verifiedToken = await admin.auth().verifyIdToken(idToken as string);
-      res.locals.verifiedToken = verifiedToken;
+      // res.locals.verifiedToken = verifiedToken;
+      res.locals.user = {
+        uid: verifiedToken.user_id,
+        name: verifiedToken.name,
+        profilePicture: verifiedToken.picture,
+        authProvider: verifiedToken.firebase.sign_in_provider,
+      };
 
       logger.info("User's ID Token successfully verified", {
-        verification: res.locals.verifiedToken,
+        verification: verifiedToken,
+        // user: res.locals.user
       });
 
       next();

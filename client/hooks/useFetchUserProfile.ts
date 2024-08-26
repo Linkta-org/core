@@ -11,7 +11,8 @@ const fetchUserProfileFromApi = async (): Promise<User> => {
   }
 };
 
-const useFetchUserProfile = (): UseQueryResult<User, Error> => {
+const useFetchUserProfile = (source: string): UseQueryResult<User, Error> => {
+  console.log('Query Source: ', source);
   return useQuery<User, Error>({
     queryKey: ['userProfile'],
     queryFn: fetchUserProfileFromApi,

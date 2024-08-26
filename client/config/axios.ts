@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { auth } from '../firebase/firebaseConfig';
+import { auth } from '@config/firebaseConfig';
 
 export const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_SERVER_BASE_URL,

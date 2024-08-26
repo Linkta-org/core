@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import type { Server } from 'http';
 import bodyParser from 'body-parser';
 import userRouter from '@routes/userRouter';
-import type { Express, NextFunction, Response } from 'express';
+import type { Express, Response } from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import userInputRouter from '@routes/userInputRouter';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
@@ -50,15 +50,8 @@ function startServer() {
   connectToDatabase(uri || '').catch(console.dir);
 
   app.use(bodyParser.json());
-
-  app.use(
-    verifyOrigin,
-    cors(corsOptions),
-    (_req, res: Response, next: NextFunction) => {
-      logger.debug('RESPONSE HEADERS: ', res.getHeaders());
-      next();
-    },
-  );
+  app.use(verifyOrigin);
+  app.use(cors(corsOptions));
 
   /**
    * Server health check route handler

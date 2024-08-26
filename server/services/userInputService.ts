@@ -15,7 +15,7 @@ const createUserInputService = () => {
    * Creates a new user input.
    */
   const createUserInput = async (
-    userId: Types.ObjectId,
+    userId: string,
     input: string,
     title?: string,
   ): Promise<UserInput> => {

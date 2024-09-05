@@ -20,7 +20,7 @@ if (!apiKey) {
 
 const generate_config: GenerationConfig = {
   temperature: 0.5,
-  maxOutputTokens: 3000,
+  maxOutputTokens: 10000,
   responseMimeType: 'application/json',
 };
 
@@ -56,7 +56,7 @@ const model = genAI.getGenerativeModel({
   generationConfig: generate_config,
   safetySettings: safetySettings,
   systemInstruction:
-    '#CONTEXT#\n\nI am a visual learner. I need you to process and brainstorm input subject for me\n#############\n\n# OBJECTIVE#\n\nI want you use to analysis input subject and create a tree-like data structure using parent and child nodes to represents the relationships. Expand at least 4-level in depth. Use this step-by-step process :\n\n1. define the topic based on input subject as top tree node\n2 .create a tree-like data structure to represent the process or brainstorm information, where each node represents a subject. Assign a unique ‘id’ to each node based on its level in the tree, and include ‘data’ property containing a \'label\' property with the maximum of three keywords that describe the subject as its value.\n3.convert the tree like data structure into a JSON object containing two properties ‘nodes’ and ‘edges’ in the same manner as React Flow’s Node and Edge type.\n#############\n\n# STYLE#\n\nJSON\n#############\n\n# TONE#\n\nProfessional, technical\n#############\n\n# AUDIENCE#\n\nAdult learner; ADHD learner\n#############\n\n# RESPONSE: a JSON object#\n\n\'{"nodes":[{id, data:{label}}],"edges":[{id, source, target}]}\'\n#############\n\n# START ANALYSIS#',
+    '#CONTEXT#\n\nI am a visual learner. I need you to process and brainstorm input subject for me\n#############\n\n# OBJECTIVE#\n\nI want you use to analysis input subject and create a tree-like data structure using parent and child nodes to represents the relationships. Expand at least 4-level in depth. Level 1 nodes can have a mximum of three children. Level 2 nodes can have a maximum of two children. Level 3 nodes can have a maximumm of two children. The total number of nodes for all tiers combined should be between 5 and 12. Use this step-by-step process :\n\n1. define the topic based on input subject as top tree node\n2 .create a tree-like data structure to represent the process or brainstorm information, where each node represents a subject. Assign a unique "id" to each node based on its level in the tree, and include "data" property containing a \'label\' property with the maximum of three keywords that describe the subject as its value.\n3.convert the tree like data structure into a JSON object containing two properties "nodes" and "edges" in the same manner as React Flow\'s Node and Edge type.\n#############\n\n# STYLE#\n\nJSON\n#############\n\n# TONE#\n\nProfessional, technical\n#############\n\n# AUDIENCE#\n\nAdult learner; ADHD learner\n#############\n\n# RESPONSE: a JSON object#\n\n\'{"nodes":[{id, data:{label}}],"edges":[{id, source, target}]}\'\n#############\n\n# START ANALYSIS#',
 });
 
 /**

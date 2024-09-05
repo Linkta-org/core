@@ -11,6 +11,7 @@ const fetchUserProfileFromApi = async (): Promise<User> => {
   }
 };
 
+// source parameter is temporary - identifies the component where the hook is called
 const useFetchUserProfile = (source: string): UseQueryResult<User, Error> => {
   console.log('Query Source: ', source);
   return useQuery<User, Error>({

@@ -22,7 +22,6 @@ export const useGoogleAuthMutation = (): UseMutationResult<
       const result = await signInWithPopup(auth, provider);
       const token = await result.user.getIdToken();
       const user = result.user;
-      console.log({ token, user });
       return { token, user };
     },
   });

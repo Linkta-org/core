@@ -22,7 +22,6 @@ export const useGithubAuthMutation = (): UseMutationResult<
       const credential = GithubAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-      console.log({ token, user });
       return { user, token };
     },
   });

@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import { createUserWithEmailAndPassword, User } from 'firebase/auth';
-
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import { auth } from '@config/firebaseConfig';
 
 interface CreateUserResult {
@@ -11,10 +11,14 @@ interface CreateUserResult {
 export const useCreateUserWithEmailAndPasswordMutation = (): UseMutationResult<
   CreateUserResult,
   Error,
-  { email: string; password: string }
-> =>
-  useMutation<CreateUserResult, Error, { email: string; password: string }>({
-    mutationFn: async ({ email, password }) => {
+  { name: string; email: string; password: string }
+> => {
+  return useMutation<
+    CreateUserResult,
+    Error,
+    { name: string; email: string; password: string }
+  >({
+    mutationFn: async ({ name, email, password }) => {
       try {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
@@ -22,10 +26,13 @@ export const useCreateUserWithEmailAndPasswordMutation = (): UseMutationResult<
           password,
         );
         const user = userCredential.user;
+        await updateProfile(user, { displayName: name });
         const token = await user.getIdToken();
+        console.log({ token, user });
         return { user, token };
       } catch (error) {
         throw new Error(`Failed to create user: ${(error as Error).message}`);
       }
     },
   });
+};

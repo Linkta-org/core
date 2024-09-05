@@ -18,7 +18,7 @@ const root = createRoot(rootElement);
 
 // Create a new QueryClient instance with default stale time of 5 minutes
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
+  defaultOptions: { queries: { staleTime: 1000 * 10 * 1 } },
 });
 
 root.render(

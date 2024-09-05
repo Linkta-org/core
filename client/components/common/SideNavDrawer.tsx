@@ -10,7 +10,7 @@ import {
 import { Box, Typography, Button, Drawer, Link, Skeleton } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 import '@styles/SideNavDrawer.css';
-import UserInputHistory from '@components/layout/UserInputHistory';
+// import UserInputHistory from '@components/layout/UserInputHistory';
 import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 
 type SideNavProps = {
@@ -30,11 +30,7 @@ export default function SideNavDrawer({
     animationFillMode: 'forwards',
   };
 
-  const {
-    data: userProfile,
-    // error,
-    // isError,
-  } = useFetchUserProfile('Side Nav Drawer');
+  const { data: userProfile } = useFetchUserProfile('Side Nav Drawer');
 
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
@@ -67,7 +63,7 @@ export default function SideNavDrawer({
         <Typography variant='caption'>Explore a New Topic</Typography>
       </Link>
 
-      <UserInputHistory />
+      {/* <UserInputHistory /> */}
 
       <Link
         className='side-nav-link'

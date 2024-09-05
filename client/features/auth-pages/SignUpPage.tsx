@@ -5,14 +5,12 @@ import useDocumentTitle from '@hooks/useDocumentTitle';
 import styles from '@styles/layout/AuthStyles.module.css';
 import { useGoogleAuthMutation } from '@hooks/useSignInWithGoogle';
 import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
-import { useCreateUserWithEmailAndPasswordMutation } from '@/hooks/useCreateUserWithEmailAndPassword';
+import { useCreateUserWithEmailAndPasswordMutation } from '@hooks/useCreateUserWithEmailAndPassword';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import SnackBarNotification from '@components/common/SnackBarNotification';
-// import type { SnackbarSeverity } from '@/types/snackBar';
 import useAuth from '@/hooks/useAuth';
 import { useNotification } from '@hooks/useNotification';
 
@@ -31,7 +29,7 @@ const SignUpPage = () => {
   const githubAuthMutation = useGithubAuthMutation();
   const createUserWithEmailAndPasswordMutation =
     useCreateUserWithEmailAndPasswordMutation();
-  const { refetch: userProfileRefetch } = useFetchUserProfile('Sign Up Page');
+  const { refetch: fetchUserProfile } = useFetchUserProfile('Sign Up Page');
   const {
     register,
     handleSubmit,
@@ -42,53 +40,58 @@ const SignUpPage = () => {
 
   const handleGoogleAuthClick = async () => {
     try {
-      const googleAuthResult = await googleAuthMutation.mutateAsync();
-      console.log('RESULT: ', googleAuthResult.user);
-      const refetchResult = await userProfileRefetch();
-      if (!refetchResult.data) {
-        console.log('DISPLAY NAME: ', googleAuthResult.user);
-        navigate('/home-page');
-      } else {
-        navigate('/generate');
-      }
+      // login to Firebase app via Google OAuth
+      const result = await googleAuthMutation.mutateAsync();
+      console.log('GOOGLE AUTH RESULT: ', result);
+      // use Firebase token to find or create the user account
+      await fetchUserProfile();
+      // if no error, navigate to /generate route
+      navigate('/generate');
     } catch (error) {
+      // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign in via Google.', error);
       showNotification(
-        'Google sign-in unsuccessful. Please try again or use another sign-in method.',
+        'Google sign-up unsuccessful. Please try again or use another sign-in method.',
         'error',
         { duration: 6000 },
       );
+      navigate('/home-page');
     }
   };
 
   const handleGithubAuthClick = async () => {
     try {
-      const githubAuthResult = githubAuthMutation.mutateAsync();
-      console.log('RESULT: ', (await githubAuthResult).user);
-      const refetchResult = await userProfileRefetch();
-      if (!refetchResult.data) {
-        navigate('/home-page');
-      } else {
-        navigate('/generate');
-      }
+      // login to Firebase app via GitHub OAuth
+      const result = githubAuthMutation.mutateAsync();
+      console.log('GITHUB AUTH RESULT: ', result);
+      // use Firebase token to find or create the user account
+      await fetchUserProfile();
+      // if no error, navigate to /generate route
+      navigate('/generate');
     } catch (error) {
-      console.error('Failed to sign in via GitHub', error);
+      // in case of error, display a snack bar and navigate back to home page
+      console.error('Failed to sign up via GitHub', error);
       showNotification(
-        'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
+        'GitHub sign-up unsuccessful. Please try again or use another sign-in method.',
         'error',
         { duration: 6000 },
       );
+      navigate('/home-page');
     }
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { email, password } = data;
+    // get the text from the three form fields
+    const { name, email, password } = data;
 
     try {
-      await createUserWithEmailAndPasswordMutation.mutateAsync({
+      const user = await createUserWithEmailAndPasswordMutation.mutateAsync({
+        name,
         email,
         password,
       });
+      console.log(user);
+      await fetchUserProfile();
     } catch (error) {
       console.error('Failed to sign up via email', error);
       showNotification(

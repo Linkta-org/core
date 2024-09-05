@@ -29,7 +29,7 @@ const SignInPage = () => {
   const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
     useSignInWithEmailAndPasswordMutation();
-  const { refetch: userProfileRefetch } = useFetchUserProfile('Sign In Page');
+  const { refetch: fetchUserProfile } = useFetchUserProfile('Sign In Page');
   const {
     register,
     handleSubmit,
@@ -42,53 +42,55 @@ const SignInPage = () => {
 
   const handleGoogleAuthClick = async () => {
     try {
-      const googleAuthResult = await googleAuthMutation.mutateAsync();
-      console.log('RESULT: ', googleAuthResult.user);
-      const refetchResult = await userProfileRefetch();
-      if (!refetchResult.data) {
-        console.log('DISPLAY NAME: ', googleAuthResult.user);
-        navigate('/home-page');
-      } else {
-        navigate('/generate');
-      }
+      // login to Firebase app via Google OAuth
+      const result = await googleAuthMutation.mutateAsync();
+      console.log('GOOGLE AUTH RESULT: ', result);
+      // use Firebase token to find or create the user account
+      await fetchUserProfile();
+      // if no error, navigate to /generate route
+      navigate('/generate');
     } catch (error) {
+      // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign in via Google.', error);
       showNotification(
         'Google sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
         { duration: 6000 },
       );
+      navigate('/home-page');
     }
   };
 
   const handleGithubAuthClick = async () => {
     try {
-      const githubAuthResult = githubAuthMutation.mutateAsync();
-      console.log('RESULT: ', (await githubAuthResult).user);
-      const refetchResult = await userProfileRefetch();
-      if (!refetchResult.data) {
-        navigate('/home-page');
-      } else {
-        navigate('/generate');
-      }
+      // login to Firebase app via GitHub OAuth
+      const result = githubAuthMutation.mutateAsync();
+      console.log('GITHUB AUTH RESULT: ', result);
+      // use Firebase token to find or create the user account
+      await fetchUserProfile();
+      // if no error, navigate to /generate route
+      navigate('/generate');
     } catch (error) {
+      // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign in via GitHub', error);
       showNotification(
         'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
         { duration: 6000 },
       );
+      navigate('/home-page');
     }
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    // get the text from the two form fields
     const { email, password } = data;
 
     signInWithEmailAndPasswordMutation.mutate(
       { email, password },
       {
         onSuccess: () => {
-          void userProfileRefetch();
+          void fetchUserProfile();
         },
         onError: (error) => {
           console.error('Failed to sign in via email.', error.message);

@@ -31,34 +31,9 @@ const rfStyle = {
   width: '100%',
 };
 
-const initialNodes = [
-  {
-    id: '1',
-    label: '1',
-    position: { x: 0, y: 0 },
-    data: { label: '😎 drag me around 😎' },
-    type: 'linktaNode',
-  },
-  {
-    id: '2',
-    label: '2',
-    position: { x: 0, y: 150 },
-    data: { label: '...or me' },
-    type: 'linktaNode',
-  },
-];
+const initialNodes: Node[] = [];
 
-const initialEdges = [
-  {
-    id: '1-2',
-    source: '1',
-    target: '2',
-    sourceHandle: 'c',
-    targetHandle: 'a',
-    type: 'linktaEdge',
-    markerEnd: { type: MarkerType.Arrow },
-  },
-];
+const initialEdges: Edge[] = [];
 
 function Flow({ userInputId }: { userInputId: string }) {
   const {

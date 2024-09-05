@@ -12,7 +12,7 @@ import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 import styles from '@styles/layout/AuthStyles.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import useAuth from '@/hooks/useAuth';
+import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 import { useNotification } from '@hooks/useNotification';
 
 const userSignInSchema = z.object({
@@ -37,13 +37,13 @@ const SignInPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(userSignInSchema),
   });
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useWatchAuthenticatedState();
   const { showNotification } = useNotification();
 
   const handleGoogleAuthClick = async () => {
     try {
       // login to Firebase app via Google OAuth
-      const result = await googleAuthMutation.mutateAsync();
+      const result = googleAuthMutation.mutateAsync();
       console.log('GOOGLE AUTH RESULT: ', result);
       // use Firebase token to find or create the user account
       await fetchUserProfile();
@@ -108,7 +108,7 @@ const SignInPage = () => {
     if (isAuthenticated) {
       navigate('/generate');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated]);
 
   return (
     <>

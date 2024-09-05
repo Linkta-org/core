@@ -7,11 +7,11 @@ import {
   ChevronLeftOutlined,
   ChevronRightOutlined,
 } from '@mui/icons-material';
-import { Box, Typography, Button, Drawer, Link, Skeleton } from '@mui/material';
+import { Box, Typography, Button, Drawer, Link } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 import '@styles/SideNavDrawer.css';
 // import UserInputHistory from '@components/layout/UserInputHistory';
-import useFetchUserProfile from '@/hooks/useFetchUserProfile';
+// import useFetchUserProfile from '@/hooks/useFetchUserProfile';
 
 type SideNavProps = {
   drawerOpen: boolean;
@@ -30,7 +30,7 @@ export default function SideNavDrawer({
     animationFillMode: 'forwards',
   };
 
-  const { data: userProfile } = useFetchUserProfile('Side Nav Drawer');
+  // const { data: userProfile } = useFetchUserProfile('Side Nav Drawer');
 
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
@@ -42,7 +42,7 @@ export default function SideNavDrawer({
         to='/login'
       >
         <AccountCircleOutlined />
-        <Typography variant='caption'>
+        {/* <Typography variant='caption'>
           {userProfile ? (
             userProfile?.name
           ) : (
@@ -50,7 +50,7 @@ export default function SideNavDrawer({
               <Typography variant='caption'>NAME PLACEHOLDER</Typography>
             </Skeleton>
           )}
-        </Typography>
+        </Typography> */}
       </Link>
 
       <Link

@@ -8,10 +8,10 @@ import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useCreateUserWithEmailAndPasswordMutation } from '@hooks/useCreateUserWithEmailAndPassword';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import useFetchUserProfile from '@/hooks/useFetchUserProfile';
+import useFetchUserProfile from '@hooks/useFetchUserProfile';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import useAuth from '@/hooks/useAuth';
+import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 import { useNotification } from '@hooks/useNotification';
 
 const userSignUpSchema = z.object({
@@ -29,14 +29,20 @@ const SignUpPage = () => {
   const githubAuthMutation = useGithubAuthMutation();
   const createUserWithEmailAndPasswordMutation =
     useCreateUserWithEmailAndPasswordMutation();
-  const { refetch: fetchUserProfile } = useFetchUserProfile('Sign Up Page');
+  const fetchUserProfile = useFetchUserProfile;
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(userSignUpSchema) });
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useWatchAuthenticatedState();
   const { showNotification } = useNotification();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/generate');
+    }
+  }, [isAuthenticated]);
 
   const handleGoogleAuthClick = async () => {
     try {
@@ -44,9 +50,8 @@ const SignUpPage = () => {
       const result = await googleAuthMutation.mutateAsync();
       console.log('GOOGLE AUTH RESULT: ', result);
       // use Firebase token to find or create the user account
-      await fetchUserProfile();
-      // if no error, navigate to /generate route
-      navigate('/generate');
+      const userProfile = fetchUserProfile('Sign Up Page / Google Auth');
+      await userProfile.refetch();
     } catch (error) {
       // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign in via Google.', error);
@@ -65,9 +70,8 @@ const SignUpPage = () => {
       const result = githubAuthMutation.mutateAsync();
       console.log('GITHUB AUTH RESULT: ', result);
       // use Firebase token to find or create the user account
-      await fetchUserProfile();
-      // if no error, navigate to /generate route
-      navigate('/generate');
+      const userProfile = fetchUserProfile('Sign Up Page / GitHub Auth');
+      await userProfile.refetch();
     } catch (error) {
       // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign up via GitHub', error);
@@ -84,29 +88,37 @@ const SignUpPage = () => {
     // get the text from the three form fields
     const { name, email, password } = data;
 
-    try {
-      const user = await createUserWithEmailAndPasswordMutation.mutateAsync({
-        name,
-        email,
-        password,
-      });
-      console.log(user);
-      await fetchUserProfile();
-    } catch (error) {
-      console.error('Failed to sign up via email', error);
-      showNotification(
-        'Email sign-up unsuccessful. Please try again or use another sign-up method.',
-        'error',
-        { duration: 6000 },
-      );
-    }
-  };
+    // try {
+    const user = await createUserWithEmailAndPasswordMutation.mutate(
+      { name, email, password },
+      {
+        onSuccess: () => {
+          void fetchUserProfile('TEST');
+        },
+        onError: (error) => {
+          console.error('Failed to sign in via email.', error.message);
+          showNotification(
+            'Email sign-in unsuccessful. Please try again or use another sign-in method.',
+            'error',
+            { duration: 6000 },
+          );
+        },
+      },
+    );
+    console.log('EMAIL PASSWORD USER: ', user);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/generate');
-    }
-  }, [isAuthenticated, navigate]);
+    fetchUserProfile('Sign Up Page / Email + Password');
+    // await userProfile.refetch();
+
+    // } catch (error) {
+    //   console.error('Failed to sign up via email', error);
+    //   showNotification(
+    //     'Email sign-up unsuccessful. Please try again or use another sign-up method.',
+    //     'error',
+    //     { duration: 6000 },
+    //   );
+    // }
+  };
 
   return (
     <>

@@ -5,7 +5,7 @@ import ErrorPage from '@features/error-pages/ErrorPage';
 import MainLayout from '@components/layout/MainLayout';
 import privateRoutes from '@routes/privateRoutes';
 import publicRoutes from '@routes/publicRoutes';
-import useAuth from '@hooks/useAuth';
+import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 import React from 'react';
 
 /**
@@ -42,7 +42,7 @@ const createRouter = (isAuthenticated: boolean) =>
   createBrowserRouter(getRoutes(isAuthenticated));
 
 const IndexRouter = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useWatchAuthenticatedState();
   return createRouter(isAuthenticated);
 };
 

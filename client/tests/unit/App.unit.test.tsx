@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, act } from '@utils/testUtils';
 import App from '@/App';
 import { vi } from 'vitest';
-import useAuth from '@hooks/useAuth';
+import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 
 vi.mock('@hooks/useAuth', () => ({
   default: vi.fn(),
@@ -10,7 +10,7 @@ vi.mock('@hooks/useAuth', () => ({
 
 describe('App', () => {
   const setup = async (isAuthenticated: boolean) => {
-    (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
+    (useWatchAuthenticatedState as ReturnType<typeof vi.fn>).mockReturnValue({
       isAuthenticated,
       isLoading: false,
     });

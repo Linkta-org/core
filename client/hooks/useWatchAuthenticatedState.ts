@@ -9,7 +9,7 @@ import { auth } from '@config/firebaseConfig';
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 
-const useAuth = () => {
+const useWatchAuthenticatedState = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,4 +29,4 @@ const useAuth = () => {
   return { isAuthenticated, isLoading };
 };
 
-export default useAuth;
+export default useWatchAuthenticatedState;

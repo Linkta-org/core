@@ -20,15 +20,19 @@ export const useCreateUserWithEmailAndPasswordMutation = (): UseMutationResult<
   >({
     mutationFn: async ({ name, email, password }) => {
       try {
+        // create a Firebase Auth credential from the email and password
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           email,
           password,
         );
+        // isolate the user object from the credential
         const user = userCredential.user;
+        // update the displayName property on the user object
         await updateProfile(user, { displayName: name });
-        const token = await user.getIdToken();
-        console.log({ token, user });
+        // get a token from the credential and force a token refresh
+        const token = await userCredential.user.getIdToken(true);
+        console.log({ user, token });
         return { user, token };
       } catch (error) {
         throw new Error(`Failed to create user: ${(error as Error).message}`);

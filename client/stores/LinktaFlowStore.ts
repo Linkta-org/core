@@ -19,7 +19,11 @@ const useLinktaFlowStore = create<LinktaFlowStore>()(
       (set, get) => ({
         currentLinktaFlow: {} as LinktaFlow,
         getCurrentFlow: () => get().currentLinktaFlow,
-        setCurrentFlow: (flow) => set({ currentLinktaFlow: flow }),
+        setCurrentFlow: (flow) => {
+          set({ currentLinktaFlow: flow });
+          // Clear the undo/redo history when a new flow is selected
+          useLinktaFlowStore.temporal.getState().clear();
+        },
         setCurrentNodes: (nodes) => {
           set((state) => ({
             currentLinktaFlow: { ...state.currentLinktaFlow, nodes },

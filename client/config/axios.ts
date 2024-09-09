@@ -9,13 +9,17 @@ export const axiosClient = axios.create({
   },
 });
 
+const getFreshToken = async () => {
+  const user = auth.currentUser;
+  const token = await auth.currentUser?.getIdToken();
+  await auth.currentUser?.getIdToken(true);
+  if (!token) throw new Error('No ID token available');
+  console.log({ user, token });
+  return token;
+};
+
 axiosClient.interceptors.request.use(async (config) => {
-  // get the Firebase Auth token and send with all requests to server
-  const idToken = await auth.currentUser?.getIdToken();
-  // TODO: trigger a snack bar?
-  if (!idToken) throw new Error('No ID token available');
-  // add token to Authorization header
-  config.headers.Authorization = `${idToken}`;
+  config.headers.Authorization = `${await getFreshToken()}`;
   return config;
 });
 

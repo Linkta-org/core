@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@components/common/SideNavDrawer';
@@ -25,7 +25,7 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const currentLinktaFlow = useLinktaFlowStore((state) =>
     state.getCurrentFlow(),
   );
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { showNotification } = useNotification();
 
   const handleSave = () => {
@@ -56,7 +56,6 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
           "You've been successfully signed out of Linkta.",
           'success',
         );
-        navigate('/');
       },
       onError: (error) => {
         console.error('Error signing out:', error);

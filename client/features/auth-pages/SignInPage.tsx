@@ -6,9 +6,6 @@ import { useGoogleAuthMutation } from '@hooks/useSignInWithGoogle';
 import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useSignInWithEmailAndPasswordMutation } from '@/hooks/useSignInWithEmailAndPassword';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import useFetchUserProfile from '@/hooks/useFetchUserProfile';
-// import SnackBarNotification from '@components/common/SnackBarNotification';
-// import type { SnackbarSeverity } from '@/types/snackBar';
 import styles from '@styles/layout/AuthStyles.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -29,7 +26,6 @@ const SignInPage = () => {
   const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
     useSignInWithEmailAndPasswordMutation();
-  const { refetch: fetchUserProfile } = useFetchUserProfile('Sign In Page');
   const {
     register,
     handleSubmit,
@@ -40,17 +36,16 @@ const SignInPage = () => {
   const { isAuthenticated } = useWatchAuthenticatedState();
   const { showNotification } = useNotification();
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/generate');
+    }
+  }, [isAuthenticated]);
+
   const handleGoogleAuthClick = async () => {
     try {
-      // login to Firebase app via Google OAuth
-      const result = googleAuthMutation.mutateAsync();
-      console.log('GOOGLE AUTH RESULT: ', result);
-      // use Firebase token to find or create the user account
-      await fetchUserProfile();
-      // if no error, navigate to /generate route
-      navigate('/generate');
+      await googleAuthMutation.mutateAsync();
     } catch (error) {
-      // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign in via Google.', error);
       showNotification(
         'Google sign-in unsuccessful. Please try again or use another sign-in method.',
@@ -63,15 +58,8 @@ const SignInPage = () => {
 
   const handleGithubAuthClick = async () => {
     try {
-      // login to Firebase app via GitHub OAuth
-      const result = githubAuthMutation.mutateAsync();
-      console.log('GITHUB AUTH RESULT: ', result);
-      // use Firebase token to find or create the user account
-      await fetchUserProfile();
-      // if no error, navigate to /generate route
-      navigate('/generate');
+      await githubAuthMutation.mutateAsync();
     } catch (error) {
-      // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign in via GitHub', error);
       showNotification(
         'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
@@ -83,15 +71,10 @@ const SignInPage = () => {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    // get the text from the two form fields
     const { email, password } = data;
-
-    signInWithEmailAndPasswordMutation.mutate(
+    await signInWithEmailAndPasswordMutation.mutate(
       { email, password },
       {
-        onSuccess: () => {
-          void fetchUserProfile();
-        },
         onError: (error) => {
           console.error('Failed to sign in via email.', error.message);
           showNotification(
@@ -103,12 +86,6 @@ const SignInPage = () => {
       },
     );
   };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/generate');
-    }
-  }, [isAuthenticated]);
 
   return (
     <>

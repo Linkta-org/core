@@ -1,8 +1,7 @@
-import type { UseMutationResult } from '@tanstack/react-query';
-import { useMutation } from '@tanstack/react-query';
-import type { User } from 'firebase/auth';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '@config/firebaseConfig';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { useMutation, type UseMutationResult } from '@tanstack/react-query';
+import type { User } from 'firebase/auth';
 
 type GoogleAuthResult = {
   token: string | undefined;

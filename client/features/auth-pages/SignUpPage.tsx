@@ -8,7 +8,6 @@ import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useCreateUserWithEmailAndPasswordMutation } from '@hooks/useCreateUserWithEmailAndPassword';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import useFetchUserProfile from '@hooks/useFetchUserProfile';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
@@ -29,7 +28,6 @@ const SignUpPage = () => {
   const githubAuthMutation = useGithubAuthMutation();
   const createUserWithEmailAndPasswordMutation =
     useCreateUserWithEmailAndPasswordMutation();
-  const fetchUserProfile = useFetchUserProfile;
   const {
     register,
     handleSubmit,
@@ -46,17 +44,11 @@ const SignUpPage = () => {
 
   const handleGoogleAuthClick = async () => {
     try {
-      // login to Firebase app via Google OAuth
-      const result = await googleAuthMutation.mutateAsync();
-      console.log('GOOGLE AUTH RESULT: ', result);
-      // use Firebase token to find or create the user account
-      const userProfile = fetchUserProfile('Sign Up Page / Google Auth');
-      await userProfile.refetch();
+      await googleAuthMutation.mutateAsync();
     } catch (error) {
-      // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign in via Google.', error);
       showNotification(
-        'Google sign-up unsuccessful. Please try again or use another sign-in method.',
+        'Google sign-up unsuccessful. Please try again or use another sign-up method.',
         'error',
         { duration: 6000 },
       );
@@ -66,17 +58,11 @@ const SignUpPage = () => {
 
   const handleGithubAuthClick = async () => {
     try {
-      // login to Firebase app via GitHub OAuth
-      const result = githubAuthMutation.mutateAsync();
-      console.log('GITHUB AUTH RESULT: ', result);
-      // use Firebase token to find or create the user account
-      const userProfile = fetchUserProfile('Sign Up Page / GitHub Auth');
-      await userProfile.refetch();
+      await githubAuthMutation.mutateAsync();
     } catch (error) {
-      // in case of error, display a snack bar and navigate back to home page
       console.error('Failed to sign up via GitHub', error);
       showNotification(
-        'GitHub sign-up unsuccessful. Please try again or use another sign-in method.',
+        'GitHub sign-up unsuccessful. Please try again or use another sign-up method.',
         'error',
         { duration: 6000 },
       );
@@ -85,39 +71,17 @@ const SignUpPage = () => {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    // get the text from the three form fields
-    const { name, email, password } = data;
-
-    // try {
-    const user = await createUserWithEmailAndPasswordMutation.mutate(
-      { name, email, password },
-      {
-        onSuccess: () => {
-          void fetchUserProfile('TEST');
-        },
-        onError: (error) => {
-          console.error('Failed to sign in via email.', error.message);
-          showNotification(
-            'Email sign-in unsuccessful. Please try again or use another sign-in method.',
-            'error',
-            { duration: 6000 },
-          );
-        },
-      },
-    );
-    console.log('EMAIL PASSWORD USER: ', user);
-
-    fetchUserProfile('Sign Up Page / Email + Password');
-    // await userProfile.refetch();
-
-    // } catch (error) {
-    //   console.error('Failed to sign up via email', error);
-    //   showNotification(
-    //     'Email sign-up unsuccessful. Please try again or use another sign-up method.',
-    //     'error',
-    //     { duration: 6000 },
-    //   );
-    // }
+    try {
+      await createUserWithEmailAndPasswordMutation.mutate(data);
+    } catch (error) {
+      console.error('Failed to sign up via Email/Password', error);
+      showNotification(
+        'Email/Password sign-up unsuccessful. Please try again or use another sign-up method.',
+        'error',
+        { duration: 6000 },
+      );
+      navigate('/home-page');
+    }
   };
 
   return (

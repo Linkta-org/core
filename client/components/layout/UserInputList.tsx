@@ -1,21 +1,26 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { List, ListItemButton, ListItemText, Typography } from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  List,
+  ListItemButton,
+  ListItemText,
+  Typography,
+  IconButton,
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
-import styles from '@styles/layout/UserInputList.module.css';
-import useSideNavDrawerStore from '@stores/SideNavDrawerStore';
-import { useNavigate } from 'react-router-dom';
-import useUpdateInputTitleMutation from '@hooks/useUpdateInputTitleMutation';
-import useDeleteInputMutation from '@hooks/useDeleteInputMutation';
-import type { UserInput } from '@/types/UserInput';
-import { useCreateLinktaFlowMutation } from '@hooks/useCreateLinktaFlowMutation';
-import { extractUserInputId } from '@utils/helpers';
-import { useQueryClient } from '@tanstack/react-query';
 import RenameDialog from './RenameDialog';
 import DeleteDialog from './DeleteDialog';
+import useSideNavDrawerStore from '@stores/SideNavDrawerStore';
+import useUpdateInputTitleMutation from '@hooks/useUpdateInputTitleMutation';
+import useDeleteInputMutation from '@hooks/useDeleteInputMutation';
+import { useCreateLinktaFlowMutation } from '@hooks/useCreateLinktaFlowMutation';
 import useLoadingStore from '@stores/LoadingStore';
 import { useNotification } from '@hooks/useNotification';
-import { AxiosError } from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
+import type { UserInput } from '@/types/UserInput';
+import { handleError } from '@/utils/errorHandler';
+import styles from '@styles/layout/UserInputList.module.css';
 
 interface UserInputListProps {
   inputHistory: UserInput[];
@@ -26,140 +31,100 @@ const UserInputList: React.FC<UserInputListProps> = ({
   inputHistory,
   visibleItems,
 }) => {
-  const [menuAnchorElement, setMenuAnchorElement] =
+  const [optionsMenuAnchor, setOptionsMenuAnchor] =
     useState<null | HTMLElement>(null);
-  const [selectedUserInput, setSelectedUserInput] = useState<UserInput | null>(
+  const [activeUserInput, setActiveUserInput] = useState<UserInput | null>(
     null,
   );
+  const [isRenamingDialogOpen, setIsRenamingDialogOpen] = useState(false);
+  const [isDeletionDialogOpen, setIsDeletionDialogOpen] = useState(false);
+
   const { drawerOpen } = useSideNavDrawerStore();
-  const isMenuOpen = Boolean(menuAnchorElement) && drawerOpen;
-  const updateInputTitleMutation = useUpdateInputTitleMutation();
-  const deleteInputMutation = useDeleteInputMutation();
-  const createLinktaFlowMutation = useCreateLinktaFlowMutation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const updateTitleMutation = useUpdateInputTitleMutation();
+  const deleteInputMutation = useDeleteInputMutation();
+  const regenerateLinktaFlowMutation = useCreateLinktaFlowMutation();
   const { setLoading } = useLoadingStore();
-  const [renameAnchorElement, setRenameAnchorElement] =
-    useState<null | HTMLElement>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { showNotification } = useNotification();
+  const isOptionsMenuOpen = Boolean(optionsMenuAnchor);
 
-  const handleItemClick = useCallback(
-    (event: React.MouseEvent<HTMLElement>, userInput: UserInput) => {
-      setMenuAnchorElement(event.currentTarget);
-      setSelectedUserInput(userInput);
-      const userInputId = extractUserInputId(userInput.id);
-      navigate(`/output/${userInputId}`);
-    },
-    [navigate],
-  );
+  // Close options menu when side drawer closes
+  if (!drawerOpen && optionsMenuAnchor) {
+    setOptionsMenuAnchor(null);
+  }
 
-  const handleMenuClose = useCallback(() => {
-    setMenuAnchorElement(null);
-  }, []);
+  const handleUserInputSelect = (selectedInput: UserInput) => {
+    setActiveUserInput(selectedInput);
+    navigate(`/output/${selectedInput.id}`);
+  };
 
-  useEffect(() => {
-    if (!drawerOpen) {
-      setMenuAnchorElement(null);
-      setSelectedUserInput(null);
-    }
-  }, [drawerOpen]);
+  const handleOptionsIconClick = (event: React.MouseEvent<HTMLElement>) => {
+    setOptionsMenuAnchor(event.currentTarget);
+  };
 
-  const handleRename = useCallback(() => {
-    if (selectedUserInput) {
-      setRenameAnchorElement(menuAnchorElement);
-    }
-  }, [selectedUserInput, menuAnchorElement]);
-
-  const handleRenameSave = useCallback(
+  const handleTitleUpdate = useCallback(
     async (newTitle: string) => {
-      if (selectedUserInput) {
-        const userInputId = extractUserInputId(selectedUserInput.id);
+      if (activeUserInput) {
+        const userInputId = activeUserInput.id;
         try {
-          await updateInputTitleMutation.mutateAsync({
-            userInputId,
-            newTitle,
-          });
+          await updateTitleMutation.mutateAsync({ userInputId, newTitle });
           await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
-
           showNotification(
             'Your LinktaFlow title has been updated successfully.',
             'success',
           );
+          setActiveUserInput(null);
         } catch (error) {
-          console.error('Error renaming input: ', error);
-          let errorMessage =
-            'Unable to update LinktaFlow title. Please try again or check your connection.';
-
-          if (error instanceof AxiosError && error.response) {
-            errorMessage = error.response.data || errorMessage;
-          } else if (error instanceof Error) {
-            errorMessage = error.message;
-          }
-
-          showNotification(errorMessage, 'error', {
-            duration: 6000,
-          });
+          handleError(
+            error,
+            'Unable to update LinktaFlow title. Please try again or check your connection.',
+            showNotification,
+          );
         }
-        setRenameAnchorElement(null);
       }
     },
     [
-      selectedUserInput,
-      updateInputTitleMutation,
+      activeUserInput,
+      setActiveUserInput,
+      updateTitleMutation,
       queryClient,
       showNotification,
     ],
   );
 
-  const handleRenameCancel = useCallback(() => {
-    setRenameAnchorElement(null);
-  }, []);
-
-  const handleRegenerate = useCallback(async () => {
-    if (selectedUserInput) {
+  const handleLiktaFlowRegeneration = useCallback(async () => {
+    if (activeUserInput) {
       setLoading(true);
       try {
-        const response = await createLinktaFlowMutation.mutateAsync({
-          input: selectedUserInput.input,
+        const response = await regenerateLinktaFlowMutation.mutateAsync({
+          input: activeUserInput.input,
         });
         await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
         showNotification('LinktaFlow generated successfully', 'success');
         navigate(`/output/${response.userInputId}`);
-        setLoading(false);
       } catch (error) {
-        console.error('Error regenerating LinktaFlow: ', error);
-        let errorMessage = 'Failed to regenerate LinktaFlow. Please try again.';
-
-        if (error instanceof AxiosError && error.response) {
-          errorMessage = error.response.data || errorMessage;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-
-        showNotification(errorMessage, 'error', {
-          duration: 6000,
-        });
-
+        handleError(
+          error,
+          'Failed to regenerate LinktaFlow. Please try again.',
+          showNotification,
+        );
+      } finally {
         setLoading(false);
       }
     }
   }, [
-    selectedUserInput,
-    navigate,
-    createLinktaFlowMutation,
+    activeUserInput,
+    regenerateLinktaFlowMutation,
     queryClient,
-    setLoading,
     showNotification,
+    navigate,
+    setLoading,
   ]);
 
-  const handleDelete = useCallback(() => {
-    setDeleteDialogOpen(true);
-  }, []);
-
-  const handleDeleteConfirm = useCallback(async () => {
-    if (selectedUserInput) {
-      const userInputId = extractUserInputId(selectedUserInput.id);
+  const handleInputDeletion = useCallback(async () => {
+    if (activeUserInput) {
+      const userInputId = activeUserInput.id;
       try {
         await deleteInputMutation.mutateAsync(userInputId);
         await queryClient.invalidateQueries({ queryKey: ['inputHistory'] });
@@ -169,34 +134,20 @@ const UserInputList: React.FC<UserInputListProps> = ({
         );
         navigate('/generate');
       } catch (error) {
-        console.error('Error deleting input: ', error);
-        let errorMessage =
-          "We couldn't delete the LinktaFlow. Please try again or refresh the page.";
-
-        if (error instanceof AxiosError && error.response) {
-          errorMessage = error.response.data || errorMessage;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-
-        showNotification(errorMessage, 'error', {
-          duration: 6000,
-        });
+        handleError(
+          error,
+          "We couldn't delete the LinktaFlow. Please try again or refresh the page.",
+          showNotification,
+        );
       }
-      setDeleteDialogOpen(false);
-      setSelectedUserInput(null);
     }
   }, [
-    selectedUserInput,
+    activeUserInput,
     deleteInputMutation,
     queryClient,
     navigate,
     showNotification,
   ]);
-
-  const handleDeleteCancel = useCallback(() => {
-    setDeleteDialogOpen(false);
-  }, []);
 
   return (
     <>
@@ -204,17 +155,16 @@ const UserInputList: React.FC<UserInputListProps> = ({
         className={styles.userInputList}
         role='list'
       >
-        {inputHistory.slice(0, visibleItems).map((userInput, index) => {
-          const uniqueId = `${userInput.id}-${index}`;
+        {inputHistory.slice(0, visibleItems).map((userInput) => {
           return (
             <ListItemButton
-              id={uniqueId}
-              key={uniqueId}
-              onClick={(event) => handleItemClick(event, userInput)}
+              id={userInput.id}
+              key={userInput.id}
+              onClick={() => handleUserInputSelect(userInput)}
               role='listitem'
               aria-labelledby={`user-input-${userInput.id}`}
               className={`${styles.userInputList__itemButton} ${
-                selectedUserInput?.id === userInput.id
+                activeUserInput?.id === userInput.id
                   ? styles.userInputList__itemButtonSelected
                   : ''
               }`}
@@ -227,36 +177,40 @@ const UserInputList: React.FC<UserInputListProps> = ({
                 aria-label={`Details for ${userInput.title}`}
                 className={styles.userInputList__text}
               />
-              <MoreVertIcon className={styles.userInputList__icon} />
+              <IconButton
+                className={styles.userInputList__icon}
+                onClick={handleOptionsIconClick}
+              >
+                <MoreVertIcon />
+              </IconButton>
             </ListItemButton>
           );
         })}
       </List>
       <OptionsMenu
-        arialabelledby={`user-input-button-${selectedUserInput?.id}`}
-        anchorEl={menuAnchorElement}
-        isOpen={isMenuOpen}
-        onClose={handleMenuClose}
-        onRename={handleRename}
-        onRegenerate={handleRegenerate}
-        onDelete={handleDelete}
+        arialabelledby={`user-input-button-${activeUserInput?.id}`}
+        anchorEl={optionsMenuAnchor}
+        isOpen={isOptionsMenuOpen}
+        onClose={() => setOptionsMenuAnchor(null)}
+        onRename={() => setIsRenamingDialogOpen(true)}
+        onRegenerate={handleLiktaFlowRegeneration}
+        onDelete={() => setIsDeletionDialogOpen(true)}
       />
-      <RenameDialog
-        isOpen={Boolean(renameAnchorElement)}
-        currentTitle={
-          inputHistory.find(
-            (input) =>
-              input.id === extractUserInputId(selectedUserInput?.id || ''),
-          )?.title || ''
-        }
-        onSave={handleRenameSave}
-        onCancel={handleRenameCancel}
-      />
-      <DeleteDialog
-        isOpen={deleteDialogOpen}
-        onDelete={handleDeleteConfirm}
-        onCancel={handleDeleteCancel}
-      />
+      {activeUserInput && (
+        <RenameDialog
+          isOpen={isRenamingDialogOpen}
+          currentTitle={activeUserInput.title}
+          onSave={handleTitleUpdate}
+          onCancel={() => setIsRenamingDialogOpen(false)}
+        />
+      )}
+      {activeUserInput && (
+        <DeleteDialog
+          isOpen={isDeletionDialogOpen}
+          onDelete={handleInputDeletion}
+          onCancel={() => setIsDeletionDialogOpen(false)}
+        />
+      )}
     </>
   );
 };

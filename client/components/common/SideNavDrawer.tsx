@@ -11,7 +11,8 @@ import { Box, Typography, Button, Drawer, Link, Skeleton } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
 import '@styles/SideNavDrawer.css';
 import UserInputHistory from '@components/layout/UserInputHistory';
-import useFetchUserProfile from '@/hooks/useFetchUserProfile';
+import { useFetchUserProfile } from '@hooks/useUserCrudOperations';
+import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 
 type SideNavProps = {
   drawerOpen: boolean;
@@ -31,39 +32,44 @@ export default function SideNavDrawer({
   };
 
   const { data: userProfile } = useFetchUserProfile('Side Nav Drawer');
+  const { isAuthenticated } = useWatchAuthenticatedState();
 
   const DrawerListExpanded = (
     <Box className='side-nav-bar'>
-      <Link
-        className='side-nav-link'
-        underline='none'
-        mt={9}
-        component={RouterLink}
-        to='/login'
-      >
-        <AccountCircleOutlined />
-        <Typography variant='caption'>
-          {userProfile ? (
-            userProfile?.name
-          ) : (
-            <Skeleton variant='text'>
-              <Typography variant='caption'>NAME PLACEHOLDER</Typography>
-            </Skeleton>
-          )}
-        </Typography>
-      </Link>
+      {isAuthenticated && (
+        <>
+          <Link
+            className='side-nav-link'
+            underline='none'
+            mt={9}
+            component={RouterLink}
+            to='/login'
+          >
+            <AccountCircleOutlined />
+            <Typography variant='caption'>
+              {userProfile ? (
+                userProfile?.name
+              ) : (
+                <Skeleton variant='text'>
+                  <Typography variant='caption'>NAME PLACEHOLDER</Typography>
+                </Skeleton>
+              )}
+            </Typography>
+          </Link>
 
-      <Link
-        className='side-nav-link'
-        underline='none'
-        component={RouterLink}
-        to='/generate'
-      >
-        <AddCircleOutline />
-        <Typography variant='caption'>Explore a New Topic</Typography>
-      </Link>
+          <Link
+            className='side-nav-link'
+            underline='none'
+            component={RouterLink}
+            to='/generate'
+          >
+            <AddCircleOutline />
+            <Typography variant='caption'>Explore a New Topic</Typography>
+          </Link>
 
-      <UserInputHistory />
+          <UserInputHistory />
+        </>
+      )}
 
       <Link
         className='side-nav-link'

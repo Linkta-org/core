@@ -27,56 +27,15 @@ const UserController = (userService: ReturnType<typeof createUserService>) => {
       logger.debug('Fetching user profile for userId:', uid);
 
       const linktaUser = await privateUserService.findUserByUid(uid);
+      logger.debug('LINKTA USER: ', linktaUser);
 
-      if (linktaUser) {
-        res.locals.userProfile = {
-          name: linktaUser.name,
-          profilePicture: linktaUser.profilePicture,
-          authProvider: linktaUser.authProvider,
-          settings: linktaUser.settings,
-        };
-      } else {
-        await createUserProfile(_, res, next);
-      }
-
-      next();
+      res.locals.userProfile = linktaUser;
     } catch (error) {
       logger.error('Error fetching user profile for userId', error);
 
       next(new InternalServerError('Failed to fetch user profile'));
     }
   };
-
-  /**
-   * Fetches a user profile by MongoDB ObjectId.
-   */
-  // const getUserById = async (
-  //   _: Request,
-  //   res: Response,
-  //   next: NextFunction,
-  // ) => {
-  //   try {
-  //     const uid = res.locals.verifiedToken.uid;
-
-  //     logger.debug('Fetching user profile for userId:', uid);
-
-  //     const user = await privateUserService.findUserById(uid);
-
-  //     if (user) {
-  //       res.locals.userProfile = {
-  //         name: user.name,
-  //         profilePicture: user.profilePicture,
-  //         settings: user.settings,
-  //       };
-  //     }
-
-  //     next();
-  //   } catch (error) {
-  //     logger.error('Error fetching user profile for userId', error);
-
-  //     next(new InternalServerError('Failed to fetch user profile'));
-  //   }
-  // };
 
   /**
    * Creates a user profile.
@@ -87,16 +46,7 @@ const UserController = (userService: ReturnType<typeof createUserService>) => {
     next: NextFunction,
   ) => {
     try {
-      const userData = res.locals.user;
-      // const userName = req.body.name;
-      const { uid, name, profilePicture, authProvider } = userData;
-
-      // logger.debug('Creating or updating user profile for UID:', {
-      //   uid,
-      //   name,
-      //   profilePicture,
-      //   authProvider,
-      // });
+      const { uid, name, profilePicture, authProvider } = res.locals.user;
 
       const newUser = await privateUserService.createNewUser({
         uid,
@@ -119,7 +69,45 @@ const UserController = (userService: ReturnType<typeof createUserService>) => {
     }
   };
 
-  return { fetchUserProfile: getUserByUid, createUserProfile };
+  /**
+   * updates a user profile
+   */
+  const updateUserProfile = async (
+    _: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { uid, name, profilePicture, authProvider } = res.locals.user;
+
+      const newUser = await privateUserService.updateUser({
+        uid,
+        name: name,
+        profilePicture: profilePicture,
+        authProvider,
+      });
+
+      if (newUser) {
+        res.locals.userProfile = {
+          name: newUser.name,
+          profilePicture: newUser.profilePicture,
+          settings: newUser.settings,
+        };
+      }
+
+      next();
+    } catch (error) {
+      logger.error('Error creating or updating user profile', error);
+
+      next(new InternalServerError('Failed to create or update user profile'));
+    }
+  };
+
+  return {
+    fetchUserProfile: getUserByUid,
+    createUserProfile,
+    updateUserProfile,
+  };
 };
 
 export default UserController;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import useDocumentTitle from '@hooks/useDocumentTitle';
@@ -10,8 +10,8 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 import { useNotification } from '@hooks/useNotification';
+import { useCreateUserProfile } from '@hooks/useUserCrudOperations';
 
 const userSignUpSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -26,6 +26,7 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMutation = useGithubAuthMutation();
+  const newUserProfile = useCreateUserProfile('Sign Up Page');
   const createUserWithEmailAndPasswordMutation =
     useCreateUserWithEmailAndPasswordMutation();
   const {
@@ -33,18 +34,18 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(userSignUpSchema) });
-  const { isAuthenticated } = useWatchAuthenticatedState();
   const { showNotification } = useNotification();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/generate');
-    }
-  }, [isAuthenticated]);
 
   const handleGoogleAuthClick = async () => {
     try {
-      await googleAuthMutation.mutateAsync();
+      await googleAuthMutation
+        .mutateAsync()
+        .then(async () => {
+          await newUserProfile.mutateAsync();
+        })
+        .then(() => {
+          navigate('/generate');
+        });
     } catch (error) {
       console.error('Failed to sign in via Google.', error);
       showNotification(
@@ -58,7 +59,14 @@ const SignUpPage = () => {
 
   const handleGithubAuthClick = async () => {
     try {
-      await githubAuthMutation.mutateAsync();
+      await githubAuthMutation
+        .mutateAsync()
+        .then(async () => {
+          await newUserProfile.mutateAsync();
+        })
+        .then(() => {
+          navigate('/generate');
+        });
     } catch (error) {
       console.error('Failed to sign up via GitHub', error);
       showNotification(
@@ -72,7 +80,14 @@ const SignUpPage = () => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      await createUserWithEmailAndPasswordMutation.mutate(data);
+      await createUserWithEmailAndPasswordMutation
+        .mutateAsync(data)
+        .then(async () => {
+          await newUserProfile.mutateAsync();
+        })
+        .then(() => {
+          navigate('/generate');
+        });
     } catch (error) {
       console.error('Failed to sign up via Email/Password', error);
       showNotification(

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
 import SideNavDrawer from '@components/common/SideNavDrawer';
@@ -10,6 +10,7 @@ import useUpdateLinktaFlowMutation from '@hooks/useUpdateLinktaFlowMutation';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import useSignOut from '@hooks/useSignOut';
 import { useNotification } from '@hooks/useNotification';
+import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 
 /**
  * MainLayout provides the app's global UI layout and the Router Outlet.
@@ -25,8 +26,9 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const currentLinktaFlow = useLinktaFlowStore((state) =>
     state.getCurrentFlow(),
   );
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { showNotification } = useNotification();
+  const { isAuthenticated } = useWatchAuthenticatedState();
 
   const handleSave = () => {
     if (!currentLinktaFlow) {
@@ -94,49 +96,80 @@ const MainLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         </Box>
 
         <Box className='top-nav-bar'>
-          <ButtonGroup
-            className='save-button-group'
-            variant='contained'
-            color='secondary'
-            disableElevation
-            sx={{ marginLeft: 'auto', height: '26px' }}
-          >
-            <Button
-              className='save-button-group-item'
-              sx={{
-                borderTopLeftRadius: 50,
-                borderBottomLeftRadius: 50,
-                paddingBottom: '4px',
-              }}
-              onClick={handleSave}
-            >
-              <Typography variant='button'>Save</Typography>
-            </Button>
-            <Button
-              className='save-button-group-item'
-              sx={{
-                borderTopRightRadius: 50,
-                borderBottomRightRadius: 50,
-                width: '0px',
-              }}
-            >
-              <ArrowDropDown />
-            </Button>
-          </ButtonGroup>
-          <Button
-            className='sign-out-button'
-            variant='contained'
-            color='secondary'
-            disableElevation
-            sx={{
-              borderRadius: '13px',
-              height: '26px',
-              marginLeft: '20px',
-            }}
-            onClick={handleSignOut}
-          >
-            <Typography variant='button'>Sign Out</Typography>
-          </Button>
+          {isAuthenticated ? (
+            <>
+              <ButtonGroup
+                className='save-button-group'
+                variant='contained'
+                color='secondary'
+                disableElevation
+                sx={{ marginLeft: 'auto', height: '26px' }}
+              >
+                <Button
+                  className='save-button-group-item'
+                  sx={{
+                    borderTopLeftRadius: 50,
+                    borderBottomLeftRadius: 50,
+                    paddingBottom: '4px',
+                  }}
+                  onClick={handleSave}
+                >
+                  <Typography variant='button'>Save</Typography>
+                </Button>
+                <Button
+                  className='save-button-group-item'
+                  sx={{
+                    borderTopRightRadius: 50,
+                    borderBottomRightRadius: 50,
+                    width: '0px',
+                  }}
+                >
+                  <ArrowDropDown />
+                </Button>
+              </ButtonGroup>
+              <Button
+                className='sign-out-button'
+                variant='contained'
+                color='secondary'
+                disableElevation
+                sx={{
+                  borderRadius: '13px',
+                  height: '26px',
+                  marginLeft: '20px',
+                }}
+                onClick={handleSignOut}
+              >
+                <Typography variant='button'>Sign Out</Typography>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                className='sign-in-button'
+                variant='contained'
+                onClick={() => navigate('/login')}
+                sx={{
+                  borderRadius: '13px',
+                  height: '26px',
+                  marginLeft: '20px',
+                }}
+              >
+                Sign In
+              </Button>
+              <Button
+                className='sign-up-button'
+                variant='contained'
+                onClick={() => navigate('/signup')}
+                sx={{
+                  borderRadius: '13px',
+                  height: '26px',
+                  marginLeft: '20px',
+                }}
+              >
+                Start Growing
+              </Button>
+            </>
+          )}
         </Box>
 
         <SideNavDrawer

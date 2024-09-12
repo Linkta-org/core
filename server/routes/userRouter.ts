@@ -46,4 +46,19 @@ userRouter.post(
   },
 );
 
+/**
+ * @route PUT /v1/users
+ * @description Updates the user profile.
+ * @returns {Object} 200 - { updatedUserProfile }
+ */
+userRouter.put(
+  '/',
+  userController.updateUserProfile,
+  (_: Request, res: Response) => {
+    return res.status(200).json({
+      updatedUserProfile: res.locals.updatedUserProfile,
+    });
+  },
+);
+
 export default userRouter;

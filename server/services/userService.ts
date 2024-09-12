@@ -1,8 +1,6 @@
 import UserModel from '@models/UserModel';
 import log4js from 'log4js';
-// import type { Types } from 'mongoose';
 import { InternalServerError } from '@/utils/customErrors';
-// import type User from '@/types/user';
 
 const logger = log4js.getLogger('[UserService]');
 
@@ -30,28 +28,6 @@ const createUserService = () => {
       throw new InternalServerError('Error finding user by UID.');
     }
   };
-
-  /**
-   * Finds and returns a user by MongoDB ObjectId.
-   */
-  // const findUserById = async (userId: Types.ObjectId) => {
-  //   try {
-  //     logger.debug('Finding user with userId:', userId);
-
-  //     const user = await UserModel.findById(userId);
-
-  //     if (!user) {
-  //       logger.warn('User not found.');
-  //       return null;
-  //     }
-
-  //     return user;
-  //   } catch (error) {
-  //     logger.error('Error finding user by ID', error);
-
-  //     throw new InternalServerError('Error finding user by ID.');
-  //   }
-  // };
 
   /**
    * Creates a new user.
@@ -84,10 +60,46 @@ const createUserService = () => {
     }
   };
 
+  /**
+   * updates a user profile
+   */
+  const updateUser = async (userData: {
+    uid: string;
+    name?: string;
+    profilePicture?: string;
+    authProvider: string;
+  }) => {
+    try {
+      logger.debug('Updating user with data:', userData);
+
+      const updatedUser = await UserModel.findOneAndUpdate(
+        { uid: userData.uid },
+        {
+          name: userData.name,
+          profilePicture: userData.profilePicture,
+        },
+        { new: true },
+      );
+
+      if (!updatedUser) {
+        logger.warn('User not found.');
+        return null;
+      }
+
+      logger.debug('User updated:', updatedUser);
+
+      return updatedUser;
+    } catch (error) {
+      logger.error('Error updating user', error);
+
+      throw new InternalServerError('Error updating user.');
+    }
+  };
+
   return {
     findUserByUid,
-    // findUserById,
     createNewUser,
+    updateUser,
   };
 };
 

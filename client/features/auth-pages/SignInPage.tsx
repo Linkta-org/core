@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import useDocumentTitle from '@hooks/useDocumentTitle';
@@ -9,7 +9,6 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import styles from '@styles/layout/AuthStyles.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 import { useNotification } from '@hooks/useNotification';
 
 const userSignInSchema = z.object({
@@ -22,6 +21,7 @@ type FormData = z.infer<typeof userSignInSchema>;
 const SignInPage = () => {
   useDocumentTitle('Sign In');
   const navigate = useNavigate();
+  // const { data: newUserProfile } = useCreateUserProfile;
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
@@ -33,14 +33,13 @@ const SignInPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(userSignInSchema),
   });
-  const { isAuthenticated } = useWatchAuthenticatedState();
   const { showNotification } = useNotification();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/generate');
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate('/generate');
+  //   }
+  // }, [isAuthenticated]);
 
   const handleGoogleAuthClick = async () => {
     try {

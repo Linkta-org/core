@@ -167,7 +167,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
           'Your LinktaFlow and associated input have been deleted successfully.',
           'success',
         );
-        navigate('/generate');
+        // navigate('/generate');
       } catch (error) {
         console.error('Error deleting input: ', error);
         let errorMessage =

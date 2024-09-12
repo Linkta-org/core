@@ -31,7 +31,7 @@ export const useCreateUserWithEmailAndPasswordMutation = (): UseMutationResult<
         // update the displayName property on the user object
         await updateProfile(user, { displayName: name });
         // get a token from the credential and force a token refresh
-        const token = await userCredential.user.getIdToken();
+        const token = await userCredential.user.getIdToken(true);
         // await userCredential.user.getIdToken(true);
         console.log({ user, token });
         return { user, token };

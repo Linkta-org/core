@@ -2,7 +2,7 @@ import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 // import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
 import NotFoundPage from '@features/error-pages/NotFoundPage';
 import ErrorPage from '@features/error-pages/ErrorPage';
-import MainLayout from '@components/layout/MainLayout';
+import MainLayout from '@components/layout/StaticLayout';
 import privateRoutes from '@routes/privateRoutes';
 import publicRoutes from '@routes/publicRoutes';
 // import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';

@@ -1,6 +1,7 @@
-.side-nav-compact {
+.sideNavCompact {
   opacity: 1;
   display: flex;
+  border-right: 1px solid #4f5d66;
   flex-direction: column;
   gap: 5px;
   width: 60px;
@@ -11,38 +12,36 @@
   -webkit-box-sizing: border-box;
 }
 
-.side-nav-bar {
+.sideNavBar {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   width: 186px;
   gap: 5px;
   padding-bottom: 20px;
   overflow: hidden;
+  background-color: transparent;
 }
 
-button.first-button {
-  margin-top: 80px;
-}
-
-.side-nav-link > *,
-.side-mini-button > *,
-.drawer-open-button > svg,
-.drawer-close-button > svg {
+.sideNavLink > *,
+.sideMiniButton > *,
+.drawerOpenButton > svg,
+.drawerCloseButton > svg {
   color: #f5f5f5;
 }
 
-.drawer-open-button.disabled > svg {
+.disabled > svg {
   color: rgba(245, 245, 245, 0.4);
 }
 
-.side-nav-link,
-.side-mini-button {
+.sideNavLink,
+.sideMiniButton {
   cursor: pointer;
   transition: 200ms ease-in;
 }
 
-.side-nav-link:hover,
-.side-mini-button:hover {
+.sideNavLink:hover,
+.sideMiniButton:hover {
   box-shadow: inset 0px 0px 4px rgba(159, 133, 18, 0.4);
   background-color: rgba(255, 255, 255, 0.15);
   box-sizing: border-box;
@@ -50,12 +49,12 @@ button.first-button {
   -webkit-box-sizing: border-box;
 }
 
-.side-nav-link.active > *,
-.side-mini-button.active > * {
+.sideNavLink.active > *,
+.sideMiniButton.active > * {
   color: var(--secondary-main);
 }
 
-.side-nav-link {
+.sideNavLink {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -63,22 +62,20 @@ button.first-button {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  &:first-of-type {
+    margin-top: 75px;
+  }
 }
 
-.side-mini-button {
+.sideMiniButton {
   padding: 5px 14px;
 }
 
-.side-nav-button > .MuiTypography-root {
-  margin-right: auto;
-  font-size: 11px;
-}
-
-button.drawer-close-button {
+.drawerCloseButton {
   justify-content: start;
 }
 
-div.MuiDrawer-paper {
+.drawerPaper {
   background-color: transparent;
   flex-direction: row;
   width: 186px;

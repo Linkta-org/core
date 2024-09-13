@@ -12,7 +12,6 @@ export const axiosClient = axios.create({
 const getFreshToken = async () => {
   const user = auth.currentUser;
   const token = await auth.currentUser?.getIdToken();
-  await auth.currentUser?.getIdToken(true);
   if (!token) throw new Error('No ID token available');
   console.log({ user, token });
   return token;

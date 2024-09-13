@@ -35,15 +35,11 @@ const SignInPage = () => {
   });
   const { showNotification } = useNotification();
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate('/generate');
-  //   }
-  // }, [isAuthenticated]);
-
   const handleGoogleAuthClick = async () => {
     try {
-      await googleAuthMutation.mutateAsync();
+      await googleAuthMutation.mutateAsync().then(() => {
+        navigate('/generate');
+      });
     } catch (error) {
       console.error('Failed to sign in via Google.', error);
       showNotification(
@@ -57,7 +53,9 @@ const SignInPage = () => {
 
   const handleGithubAuthClick = async () => {
     try {
-      await githubAuthMutation.mutateAsync();
+      await githubAuthMutation.mutateAsync().then(() => {
+        navigate('/generate');
+      });
     } catch (error) {
       console.error('Failed to sign in via GitHub', error);
       showNotification(
@@ -70,20 +68,19 @@ const SignInPage = () => {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { email, password } = data;
-    await signInWithEmailAndPasswordMutation.mutate(
-      { email, password },
-      {
-        onError: (error) => {
-          console.error('Failed to sign in via email.', error.message);
-          showNotification(
-            'Email sign-in unsuccessful. Please try again or use another sign-in method.',
-            'error',
-            { duration: 6000 },
-          );
-        },
-      },
-    );
+    try {
+      await signInWithEmailAndPasswordMutation.mutateAsync(data).then(() => {
+        navigate('/generate');
+      });
+    } catch (error) {
+      console.error('Failed to sign up via Email/Password', error);
+      showNotification(
+        'Email/Password sign-up unsuccessful. Please try again or use another sign-up method.',
+        'error',
+        { duration: 6000 },
+      );
+      navigate('/home-page');
+    }
   };
 
   return (

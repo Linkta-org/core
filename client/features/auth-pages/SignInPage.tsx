@@ -21,7 +21,6 @@ type FormData = z.infer<typeof userSignInSchema>;
 const SignInPage = () => {
   useDocumentTitle('Sign In');
   const navigate = useNavigate();
-  // const { data: newUserProfile } = useCreateUserProfile;
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =

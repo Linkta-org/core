@@ -30,6 +30,7 @@ const UserController = (userService: ReturnType<typeof createUserService>) => {
       logger.debug('LINKTA USER: ', linktaUser);
 
       res.locals.userProfile = linktaUser;
+      next();
     } catch (error) {
       logger.error('Error fetching user profile for userId', error);
 

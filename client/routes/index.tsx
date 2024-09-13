@@ -1,11 +1,9 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
-// import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
 import NotFoundPage from '@features/error-pages/NotFoundPage';
 import ErrorPage from '@features/error-pages/ErrorPage';
 import MainLayout from '@components/layout/StaticLayout';
 import privateRoutes from '@routes/privateRoutes';
 import publicRoutes from '@routes/publicRoutes';
-// import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 import React from 'react';
 
 /**
@@ -37,7 +35,6 @@ const getRoutes = (): RouteObject[] => [
 const createRouter = () => createBrowserRouter(getRoutes());
 
 const IndexRouter = () => {
-  // const { isAuthenticated } = useWatchAuthenticatedState();
   return createRouter();
 };
 

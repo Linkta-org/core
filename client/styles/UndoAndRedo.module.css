@@ -1,0 +1,16 @@
+.undoredo_button {
+  color: black;
+  background-color: #fff;
+  border: 0.5px solid #f4f4f4;
+  border-radius: 0;
+  width: 26px;
+  height: 26px;
+}
+
+.undoredo_button:hover {
+  background-color: #f4f4f4;
+}
+
+.undoredo_button:disabled {
+  background-color: #fff;
+}

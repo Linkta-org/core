@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import type { Server } from 'http';
 import bodyParser from 'body-parser';
 import userRouter from '@routes/userRouter';
-import type { Express, Response } from 'express';
+import type { Express, NextFunction, Response } from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import userInputRouter from '@routes/userInputRouter';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
@@ -14,20 +14,15 @@ import { errorHandlerMiddleware } from '@middleware/errorHandling';
 import verifyOrigin, {
   corsOptions,
 } from '@middleware/dynamicOriginsMiddleware';
-import log4jsConfig from '@/utils/log4js.config.json' with { type: 'json' };
 import { getEnv } from '@utils/environment';
+import configureLogger from '@utils/logger';
+import uploadLogs from '@utils/uploadLogs';
 
 getEnv();
-
-/**
- * configure log4js and create an instance of logger
- * see /controllers/userInputController for usage example
- */
-const { getLogger, configure, isConfigured } = log4js;
-log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
-configure(log4jsConfig);
+configureLogger();
+uploadLogs.start();
+const { getLogger, shutdown: log4jsShutdown } = log4js;
 const logger = getLogger('[SERVER]');
-isConfigured() && logger.info('Log4JS is configured!');
 
 const uri = process.env.MONGO_DB_URI;
 mongoose.set('strictQuery', false);
@@ -57,12 +52,16 @@ function startServer() {
     res.send({ message: 'Hello from the Server!' });
   });
 
-  /**
-   * Run these lines on every request
-   */
   app.use(bodyParser.json());
-  app.use(verifyOrigin);
-  app.use(cors(corsOptions));
+
+  app.use(
+    verifyOrigin,
+    cors(corsOptions),
+    (_req, res: Response, next: NextFunction) => {
+      logger.debug('RESPONSE HEADERS: ', res.getHeaders());
+      next();
+    },
+  );
 
   /**
    * Routers
@@ -119,7 +118,8 @@ function startServer() {
 function stopServer(server: Server) {
   server.close(() => {
     logger.warn('Server stopped.');
-
+    void mongoose.disconnect();
+    log4jsShutdown();
     // disconnect from the database
     process.exit(0);
   });
@@ -152,7 +152,7 @@ async function connectToDatabase(link: string) {
       .then(() => logger.info('MONGOOSE connected!'));
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    void (await client.close());
   }
 }
 

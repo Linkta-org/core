@@ -86,10 +86,10 @@ Firebase limits the number of service accounts allocated to the project. Therefo
 - CLIENT_BASE_URL=http://localhost:5173
 - SERVER_BASE_URL=http://localhost
 - PORT=3000
-- ALLOWED_ORIGINS=http://localhost:5173, http://localhost:3000, https://linkta-core.netlify.app/
+- ALLOWED_ORIGINS=http&#xfeff;://localhost:5173, https&#xfeff;://linkta.io, https&#xfeff;://linkta-core.netlify.app
 - PROJECT_ID=linkta-core
 - PRIVATE_KEY=""
-- CLIENT_EMAIL=firebase-adminsdk-ts6yo@linkta-core.iam.gserviceaccount.com
+- CLIENT_EMAIL=firebase-adminsdk-ts6yo&#xfeff;@linkta-core.iam.gserviceaccount.com
 
 
 > Note: Default values have been included for some non-sensitive variables.

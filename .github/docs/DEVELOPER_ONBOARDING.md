@@ -25,6 +25,7 @@ Developers must be added or invited to each of these services by an admin or ano
 | Slack Workspace     | Linkta.org              | Regular Member                    |
 | GitHub Organization | Linkta-org              | 'member'                          |
 | MongoDB Atlas       | Linkta organization     | Organization Member               |
+| MongoDB Atlas       | Linkta dev database     | Read/Write access                 |
 | Heroku              | linkta-core application | collaborator                      |
 | Firebase Console    | linkta-core project     | Editor                            |
 | Google Calendar     | Linkta events           | Manage changes and manage sharing |
@@ -69,11 +70,9 @@ There should be one .env file in the **client/** folder and one .env file in the
 
 > Note: in a Vite / React application, client-side environment variables must include the 'VITE_' prefix.
 
-The developer is responsible for visiting the [**Firebase Console**](https://console.firebase.google.com/) site and obtaining the values for the above Firebase Configuration variables. These values are critical for allowing the Linkta client app to communicate with Firebase Auth services.
+<strike>The developer is responsible for visiting the [**Firebase Console**](https://console.firebase.google.com/) site and obtaining the values for the above Firebase Configuration variables.</strike>
 
-From the **Linkta Core** project page, find **Project Settings** at the gear icon next to **Project Overview** at the top of the side navigation menu.
-
-Within **Project Settings**, on the **General** tab, scroll down to **My Apps** to find the **firebaseConfig** sample code block which contains all of the values for these environment variables.
+Firebase limits the number of service accounts allocated to the project. Therefore, all of the client-side Firebase environment variables must be shared. Get a valid set from any team member.
 
 ![A screenshot of the Firebase Console / General area](https://github.com/Linkta-org/core/blob/d42a53fb77d6606573ff37bc07d90c502c1037b4/.github/docs/assets/screenshot-firebase-config.png)
 
@@ -85,9 +84,13 @@ Within **Project Settings**, on the **General** tab, scroll down to **My Apps** 
 - NODE_ENV=development
 - LOG_LEVEL=debug
 - CLIENT_BASE_URL=http://localhost:5173
-- PROJECT_ID=
+- SERVER_BASE_URL=http://localhost
+- PORT=3000
+- ALLOWED_ORIGINS=http://localhost:5173, http://localhost:3000, https://linkta-core.netlify.app/
+- PROJECT_ID=linkta-core
 - PRIVATE_KEY=""
-- CLIENT_EMAIL=
+- CLIENT_EMAIL=firebase-adminsdk-ts6yo@linkta-core.iam.gserviceaccount.com
+
 
 > Note: Default values have been included for some non-sensitive variables.
 
@@ -112,7 +115,11 @@ Variables:
 
 **CLIENT_BASE_URL** - Will be used to configure CORS headers and HTTP query targets.
 
-**LOG_LEVEL** - Defaults to 'info' if no value is set. Use this variable to change the server log level in your local environment if needed.
+**SERVER_BASE_URL** - Used in server logs.
+
+**PORT** - Used in server logs.
+
+**LOG_LEVEL** - Defaults to 'info' if no value is set. Use this variable to change the server log level in your local environment if needed. ('debug' is the recommended log level for development)
 
 | Level |	Description                                                                                               |
 |-------|-----------------------------------------------------------------------------------------------------------|

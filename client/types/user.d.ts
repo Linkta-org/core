@@ -3,7 +3,8 @@ export interface UserSettings {
 }
 
 export interface User {
-  email?: string;
+  // email?: string;
+  authProvider: string;
   name?: string;
   profilePicture?: string;
   settings: UserSettings;

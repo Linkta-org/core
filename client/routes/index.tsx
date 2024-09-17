@@ -1,11 +1,9 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
-import UnauthorizedLayout from '@features/auth-pages/UnauthorizedLayout';
 import NotFoundPage from '@features/error-pages/NotFoundPage';
 import ErrorPage from '@features/error-pages/ErrorPage';
-import MainLayout from '@components/layout/MainLayout';
+import MainLayout from '@components/layout/StaticLayout';
 import privateRoutes from '@routes/privateRoutes';
 import publicRoutes from '@routes/publicRoutes';
-import useAuth from '@hooks/useAuth';
 import React from 'react';
 
 /**
@@ -17,33 +15,27 @@ import React from 'react';
  * - the two static layouts are: MainLayout for logged in users / UnauthorizedLayout for logged out users
  */
 
-const getRoutes = (isAuthenticated: boolean): RouteObject[] => [
+const getRoutes = (): RouteObject[] => [
   {
     path: '/',
-    element: isAuthenticated ? <MainLayout /> : <UnauthorizedLayout />,
+    element: <MainLayout />,
     children: [
       ...publicRoutes,
       ...privateRoutes,
       { path: '*', element: <NotFoundPage /> },
     ],
-    errorElement: isAuthenticated ? (
+    errorElement: (
       <MainLayout>
         <ErrorPage />
       </MainLayout>
-    ) : (
-      <UnauthorizedLayout>
-        <ErrorPage />
-      </UnauthorizedLayout>
     ),
   },
 ];
 
-const createRouter = (isAuthenticated: boolean) =>
-  createBrowserRouter(getRoutes(isAuthenticated));
+const createRouter = () => createBrowserRouter(getRoutes());
 
 const IndexRouter = () => {
-  const { isAuthenticated } = useAuth();
-  return createRouter(isAuthenticated);
+  return createRouter();
 };
 
 export default IndexRouter;

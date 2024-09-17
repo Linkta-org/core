@@ -2,10 +2,10 @@ import type { Types } from 'mongoose';
 
 export type UserInput = {
   _id: Types.ObjectId;
-  userId: Types.ObjectId;
+  userId: string;
   title: string;
   input: string;
-  linktaFlowId: Types.ObjectId;
+  linktaFlowId: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -73,9 +73,9 @@ export type CustomEdge = {
 
 export type LinktaFlow = {
   _id: Types.ObjectId;
-  id: string;
-  userId: Types.ObjectId;
+  // id: string;
+  userId: string;
   nodes: CustomNode[];
   edges: CustomEdge[];
-  userInputId: Types.ObjectId;
+  userInputId: string;
 };

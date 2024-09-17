@@ -7,21 +7,22 @@ import {
   ChevronLeftOutlined,
   ChevronRightOutlined,
 } from '@mui/icons-material';
-import { Box, Typography, Button, Drawer, Link } from '@mui/material';
+import { Box, Typography, Button, Drawer, Link, Skeleton } from '@mui/material';
 import { NavLink as RouterLink } from 'react-router-dom';
-import '@styles/SideNavDrawer.css';
+import styles from '@styles/SideNavDrawer.module.css';
 import UserInputHistory from '@components/layout/UserInputHistory';
-import useFetchUserProfile from '@/hooks/useFetchUserProfile';
+import { useFetchUserProfile } from '@hooks/useUserCrudOperations';
+import useWatchAuthenticatedState from '@hooks/useWatchAuthenticatedState';
 
 type SideNavProps = {
   drawerOpen: boolean;
-  matching: boolean;
+  screenWithinBreakpoint: boolean;
   toggleDrawer: () => void;
 };
 
 export default function SideNavDrawer({
   drawerOpen,
-  matching,
+  screenWithinBreakpoint,
   toggleDrawer,
 }: SideNavProps) {
   const mountedStyle = { animation: 'opacity-in 300ms ease-in' };
@@ -30,52 +31,45 @@ export default function SideNavDrawer({
     animationFillMode: 'forwards',
   };
 
-  const { data: userProfile, status } = useFetchUserProfile();
-
-  const renderUserProfile = () => {
-    let content;
-
-    if (status === 'pending') {
-      content = 'Loading...';
-    } else if (status === 'success') {
-      content = userProfile?.name || 'Unnamed User';
-    } else if (status === 'error') {
-      content = 'Error loading profile';
-    } else {
-      content = 'Guest'; // Fallback
-    }
-
-    return <Typography variant='caption'>{content}</Typography>;
-  };
+  const { data: userProfile } = useFetchUserProfile('Side Nav Drawer');
+  const { isAuthenticated } = useWatchAuthenticatedState();
 
   const DrawerListExpanded = (
-    <Box className='side-nav-bar'>
-      <Link
-        className='side-nav-link'
-        underline='none'
-        mt={9}
-        component={RouterLink}
-        to='/login'
-      >
-        <AccountCircleOutlined />
-        {renderUserProfile()}
-      </Link>
+    <Box className={`${styles.sideNavBar}`}>
+      {isAuthenticated && (
+        <>
+          <Link
+            className={`${styles.sideNavLink}`}
+            component={RouterLink}
+            to='/login'
+          >
+            <AccountCircleOutlined />
+            <Typography variant='caption'>
+              {userProfile ? (
+                userProfile?.name
+              ) : (
+                <Skeleton variant='text'>
+                  <Typography variant='caption'>NAME PLACEHOLDER</Typography>
+                </Skeleton>
+              )}
+            </Typography>
+          </Link>
+
+          <Link
+            className={`${styles.sideNavLink}`}
+            component={RouterLink}
+            to='/generate'
+          >
+            <AddCircleOutline />
+            <Typography variant='caption'>Explore a New Topic</Typography>
+          </Link>
+
+          <UserInputHistory />
+        </>
+      )}
 
       <Link
-        className='side-nav-link'
-        underline='none'
-        component={RouterLink}
-        to='/generate'
-      >
-        <AddCircleOutline />
-        <Typography variant='caption'>Explore a New Topic</Typography>
-      </Link>
-
-      <UserInputHistory />
-
-      <Link
-        className='side-nav-link'
-        underline='none'
+        className={`${styles.sideNavLink}`}
         mt={'auto'}
         component={RouterLink}
         to='/help'
@@ -85,8 +79,7 @@ export default function SideNavDrawer({
       </Link>
 
       <Link
-        className='side-nav-link'
-        underline='none'
+        className={`${styles.sideNavLink}`}
         component={RouterLink}
         to='/settings'
       >
@@ -95,7 +88,7 @@ export default function SideNavDrawer({
       </Link>
 
       <Button
-        className='drawer-close-button'
+        className={`${styles.drawerCloseButton}`}
         onClick={toggleDrawer}
         sx={{ paddingInline: '13.5px' }}
       >
@@ -107,28 +100,32 @@ export default function SideNavDrawer({
   return (
     <>
       {!drawerOpen ? (
-        <Box className='side-nav-compact'>
-          <Link
-            className='side-mini-button'
-            mt={3}
-            style={drawerOpen ? unmountedStyle : mountedStyle}
-            component={RouterLink}
-            to='/login'
-          >
-            <AccountCircleOutlined />
-          </Link>
+        <Box className={`${styles.sideNavCompact}`}>
+          {isAuthenticated && (
+            <>
+              <Link
+                className={`${styles.sideMiniButton}`}
+                mt={3}
+                style={drawerOpen ? unmountedStyle : mountedStyle}
+                component={RouterLink}
+                to='/login'
+              >
+                <AccountCircleOutlined />
+              </Link>
+
+              <Link
+                className={`${styles.sideMiniButton}`}
+                style={drawerOpen ? unmountedStyle : mountedStyle}
+                component={RouterLink}
+                to='/generate'
+              >
+                <AddCircleOutline />
+              </Link>
+            </>
+          )}
 
           <Link
-            className='side-mini-button'
-            style={drawerOpen ? unmountedStyle : mountedStyle}
-            component={RouterLink}
-            to='/generate'
-          >
-            <AddCircleOutline />
-          </Link>
-
-          <Link
-            className='side-mini-button'
+            className={`${styles.sideMiniButton}`}
             sx={{ marginTop: 'auto' }}
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
@@ -138,7 +135,7 @@ export default function SideNavDrawer({
           </Link>
 
           <Link
-            className='side-mini-button'
+            className={`${styles.sideMiniButton}`}
             style={drawerOpen ? unmountedStyle : mountedStyle}
             component={RouterLink}
             to='/settings'
@@ -147,19 +144,20 @@ export default function SideNavDrawer({
           </Link>
 
           <Button
-            className={`drawer-open-button ${matching ? 'disabled' : ''}`}
+            className={`${styles.drawerOpenButton}`}
+            classes={{ disabled: styles.disabled }}
             onClick={toggleDrawer}
-            disabled={matching}
+            disabled={screenWithinBreakpoint}
           >
             <ChevronRightOutlined />
           </Button>
         </Box>
       ) : (
-        <Box className='side-nav'></Box>
+        <Box></Box>
       )}
 
       <Drawer
-        className='drawer'
+        classes={{ paper: styles.drawerPaper }}
         open={drawerOpen}
         onClose={toggleDrawer}
         variant='persistent'

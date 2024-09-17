@@ -11,7 +11,6 @@ import {
   userInputInputSchema,
   userInputTitleSchema,
 } from '@/validators/userInputSchemas';
-import createUserService from '@/services/userService';
 import createIdempotencyService from '@/services/idempotencyService';
 import createIdempotencyMiddleware from '@/middleware/IdempotencyMiddleware';
 
@@ -21,7 +20,6 @@ const userInputRouter = Router();
 const userInputService = createUserInputService();
 const linktaFlowService = createLinktaFlowService();
 const aiService = createAIService();
-const userService = createUserService();
 const idempotencyService = createIdempotencyService();
 
 // Instantiate the controller with the services
@@ -35,7 +33,7 @@ const userInputController = createUserInputController(
 const idempotencyMiddleware = createIdempotencyMiddleware(idempotencyService);
 
 // Apply the authorization middleware to all routes in this router.
-userInputRouter.use(isAuthorized(userService));
+userInputRouter.use(isAuthorized());
 
 /**
  * @route POST /v1/inputs

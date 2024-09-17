@@ -4,7 +4,5 @@
 export interface MiddlewareError extends Error {
   log: string;
   status: number;
-  message: {
-    err: string;
-  };
+  message: string;
 }

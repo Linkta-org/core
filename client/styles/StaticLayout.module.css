@@ -1,75 +1,82 @@
-.background-image,
-.background-color,
-.static-layout {
+.backgroundImage,
+.backgroundColor,
+.staticLayout {
   position: fixed;
   inset: 0px;
 }
 
-.background-image {
+.backgroundImage {
   background-image: url(/white-tree.png);
   background-size: cover;
   background-position: center;
   opacity: 0.1;
 }
 
-.background-color {
+.backgroundColor {
   background-color: #01383f;
 }
 
-.static-layout {
+.staticLayout {
   min-width: 300px;
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 50px 1fr auto;
 }
 
-.static-layout.layout-open {
+.staticLayout.layoutOpen {
   grid-template-columns: 186px 1fr;
 }
 
-.static-layout.layout-closed {
+.staticLayout.layoutClosed {
   grid-template-columns: 60px 1fr;
 }
 
-.linkta-logo-container,
-.top-nav-bar {
+.linktaLogoContainer,
+.topNavBar {
   border-bottom: 1px solid #4f5d66;
 }
 
-.linkta-logo-container,
-.side-nav-compact,
-.side-nav-bar {
+.saveButtonGroup {
+  margin-left: auto;
+  height: 26px;
+}
+
+.linktaLogoContainer {
   border-right: 1px solid #4f5d66;
 }
 
-.linkta-logo-container {
+.linktaLogoContainer {
   display: flex;
-  justify-content: start;
+  justify-content: center;
+  padding: 5px;
 }
 
-.linkta-logo-container.layout-open {
+.linktaLogoContainer.layoutOpen {
   border-right: none;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.linkta-logo-image {
+.linktaLogoImage {
   transition: 250ms ease;
+  cursor: pointer;
 }
 
-.linkta-logo-image.layout-open {
-  margin-left: 130px;
+.linktaLogoImage.layoutOpen {
+  margin-left: 20px;
 }
 
-.linkta-logo-image.layout-closed {
+.linktaLogoImage.layoutClosed {
   margin-left: 8px;
 }
 
-.top-nav-bar {
+.topNavBar {
   display: flex;
   align-items: center;
   padding-right: 25px;
 }
 
-.router-outlet {
+.routerOutlet {
   display: flex;
   grid-column-start: 2;
   grid-row-start: 2;

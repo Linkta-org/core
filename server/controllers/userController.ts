@@ -9,35 +9,27 @@ const logger = log4js.getLogger('[User Controller]');
  * Creates user controller with the provided services.
  * @returns {object} User controller.
  */
-const createUserController = (
-  userService: ReturnType<typeof createUserService>,
-) => {
+const UserController = (userService: ReturnType<typeof createUserService>) => {
   const privateUserService = userService;
 
   /**
-   * Fetches a user profile by user ID.
+   * Fetches a user profile by Firebase UID.
    */
-  const fetchUserProfile = async (
+  const getUserByUid = async (
     _: Request,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const userId = res.locals.userId;
+      // logger.debug('RES.LOCALS: ', res.locals);
+      const uid = res.locals.user.uid;
 
-      logger.debug('Fetching user profile for userId:', userId);
+      logger.debug('Fetching user profile for userId:', uid);
 
-      const user = await privateUserService.findUserById(userId);
+      const linktaUser = await privateUserService.findUserByUid(uid);
+      logger.debug('LINKTA USER: ', linktaUser);
 
-      if (user) {
-        res.locals.userProfile = {
-          email: user.email,
-          name: user.name,
-          profilePicture: user.profilePicture,
-          settings: user.settings,
-        };
-      }
-
+      res.locals.userProfile = linktaUser;
       next();
     } catch (error) {
       logger.error('Error fetching user profile for userId', error);
@@ -50,29 +42,21 @@ const createUserController = (
    * Creates a user profile.
    */
   const createUserProfile = async (
-    req: Request,
+    _: Request,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const userData = res.locals.userData;
-
-      const userName = req.body.name;
-
-      const { uid, email, name, profilePicture, authProvider } = userData;
-
-      logger.debug('Creating or updating user profile for UID:', uid);
+      const { uid, name, profilePicture, authProvider } = res.locals.user;
 
       const newUser = await privateUserService.createNewUser({
         uid,
-        email,
-        name: userName || name,
-        profilePicture,
+        name: name,
+        profilePicture: profilePicture,
         authProvider,
       });
 
-      res.locals.newUserProfile = {
-        email: newUser.email,
+      res.locals.userProfile = {
         name: newUser.name,
         profilePicture: newUser.profilePicture,
         settings: newUser.settings,
@@ -86,7 +70,45 @@ const createUserController = (
     }
   };
 
-  return { fetchUserProfile, createUserProfile };
+  /**
+   * updates a user profile
+   */
+  const updateUserProfile = async (
+    _: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { uid, name, profilePicture, authProvider } = res.locals.user;
+
+      const newUser = await privateUserService.updateUser({
+        uid,
+        name: name,
+        profilePicture: profilePicture,
+        authProvider,
+      });
+
+      if (newUser) {
+        res.locals.userProfile = {
+          name: newUser.name,
+          profilePicture: newUser.profilePicture,
+          settings: newUser.settings,
+        };
+      }
+
+      next();
+    } catch (error) {
+      logger.error('Error creating or updating user profile', error);
+
+      next(new InternalServerError('Failed to create or update user profile'));
+    }
+  };
+
+  return {
+    fetchUserProfile: getUserByUid,
+    createUserProfile,
+    updateUserProfile,
+  };
 };
 
-export default createUserController;
+export default UserController;

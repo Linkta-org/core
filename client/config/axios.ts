@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { auth } from '../firebase/firebaseConfig';
+import { auth } from '@config/firebaseConfig';
 
 export const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_SERVER_BASE_URL,
@@ -9,12 +9,16 @@ export const axiosClient = axios.create({
   },
 });
 
+const getFreshToken = async () => {
+  const user = auth.currentUser;
+  const token = await auth.currentUser?.getIdToken();
+  if (!token) throw new Error('No ID token available');
+  console.log({ user, token });
+  return token;
+};
+
 axiosClient.interceptors.request.use(async (config) => {
-  const idToken = await auth.currentUser?.getIdToken();
-  if (!idToken) throw new Error('No ID token available');
-
-  config.headers.Authorization = `${idToken}`;
-
+  config.headers.Authorization = `${await getFreshToken()}`;
   return config;
 });
 

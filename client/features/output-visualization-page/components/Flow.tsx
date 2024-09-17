@@ -26,7 +26,7 @@ const nodeTypes = { linktaNode: LinktaNode };
 const edgeTypes = { linktaEdge: LinktaFlowEdge };
 
 const rfStyle = {
-  backgroundColor: '#173336',
+  backgroundColor: 'hsla(186, 40%, 15%, 0.4)',
   height: '100%',
   width: '100%',
 };

@@ -3,7 +3,8 @@ import { CustomError } from '@/utils/customErrors';
 import type { Request, Response } from 'express';
 import type { NextFunction } from 'express';
 import Log4js from 'log4js';
-const logger = Log4js.getLogger('[errorHandlerMiddleware]');
+
+const logger = Log4js.getLogger('[Error Handler]');
 
 /**
  * Global error handler for the Express server.
@@ -25,7 +26,7 @@ export function errorHandlerMiddleware(
     name: 'MiddlewareError',
     log: 'Express error handler caught unknown middleware error',
     status: 500,
-    message: { err: 'An error occurred' },
+    message: String(err),
   };
   const errObj =
     err instanceof CustomError

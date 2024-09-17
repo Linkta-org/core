@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Button, Box, Typography, Link, TextField } from '@mui/material';
-import styles from '@styles/layout/AuthStyles.module.css';
-import { useGoogleAuthMutation } from '@hooks/useSignInWithGoogle';
 import useDocumentTitle from '@hooks/useDocumentTitle';
+import { useGoogleAuthMutation } from '@hooks/useSignInWithGoogle';
 import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useSignInWithEmailAndPasswordMutation } from '@/hooks/useSignInWithEmailAndPassword';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { z } from 'zod';
+import styles from '@styles/layout/AuthStyles.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
-import useFetchUserProfile from '@/hooks/useFetchUserProfile';
-import useCreateUserProfileMutation from '@/hooks/useCreateUserProfileMutation';
-import { useQueryClient } from '@tanstack/react-query';
-import useAuth from '@/hooks/useAuth';
+import { z } from 'zod';
 import { useNotification } from '@hooks/useNotification';
+import { useQueryClient } from '@tanstack/react-query';
 
 const userSignInSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -25,83 +22,70 @@ type FormData = z.infer<typeof userSignInSchema>;
 const SignInPage = () => {
   useDocumentTitle('Sign In');
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
     useSignInWithEmailAndPasswordMutation();
-  const { data: userProfile } = useFetchUserProfile();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(userSignInSchema) });
-  const createUserProfileMutation = useCreateUserProfileMutation();
-  const queryClient = useQueryClient();
-  const { isAuthenticated } = useAuth();
+  } = useForm<FormData>({
+    resolver: zodResolver(userSignInSchema),
+  });
   const { showNotification } = useNotification();
-
-  const handleAuthSuccess = async (name: string) => {
-    if (!userProfile) {
-      try {
-        const response = await createUserProfileMutation.mutateAsync({ name });
-        await queryClient.setQueryData(['userProfile'], response);
-        showNotification("Welcome back! You're now signed in.", 'success');
-        navigate('/generate');
-      } catch (error) {
-        console.error('Failed to create user profile:', error);
-      }
-    }
-  };
 
   const handleGoogleAuthClick = async () => {
     try {
-      await googleAuthMutation.mutateAsync();
-      await handleAuthSuccess('');
+      await googleAuthMutation.mutateAsync().then(() => {
+        void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
+        navigate('/generate');
+      });
     } catch (error) {
-      console.error('Failed to sign in through Google:', error);
+      console.error('Failed to sign in via Google.', error);
       showNotification(
         'Google sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
         { duration: 6000 },
       );
+      navigate('/home-page');
     }
   };
 
   const handleGithubAuthClick = async () => {
     try {
-      await githubAuthMutation.mutateAsync();
-      await handleAuthSuccess('');
+      await githubAuthMutation.mutateAsync().then(() => {
+        void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
+        navigate('/generate');
+      });
     } catch (error) {
-      console.error('Failed to sign in through GitHub', error);
+      console.error('Failed to sign in via GitHub', error);
       showNotification(
         'GitHub sign-in unsuccessful. Please try again or use another sign-in method.',
         'error',
         { duration: 6000 },
       );
+      navigate('/home-page');
     }
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { email, password } = data;
-
     try {
-      await signInWithEmailAndPasswordMutation.mutateAsync({ email, password });
-      await handleAuthSuccess('');
+      await signInWithEmailAndPasswordMutation.mutateAsync(data).then(() => {
+        void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
+        navigate('/generate');
+      });
     } catch (error) {
-      console.error('Failed to sign in through email:', error);
+      console.error('Failed to sign up via Email/Password', error);
       showNotification(
-        'Email sign-in unsuccessful. Please try again or use another sign-in method.',
+        'Email/Password sign-up unsuccessful. Please try again or use another sign-up method.',
         'error',
         { duration: 6000 },
       );
+      navigate('/home-page');
     }
   };
-
-  useEffect(() => {
-    if (isAuthenticated && userProfile) {
-      navigate('/generate');
-    }
-  }, [isAuthenticated, userProfile, navigate]);
 
   return (
     <>

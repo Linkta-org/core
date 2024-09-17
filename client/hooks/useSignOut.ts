@@ -11,6 +11,7 @@ const useSignOut = (): UseMutationResult<void, FirebaseError, void> => {
     mutationFn: () => signOut(auth),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ['userProfile'] });
+      console.log('Signed Out!');
     },
     onError: (error: FirebaseError) => {
       console.error('Error signing out:', error);

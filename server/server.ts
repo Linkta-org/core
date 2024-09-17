@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import type { Server } from 'http';
 import bodyParser from 'body-parser';
 import userRouter from '@routes/userRouter';
-import type { Express, NextFunction, Response } from 'express';
+import type { Express, Response } from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import userInputRouter from '@routes/userInputRouter';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
@@ -46,19 +46,8 @@ function startServer() {
     throw new Error('Missing DB connection string!');
   }
 
-  // eslint-disable-next-line no-console -- TODO: implement logging service to replace console.dir and remove this line to re-enable eslint
+  // eslint-disable-next-line no-console
   connectToDatabase(uri || '').catch(console.dir);
-
-  app.use(bodyParser.json());
-
-  app.use(
-    verifyOrigin,
-    cors(corsOptions),
-    (_req, res: Response, next: NextFunction) => {
-      logger.debug('RESPONSE HEADERS: ', res.getHeaders());
-      next();
-    },
-  );
 
   /**
    * Server health check route handler
@@ -67,6 +56,13 @@ function startServer() {
     logger.debug('HIT / handler');
     res.send({ message: 'Hello from the Server!' });
   });
+
+  /**
+   * Run these lines on every request
+   */
+  app.use(bodyParser.json());
+  app.use(verifyOrigin);
+  app.use(cors(corsOptions));
 
   /**
    * Routers

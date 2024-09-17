@@ -25,10 +25,7 @@ const createAIService = () => {
         throw new Error('Invalid user input');
       }
 
-      const response = await startGeneration(history, userInput);
-      logger.debug('Generated initial response successfully', response);
-
-      return response;
+      return await startGeneration(history, userInput);
     } catch (error) {
       logger.error('Error generating initial response from aiService.', error);
 

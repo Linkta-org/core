@@ -1,5 +1,3 @@
-export const extractUserInputId = (id: string): string => id.split('-')[0];
-
 // Unique Id generator
 let notificationCounter = 0;
 

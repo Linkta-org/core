@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNotification } from '@hooks/useNotification';
 import { useCreateUserProfile } from '@hooks/useUserCrudOperations';
+import { useQueryClient } from '@tanstack/react-query';
 
 const userSignUpSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -24,6 +25,7 @@ type FormData = z.infer<typeof userSignUpSchema>;
 const SignUpPage = () => {
   useDocumentTitle('Sign Up');
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMutation = useGithubAuthMutation();
   const newUserProfile = useCreateUserProfile('Sign Up Page');
@@ -44,6 +46,7 @@ const SignUpPage = () => {
           await newUserProfile.mutateAsync();
         })
         .then(() => {
+          void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
           navigate('/generate');
         });
     } catch (error) {
@@ -65,6 +68,7 @@ const SignUpPage = () => {
           await newUserProfile.mutateAsync();
         })
         .then(() => {
+          void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
           navigate('/generate');
         });
     } catch (error) {
@@ -86,6 +90,7 @@ const SignUpPage = () => {
           await newUserProfile.mutateAsync();
         })
         .then(() => {
+          void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
           navigate('/generate');
         });
     } catch (error) {

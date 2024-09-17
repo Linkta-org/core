@@ -10,6 +10,7 @@ import styles from '@styles/layout/AuthStyles.module.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNotification } from '@hooks/useNotification';
+import { useQueryClient } from '@tanstack/react-query';
 
 const userSignInSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -21,6 +22,7 @@ type FormData = z.infer<typeof userSignInSchema>;
 const SignInPage = () => {
   useDocumentTitle('Sign In');
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const googleAuthMutation = useGoogleAuthMutation();
   const githubAuthMutation = useGithubAuthMutation();
   const signInWithEmailAndPasswordMutation =
@@ -37,6 +39,7 @@ const SignInPage = () => {
   const handleGoogleAuthClick = async () => {
     try {
       await googleAuthMutation.mutateAsync().then(() => {
+        void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
         navigate('/generate');
       });
     } catch (error) {
@@ -53,6 +56,7 @@ const SignInPage = () => {
   const handleGithubAuthClick = async () => {
     try {
       await githubAuthMutation.mutateAsync().then(() => {
+        void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
         navigate('/generate');
       });
     } catch (error) {
@@ -69,6 +73,7 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       await signInWithEmailAndPasswordMutation.mutateAsync(data).then(() => {
+        void queryClient.invalidateQueries({ queryKey: ['getUserProfile'] });
         navigate('/generate');
       });
     } catch (error) {

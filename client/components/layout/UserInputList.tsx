@@ -6,6 +6,7 @@ import {
   ListItemText,
   Typography,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
@@ -171,12 +172,30 @@ const UserInputList: React.FC<UserInputListProps> = ({
             >
               <ListItemText
                 primary={
-                  <Typography variant='caption'>{userInput.title}</Typography>
+                  <Tooltip
+                    title={userInput.title}
+                    placement='top'
+                  >
+                    <Typography
+                      variant='caption'
+                      noWrap
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: '100%', // Ensure max width to trigger ellipsis
+                        display: 'block', // Ensure Typography behaves as a block-level element for overflow control
+                      }}
+                    >
+                      {userInput.title}
+                    </Typography>
+                  </Tooltip>
                 }
                 id={`user-input-${userInput.id}`}
                 aria-label={`Details for ${userInput.title}`}
                 className={styles.userInputList__text}
               />
+
               <IconButton
                 className={styles.userInputList__icon}
                 onClick={handleOptionsIconClick}

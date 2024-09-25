@@ -4,23 +4,24 @@ import log4js from 'log4js';
 import mongoose from 'mongoose';
 import type { Server } from 'http';
 import bodyParser from 'body-parser';
+import { getEnv } from '@utils/environment';
 import userRouter from '@routes/userRouter';
-import type { Express, NextFunction, Response } from 'express';
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import logsRouter from '@routes/logsRouter';
+import configureLogger from '@utils/loggerConfig';
 import userInputRouter from '@routes/userInputRouter';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 import RateLimiter from '@middleware/rateLimiterMiddleware';
+import type { Express, NextFunction, Response } from 'express';
 import { errorHandlerMiddleware } from '@middleware/errorHandling';
+import startAllScheduledLoggingTasks from '@utils/loggerScheduledTasks';
 import verifyOrigin, {
   corsOptions,
 } from '@middleware/dynamicOriginsMiddleware';
-import { getEnv } from '@utils/environment';
-import configureLogger from '@utils/logger';
-import uploadLogs from '@utils/uploadLogs';
 
 getEnv();
 configureLogger();
-uploadLogs.start();
+startAllScheduledLoggingTasks();
 const { getLogger, shutdown: log4jsShutdown } = log4js;
 const logger = getLogger('[SERVER]');
 
@@ -76,6 +77,10 @@ function startServer() {
 
   app.use('/v1/users', userRouter, () => {
     logger.debug('HIT v1/users handler');
+  });
+
+  app.use('/v1/logs', logsRouter, () => {
+    logger.debug('HIT v1/flows handler');
   });
 
   /**

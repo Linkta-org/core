@@ -1,5 +1,4 @@
-import type { Model } from 'mongoose';
-import { Schema, model } from 'mongoose';
+import { Schema, model, type Model } from 'mongoose';
 import type User from '@/types/user';
 
 interface Settings {

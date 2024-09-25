@@ -41,9 +41,8 @@ const loggerProd = {
     file: {
       type: 'dateFile',
       filename: 'logs/linkta-server.log',
-      pattern: 'yyMMddhh',
+      pattern: 'yyMMdd',
       keepFileExt: true,
-      compress: true,
       layout: {
         type: 'pattern',
         pattern: '%n %d{yyyy-MM-dd hh:mm:ss:SSS} [%p] %c %f{2} %l:%o %F%n %m',
@@ -66,9 +65,8 @@ loggerEnv.categories.default.level = process.env.LOG_LEVEL || 'info';
 
 function configureLogger() {
   configure(loggerEnv);
-  const logger = getLogger('[LOGGER SETUP]');
+  const logger = getLogger('[LOGGER CONFIG]');
   isConfigured() && logger.info('Log4JS is configured!');
-  logger.info(`Logger Environment: ${process.env.LOGGER_ENV}`);
 }
 
 export default configureLogger;

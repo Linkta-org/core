@@ -3,7 +3,7 @@ import log4js from 'log4js';
 import type createUserService from '@/services/userService';
 import { InternalServerError } from '@/utils/customErrors';
 
-const logger = log4js.getLogger('[User Controller]');
+const logger = log4js.getLogger('[USER CONTROLLER]');
 
 /**
  * Creates user controller with the provided services.

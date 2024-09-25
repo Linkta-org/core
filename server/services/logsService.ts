@@ -15,40 +15,6 @@ const logsClient = new MongoClient(logsUri);
  */
 const createLogsService = () => {
   /**
-   * Uploads one prepared log file to the database.
-   */
-  const uploadLog = async (filename: string, fileData: Buffer) => {
-    try {
-      await logsClient
-        .connect()
-        .then(() => logger.info('Connected to logs database'))
-        .catch((err) => logger.error('Error connecting to logs database', err));
-      const db = logsClient.db('log_backup');
-      const logsCollection = db.collection('logs');
-
-      await logsCollection.updateOne(
-        { filename },
-        {
-          $set: {
-            filename,
-            fileData: new Binary(fileData),
-            createdAt: new Date(),
-          },
-        },
-        { upsert: true },
-      );
-
-      logger.info('Uploaded log:', filename);
-    } catch (error) {
-      logger.error('Error uploading log', error);
-      throw new InternalServerError('Error uploading log.');
-    } finally {
-      await logsClient.close();
-      logger.info('Closed logs database connection');
-    }
-  };
-
-  /**
    * Uploads all log files from the local /logs directory to the database.
    */
   const uploadLogs = async (logs: LogFile[]) => {
@@ -144,7 +110,7 @@ const createLogsService = () => {
     }
   };
 
-  return { uploadLog, uploadLogs, evictLogs, getLogsByDateRange };
+  return { uploadLogs, evictLogs, getLogsByDateRange };
 };
 
 export default createLogsService;

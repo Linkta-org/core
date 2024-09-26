@@ -199,13 +199,25 @@ const SignUpPage = () => {
               Update
             </Link>
           </Typography>
-
           <Typography
             variant='body2'
             className={`${styles.termsAndConditions}`}
           >
             By continuing, you are indicating that you have read and accept our
-            <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+            <Link
+              component={RouterLink}
+              to='/terms-of-service'
+            >
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link
+              component={RouterLink}
+              to='/privacy-policy'
+            >
+              Privacy Policy
+            </Link>
+            .
           </Typography>
         </Box>
       </Box>

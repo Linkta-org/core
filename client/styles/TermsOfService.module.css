@@ -1,0 +1,28 @@
+.terms-box-container {
+  max-width: 80vw;
+  max-height: 100vh;
+  padding: 32px 16px;
+  padding-bottom: 80px;
+  overflow: scroll;
+}
+
+.title {
+  margin-bottom: 16px;
+}
+
+.updated-date {
+  margin-bottom: 24px;
+}
+
+.list-item {
+  margin-bottom: 16px;
+}
+
+.email-link {
+  color: var(--link-text);
+  text-decoration: underline;
+}
+
+.email-link:visited {
+  color: var(--link-text);
+}

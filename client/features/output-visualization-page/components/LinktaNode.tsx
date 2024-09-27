@@ -58,7 +58,6 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
           alignItems: 'center',
           justifyContent: 'center',
           bgcolor: 'var(--primary-dark)',
-          // bgcolor: '#022c22',
         }}
       >
         <TextField
@@ -101,7 +100,7 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
       <Handle
         type='source'
         position={Position.Bottom}
-        id='a' // Ensure this is unique
+        id='a'
         isConnectable={isConnectable}
       />
       <Handle

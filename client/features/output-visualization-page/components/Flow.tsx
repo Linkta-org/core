@@ -62,7 +62,6 @@ function Flow({ userInputId }: { userInputId: string }) {
         linktaFlow.edges,
       );
 
-      // Transform nodes to LinktaNode with custom styles
       const styledNodes = layoutNodes.map((node) => ({
         ...node,
         type: 'linktaNode',
@@ -80,7 +79,6 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      // set the type of the node to linktaNode here
       setNodes((nds: Node[]) => applyNodeChanges(changes, nds));
     },
     [setNodes],

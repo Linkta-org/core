@@ -14,8 +14,6 @@ type LinktaNodeProps = NodeProps<LinktaNodeData> & {
   isConnectable: boolean;
 };
 
-const handleStyle = {};
-
 const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
   const [placeholderData, setPlaceholderData] = useState({
     id: data.id,
@@ -45,12 +43,6 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
       }}
       className='linkta-node'
     >
-      <Handle
-        type='source'
-        position={Position.Top}
-        id='a'
-        isConnectable={isConnectable}
-      />
       <Box
         sx={{
           borderRadius: '5px 0 0 5px',
@@ -106,21 +98,26 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
       </Box>
       <Handle
         type='source'
+        position={Position.Bottom}
+        id='a' // Ensure this is unique
+        isConnectable={isConnectable}
+      />
+      <Handle
+        type='target'
+        position={Position.Top}
+        id='d'
+        isConnectable={isConnectable}
+      />
+      <Handle
+        type='source'
         position={Position.Right}
         id='b'
         isConnectable={isConnectable}
       />
       <Handle
-        type='source'
+        type='target'
         position={Position.Left}
         id='c'
-        isConnectable={isConnectable}
-      />
-      <Handle
-        type='source'
-        position={Position.Bottom}
-        id='a'
-        style={handleStyle}
         isConnectable={isConnectable}
       />
     </Box>

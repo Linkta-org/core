@@ -51,12 +51,10 @@
   width: 150px;
   border-radius: 20px;
   background-color: var(--secondary-main);
-  color: var(--secondary-contrastText);
 }
 
 .userInputSubmitButton:hover {
   background-color: var(--secondary-dark);
-  color: var(--secondary-light);
 }
 
 .popularTopics {

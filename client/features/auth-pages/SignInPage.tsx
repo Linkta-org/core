@@ -148,6 +148,7 @@ const SignInPage = () => {
           <Button
             type='submit'
             variant='contained'
+            color='secondary'
             className={`${styles.formSubmitButton}`}
           >
             Sign In to Linkta

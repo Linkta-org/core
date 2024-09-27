@@ -137,6 +137,7 @@ const UserInputForm = () => {
 
         <Button
           variant='contained'
+          color='secondary'
           className={`${styles.userInputSubmitButton}`}
           type='submit'
           disabled={!isChecked}

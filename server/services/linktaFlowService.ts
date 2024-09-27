@@ -33,17 +33,10 @@ const createLinktaFlowService = () => {
         edges,
       });
 
-      const linktaFlowData = {
-        userId,
-        userInputId,
-        nodes,
-        edges,
-      };
+      const linktaFlowData = { userId, userInputId, nodes, edges };
 
-      // Create LinktaFlow in DB
       const newLinktaFlow = await LinktaFlowModel.create(linktaFlowData);
 
-      // Update userInput with the corresponding linktaFlowId
       await UserInputModel.findByIdAndUpdate(userInputId, {
         $set: { linktaFlowId: newLinktaFlow._id },
       });

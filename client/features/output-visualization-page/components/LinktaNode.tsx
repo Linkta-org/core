@@ -57,6 +57,8 @@ const LinktaNode = memo(({ isConnectable, data }: LinktaNodeProps) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          bgcolor: 'var(--primary-dark)',
+          // bgcolor: '#022c22',
         }}
       >
         <TextField

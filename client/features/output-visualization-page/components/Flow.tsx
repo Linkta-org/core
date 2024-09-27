@@ -62,11 +62,17 @@ function Flow({ userInputId }: { userInputId: string }) {
         linktaFlow.edges,
       );
 
+      // Transform nodes to LinktaNode with custom styles
+      const styledNodes = layoutNodes.map((node) => ({
+        ...node,
+        type: 'linktaNode',
+      }));
+
       setNodes(layoutNodes);
       setEdges(layoutEdges);
       setCurrentFlow({
         id: linktaFlow.id,
-        nodes: layoutNodes,
+        nodes: styledNodes,
         edges: layoutEdges,
       });
     }
@@ -74,6 +80,7 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
+      // set the type of the node to linktaNode here
       setNodes((nds: Node[]) => applyNodeChanges(changes, nds));
     },
     [setNodes],

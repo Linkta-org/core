@@ -42,7 +42,7 @@ const ForgotPasswordPage = () => {
         console.error('Failed to send password reset email', error.message);
 
         showNotification(
-          "FWe couldn't send the password reset email. Please verify your email address and try again.",
+          "We couldn't send the password reset email. Please verify your email address and try again.",
           'error',
           {
             duration: 6000,
@@ -67,8 +67,8 @@ const ForgotPasswordPage = () => {
         mb={6}
         variant='body1'
       >
-        Please provide the email you signed up with. We will send a secure
-        linkto reset your account password.
+        Please provide the email you signed up with. We will send a secure link
+        to reset your account password.
       </Typography>
 
       <form
@@ -82,6 +82,12 @@ const ForgotPasswordPage = () => {
           {...register('email')}
           error={!!errors.email}
           helperText={errors.email?.message}
+          className={`${styles.textInput}`}
+          sx={{
+            '& .MuiInput-underline:before': {
+              borderBottomColor: '#D9D9D9 ',
+            },
+          }}
         ></TextField>
         <Button
           variant='contained'

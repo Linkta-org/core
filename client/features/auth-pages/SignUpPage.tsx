@@ -155,6 +155,12 @@ const SignUpPage = () => {
             {...register('name')}
             error={!!errors.name}
             helperText={errors.name?.message}
+            className={`${styles.textInput}`}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <TextField
             label='email address'
@@ -163,12 +169,24 @@ const SignUpPage = () => {
             {...register('email')}
             error={!!errors.email}
             helperText={errors.email?.message}
+            className={`${styles.textInput}`}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <TextField
             label='password'
             type='password'
             variant='standard'
             {...register('password')}
+            className={`${styles.textInput}`}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <Button
             type='submit'

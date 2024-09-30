@@ -197,8 +197,8 @@ const UserInputList: React.FC<UserInputListProps> = ({
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                        maxWidth: '100%', // Ensure max width to trigger ellipsis
-                        display: 'block', // Ensure Typography behaves as a block-level element for overflow control
+                        maxWidth: '100%',
+                        display: 'block',
                       }}
                     >
                       {userInput.title}

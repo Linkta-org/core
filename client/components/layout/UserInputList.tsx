@@ -174,7 +174,8 @@ const UserInputList: React.FC<UserInputListProps> = ({
                 primary={
                   <Tooltip
                     title={userInput.title}
-                    placement='top'
+                    placement='right'
+                    arrow
                   >
                     <Typography
                       variant='caption'

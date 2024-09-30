@@ -158,25 +158,38 @@ const UserInputList: React.FC<UserInputListProps> = ({
       >
         {inputHistory.slice(0, visibleItems).map((userInput) => {
           return (
-            <ListItemButton
-              id={userInput.id}
+            <Tooltip
+              title={userInput.title}
               key={userInput.id}
-              onClick={() => handleUserInputSelect(userInput)}
-              role='listitem'
-              aria-labelledby={`user-input-${userInput.id}`}
-              className={`${styles.userInputList__itemButton} ${
-                activeUserInput?.id === userInput.id
-                  ? styles.userInputList__itemButtonSelected
-                  : ''
-              }`}
+              placement='right'
+              slotProps={{
+                popper: {
+                  modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        offset: [0, -15],
+                      },
+                    },
+                  ],
+                },
+              }}
+              arrow
             >
-              <ListItemText
-                primary={
-                  <Tooltip
-                    title={userInput.title}
-                    placement='right'
-                    arrow
-                  >
+              <ListItemButton
+                id={userInput.id}
+                key={userInput.id}
+                onClick={() => handleUserInputSelect(userInput)}
+                role='listitem'
+                aria-labelledby={`user-input-${userInput.id}`}
+                className={`${styles.userInputList__itemButton} ${
+                  activeUserInput?.id === userInput.id
+                    ? styles.userInputList__itemButtonSelected
+                    : ''
+                }`}
+              >
+                <ListItemText
+                  primary={
                     <Typography
                       variant='caption'
                       noWrap
@@ -190,20 +203,20 @@ const UserInputList: React.FC<UserInputListProps> = ({
                     >
                       {userInput.title}
                     </Typography>
-                  </Tooltip>
-                }
-                id={`user-input-${userInput.id}`}
-                aria-label={`Details for ${userInput.title}`}
-                className={styles.userInputList__text}
-              />
+                  }
+                  id={`user-input-${userInput.id}`}
+                  aria-label={`Details for ${userInput.title}`}
+                  className={styles.userInputList__text}
+                />
 
-              <IconButton
-                className={styles.userInputList__icon}
-                onClick={handleOptionsIconClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-            </ListItemButton>
+                <IconButton
+                  className={styles.userInputList__icon}
+                  onClick={handleOptionsIconClick}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+              </ListItemButton>
+            </Tooltip>
           );
         })}
       </List>

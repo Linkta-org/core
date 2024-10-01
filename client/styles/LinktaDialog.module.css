@@ -1,0 +1,66 @@
+.dialog {
+  max-width: 28rem;
+  width: 60%;
+  background-color: var(--secondary-contrastText);
+  border-radius: 8px;
+  padding: 0.625rem;
+  min-height: 11rem;
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dialogTitle {
+  padding: 0.5rem 0;
+}
+
+.dialogTitleText {
+  color: var(--light-gray);
+  font-size: 1.25rem;
+  margin-left: 0.5rem;
+}
+
+.dialogContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: center;
+  min-height: 5rem;
+  width: 100%;
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Base button styles */
+.buttonBase {
+  width: 6.25rem;
+  height: 2rem;
+  border-radius: 16.5px;
+  text-align: center;
+  border: 1px solid transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: var(--light-gray);
+  color: var(--primary-dark);
+}
+
+.cancelButton:hover {
+  background-color: #bdbdbd;
+  color: var(--primary-dark);
+}

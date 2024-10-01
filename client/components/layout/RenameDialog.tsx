@@ -1,29 +1,17 @@
 import React, { useEffect } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  DialogActions,
-  Button,
-  Typography,
-  FormControl,
-  FormHelperText,
-} from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import styles from '@styles/layout/RenameDialog.module.css';
+import { TextField, FormControl, FormHelperText } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import LinktaDialog from '@components/common/LinktaDialog';
 import { userInputTitleSchema } from '@validators/userInputSchemas';
+import styles from '@styles/layout/RenameDialog.module.css';
 
 interface RenameDialogProps {
   isOpen: boolean;
   currentTitle: string;
   onSave: (newTitle: string) => void;
   onCancel: () => void;
-}
-
-interface FormData {
-  title: string;
 }
 
 const RenameDialog: React.FC<RenameDialogProps> = ({
@@ -47,84 +35,61 @@ const RenameDialog: React.FC<RenameDialogProps> = ({
     setValue('title', currentTitle);
   }, [currentTitle, setValue]);
 
-  const handleSaveClick = (data: FormData) => {
-    onSave(data.title);
-  };
+  const handleSaveClick = (data: { title: string }) => onSave(data.title);
 
-  const handleCancelClick = () => {
-    reset({ title: currentTitle });
-    onCancel();
-  };
+  const formContent = (
+    <form
+      onSubmit={handleSubmit(handleSaveClick)}
+      className={styles.renameForm}
+      aria-live='polite'
+    >
+      <FormControl
+        error={!!errors.title}
+        fullWidth
+      >
+        <Controller
+          name='title'
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              fullWidth
+              variant='outlined'
+              aria-required='true'
+              aria-invalid={!!errors.title}
+              aria-describedby='title-error'
+              className={styles.textField}
+            />
+          )}
+        />
+        {errors.title && (
+          <FormHelperText
+            id='title-error'
+            className={styles.formError}
+            aria-live='assertive'
+          >
+            {errors.title.message}
+          </FormHelperText>
+        )}
+      </FormControl>
+    </form>
+  );
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={handleCancelClick}
-      classes={{ paper: styles.dialog }}
-      aria-labelledby='rename-dialog-title'
-      aria-describedby='rename-dialog-description'
-    >
-      <DialogTitle
-        id='rename-dialog-title'
-        className={styles.dialogTitle}
-      >
-        <Typography>Current Title:</Typography>
-      </DialogTitle>
-      <DialogContent
-        id='rename-dialog-description'
-        className={styles.dialogContent}
-      >
-        <form onSubmit={handleSubmit(handleSaveClick)}>
-          <FormControl
-            error={!!errors.title}
-            fullWidth
-          >
-            <Controller
-              name='title'
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  margin='none'
-                  label=''
-                  type='text'
-                  fullWidth
-                  variant='outlined'
-                  className={styles.textField}
-                  aria-required='true'
-                  aria-invalid={!!errors.title}
-                />
-              )}
-            />
-            {errors.title && (
-              <FormHelperText
-                error
-                id='title-error-text'
-              >
-                {errors.title.message}
-              </FormHelperText>
-            )}
-          </FormControl>
-
-          <DialogActions className={styles.buttonGroup}>
-            <Button
-              onClick={handleCancelClick}
-              className={styles.cancelButton}
-              aria-label='Cancel renaming'
-            >
-              <Typography variant='button'>Cancel</Typography>
-            </Button>
-            <Button
-              type='submit'
-              className={styles.saveButton}
-              aria-label='Save new title'
-            >
-              <Typography variant='button'>Save</Typography>
-            </Button>
-          </DialogActions>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <LinktaDialog
+      isOpen={isOpen}
+      title='Rename Title'
+      content={formContent}
+      confirmText='Save'
+      cancelText='Cancel'
+      icon={<EditIcon className={styles.editIcon} />}
+      onConfirm={handleSubmit(handleSaveClick)}
+      onCancel={() => {
+        reset({ title: currentTitle });
+        onCancel();
+      }}
+      confirmButtonClass={styles.renameConfirmButton}
+    />
   );
 };
 

@@ -168,7 +168,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
                     {
                       name: 'offset',
                       options: {
-                        offset: [0, -15],
+                        offset: [0, 5],
                       },
                     },
                   ],

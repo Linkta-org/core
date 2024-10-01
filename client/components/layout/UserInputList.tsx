@@ -6,6 +6,7 @@ import {
   ListItemText,
   Typography,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OptionsMenu from './OptionsMenu';
@@ -157,33 +158,65 @@ const UserInputList: React.FC<UserInputListProps> = ({
       >
         {inputHistory.slice(0, visibleItems).map((userInput) => {
           return (
-            <ListItemButton
-              id={userInput.id}
+            <Tooltip
+              title={userInput.title}
               key={userInput.id}
-              onClick={() => handleUserInputSelect(userInput)}
-              role='listitem'
-              aria-labelledby={`user-input-${userInput.id}`}
-              className={`${styles.userInputList__itemButton} ${
-                activeUserInput?.id === userInput.id
-                  ? styles.userInputList__itemButtonSelected
-                  : ''
-              }`}
+              placement='right'
+              slotProps={{
+                popper: {
+                  modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        offset: [0, 5],
+                      },
+                    },
+                  ],
+                },
+              }}
+              arrow
             >
-              <ListItemText
-                primary={
-                  <Typography variant='caption'>{userInput.title}</Typography>
-                }
-                id={`user-input-${userInput.id}`}
-                aria-label={`Details for ${userInput.title}`}
-                className={styles.userInputList__text}
-              />
-              <IconButton
-                className={styles.userInputList__icon}
-                onClick={handleOptionsIconClick}
+              <ListItemButton
+                id={userInput.id}
+                key={userInput.id}
+                onClick={() => handleUserInputSelect(userInput)}
+                role='listitem'
+                aria-labelledby={`user-input-${userInput.id}`}
+                className={`${styles.userInputList__itemButton} ${
+                  activeUserInput?.id === userInput.id
+                    ? styles.userInputList__itemButtonSelected
+                    : ''
+                }`}
               >
-                <MoreVertIcon />
-              </IconButton>
-            </ListItemButton>
+                <ListItemText
+                  primary={
+                    <Typography
+                      variant='caption'
+                      noWrap
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: '100%',
+                        display: 'block',
+                      }}
+                    >
+                      {userInput.title}
+                    </Typography>
+                  }
+                  id={`user-input-${userInput.id}`}
+                  aria-label={`Details for ${userInput.title}`}
+                  className={styles.userInputList__text}
+                />
+
+                <IconButton
+                  className={styles.userInputList__icon}
+                  onClick={handleOptionsIconClick}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+              </ListItemButton>
+            </Tooltip>
           );
         })}
       </List>

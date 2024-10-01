@@ -4,7 +4,7 @@ import type { Node, Edge } from 'reactflow';
 
 // Define the Node schema
 const nodeSchema = new Schema<Node>({
-  id: { type: String },
+  id: { type: String, required: true },
   type: { type: String },
   position: {
     x: { type: Number },
@@ -38,6 +38,7 @@ const nodeSchema = new Schema<Node>({
 
 // Define the Edge schema
 const edgeSchema = new Schema<Edge>({
+  id: { type: String, required: true },
   source: { type: String, required: true },
   target: { type: String, required: true },
   type: { type: String },

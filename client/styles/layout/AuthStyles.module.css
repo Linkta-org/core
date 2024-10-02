@@ -53,13 +53,13 @@
 }
 
 .formSubmitButton {
-  background-color: var(--secondary-dark);
+  background-color: var(--secondary-main);
   height: 50px;
   border-radius: 25px;
   color: var(--primary-dark);
   font-size: 1.2rem;
   &:hover {
-    color: var(--secondary-dark);
+    background-color: var(--secondary-dark);
   }
 }
 

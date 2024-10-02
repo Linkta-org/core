@@ -69,8 +69,7 @@
 }
 
 .saveButton:hover {
-  background-color: var(--primary-dark);
-  color: var(--secondary-main);
+  background-color: var(--secondary-dark);
 }
 
 @media (max-width: 1200px) {

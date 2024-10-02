@@ -27,9 +27,9 @@ const postNewUserProfile = async (): Promise<User> => {
   }
 };
 
-const putExistingUserProfile = async (): Promise<User> => {
+const putExistingUserProfile = async (data: Partial<User>): Promise<User> => {
   try {
-    const response = await axiosClient.put('/v1/users');
+    const response = await axiosClient.put('/v1/users', data);
     console.log('USER RESPONSE: ', response);
     return response.data.updatedUserProfile;
   } catch (error) {
@@ -75,10 +75,10 @@ const useCreateUserProfile = (
  */
 const useUpdateUserProfile = (
   source: string,
-): UseMutationResult<User, Error, void, unknown> => {
+): UseMutationResult<User, Error, Partial<User>, unknown> => {
   console.log('Mutation Source: ', source);
 
-  return useMutation<User, Error, void>({
+  return useMutation<User, Error, Partial<User>>({
     mutationKey: ['updateUserProfile'],
     mutationFn: putExistingUserProfile,
   });

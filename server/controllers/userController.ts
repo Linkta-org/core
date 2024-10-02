@@ -74,12 +74,13 @@ const UserController = (userService: ReturnType<typeof createUserService>) => {
    * updates a user profile
    */
   const updateUserProfile = async (
-    _: Request,
+    req: Request,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const { uid, name, profilePicture, authProvider } = res.locals.user;
+      const { uid, profilePicture, authProvider } = res.locals.user;
+      const name = req.body.name || res.locals.user.name;
 
       const newUser = await privateUserService.updateUser({
         uid,

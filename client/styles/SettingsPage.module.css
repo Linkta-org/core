@@ -1,0 +1,57 @@
+.settings-form-container {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-page-title {
+  margin-bottom: 16px;
+  align-self: center;
+  font-size: 40px;
+}
+
+.settings-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.settings-field-label {
+  text-align: left;
+  align-self: flex-start;
+  font-size: 20px;
+}
+
+.settings-text-field :global(.MuiOutlinedInput-root) {
+  border-radius: 10px;
+  width: 300px;
+  border: 2px solid rgba(125, 125, 125, 0.5);
+}
+
+.settings-text-field :global(.MuiOutlinedInput-root.Mui-focused) {
+  border-color: var(--secondary-main);
+}
+
+.settings-submit-btn {
+  height: 30px;
+  width: 120px;
+  color: var(--primary-dark);
+  border-radius: 20px;
+  background-color: var(--secondary-main);
+}
+
+.settings-submit-btn:hover {
+  background-color: var(--secondary-dark);
+}
+
+@media (max-width: 768px) {
+  .settings-field-group {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .settings-submit-btn {
+    max-width: 50%;
+  }
+}

@@ -41,7 +41,7 @@ export default function SideNavDrawer({
           <Link
             className={`${styles.sideNavLink}`}
             component={RouterLink}
-            to='/login'
+            to='/settings'
           >
             <AccountCircleOutlined />
             <Typography variant='caption'>

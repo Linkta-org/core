@@ -170,6 +170,12 @@ const SignUpPage = () => {
             variant='standard'
             {...register('password')}
           ></TextField>
+          <TextField
+            label='confirm password'
+            type='password'
+            variant='standard'
+            {...register('password')}
+          ></TextField>
           <Button
             type='submit'
             variant='contained'

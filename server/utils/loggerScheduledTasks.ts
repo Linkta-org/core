@@ -8,18 +8,18 @@ const logsService = createLogsService();
 const { uploadLogs, evictLogs } = createLogsController(logsService);
 
 // runs daily at midnight + 5 minutes server time
-const rollLogs = cron.schedule('0 5 * * *', async () => {
+const rollLogs = cron.schedule('5 0 * * *', async () => {
   logger.info('Rolling logs...');
 });
 
-// runs daily at midnight + 30 minutes server time
-const uploadLogsTask = cron.schedule('0 10 * * *', async () => {
+// runs daily at midnight + 10 minutes server time
+const uploadLogsTask = cron.schedule('10 0 * * *', async () => {
   logger.info('Uploading logs...');
   void uploadLogs();
 });
 
-// runs daily at midnight + 1 hour server time
-const evictLogsTask = cron.schedule('0 15 * * *', async () => {
+// runs daily at midnight + 15 minutes server time
+const evictLogsTask = cron.schedule('15 0 * * *', async () => {
   logger.info('Evicting logs...');
   void evictLogs();
 });

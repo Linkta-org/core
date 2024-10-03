@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import type createLogsService from './services/logsService';
-import { InternalServerError } from '@/utils/customErrors';
+import { BadRequestError, InternalServerError } from '@/utils/customErrors';
 import { readdir, readFileSync, unlinkSync } from 'fs';
 import { Readable } from 'stream';
 import { promisify } from 'util';
@@ -59,7 +59,7 @@ const createLogsController = (
 
       for (const filename of files) {
         // skip the hot log file
-        if (filename === 'linkta-server.log') return;
+        if (filename === 'linkta-server.log') continue;
         const filePath = `./logs/${filename}`;
         // for Date created from yyMMdd pattern:
         const fileCreatedAt = new Date(filename.split('.')[1]);
@@ -98,7 +98,7 @@ const createLogsController = (
 
       // Validate dates
       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-        throw new Error('Invalid startDate or endDate provided.');
+        throw new BadRequestError('Invalid startDate or endDate provided.');
       }
 
       logger.debug('Fetching logs by date range:', startDate, endDate);

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Button } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import style from '@styles/BackOffice.module.css';
-
+import axiosClient from '@config/axios';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const BackOffice = () => {
@@ -16,14 +16,12 @@ const BackOffice = () => {
     new Date(new Date().setHours(0, 0, 0, 0)),
   );
 
-  const startDateMs = startDate.getTime();
-  const endDateMs = endDate.getTime();
-
-  // Calculate the difference in milliseconds
-  const differenceMs = Math.abs(endDateMs - startDateMs); // Use Math.abs to get a positive difference
-  // Convert milliseconds to days
-  const millisecondsPerDay = 1000 * 60 * 60 * 24;
-  const differenceDays = Math.floor(differenceMs / millisecondsPerDay);
+  const differenceDays = useMemo(() => {
+    const startDateMs = startDate.getTime();
+    const endDateMs = endDate.getTime();
+    const differenceMs = Math.abs(endDateMs - startDateMs);
+    return Math.floor(differenceMs / (1000 * 60 * 60 * 24));
+  }, [startDate, endDate]);
 
   useEffect(() => {
     if (startDate >= endDate) {
@@ -34,42 +32,46 @@ const BackOffice = () => {
     }
   }, [startDate, endDate, differenceDays]);
 
-  const shortDateString = (date: Date) => {
-    return date.toISOString().split('T')[0].slice(2).split('-').join('');
-  };
-
   const downloadLogs = async () => {
-    if (differenceDays > 30) {
+    if (differenceDays > 10) {
       alert('Date range must be less than 30 days');
       return;
     }
-    await fetch('http://localhost:3000/v1/logs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ startDate, endDate }),
-    })
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute(
-          'download',
-          `linkta-logs_${shortDateString(startDate)}_${shortDateString(endDate)}.zip`,
-        );
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode?.removeChild(link);
-      });
+
+    const shortDateString = (date: Date) => {
+      return date.toISOString().split('T')[0].slice(2).split('-').join('');
+    };
+
+    try {
+      const response = await axiosClient.post(
+        '/v1/logs',
+        { startDate, endDate },
+        { responseType: 'blob' },
+      );
+
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute(
+        'download',
+        `linkta-logs_${shortDateString(startDate)}_${shortDateString(endDate)}.zip`,
+      );
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(`Error: ${error.message}`);
+      } else {
+        alert('An unexpected error occurred.');
+      }
+    }
   };
 
   return (
     <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <h1>Back Office</h1>
-      {/* <h1>{startDate.toISOString()}</h1>
-      <h1>{endDate.toISOString()}</h1> */}
       <label
         className={`${style.dateLabel}`}
         htmlFor='startDate'
@@ -95,12 +97,13 @@ const BackOffice = () => {
         />
       </label>
 
-      <h4>Days: {differenceDays} (max: 30)</h4>
+      <h4>Days: {differenceDays} (max: 10)</h4>
 
       <Button
         variant='contained'
         color='secondary'
         onClick={() => downloadLogs()}
+        disabled={differenceDays > 10}
       >
         Download Logs
       </Button>

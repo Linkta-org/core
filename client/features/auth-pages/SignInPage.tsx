@@ -135,15 +135,27 @@ const SignInPage = () => {
             label='email address'
             variant='standard'
             type='email'
+            className={`${styles.textInput}`}
             {...register('email')}
             error={!!errors.email}
             helperText={errors.email?.message}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9',
+              },
+            }}
           ></TextField>
           <TextField
             label='password'
-            type='password'
             variant='standard'
+            type='password'
+            className={`${styles.textInput}`}
             {...register('password')}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <Button
             type='submit'
@@ -180,7 +192,20 @@ const SignInPage = () => {
             className={`${styles.termsAndConditions}`}
           >
             By continuing, you are indicating that you have read and accept our
-            <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+            <Link
+              component={RouterLink}
+              to='/terms-of-service'
+            >
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link
+              component={RouterLink}
+              to='/privacy-policy'
+            >
+              Privacy Policy
+            </Link>
+            .
           </Typography>
         </Box>
       </Box>

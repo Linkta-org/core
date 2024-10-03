@@ -1,0 +1,9 @@
+.dateLabel {
+  display: flex;
+  justify-content: space-between;
+}
+
+.datePicker {
+  margin-left: 50px;
+  width: 100px;
+}

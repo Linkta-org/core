@@ -34,7 +34,6 @@ const NotFoundPage = () => {
         <Button
           className={styles.button}
           variant='contained'
-          color='primary'
           aria-label='return to homepage'
         >
           Return to Homepage

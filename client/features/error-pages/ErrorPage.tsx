@@ -34,7 +34,6 @@ const ErrorPage = () => {
         <Button
           className={styles.button}
           variant='contained'
-          color='primary'
         >
           Return to Homepage
         </Button>

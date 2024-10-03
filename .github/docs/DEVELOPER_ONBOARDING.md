@@ -80,6 +80,7 @@ Firebase limits the number of service accounts allocated to the project. Therefo
 
 ### The variables needed for the **server/.env** file are:
 - MONGO_DB_URI=
+- LOGGER_DB_URI=
 - GEMINI_API_KEY=
 - NODE_ENV=development
 - LOG_LEVEL=debug
@@ -99,7 +100,7 @@ Firebase limits the number of service accounts allocated to the project. Therefo
 
 The project-specific credentials can be used in creation of a unique MongoDB 'connection string' which is used as the MONGO_DB_URI value.
 
-> Note: MongoDB provides a sample connection string with two variables which must be replaced with the user's name and password. A third variable is needed, which is not mentioned in the Connect dialog. This variable is "database-name", and the value should be set to 'development-db'.
+> Note: MongoDB Atlas provides a sample connection string with two variables which must be replaced with the user's name and password. A third variable is needed, which is not mentioned in the Atlas "connect" dialog. This variable is "database-name", and the value should be set to 'development-db'.
 
 Sample MongoDB Atlas connection string:
 
@@ -108,6 +109,8 @@ Sample MongoDB Atlas connection string:
 Variables:
 
 `'username', 'password', 'database-name'`
+
+**LOGGER_DB_URI** - This is another MongoDB connection string. It's nearly the same as the previous environment variable (MONGO_DB_URI) except that the 'database-name' variable must be set to 'log_backup'.
 
 **GEMINI_API_KEY** - Each developer should obtain a [**Google Gemini API key**](https://ai.google.dev/gemini-api/docs/api-key) for use in development. There is a Linkta key which is used for all deployed branches.
 

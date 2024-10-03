@@ -155,6 +155,12 @@ const SignUpPage = () => {
             {...register('name')}
             error={!!errors.name}
             helperText={errors.name?.message}
+            className={`${styles.textInput}`}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <TextField
             label='email address'
@@ -163,12 +169,24 @@ const SignUpPage = () => {
             {...register('email')}
             error={!!errors.email}
             helperText={errors.email?.message}
+            className={`${styles.textInput}`}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <TextField
             label='password'
             type='password'
             variant='standard'
             {...register('password')}
+            className={`${styles.textInput}`}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <TextField
             label='confirm password'
@@ -205,13 +223,25 @@ const SignUpPage = () => {
               Update
             </Link>
           </Typography>
-
           <Typography
             variant='body2'
             className={`${styles.termsAndConditions}`}
           >
             By continuing, you are indicating that you have read and accept our
-            <Link>Terms of Service</Link> and <Link>Privacy Policy</Link>.
+            <Link
+              component={RouterLink}
+              to='/terms-of-service'
+            >
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link
+              component={RouterLink}
+              to='/privacy-policy'
+            >
+              Privacy Policy
+            </Link>
+            .
           </Typography>
         </Box>
       </Box>

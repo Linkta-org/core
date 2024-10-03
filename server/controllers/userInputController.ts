@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
+import log4js from 'log4js';
 import mongoose from 'mongoose';
 import { CustomError, InternalServerError } from '@/utils/customErrors';
 import type createUserInputService from '@/services/userInputService';
 import type createLinktaFlowService from '@/services/linktaFlowService';
 import type createAIService from '@/services/aiService';
 
-import log4js from 'log4js';
 const logger = log4js.getLogger('[Input Controller]');
 
 /**

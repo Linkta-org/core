@@ -37,6 +37,7 @@ const themeOptions: ThemeOptions = {
         ':root': {
           '--divider': '#4F5D66',
           '--light-gray': '#D9D9D9',
+          '--medium-gray': '#7D7D7D',
           '--link-text': '#7CD2D7',
           '--primary-light': '#3d8590',
           '--primary-main': '#23616a',

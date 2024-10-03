@@ -22,6 +22,7 @@ export function errorHandlerMiddleware(
   res: Response,
   _next: NextFunction,
 ): Response {
+  logger.error('Express error handler caught an error:', err);
   const defaultError: MiddlewareError = {
     name: 'MiddlewareError',
     log: 'Express error handler caught unknown middleware error',

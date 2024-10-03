@@ -39,24 +39,17 @@
   color: var(--primary-contrastText);
 }
 
-.userInputCheckbox {
-}
-
-.userInputDisclaimer {
-}
-
 .userInputSubmitButton {
   margin-top: 30px;
   height: 40px;
   width: 150px;
+  color: var(--primary-dark);
   border-radius: 20px;
   background-color: var(--secondary-main);
-  color: var(--secondary-contrastText);
 }
 
 .userInputSubmitButton:hover {
   background-color: var(--secondary-dark);
-  color: var(--secondary-light);
 }
 
 .popularTopics {
@@ -76,7 +69,7 @@
 .topicsButton {
   opacity: 0.8;
   background-color: rgba(128, 128, 128, 0.318);
-  border: 1px solid rgba(255, 255, 255, 0.66);
+  border: 1px solid var(--light-gray);
   width: 100%;
 }
 

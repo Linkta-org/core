@@ -4,30 +4,26 @@ import log4js from 'log4js';
 import mongoose from 'mongoose';
 import type { Server } from 'http';
 import bodyParser from 'body-parser';
+import { getEnv } from '@utils/environment';
 import userRouter from '@routes/userRouter';
-import type { Express, Response } from 'express';
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import logsRouter from '@routes/logsRouter';
+import configureLogger from '@utils/loggerConfig';
 import userInputRouter from '@routes/userInputRouter';
 import linktaFlowRouter from '@routes/linktaFlowRouter';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 import RateLimiter from '@middleware/rateLimiterMiddleware';
+import type { Express, NextFunction, Response } from 'express';
 import { errorHandlerMiddleware } from '@middleware/errorHandling';
+import startAllScheduledLoggingTasks from '@utils/loggerScheduledTasks';
 import verifyOrigin, {
   corsOptions,
 } from '@middleware/dynamicOriginsMiddleware';
-import log4jsConfig from '@/utils/log4js.config.json' with { type: 'json' };
-import { getEnv } from '@utils/environment';
 
 getEnv();
-
-/**
- * configure log4js and create an instance of logger
- * see /controllers/userInputController for usage example
- */
-const { getLogger, configure, isConfigured } = log4js;
-log4jsConfig.categories.default.level = process.env.LOG_LEVEL || 'info';
-configure(log4jsConfig);
+configureLogger();
+startAllScheduledLoggingTasks();
+const { getLogger, shutdown: log4jsShutdown } = log4js;
 const logger = getLogger('[SERVER]');
-isConfigured() && logger.info('Log4JS is configured!');
 
 const uri = process.env.MONGO_DB_URI;
 mongoose.set('strictQuery', false);
@@ -57,12 +53,16 @@ function startServer() {
     res.send({ message: 'Hello from the Server!' });
   });
 
-  /**
-   * Run these lines on every request
-   */
   app.use(bodyParser.json());
-  app.use(verifyOrigin);
-  app.use(cors(corsOptions));
+
+  app.use(
+    verifyOrigin,
+    cors(corsOptions),
+    (_req, res: Response, next: NextFunction) => {
+      logger.debug('RESPONSE HEADERS: ', res.getHeaders());
+      next();
+    },
+  );
 
   /**
    * Routers
@@ -77,6 +77,10 @@ function startServer() {
 
   app.use('/v1/users', userRouter, () => {
     logger.debug('HIT v1/users handler');
+  });
+
+  app.use('/v1/logs', logsRouter, () => {
+    logger.debug('HIT v1/flows handler');
   });
 
   /**
@@ -119,7 +123,8 @@ function startServer() {
 function stopServer(server: Server) {
   server.close(() => {
     logger.warn('Server stopped.');
-
+    void mongoose.disconnect();
+    log4jsShutdown();
     // disconnect from the database
     process.exit(0);
   });
@@ -152,7 +157,7 @@ async function connectToDatabase(link: string) {
       .then(() => logger.info('MONGOOSE connected!'));
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    void (await client.close());
   }
 }
 

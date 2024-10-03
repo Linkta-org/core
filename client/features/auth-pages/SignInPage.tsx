@@ -135,15 +135,27 @@ const SignInPage = () => {
             label='email address'
             variant='standard'
             type='email'
+            className={`${styles.textInput}`}
             {...register('email')}
             error={!!errors.email}
             helperText={errors.email?.message}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9',
+              },
+            }}
           ></TextField>
           <TextField
             label='password'
-            type='password'
             variant='standard'
+            type='password'
+            className={`${styles.textInput}`}
             {...register('password')}
+            sx={{
+              '& .MuiInput-underline:before': {
+                borderBottomColor: '#D9D9D9 ',
+              },
+            }}
           ></TextField>
           <Button
             type='submit'

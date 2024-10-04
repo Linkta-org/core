@@ -62,11 +62,16 @@ function Flow({ userInputId }: { userInputId: string }) {
         linktaFlow.edges,
       );
 
+      const styledNodes = layoutNodes.map((node) => ({
+        ...node,
+        type: 'linktaNode',
+      }));
+
       setNodes(layoutNodes);
       setEdges(layoutEdges);
       setCurrentFlow({
         id: linktaFlow.id,
-        nodes: layoutNodes,
+        nodes: styledNodes,
         edges: layoutEdges,
       });
     }

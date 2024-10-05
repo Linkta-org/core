@@ -97,6 +97,7 @@ const UserInputForm = () => {
       <form
         onSubmit={handleSubmit(debouncedSubmit)}
         className={`${styles.userInputForm}`}
+        autoComplete='off'
       >
         <Typography
           className={`${styles.userInputFormTitle}`}

@@ -240,6 +240,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
       {activeUserInput && (
         <DeleteDialog
           isOpen={isDeletionDialogOpen}
+          currentTitle={activeUserInput.title}
           onDelete={handleInputDeletion}
           onCancel={() => setIsDeletionDialogOpen(false)}
         />

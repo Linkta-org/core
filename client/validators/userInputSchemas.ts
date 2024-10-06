@@ -27,7 +27,7 @@ export const userInputTitleSchema = z.object({
     .string()
     .min(1, 'Input title is required')
     .max(15, {
-      message: 'Title must be less than 15 characters in length!',
+      message: 'Title must be less than 15 characters in length',
     })
     .refine((val) => hasHtmlChars(val), {
       message:

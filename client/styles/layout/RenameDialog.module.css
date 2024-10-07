@@ -28,7 +28,3 @@
 .renameConfirmButton:hover {
   background-color: var(--secondary-dark);
 }
-
-input:focus {
-  outline: 2px solid var(--secondary-main);
-}

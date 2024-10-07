@@ -36,6 +36,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
         'aria-labelledby': 'lock-button',
         role: 'menu',
         className: styles.optionsMenu__list,
+        autoFocus: true,
       }}
       classes={{ paper: styles.optionsMenu }}
     >
@@ -46,6 +47,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
         }}
         aria-label='Rename input title'
         className={styles.optionsMenu__item}
+        disableRipple
       >
         <RenameIcon
           fontSize='small'
@@ -65,6 +67,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
         }}
         aria-label='Regenerate Linkta Flow'
         className={styles.optionsMenu__item}
+        disableRipple
       >
         <RegenerateIcon
           fontSize='small'
@@ -84,6 +87,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
         }}
         aria-label='Delete Linkta Flow'
         className={styles.optionsMenu__item}
+        disableRipple
       >
         <DeleteIcon
           fontSize='small'

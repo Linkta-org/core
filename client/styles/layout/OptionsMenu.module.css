@@ -1,7 +1,7 @@
 .optionsMenu {
-  border-radius: 0 0.4rem 0.4rem 0;
-  border: var(--border-highlight-default);
-  background-color: transparent;
+  background-color: var(--background-default);
+  border-radius: 0 var(--border-radius-default) var(--border-radius-default) 0;
+  border: 1px solid rgba(159, 133, 18, 0.4);
   width: 125px;
 }
 
@@ -21,7 +21,6 @@
   white-space: nowrap;
   width: 100%;
   height: var(--height-tab-default);
-  background-color: var(--background-default);
   transition: background-color 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -32,24 +31,12 @@
   border-bottom: 1px solid rgba(159, 133, 18, 0.4);
 }
 
-.optionsMenu__item:first-child {
-  border-top-right-radius: var(--border-radius-default);
-}
-
-.optionsMenu__item:last-child {
-  border-bottom-right-radius: var(--border-radius-default);
-}
-
 .optionsMenu__item:hover,
 .optionsMenu__item:focus-within,
 .optionsMenu__item.Mui-selected,
 .optionsMenu__item.Mui-selected:hover,
 .optionsMenu__item.Mui-selected:focus-within {
-  background-color: rgba(39, 86, 92, 0.9);
-  border: var(--border-highlight-default);
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+  background-color: var(--hover-background-color);
 }
 
 .optionsMenu__itemIcon {

@@ -1,32 +1,33 @@
 .userInputList {
   width: 100%;
   padding-bottom: var(--padding-small);
+  background-color: var(--background-default);
 }
 
 .userInputList__itemButton {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-default);
   padding: var(--padding-small) var(--padding-default);
   height: var(--height-tab-default);
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.userInputList__itemButton:hover,
-.userInputList__itemButton:focus-within {
+.userInputList__itemButton:hover{
   box-shadow: var(--hover-box-shadow);
   background-color: var(--hover-background-color);
 }
 
+.userInputList__itemButton:focus-within,
 .userInputList__itemButtonSelected {
-  box-shadow: var(--hover-box-shadow);
   background-color: var(--hover-background-color);
 }
 
-.userInputList__itemButton:hover .userInputList__icon,
-.userInputList__itemButton:focus-within .userInputList__icon,
-.userInputList__itemButtonSelected .userInputList__icon {
+.userInputList__itemButton:hover .userInputList__iconButton,
+.userInputList__itemButton:focus-within .userInputList__iconButton,
+.userInputList__itemButtonSelected .userInputList__iconButton {
   opacity: 1;
 }
 
@@ -38,10 +39,12 @@
   white-space: nowrap;
 }
 
-.userInputList__icon {
+.userInputList__iconButton {
   flex-shrink: 0;
   transform: scale(0.8);
   color: var(--text-primary);
   margin-left: auto;
   opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }

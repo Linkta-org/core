@@ -16,7 +16,3 @@
 .deleteConfirmButton:hover {
   background-color: darkred;
 }
-
-button:focus {
-  outline: 2px solid var(--secondary-main);
-}

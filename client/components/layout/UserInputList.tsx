@@ -61,7 +61,8 @@ const UserInputList: React.FC<UserInputListProps> = ({
   };
 
   const handleOptionsIconClick = (event: React.MouseEvent<HTMLElement>) => {
-    setOptionsMenuAnchor(event.currentTarget);
+    const parentElement = event.currentTarget.parentNode as HTMLElement;
+    setOptionsMenuAnchor(parentElement);
   };
 
   const handleTitleUpdate = useCallback(
@@ -133,7 +134,6 @@ const UserInputList: React.FC<UserInputListProps> = ({
           'Your LinktaFlow and associated input have been deleted successfully.',
           'success',
         );
-        // navigate('/generate');
       } catch (error) {
         handleError(
           error,
@@ -187,6 +187,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
                     ? styles.userInputList__itemButtonSelected
                     : ''
                 }`}
+                disableRipple
               >
                 <ListItemText
                   primary={
@@ -212,6 +213,8 @@ const UserInputList: React.FC<UserInputListProps> = ({
                 <IconButton
                   className={styles.userInputList__icon}
                   onClick={handleOptionsIconClick}
+                  aria-label='Open options menu'
+                  disableRipple
                 >
                   <MoreVertIcon />
                 </IconButton>

@@ -1,5 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import type { EdgeChange, NodeChange, Edge, Node, Connection } from 'reactflow';
+import type {
+  EdgeChange,
+  NodeChange,
+  Edge,
+  Node,
+  Connection,
+  NodeDragHandler,
+} from 'reactflow';
 import ReactFlow, {
   addEdge,
   Controls,
@@ -8,7 +15,6 @@ import ReactFlow, {
   applyEdgeChanges,
   MarkerType,
   ConnectionMode,
-  reconnectEdge,
   Panel,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -18,22 +24,46 @@ import ConnectionLine from '@features/output-visualization-page/components/Conne
 import useFetchLinktaFlow from '@hooks/useFetchLinktaFlow';
 import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import dagreAutoLayout from '@/utils/dagreAutoLayout';
-import { useNavigate } from 'react-router-dom';
 import Loader from '@/components/common/Loader';
 import UndoAndRedo from '@features/output-visualization-page/components/UndoAndRedo';
 
-const nodeTypes = { linktaNode: LinktaNode };
-const edgeTypes = { linktaEdge: LinktaFlowEdge };
+// Finds the nearest node to the dragged node within a 100-unit distance.
+const findNearbyNode = (draggedNode: Node, nodes: Node[]) => {
+  const { x, y } = draggedNode.position;
 
+  return nodes.find((node) => {
+    const distance = Math.sqrt(
+      Math.pow(node.position.x - x, 2) + Math.pow(node.position.y - y, 2),
+    );
+    return distance < 100 && node.id !== draggedNode.id;
+  });
+};
+
+// Removes the original parent edge of the dragged node by filtering out the edge
+const removeOriginalParentEdge = (
+  draggedNodeId: string,
+  edges: Edge[],
+): Edge[] => {
+  return edges.filter((edge) => edge.target !== draggedNodeId);
+};
+
+// Creates a new edge between two nodes
+const createNewEdge = (sourceNodeId: string, targetNodeId: string): Edge => ({
+  id: `e${sourceNodeId}-${targetNodeId}`,
+  source: sourceNodeId,
+  target: targetNodeId,
+  markerEnd: { type: MarkerType.Arrow },
+});
+
+// Styling for the ReactFlow component
 const rfStyle = {
   backgroundColor: 'hsla(186, 40%, 15%, 0.4)',
   height: '100%',
   width: '100%',
 };
 
-const initialNodes: Node[] = [];
-
-const initialEdges: Edge[] = [];
+const nodeTypes = { linktaNode: LinktaNode };
+const edgeTypes = { linktaEdge: LinktaFlowEdge };
 
 function Flow({ userInputId }: { userInputId: string }) {
   const {
@@ -42,19 +72,21 @@ function Flow({ userInputId }: { userInputId: string }) {
     setCurrentEdges,
     setCurrentNodes,
   } = useLinktaFlowStore();
-  const {
-    data: linktaFlow,
-    isLoading,
-    isError,
-  } = useFetchLinktaFlow(userInputId);
+  const { data: linktaFlow, fetchStatus } = useFetchLinktaFlow(userInputId);
 
-  const nodesFromFlow = currentLinktaFlow?.nodes || initialNodes;
-  const edgesFromFlow = currentLinktaFlow?.edges || initialEdges;
+  const nodesFromFlow = currentLinktaFlow?.nodes || [];
+  const edgesFromFlow = currentLinktaFlow?.edges || [];
 
   const [nodes, setNodes] = useState<Node[]>(nodesFromFlow);
   const [edges, setEdges] = useState<Edge[]>(edgesFromFlow);
-  const navigate = useNavigate();
+  const [tempEdge, setTempEdge] = useState<Edge | null>(null);
 
+  // If a temporary edge exists, exclude the original edge connected to the dragged node
+  const displayedEdges = tempEdge
+    ? edges.filter((edge) => edge.target !== tempEdge.target)
+    : edges;
+
+  // Fetch and set the flow layout and nodes/edges when linktaFlow is updated
   useEffect(() => {
     if (linktaFlow) {
       const { nodes: layoutNodes, edges: layoutEdges } = dagreAutoLayout(
@@ -67,44 +99,77 @@ function Flow({ userInputId }: { userInputId: string }) {
         type: 'linktaNode',
       }));
 
-      setNodes(layoutNodes);
-      setEdges(layoutEdges);
+      const styledEdges = layoutEdges.map((edge) => ({
+        ...edge,
+        markerEnd: { type: MarkerType.Arrow },
+      }));
+
+      setNodes(styledNodes);
+      setEdges(styledEdges);
       setCurrentFlow({
         id: linktaFlow.id,
         nodes: styledNodes,
-        edges: layoutEdges,
+        edges: styledEdges,
       });
     }
   }, [linktaFlow, setCurrentFlow]);
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange[]) => {
-      setNodes((nds: Node[]) => applyNodeChanges(changes, nds));
+  // Handle node changes
+  const onNodesChange = useCallback((changes: NodeChange[]) => {
+    setNodes((nds) => applyNodeChanges(changes, nds));
+  }, []);
+
+  // Handle edge changes
+  const onEdgesChange = useCallback((changes: EdgeChange[]) => {
+    setEdges((eds) => applyEdgeChanges(changes, eds));
+  }, []);
+
+  // Handles the dragging of a node, showing a temporary edge to a nearby node (if found)
+  const onNodeDrag: NodeDragHandler = useCallback(
+    (_event, draggedNode) => {
+      const nearbyNode = findNearbyNode(draggedNode, nodes);
+
+      if (nearbyNode) {
+        setTempEdge({
+          id: `temp-e${nearbyNode.id}-${draggedNode.id}`,
+          source: nearbyNode.id,
+          target: draggedNode.id,
+          style: { stroke: '#d3d3d3', strokeDasharray: '5 5' },
+          type: 'floating',
+          markerEnd: { type: MarkerType.Arrow },
+        });
+      } else {
+        setTempEdge(null); // No nearby node, clear temporary edge
+      }
     },
-    [setNodes],
+    [nodes],
   );
 
-  const onNodeDragStop = useCallback(() => {
-    setCurrentNodes(nodes);
-  }, [setCurrentNodes, nodes]);
+  // Handle node drag stop to finalize edge and remove original parent edge
+  const onNodeDragStop: NodeDragHandler = useCallback(
+    (_event, draggedNode) => {
+      const nearbyNode = findNearbyNode(draggedNode, nodes);
 
-  const onEdgeUpdate = useCallback(
-    (oldEdge: Edge, newConnection: Connection) =>
-      setEdges((els) => reconnectEdge(oldEdge, newConnection, els)),
-    [],
-  );
+      if (nearbyNode) {
+        const newEdge = createNewEdge(nearbyNode.id, draggedNode.id);
 
-  const onEdgeUpdateEnd = useCallback(() => {
-    setCurrentEdges(edges);
-  }, [setCurrentEdges, edges]);
+        // Update the edges by removing the original parent edge and adding the new edge
+        const updatedEdges = addEdge(
+          newEdge,
+          removeOriginalParentEdge(draggedNode.id, edges),
+        );
 
-  const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => {
-      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds));
+        setEdges(updatedEdges);
+        setCurrentEdges(updatedEdges);
+      }
+
+      setTempEdge(null);
+      setCurrentNodes(nodes);
     },
-    [setEdges],
+    [nodes, edges, setEdges, setCurrentEdges, setCurrentNodes],
   );
 
+  // Handles connecting two nodes by creating a new edge between them
   const onConnect = useCallback(
     (params: Connection) => {
       const newEdge = addEdge(
@@ -117,46 +182,43 @@ function Flow({ userInputId }: { userInputId: string }) {
     [edges, setCurrentEdges],
   );
 
+  // Update nodes and edges when the flow data changes
   useEffect(() => {
     setNodes(nodesFromFlow);
     setEdges(edgesFromFlow);
   }, [nodesFromFlow, edgesFromFlow]);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  //TODO: implement better error handling
-  if (isError) {
-    navigate('/generate');
-  }
-
   return (
-    <ReactFlow
-      nodes={nodes}
-      onNodesChange={onNodesChange}
-      onNodeDragStop={onNodeDragStop}
-      nodeTypes={nodeTypes}
-      edges={edges}
-      onEdgesChange={onEdgesChange}
-      edgeTypes={edgeTypes}
-      onEdgeUpdate={onEdgeUpdate}
-      onEdgeUpdateEnd={onEdgeUpdateEnd}
-      onConnect={onConnect}
-      fitView
-      connectionMode={ConnectionMode.Loose}
-      connectionLineComponent={ConnectionLine}
-      style={rfStyle}
-    >
-      <Background />
-      <Controls position='bottom-left' />
-      <Panel
-        position='bottom-left'
-        style={{ bottom: 120 }}
-      >
-        <UndoAndRedo />
-      </Panel>
-    </ReactFlow>
+    <>
+      {fetchStatus === 'fetching' ? (
+        <Loader />
+      ) : (
+        <ReactFlow
+          nodes={nodes}
+          onNodesChange={onNodesChange}
+          onNodeDrag={onNodeDrag}
+          onNodeDragStop={onNodeDragStop}
+          nodeTypes={nodeTypes}
+          edges={tempEdge ? [...displayedEdges, tempEdge] : edges} // If tempEdge exists, show it with displayedEdges, else show all edges
+          onEdgesChange={onEdgesChange}
+          edgeTypes={edgeTypes}
+          onConnect={onConnect}
+          fitView
+          connectionMode={ConnectionMode.Loose}
+          connectionLineComponent={ConnectionLine}
+          style={rfStyle}
+        >
+          <Background />
+          <Controls position='bottom-left' />
+          <Panel
+            position='bottom-left'
+            style={{ bottom: 120 }}
+          >
+            <UndoAndRedo />
+          </Panel>
+        </ReactFlow>
+      )}
+    </>
   );
 }
 

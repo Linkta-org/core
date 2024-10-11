@@ -1,7 +1,7 @@
 .optionsMenu {
   background-color: var(--background-default);
   border-radius: 0 var(--border-radius-default) var(--border-radius-default) 0;
-  border: 1px solid rgba(159, 133, 18, 0.4);
+  border: 1px solid var(--divider);
   width: 125px;
 }
 
@@ -28,7 +28,7 @@
 
 .optionsMenu__item:first-child,
 .optionsMenu__item:nth-child(2) {
-  border-bottom: 1px solid rgba(159, 133, 18, 0.4);
+  border-bottom: 1px solid var(--divider);
 }
 
 .optionsMenu__item:hover,
@@ -36,6 +36,7 @@
 .optionsMenu__item.Mui-selected,
 .optionsMenu__item.Mui-selected:hover,
 .optionsMenu__item.Mui-selected:focus-within {
+  box-shadow: var(--hover-box-shadow);
   background-color: var(--hover-background-color);
 }
 

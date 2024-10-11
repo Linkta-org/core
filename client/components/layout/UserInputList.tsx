@@ -151,13 +151,24 @@ const UserInputList: React.FC<UserInputListProps> = ({
   ]);
 
   return (
-    <>
-      <List
-        className={styles.userInputList}
-        role='list'
-      >
-        {inputHistory.slice(0, visibleItems).map((userInput) => {
-          return (
+    <List
+      className={styles.userInputList}
+      role='list'
+    >
+      {inputHistory.slice(0, visibleItems).map((userInput) => {
+        return (
+          <ListItemButton
+            id={userInput.id}
+            key={userInput.id}
+            onClick={() => handleUserInputSelect(userInput)}
+            role='listitem'
+            aria-labelledby={`user-input-${userInput.id}`}
+            className={`${styles.userInputList__itemButton} ${
+              activeUserInput?.id === userInput.id
+                ? styles.userInputList__itemButtonSelected
+                : ''
+            }`}
+          >
             <Tooltip
               title={userInput.title}
               key={userInput.id}
@@ -168,7 +179,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
                     {
                       name: 'offset',
                       options: {
-                        offset: [0, 5],
+                        offset: [0, 63],
                       },
                     },
                   ],
@@ -176,53 +187,38 @@ const UserInputList: React.FC<UserInputListProps> = ({
               }}
               arrow
             >
-              <ListItemButton
-                id={userInput.id}
-                key={userInput.id}
-                onClick={() => handleUserInputSelect(userInput)}
-                role='listitem'
-                aria-labelledby={`user-input-${userInput.id}`}
-                className={`${styles.userInputList__itemButton} ${
-                  activeUserInput?.id === userInput.id
-                    ? styles.userInputList__itemButtonSelected
-                    : ''
-                }`}
-                disableRipple
-              >
-                <ListItemText
-                  primary={
-                    <Typography
-                      variant='caption'
-                      noWrap
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        maxWidth: '100%',
-                        display: 'block',
-                      }}
-                    >
-                      {userInput.title}
-                    </Typography>
-                  }
-                  id={`user-input-${userInput.id}`}
-                  aria-label={`Details for ${userInput.title}`}
-                  className={styles.userInputList__text}
-                />
-
-                <IconButton
-                  className={styles.userInputList__icon}
-                  onClick={handleOptionsIconClick}
-                  aria-label='Open options menu'
-                  disableRipple
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              </ListItemButton>
+              <ListItemText
+                primary={
+                  <Typography
+                    variant='caption'
+                    noWrap
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      maxWidth: '100%',
+                      display: 'block',
+                    }}
+                  >
+                    {userInput.title}
+                  </Typography>
+                }
+                id={`user-input-${userInput.id}`}
+                aria-label={`Details for ${userInput.title}`}
+                className={styles.userInputList__text}
+              />
             </Tooltip>
-          );
-        })}
-      </List>
+            <IconButton
+              className={styles.userInputList__iconButton}
+              onClick={handleOptionsIconClick}
+              aria-label='Open options menu'
+              disableRipple
+            >
+              <MoreVertIcon />
+            </IconButton>
+          </ListItemButton>
+        );
+      })}
       <OptionsMenu
         arialabelledby={`user-input-button-${activeUserInput?.id}`}
         anchorEl={optionsMenuAnchor}
@@ -248,7 +244,7 @@ const UserInputList: React.FC<UserInputListProps> = ({
           onCancel={() => setIsDeletionDialogOpen(false)}
         />
       )}
-    </>
+    </List>
   );
 };
 

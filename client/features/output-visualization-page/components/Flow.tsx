@@ -28,7 +28,7 @@ import Loader from '@/components/common/Loader';
 import UndoAndRedo from '@features/output-visualization-page/components/UndoAndRedo';
 
 // Finds the nearest node to the dragged node within a 100-unit distance.
-const findNearbyNode = (draggedNode: Node, nodes: Node[]) => {
+const findClosestNode = (draggedNode: Node, nodes: Node[]) => {
   const { x, y } = draggedNode.position;
 
   return nodes.find((node) => {
@@ -39,16 +39,13 @@ const findNearbyNode = (draggedNode: Node, nodes: Node[]) => {
   });
 };
 
-// Removes the original parent edge of the dragged node by filtering out the edge
-const removeOriginalParentEdge = (
-  draggedNodeId: string,
-  edges: Edge[],
-): Edge[] => {
-  return edges.filter((edge) => edge.target !== draggedNodeId);
+// Removes the original parent edge of the specified node
+const filterParentEdge = (draggedNodeId: string, allEdges: Edge[]): Edge[] => {
+  return allEdges.filter((edge) => edge.target !== draggedNodeId);
 };
 
 // Creates a new edge between two nodes
-const createNewEdge = (sourceNodeId: string, targetNodeId: string): Edge => ({
+const createEdge = (sourceNodeId: string, targetNodeId: string): Edge => ({
   id: `e${sourceNodeId}-${targetNodeId}`,
   source: sourceNodeId,
   target: targetNodeId,
@@ -56,7 +53,7 @@ const createNewEdge = (sourceNodeId: string, targetNodeId: string): Edge => ({
 });
 
 // Styling for the ReactFlow component
-const rfStyle = {
+const flowStyle = {
   backgroundColor: 'hsla(186, 40%, 15%, 0.4)',
   height: '100%',
   width: '100%',
@@ -74,16 +71,19 @@ function Flow({ userInputId }: { userInputId: string }) {
   } = useLinktaFlowStore();
   const { data: linktaFlow, fetchStatus } = useFetchLinktaFlow(userInputId);
 
-  const nodesFromFlow = currentLinktaFlow?.nodes || [];
-  const edgesFromFlow = currentLinktaFlow?.edges || [];
+  const initialNodes = currentLinktaFlow?.nodes || [];
+  const initialEdges = currentLinktaFlow?.edges || [];
 
-  const [nodes, setNodes] = useState<Node[]>(nodesFromFlow);
-  const [edges, setEdges] = useState<Edge[]>(edgesFromFlow);
-  const [tempEdge, setTempEdge] = useState<Edge | null>(null);
+  const [nodes, setNodes] = useState<Node[]>(initialNodes);
+  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [temporaryEdge, setTemporaryEdge] = useState<Edge | null>(null);
 
-  // If a temporary edge exists, exclude the original edge connected to the dragged node
-  const displayedEdges = tempEdge
-    ? edges.filter((edge) => edge.target !== tempEdge.target)
+  // If temporaryEdge exists, filter out any edge with the same target and add temporaryEdge, else use the original edges
+  const displayedEdges = temporaryEdge
+    ? [
+        ...edges.filter((edge) => edge.target !== temporaryEdge.target),
+        temporaryEdge,
+      ]
     : edges;
 
   // Fetch and set the flow layout and nodes/edges when linktaFlow is updated
@@ -116,30 +116,29 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   // Handle node changes
   const onNodesChange = useCallback((changes: NodeChange[]) => {
-    setNodes((nds) => applyNodeChanges(changes, nds));
+    setNodes((existingNodes) => applyNodeChanges(changes, existingNodes));
   }, []);
 
   // Handle edge changes
   const onEdgesChange = useCallback((changes: EdgeChange[]) => {
-    setEdges((eds) => applyEdgeChanges(changes, eds));
+    setEdges((existingEdges) => applyEdgeChanges(changes, existingEdges));
   }, []);
 
   // Handles the dragging of a node, showing a temporary edge to a nearby node (if found)
   const onNodeDrag: NodeDragHandler = useCallback(
     (_event, draggedNode) => {
-      const nearbyNode = findNearbyNode(draggedNode, nodes);
+      const closestNode = findClosestNode(draggedNode, nodes);
 
-      if (nearbyNode) {
-        setTempEdge({
-          id: `temp-e${nearbyNode.id}-${draggedNode.id}`,
-          source: nearbyNode.id,
+      if (closestNode) {
+        setTemporaryEdge({
+          id: `temp-e${closestNode.id}-${draggedNode.id}`,
+          source: closestNode.id,
           target: draggedNode.id,
           style: { stroke: '#d3d3d3', strokeDasharray: '5 5' },
-          type: 'floating',
           markerEnd: { type: MarkerType.Arrow },
         });
       } else {
-        setTempEdge(null); // No nearby node, clear temporary edge
+        setTemporaryEdge(null); // No nearby node, clear temporary edge
       }
     },
     [nodes],
@@ -148,22 +147,22 @@ function Flow({ userInputId }: { userInputId: string }) {
   // Handle node drag stop to finalize edge and remove original parent edge
   const onNodeDragStop: NodeDragHandler = useCallback(
     (_event, draggedNode) => {
-      const nearbyNode = findNearbyNode(draggedNode, nodes);
+      const closestNode = findClosestNode(draggedNode, nodes);
 
-      if (nearbyNode) {
-        const newEdge = createNewEdge(nearbyNode.id, draggedNode.id);
+      if (closestNode) {
+        const newEdge = createEdge(closestNode.id, draggedNode.id);
 
         // Update the edges by removing the original parent edge and adding the new edge
         const updatedEdges = addEdge(
           newEdge,
-          removeOriginalParentEdge(draggedNode.id, edges),
+          filterParentEdge(draggedNode.id, edges),
         );
 
         setEdges(updatedEdges);
         setCurrentEdges(updatedEdges);
       }
 
-      setTempEdge(null);
+      setTemporaryEdge(null);
       setCurrentNodes(nodes);
     },
     [nodes, edges, setEdges, setCurrentEdges, setCurrentNodes],
@@ -184,9 +183,9 @@ function Flow({ userInputId }: { userInputId: string }) {
 
   // Update nodes and edges when the flow data changes
   useEffect(() => {
-    setNodes(nodesFromFlow);
-    setEdges(edgesFromFlow);
-  }, [nodesFromFlow, edgesFromFlow]);
+    setNodes(initialNodes);
+    setEdges(initialEdges);
+  }, [initialNodes, initialEdges]);
 
   return (
     <>
@@ -199,14 +198,14 @@ function Flow({ userInputId }: { userInputId: string }) {
           onNodeDrag={onNodeDrag}
           onNodeDragStop={onNodeDragStop}
           nodeTypes={nodeTypes}
-          edges={tempEdge ? [...displayedEdges, tempEdge] : edges} // If tempEdge exists, show it with displayedEdges, else show all edges
+          edges={displayedEdges}
           onEdgesChange={onEdgesChange}
           edgeTypes={edgeTypes}
           onConnect={onConnect}
           fitView
           connectionMode={ConnectionMode.Loose}
           connectionLineComponent={ConnectionLine}
-          style={rfStyle}
+          style={flowStyle}
         >
           <Background />
           <Controls position='bottom-left' />

@@ -74,7 +74,7 @@ There should be one .env file in the **client/** folder and one .env file in the
 
 Firebase limits the number of service accounts allocated to the project. Therefore, all of the client-side Firebase environment variables must be shared. Get a valid set from any team member.
 
-![A screenshot of the Firebase Console / General area](https://github.com/Linkta-org/core/blob/d42a53fb77d6606573ff37bc07d90c502c1037b4/.github/docs/assets/screenshot-firebase-config.png)
+![A screenshot of the Firebase Console / General area](../../assets/screenshot-firebase-config.png)
 
 <br>
 
@@ -144,7 +144,7 @@ Each Firebase application is limited to a total of 10 Private Keys. As it may no
 > Note: Do not add this JSON file to the Linkta Core project in VS Code! If you open the file using VS Code, ensure that the file is located outside of the project and is not added to Linkta's Git repository.
 
 
-![A screenshot of the Firebase Console / Service Accounts area](https://github.com/Linkta-org/core/blob/b98fd7fc93e1ba969b733bde560f8932b3df8257/.github/docs/assets/screenshot-firebase-key.png)
+![A screenshot of the Firebase Console / Service Accounts area](../../assets/screenshot-firebase-key.png)
 
 <br>
 

@@ -10,6 +10,15 @@
   border-radius: 0.25rem;
 }
 
+.textField :global(.MuiOutlinedInput-root:hover fieldset) {
+  border-color: var(--secondary-main);
+}
+
+.textField :global(.MuiOutlinedInput-root.Mui-focused fieldset),
+.textField :global(.MuiOutlinedInput-root.Mui-focusVisible fieldset) {
+  border-color: var(--secondary-light);
+}
+
 .formError {
   color: red;
   font-size: 0.8rem;

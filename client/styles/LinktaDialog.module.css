@@ -55,6 +55,11 @@
   cursor: pointer;
 }
 
+.buttonBase:focus,
+.buttonBase:focus-visible {
+  outline: 2px solid var(--secondary-light);
+}
+
 .cancelButton {
   background-color: var(--light-gray);
   color: var(--primary-dark);

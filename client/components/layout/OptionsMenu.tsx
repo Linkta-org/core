@@ -36,6 +36,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({
         'aria-labelledby': 'lock-button',
         role: 'menu',
         className: styles.optionsMenu__list,
+        autoFocus: true,
       }}
       classes={{ paper: styles.optionsMenu }}
     >

@@ -25,7 +25,7 @@ const RenameDialog: React.FC<RenameDialogProps> = ({
     control,
     setValue,
     reset,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm({
     resolver: zodResolver(userInputTitleSchema),
     defaultValues: { title: currentTitle },
@@ -35,7 +35,11 @@ const RenameDialog: React.FC<RenameDialogProps> = ({
     setValue('title', currentTitle);
   }, [currentTitle, setValue]);
 
-  const handleSaveClick = (data: { title: string }) => onSave(data.title);
+  const handleSaveClick = (data: { title: string }) => {
+    if (dirtyFields.title) {
+      onSave(data.title);
+    }
+  };
 
   const formContent = (
     <form
@@ -89,6 +93,7 @@ const RenameDialog: React.FC<RenameDialogProps> = ({
         onCancel();
       }}
       confirmButtonClass={styles.renameConfirmButton}
+      confirmButtonDisabled={!dirtyFields.title}
     />
   );
 };

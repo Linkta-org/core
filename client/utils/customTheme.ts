@@ -58,8 +58,7 @@ const themeOptions: ThemeOptions = {
           '--gap-default': '0.5rem',
           '--gap-small': '0.25rem',
           '--height-tab-default': '2.375rem',
-          '--border-radius-default': '0.4rem',
-          '--border-highlight-default': '1px solid rgba(159, 133, 18, 0.4)',
+          '--border-radius-default': '4px',
         },
         '*': {
           margin: 0,

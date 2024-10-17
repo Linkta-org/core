@@ -20,6 +20,7 @@ interface LinktaDialogProps {
   onConfirm: () => void;
   onCancel: () => void;
   confirmButtonClass?: string;
+  confirmButtonDisabled?: boolean;
 }
 
 /**
@@ -48,6 +49,7 @@ const LinktaDialog: React.FC<LinktaDialogProps> = ({
   onConfirm,
   onCancel,
   confirmButtonClass,
+  confirmButtonDisabled = false,
 }) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -104,6 +106,7 @@ const LinktaDialog: React.FC<LinktaDialogProps> = ({
           onClick={onConfirm}
           className={`${styles.buttonBase} ${confirmButtonClass || styles.confirmButton}`}
           aria-label={confirmText}
+          disabled={confirmButtonDisabled}
         >
           {confirmText}
         </Button>

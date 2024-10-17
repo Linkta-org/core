@@ -112,4 +112,4 @@ const createUserInputService = () => {
 - [Nest.js Documentation](https://docs.nestjs.com/)
 - [Express.js Documentation](https://expressjs.com/)
 - Martin, R. C. (2017). Clean Architecture: A Craftsman's Guide to Software Structure and Design. Prentice Hall.
-- Schwarz, A. (2012). Dependency Injection with TypeScript. [https://nehalist.io/dependency-injection-in-typescript/](https://nehalist.io/dependency-injection-in-typescript/)
+- Schwarz, A. (2012). [Dependency Injection with TypeScript](https://nehalist.io/dependency-injection-in-typescript/).

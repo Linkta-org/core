@@ -7,7 +7,7 @@ This document provides an overview of the Linkta API, which follows a RESTful ar
 The base URL for the Linkta API is: `https://api.linkta.io`
 
 ## Diagram
-![API Design Flowchart](./assets/api-design-flowchart.png "api design flowchart")
+![API Design Flowchart](../assets/api-design-flowchart.png "api design flowchart")
 
 ## Endpoints
 ### UserInput Submission and Processing
@@ -459,7 +459,7 @@ BugReport {
 - updatedAt (timestamp)
 
 ## Error Handling
-See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
+See [MVP System Design Documentation](MVP_System_Design.md)
 
 ## Rate Limiting
 
@@ -480,13 +480,13 @@ Rate limiting middleware is applied to all API routes. When the limit is exceede
 > _Work in progress_
 
 ## Security
-See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
+See [MVP System Design Documentation](MVP_System_Design.md)
 
 ## Testing
-See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
+See [MVP System Design Documentation](MVP_System_Design.md)
 
 ## Deployment and DevOps
-See [MVP System Design Documentation](MVP_SYSTEM_DESIGN_DOCUMENTATION.md)
+See [MVP System Design Documentation](MVP_System_Design.md)
 
 ## API Versioning and Lifecycle
 **Versioning Strategy**

@@ -1,11 +1,12 @@
-# Tree Visualization UI Library Decision Log
+# Knowledge Graph Visualization UI Library Decision Log
 
 Period: 2024-04-06
 
 Status: Approved
 
 ## Goal:
-To select an optimal UI library that best meets the requirements for a tree visualization feature. This includes user-friendly drag-and-drop capabilities, efficient re-rendering for performance optimization, and comprehensive editing functionalities to enhance user experience and interaction with the tree structure, and consideration of library bundle sizes and documentation clarity.
+
+To select an optimal UI library that best meets the requirements for a knowledge graph visualization feature. This includes user-friendly drag-and-drop capabilities, efficient re-rendering for performance optimization, and comprehensive editing functionalities to enhance user experience and interaction with the graph structure, and consideration of library bundle sizes and documentation clarity.
 
 ## Limitations:
 - **Technical Constraints**: Must seamlessly integrate with the current tech stack, including React, TypeScript, Zustand, and React Query, while ensuring low latency, scalability, and security. Additionally, the library should offer broad compatibility across platforms, aligning with future stretch goals to support both web and mobile applications effectively.
@@ -15,7 +16,7 @@ To select an optimal UI library that best meets the requirements for a tree visu
 
 ## Options Explored:
 1. **React Flow with dagre/d3-hierarchy**:
-   - Pros: Provides a highly customizable and interactive environment for graph visualization, supporting features like node dragging, dynamic edge creation, and a flexible layout system adaptable for complex tree structures.
+   - Pros: Provides a highly customizable and interactive environment for graph visualization, supporting features like node dragging, dynamic edge creation, and a flexible layout system adaptable for complex graph structures.
    - Cons: Requires an additional library and custom implementations to achieve an optimal tree layout and spacing, especially for complex or dynamic tree structures.
 
 2. **React Beautiful DnD with react-d3-tree**:

@@ -90,7 +90,7 @@ The frontend is developed using React, incorporating various libraries to enhanc
 User authentication and authorization are managed through Firebase Authentication. The entire system is hosted on Google Cloud Platform (GCP) with Firebase Hosting.
 
 ### Architecture Diagram
-![MVP System Design Diagram](./assets/mvp-system-design-diagram.png "MVP system design diagram")
+![MVP System Design Diagram](../assets/mvp-system-design-diagram.png "MVP system design diagram")
 
 ## Technology Stack
 - **Programming Language:** TypeScript
@@ -103,10 +103,10 @@ User authentication and authorization are managed through Firebase Authenticatio
 - **Others:** Zod, log4js, Turbo Console Log
 
 ## Data Design
-The detailed field-level information for each entity can be found in the "Data Design" section of the [API Design documentation](./API_DESIGN_DOCUMENTATION_V1.md).
+The detailed field-level information for each entity can be found in the "Data Design" section of the [API Design documentation](./API_Design_V1.md).
 
 ## API Design
-The detailed API endpoints, request/response formats, and authentication requirements can be found in the [API Design documentation](./API_DESIGN_DOCUMENTATION_V1.md).
+The detailed API endpoints, request/response formats, and authentication requirements can be found in the [API Design documentation](./API_Design_V1.md).
 
 ## Caching and Performance Optimization
 >_Work in progress_

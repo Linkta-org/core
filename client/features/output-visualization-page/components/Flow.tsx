@@ -26,6 +26,7 @@ import useLinktaFlowStore from '@stores/LinktaFlowStore';
 import dagreAutoLayout from '@/utils/dagreAutoLayout';
 import Loader from '@/components/common/Loader';
 import UndoAndRedo from '@features/output-visualization-page/components/UndoAndRedo';
+import styles from '@styles/LinktaFlow.module.css';
 
 const DEFAULT_MARKER_END = {
   type: MarkerType.ArrowClosed,
@@ -57,13 +58,6 @@ const createEdge = (sourceNodeId: string, targetNodeId: string): Edge => ({
   target: targetNodeId,
   markerEnd: DEFAULT_MARKER_END,
 });
-
-// Styling for the ReactFlow component
-const flowStyle = {
-  backgroundColor: 'hsla(186, 40%, 15%, 0.4)',
-  height: '100%',
-  width: '100%',
-};
 
 const nodeTypes = { linktaNode: LinktaNode };
 const edgeTypes = { linktaEdge: LinktaFlowEdge };
@@ -212,7 +206,7 @@ function Flow({ userInputId }: { userInputId: string }) {
           fitView
           connectionMode={ConnectionMode.Loose}
           connectionLineComponent={ConnectionLine}
-          style={flowStyle}
+          className={styles.flowContainer}
         >
           <Background />
           <Controls position='bottom-left' />

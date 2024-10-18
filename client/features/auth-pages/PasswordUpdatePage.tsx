@@ -9,7 +9,7 @@ import { Button, Box, Typography, Link, TextField } from '@mui/material';
 import styles from '@styles/layout/AuthStyles.module.css';
 import type { SubmitHandler } from 'react-hook-form';
 import { useUpdatePasswordMutation } from '@/hooks/useUpdatePasswordMutation';
-import { userPasswordSchema } from '@validators/validateUserPassword';
+import { userPasswordSchema } from '@validators/authSchemas';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNotification } from '@hooks/useNotification';

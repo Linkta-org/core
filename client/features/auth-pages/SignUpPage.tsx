@@ -8,11 +8,18 @@ import { useGithubAuthMutation } from '@hooks/useSignInWithGitHub';
 import { useCreateUserWithEmailAndPasswordMutation } from '@hooks/useCreateUserWithEmailAndPassword';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import userSignUpSchema, { type FormData } from '@validators/userSignUpSchema';
+import { userCredentialsSchema } from '@validators/authSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNotification } from '@hooks/useNotification';
 import { useCreateUserProfile } from '@hooks/useUserCrudOperations';
 import { useQueryClient } from '@tanstack/react-query';
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const SignUpPage = () => {
   useDocumentTitle('Sign Up');
@@ -27,7 +34,7 @@ const SignUpPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(userSignUpSchema) });
+  } = useForm<FormData>({ resolver: zodResolver(userCredentialsSchema) });
   const { showNotification } = useNotification();
 
   const handleGoogleAuthClick = async () => {

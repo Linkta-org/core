@@ -27,6 +27,12 @@ import dagreAutoLayout from '@/utils/dagreAutoLayout';
 import Loader from '@/components/common/Loader';
 import UndoAndRedo from '@features/output-visualization-page/components/UndoAndRedo';
 
+const DEFAULT_MARKER_END = {
+  type: MarkerType.ArrowClosed,
+  width: 18,
+  height: 25,
+};
+
 // Finds the nearest node to the dragged node within a 100-unit distance.
 const findClosestNode = (draggedNode: Node, nodes: Node[]) => {
   const { x, y } = draggedNode.position;
@@ -49,7 +55,7 @@ const createEdge = (sourceNodeId: string, targetNodeId: string): Edge => ({
   id: `e${sourceNodeId}-${targetNodeId}`,
   source: sourceNodeId,
   target: targetNodeId,
-  markerEnd: { type: MarkerType.Arrow },
+  markerEnd: DEFAULT_MARKER_END,
 });
 
 // Styling for the ReactFlow component
@@ -101,7 +107,7 @@ function Flow({ userInputId }: { userInputId: string }) {
 
       const styledEdges = layoutEdges.map((edge) => ({
         ...edge,
-        markerEnd: { type: MarkerType.Arrow },
+        markerEnd: DEFAULT_MARKER_END,
       }));
 
       setNodes(styledNodes);
@@ -135,7 +141,8 @@ function Flow({ userInputId }: { userInputId: string }) {
           source: closestNode.id,
           target: draggedNode.id,
           style: { stroke: '#d3d3d3', strokeDasharray: '5 5' },
-          markerEnd: { type: MarkerType.Arrow },
+          animated: true,
+          markerEnd: DEFAULT_MARKER_END,
         });
       } else {
         setTemporaryEdge(null); // No nearby node, clear temporary edge
@@ -172,7 +179,7 @@ function Flow({ userInputId }: { userInputId: string }) {
   const onConnect = useCallback(
     (params: Connection) => {
       const newEdge = addEdge(
-        { ...params, type: 'floating', markerEnd: { type: MarkerType.Arrow } },
+        { ...params, type: 'floating', markerEnd: DEFAULT_MARKER_END },
         edges,
       );
       setEdges(newEdge);

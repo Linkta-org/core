@@ -12,7 +12,7 @@
 }
 
 .nodeWrapper {
-  background-color: #143f22;
+  background-color: var(--primary-dark);
   height: 44px;
   width: 168px;
   display: flex;

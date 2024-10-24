@@ -28,11 +28,10 @@ https://help.dreamhost.com/hc/en-us/articles/23971547819412-Using-linger-with-Gu
 In order to link to a nodeserver
 
 # Notes:
-We are running SSH commands as currently set up. This should have a security doublecheck that I haven't overlooked a security concern. 
+We are running SSH commands as currently set up. This should have a security doublecheck that I haven't overlooked a security concern.
 
 See:
 https://stackoverflow.com/questions/52787410/start-node-app-through-ssh-stays-running
 https://forum.level1techs.com/t/how-to-start-a-server-via-ssh-and-leave-it-running/117603
 https://help.dreamhost.com/hc/en-us/articles/217955787-Proxy-Server
-
 

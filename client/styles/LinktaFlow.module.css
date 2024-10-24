@@ -1,0 +1,71 @@
+/* Container Styles */
+.flowContainer {
+  background-color: hsla(186, 40%, 15%, 0.4);
+  height: 100%;
+  width: 100%;
+}
+
+/* Node Styles */
+.handle {
+  background-color: transparent;
+  border: none;
+}
+
+.nodeWrapper {
+  background-color: var(--primary-dark);
+  height: 44px;
+  width: 168px;
+  display: flex;
+  border-radius: 5px;
+  border: 0.2px solid #000;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.25);
+  transition:
+    box-shadow 0.3s,
+    border 0.3s;
+  overflow: hidden;
+}
+
+.nodeFocused {
+  border: 0.2px solid var(--secondary-main);
+  border-left: 0.2px solid var(--secondary-main);
+  box-shadow: 0 0 4px 1px rgba(255, 165, 27, 0.6);
+}
+
+.nodeColorBar {
+  border-radius: 5px 0 0 5px;
+  width: 8px;
+  height: 100%;
+  background-color: #040ce1;
+}
+
+.nodeContent {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
+  padding: 0 2px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.textField {
+  background: transparent;
+  border: none;
+  color: white;
+  font-weight: 500;
+  width: 100%;
+}
+
+.textFieldInput {
+  text-align: center;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nodeContent :global(.MuiOutlinedInput-root) {
+  fieldset {
+    border: none;
+  }
+}
